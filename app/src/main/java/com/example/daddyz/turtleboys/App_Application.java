@@ -13,11 +13,7 @@ public class App_Application extends Application {
     @Override public void onCreate() {
 
         Parse.enableLocalDatastore(this);
-
-
         Parse.initialize(this, "3YwirBYrXg3tZ9nLiCR5F75FyWR2shvOIVHixtjX", "ERFTgdWUdDO2vjuwwNVasuG8rybwagtUfxWhe4dJ");
-
-
         ParseInstallation.getCurrentInstallation().saveInBackground();
     }
 }
