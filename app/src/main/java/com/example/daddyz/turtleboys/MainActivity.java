@@ -24,9 +24,7 @@ public class MainActivity extends ActionBarActivity {
         Parse.initialize(this, "3YwirBYrXg3tZ9nLiCR5F75FyWR2shvOIVHixtjX", "ERFTgdWUdDO2vjuwwNVasuG8rybwagtUfxWhe4dJ");
         ParseInstallation.getCurrentInstallation().saveInBackground();
 
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
+
     }
 
     @Override
