@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.parse.Parse;
+import com.parse.ParseInstallation;
+import com.parse.ParseObject;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -18,7 +20,13 @@ public class MainActivity extends ActionBarActivity {
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
 
+
         Parse.initialize(this, "3YwirBYrXg3tZ9nLiCR5F75FyWR2shvOIVHixtjX", "ERFTgdWUdDO2vjuwwNVasuG8rybwagtUfxWhe4dJ");
+        ParseInstallation.getCurrentInstallation().saveInBackground();
+
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();
     }
 
     @Override
