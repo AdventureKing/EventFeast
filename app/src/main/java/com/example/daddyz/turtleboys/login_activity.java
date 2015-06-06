@@ -43,9 +43,9 @@ public class login_activity extends Activity {
                         if (parseUser != null) {
                             // Hooray! The user is logged in.
 
-                            //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             finish();
-                            //startActivity(intent);
+                            startActivity(intent);
 
                         } else {
                             // Signup failed. Look at the ParseException to see what happened.

@@ -28,6 +28,7 @@ public class MainActivity extends ActionBarActivity {
         if (ParseUser.getCurrentUser() == null){
             Intent intent = new Intent(getApplicationContext(), login_activity.class);
             startActivity(intent);
+            finish();
         }
 
     }
