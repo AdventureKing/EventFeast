@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import com.parse.Parse;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -18,6 +19,10 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Enable Local Datastore.
+
+        /*if (ParseUser.getCurrentUser() == null){
+
+        }*/
 
     }
 
