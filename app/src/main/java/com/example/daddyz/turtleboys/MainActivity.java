@@ -1,11 +1,16 @@
 package com.example.daddyz.turtleboys;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.parse.LogInCallback;
+import com.parse.LogOutCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -20,9 +25,10 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         // Enable Local Datastore.
 
-        /*if (ParseUser.getCurrentUser() == null){
-
-        }*/
+        if (ParseUser.getCurrentUser() == null){
+            Intent intent = new Intent(getApplicationContext(), login_activity.class);
+            startActivity(intent);
+        }
 
     }
 
@@ -42,6 +48,19 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+
+        if (id == R.id.action_logout) {
+            ParseUser.logOutInBackground(new LogOutCallback() {
+                @Override
+                public void done(ParseException e) {
+                    finish();
+                    Intent intent = new Intent(getApplicationContext(), login_activity.class);
+                    Toast.makeText(getApplicationContext(), "Logout Successful!", Toast.LENGTH_SHORT).show();
+                    startActivity(intent);
+                }
+            });
             return true;
         }
 
