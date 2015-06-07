@@ -16,7 +16,7 @@
 			$sourceArr = explode(",",$filters['sources']);
 			foreach($sourceArr as $source){
 				if(strcasecmp($source, "stubhub") == 0){ 
-					$results = stubhubAPI_findEvents($search, $filters); 			
+					$results = stubhubAPI_findEvents($eventDesc, $filters); 			
 				}
 				if(strcasecmp($source, "ticketMaster") == 0){
 					//$results +=;

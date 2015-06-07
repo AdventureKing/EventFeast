@@ -69,9 +69,10 @@
 			}  
 			return strpos($content,$str) ? true : false;
 		}
+		
+		$results_events = NULL;
 							
 		if ($num > 0){
-			$results_events = NULL;
 			
 			// Today's timestamp date
 			$today = strtotime("now");
