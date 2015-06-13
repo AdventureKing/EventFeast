@@ -11,13 +11,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.GetDataCallback;
 import com.parse.LogOutCallback;
+import com.parse.ParseFile;
+import com.parse.ParseImageView;
 import com.parse.ParseUser;
 
 public class maindrawer extends AppCompatActivity {
@@ -28,6 +32,7 @@ public class maindrawer extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private TextView userName;
     private TextView userEmail;
+    private ParseFile userImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,22 @@ public class maindrawer extends AppCompatActivity {
             userName.setText(ParseUser.getCurrentUser().getUsername().toString());
             userEmail = (TextView) findViewById(R.id.email);
             userEmail.setText(ParseUser.getCurrentUser().getEmail().toString());
+            ParseFile image = ParseUser.getCurrentUser().getParseFile("userImage");
+            final ParseImageView imageView = (ParseImageView) findViewById(R.id.imageView);
+            imageView.setParseFile(image);
+            imageView.loadInBackground(new GetDataCallback() {
+                @Override
+                public void done(byte[] bytes, com.parse.ParseException e) {
+                    // The image is loaded and displayed!
+                    int oldHeight = imageView.getHeight();
+                    int oldWidth = imageView.getWidth();
+                    Log.v("LOG!!!!!!", "imageView height = " + oldHeight);      // DISPLAYS 90 px
+                    Log.v("LOG!!!!!!", "imageView width = " + oldWidth);        // DISPLAYS 90 px
+
+                }
+
+
+            });
 
 
             //Initializing NavigationView
