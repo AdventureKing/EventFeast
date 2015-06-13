@@ -56,7 +56,7 @@ public class maindrawer extends AppCompatActivity {
             userEmail = (TextView) findViewById(R.id.email);
             userEmail.setText(ParseUser.getCurrentUser().getEmail().toString());
             ParseFile image = ParseUser.getCurrentUser().getParseFile("userImage");
-            final ParseImageView imageView = (ParseImageView) findViewById(R.id.imageView);
+            final ParseImageView imageView = (ParseImageView) findViewById(R.id.profile_image);
             imageView.setParseFile(image);
 
 
