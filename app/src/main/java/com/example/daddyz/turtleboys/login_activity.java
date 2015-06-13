@@ -11,8 +11,6 @@ import android.widget.Toast;
 import com.parse.LogInCallback;
 import com.parse.ParseUser;
 
-import java.text.ParseException;
-
 /**
  * Created by Jinbir on 6/6/2015.
  */
@@ -43,7 +41,7 @@ public class login_activity extends Activity {
                         if (parseUser != null) {
                             // Hooray! The user is logged in.
 
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), maindrawer.class);
                             finish();
                             startActivity(intent);
 
