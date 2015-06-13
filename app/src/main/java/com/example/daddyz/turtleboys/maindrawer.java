@@ -32,7 +32,7 @@ public class maindrawer extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private TextView userName;
     private TextView userEmail;
-    private ParseFile userImage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
