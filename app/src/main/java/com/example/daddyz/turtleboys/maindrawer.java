@@ -50,7 +50,7 @@ public class maindrawer extends AppCompatActivity {
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
 
-            //set username and email in the header
+            //set username and email in the header and user image
             userName = (TextView) findViewById(R.id.username);
             userName.setText(ParseUser.getCurrentUser().getUsername().toString());
             userEmail = (TextView) findViewById(R.id.email);
@@ -58,6 +58,8 @@ public class maindrawer extends AppCompatActivity {
             ParseFile image = ParseUser.getCurrentUser().getParseFile("userImage");
             final ParseImageView imageView = (ParseImageView) findViewById(R.id.imageView);
             imageView.setParseFile(image);
+
+
             imageView.loadInBackground(new GetDataCallback() {
                 @Override
                 public void done(byte[] bytes, com.parse.ParseException e) {
@@ -68,8 +70,6 @@ public class maindrawer extends AppCompatActivity {
                     Log.v("LOG!!!!!!", "imageView width = " + oldWidth);        // DISPLAYS 90 px
 
                 }
-
-
             });
 
 
