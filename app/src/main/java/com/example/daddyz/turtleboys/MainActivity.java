@@ -52,6 +52,12 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
 
+        if (id == R.id.action_myExperiences) {
+            Intent intent = new Intent(getApplicationContext(), MyExperience_activity.class);
+            startActivity(intent);
+            return true;
+        }
+
         if (id == R.id.action_logout) {
             ParseUser.logOutInBackground(new LogOutCallback() {
                 @Override
