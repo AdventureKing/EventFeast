@@ -33,23 +33,23 @@ public class maindrawer extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private TextView userName;
     private TextView userEmail;
-    private ParseFile image;
-    private ParseImageView imageView;
 
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
         //create a gigUser which is
-        final GigUser currentUser = ParseUser.createWithoutData(GigUser.class,ParseUser.getCurrentUser().getObjectId());
 
-        if (currentUser == null){
+
+        if (GigUser.getCurrentUser() == null){
             Intent intent = new Intent(getApplicationContext(), login_activity.class);
             startActivity(intent);
             finish();
         }else {
-            
+
+            final GigUser currentUser = ParseUser.createWithoutData(GigUser.class,ParseUser.getCurrentUser().getObjectId());
             // Initializing Toolbar and setting it as the actionbar
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
@@ -61,8 +61,8 @@ public class maindrawer extends AppCompatActivity {
             userEmail.setText(currentUser.getEmail().toString());
 
             //get ParseImageView from xml
-            image = (ParseFile) currentUser.getUserImage();
-            imageView = (ParseImageView) findViewById(R.id.profile_image);
+            ParseFile image = (ParseFile) currentUser.getUserImage();
+            final ParseImageView imageView = (ParseImageView) findViewById(R.id.profile_image);
             imageView.setParseFile(image);
 
             //load the image from the parse database
@@ -198,8 +198,6 @@ public class maindrawer extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
-        //probably should take this out
         if(id == R.id.action_logout){
             GigUser.logOutInBackground(new LogOutCallback(){
                 @Override
