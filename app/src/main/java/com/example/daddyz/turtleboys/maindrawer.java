@@ -72,6 +72,9 @@ public class maindrawer extends AppCompatActivity {
                 }
             });
 
+            //this is the drawer
+
+
 
             //Initializing NavigationView
             navigationView = (NavigationView) findViewById(R.id.navigation_view);
@@ -109,8 +112,8 @@ public class maindrawer extends AppCompatActivity {
                         case R.id.starred:
                             Toast.makeText(getApplicationContext(), "Stared Selected", Toast.LENGTH_SHORT).show();
                             return true;
-                        case R.id.sent_mail:
-                            Toast.makeText(getApplicationContext(), "Send Selected", Toast.LENGTH_SHORT).show();
+                        case R.id.search_event:
+                            Toast.makeText(getApplicationContext(), "Event Searched", Toast.LENGTH_SHORT).show();
                             return true;
                         case R.id.drafts:
                             Toast.makeText(getApplicationContext(), "Drafts Selected", Toast.LENGTH_SHORT).show();
@@ -118,11 +121,21 @@ public class maindrawer extends AppCompatActivity {
                         case R.id.allmail:
                             Toast.makeText(getApplicationContext(), "All Mail Selected", Toast.LENGTH_SHORT).show();
                             return true;
-                        case R.id.trash:
-                            Toast.makeText(getApplicationContext(), "Trash Selected", Toast.LENGTH_SHORT).show();
+                        case R.id.logoutDrawer:
+                            ParseUser.logOutInBackground(new LogOutCallback() {
+                                @Override
+                                public void done(com.parse.ParseException e) {
+                                    finish();
+                                    Intent intent = new Intent(getApplicationContext(), login_activity.class);
+                                    Toast.makeText(getApplicationContext(), "Logout Successful!", Toast.LENGTH_SHORT).show();
+
+                                    startActivity(intent);
+
+                                }
+                            });
                             return true;
-                        case R.id.spam:
-                            Toast.makeText(getApplicationContext(), "Spam Selected", Toast.LENGTH_SHORT).show();
+                        case R.id.account_settings:
+                            Toast.makeText(getApplicationContext(), "Account Settings Should be displayed", Toast.LENGTH_SHORT).show();
                             return true;
                         default:
                             Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
@@ -160,6 +173,8 @@ public class maindrawer extends AppCompatActivity {
         }
 
     }
+
+        //logout menu and settings menu probably need to take out
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

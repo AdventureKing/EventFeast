@@ -7,8 +7,13 @@
     <string name="password_text">Enter Password</string>
     <string name="action_logout">Logout</string>
 
-    <string name="My_experiences">My Experiences</string>
 
+    <!-- drawer options strings -->
+    <string name="My_experiences">My Experiences</string>
+    <string name="searchEvent">Search Event</string>
+    <string name="accountSettings">Account Settings</string>
+
+    <!-- pre built options that need to phased out -->
     <string name="navigation_item_1">Home</string>
     <string name="navigation_item_2">Events</string>
     <string name="starred_string">Starred</string>
