@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.parse.LogInCallback;
 import com.parse.ParseUser;
 
@@ -35,10 +36,10 @@ public class login_activity extends Activity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ParseUser.logInInBackground(userName.getText().toString(), userPassword.getText().toString(), new LogInCallback() {
+                GigUser.logInInBackground(userName.getText().toString(), userPassword.getText().toString(), new LogInCallback() {
                     @Override
-                    public void done(ParseUser parseUser, com.parse.ParseException e) {
-                        if (parseUser != null) {
+                    public void done(ParseUser GigUser, com.parse.ParseException e) {
+                        if (GigUser != null) {
                             // Hooray! The user is logged in.
 
                             Intent intent = new Intent(getApplicationContext(), maindrawer.class);

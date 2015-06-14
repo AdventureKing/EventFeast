@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.parse.GetDataCallback;
 import com.parse.LogOutCallback;
 import com.parse.ParseFile;
@@ -32,35 +33,39 @@ public class maindrawer extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private TextView userName;
     private TextView userEmail;
+    private ParseFile image;
+    private ParseImageView imageView;
 
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
+        //create a gigUser which is
+        final GigUser currentUser = ParseUser.createWithoutData(GigUser.class,ParseUser.getCurrentUser().getObjectId());
 
-        if (ParseUser.getCurrentUser() == null){
+        if (currentUser == null){
             Intent intent = new Intent(getApplicationContext(), login_activity.class);
             startActivity(intent);
             finish();
         }else {
-
+            
             // Initializing Toolbar and setting it as the actionbar
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
 
             //set username and email in the header and user image
             userName = (TextView) findViewById(R.id.username);
-            userName.setText(ParseUser.getCurrentUser().getUsername().toString());
+            userName.setText(currentUser.getUsername().toString());
             userEmail = (TextView) findViewById(R.id.email);
-            userEmail.setText(ParseUser.getCurrentUser().getEmail().toString());
+            userEmail.setText(currentUser.getEmail().toString());
 
-            ParseFile image = ParseUser.getCurrentUser().getParseFile("userImage");
-            final ParseImageView imageView = (ParseImageView) findViewById(R.id.profile_image);
+            //get ParseImageView from xml
+            image = (ParseFile) currentUser.getUserImage();
+            imageView = (ParseImageView) findViewById(R.id.profile_image);
             imageView.setParseFile(image);
 
-
+            //load the image from the parse database
             imageView.loadInBackground(new GetDataCallback() {
                 @Override
                 public void done(byte[] bytes, com.parse.ParseException e) {
@@ -74,8 +79,6 @@ public class maindrawer extends AppCompatActivity {
             });
 
             //this is the drawer
-
-
 
             //Initializing NavigationView
             navigationView = (NavigationView) findViewById(R.id.navigation_view);
@@ -123,7 +126,7 @@ public class maindrawer extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "User wants to connect to other Users", Toast.LENGTH_SHORT).show();
                             return true;
                         case R.id.logoutDrawer:
-                            ParseUser.logOutInBackground(new LogOutCallback() {
+                            currentUser.logOutInBackground(new LogOutCallback() {
                                 @Override
                                 public void done(com.parse.ParseException e) {
                                     finish();
@@ -195,8 +198,10 @@ public class maindrawer extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+
+        //probably should take this out
         if(id == R.id.action_logout){
-            ParseUser.logOutInBackground(new LogOutCallback(){
+            GigUser.logOutInBackground(new LogOutCallback(){
                 @Override
                 public void done(com.parse.ParseException e) {
                     finish();

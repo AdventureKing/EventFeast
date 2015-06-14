@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:text="NEEDS TO SHOW USER NAME"
         android:textSize="14sp"
-        android:textColor="#FFF"
+        android:textColor="@color/PrimaryColor"
         android:textStyle="bold"
         android:gravity="left"
         android:paddingBottom="4dp"
@@ -43,7 +43,7 @@
         android:gravity="left"
         android:layout_marginBottom="8dp"
         android:textSize="14sp"
-        android:textColor="#fff"
+        android:textColor="@color/PrimaryColor"
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/username"
         android:layout_alignStart="@+id/username" />
