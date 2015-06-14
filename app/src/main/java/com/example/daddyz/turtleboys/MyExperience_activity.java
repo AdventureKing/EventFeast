@@ -2,8 +2,11 @@ package com.example.daddyz.turtleboys;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
 import android.media.Image;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -16,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,6 +29,8 @@ import java.util.Date;
  */
 public class MyExperience_activity extends Activity {
     private Button b1;
+    private ImageView preview;
+    private Bitmap thumbnail;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     //private static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 200;
     private Uri fileUri;
@@ -38,6 +44,7 @@ public class MyExperience_activity extends Activity {
         setContentView(R.layout.myexperiences);
         // Enable Local Datastore.
 
+        preview = (ImageView) findViewById(R.id.picturePreview);
         b1=(Button)findViewById(R.id.loginbutton);
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,10 +81,34 @@ public class MyExperience_activity extends Activity {
                     broadcast.setData(fileUri);
                     sendBroadcast(broadcast);
                     //Picture Preview
-                    //ImageView preview = (ImageView) findViewById(R.id.picturePreview);
-                    //preview.setImageBitmap(BitmapFactory.decodeFile(fileUri.toString()));
-                    //preview.setImageURI(fileUri);
-                    //preview.invalidate();
+
+                    String path = fileUri.toString().substring(5); //Removes unnecessary "File:" from path
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inSampleSize = 4;
+                    thumbnail = BitmapFactory.decodeFile(path, options);
+
+                    try {
+                        ExifInterface exif = new ExifInterface(path);
+                        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+                        Log.d("EXIF", "Exif: " + orientation);
+                        Matrix matrix = new Matrix();
+                        if (orientation == 6) {
+                            matrix.postRotate(90);
+                        }
+                        else if (orientation == 3) {
+                            matrix.postRotate(180);
+                        }
+                        else if (orientation == 8) {
+                            matrix.postRotate(270);
+                        }
+                        thumbnail = Bitmap.createBitmap(thumbnail, 0, 0, thumbnail.getWidth(), thumbnail.getHeight(), matrix, true); // rotating bitmap
+                    }
+                    catch (Exception e) {
+
+                    }
+
+                    preview.setImageBitmap(thumbnail);
+
 
                 }else{
                     Toast.makeText(this, "Image file location error", Toast.LENGTH_LONG).show();
