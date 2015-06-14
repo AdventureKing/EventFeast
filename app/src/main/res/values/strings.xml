@@ -13,6 +13,8 @@
     <string name="searchEvent">Search Event</string>
     <string name="accountSettings">Account Settings</string>
 
+    <string name="connect">Connect</string>
+
     <!-- pre built options that need to phased out -->
     <string name="navigation_item_1">Home</string>
     <string name="navigation_item_2">Events</string>

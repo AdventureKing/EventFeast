@@ -55,7 +55,7 @@ public class maindrawer extends AppCompatActivity {
             userName.setText(ParseUser.getCurrentUser().getUsername().toString());
             userEmail = (TextView) findViewById(R.id.email);
             userEmail.setText(ParseUser.getCurrentUser().getEmail().toString());
-          
+
             ParseFile image = ParseUser.getCurrentUser().getParseFile("userImage");
             final ParseImageView imageView = (ParseImageView) findViewById(R.id.profile_image);
             imageView.setParseFile(image);
@@ -119,8 +119,8 @@ public class maindrawer extends AppCompatActivity {
                         case R.id.drafts:
                             Toast.makeText(getApplicationContext(), "Drafts Selected", Toast.LENGTH_SHORT).show();
                             return true;
-                        case R.id.allmail:
-                            Toast.makeText(getApplicationContext(), "All Mail Selected", Toast.LENGTH_SHORT).show();
+                        case R.id.connect:
+                            Toast.makeText(getApplicationContext(), "User wants to connect to other Users", Toast.LENGTH_SHORT).show();
                             return true;
                         case R.id.logoutDrawer:
                             ParseUser.logOutInBackground(new LogOutCallback() {

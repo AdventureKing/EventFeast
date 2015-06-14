@@ -34,10 +34,10 @@
 
 
         <item
-            android:id="@+id/allmail"
+            android:id="@+id/connect"
             android:checked="false"
-            android:icon="@drawable/ic_email_black"
-            android:title="@string/all_mail_string" />
+            android:icon="@drawable/ic_share_black_24dp"
+            android:title="@string/connect" />
         <item
             android:id="@+id/logoutDrawer"
             android:checked="false"
