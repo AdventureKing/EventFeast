@@ -40,7 +40,7 @@ public class maindrawer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        //create a gigUser which is
+
 
 
         if (GigUser.getCurrentUser() == null){
