@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -41,7 +40,7 @@ public class MyExperience_activity extends Activity {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
                 fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+                //intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
 
                 // start the image capture Intent
                 startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
