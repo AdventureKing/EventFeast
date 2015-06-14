@@ -2,6 +2,10 @@ package com.example.daddyz.turtleboys;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -9,6 +13,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -63,6 +68,17 @@ public class MyExperience_activity extends Activity {
                 if(fileUri != null) {
                     Toast.makeText(this, "Image saved to:\n" +
                             fileUri.toString(), Toast.LENGTH_LONG).show();
+
+                    //Update MediaStore with new file (ex:  Picture shows up in Gallery)
+                    Intent broadcast = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                    broadcast.setData(fileUri);
+                    sendBroadcast(broadcast);
+                    //Picture Preview
+                    //ImageView preview = (ImageView) findViewById(R.id.picturePreview);
+                    //preview.setImageBitmap(BitmapFactory.decodeFile(fileUri.toString()));
+                    //preview.setImageURI(fileUri);
+                    //preview.invalidate();
+
                 }else{
                     Toast.makeText(this, "Image file location error", Toast.LENGTH_LONG).show();
                 }
