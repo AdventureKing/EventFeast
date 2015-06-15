@@ -115,7 +115,7 @@ public class maindrawer extends AppCompatActivity {
 
                         case R.id.starred:
                             //Toast.makeText(getApplicationContext(), "Stared Selected", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(), MyExperience_activity.class);
+                            Intent intent = new Intent(getApplicationContext(), experience_activity.class);
                             startActivity(intent);
                             return true;
                         case R.id.search_event:

@@ -35,7 +35,7 @@
         </activity>
 
         <activity
-            android:name=".MyExperience_activity"
+            android:name=".experience_activity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>

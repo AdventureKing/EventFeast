@@ -27,7 +27,7 @@ import java.util.Date;
 /**
  * Created by Jinbir on 6/13/2015.
  */
-public class MyExperience_activity extends Activity {
+public class experience_activity extends Activity {
     private Button b1;
     private ImageView preview;
     private Bitmap thumbnail;
