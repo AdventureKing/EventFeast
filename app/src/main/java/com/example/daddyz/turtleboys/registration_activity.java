@@ -10,33 +10,63 @@ import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.parse.LogInCallback;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 
+import java.util.Date;
+
 /**
- * Created by Jinbir on 6/6/2015.
+ * Created by Jinbir on 6/15/2015.
  */
-public class login_activity extends Activity {
+public class registration_activity extends Activity {
+    private EditText firstName;
+    private EditText lastName;
     private EditText userName;
+    private EditText email;
+    private EditText emailVerify;
     private EditText userPassword;
-    private Button login;
+    private EditText userPasswordVerify;
+    private ParseFile userImage;
+    private Date birthday;
+
     private Button registerButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.loginview);
+        setContentView(R.layout.registration_activity);
 
+
+        firstName = (EditText) findViewById(R.id.firstName);
+        firstName.setHint(R.string.firstName_text);
+
+        lastName = (EditText) findViewById(R.id.lastName);
+        lastName.setHint(R.string.lastName_text);
 
         userName = (EditText) findViewById(R.id.userName);
         userName.setHint(R.string.username_text);
+
+        email = (EditText) findViewById(R.id.email);
+        email.setHint(R.string.email_text);
+
+        emailVerify = (EditText) findViewById(R.id.emailVerify);
+        emailVerify.setHint(R.string.emailVerify_text);
+
         userPassword = (EditText) findViewById(R.id.password);
         userPassword.setHint(R.string.password_text);
-        login = (Button) findViewById(R.id.loginButton);
 
-        login.setOnClickListener(new View.OnClickListener() {
+        userPasswordVerify = (EditText) findViewById(R.id.userConfirmPassword);
+        userPasswordVerify.setHint(R.string.userPasswordVerify_text);
+
+        registerButton = (Button) findViewById(R.id.registerButton);
+
+        registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Verify info
+                //Create new account
+                /*
                 GigUser.logInInBackground(userName.getText().toString(), userPassword.getText().toString(), new LogInCallback() {
                     @Override
                     public void done(ParseUser GigUser, com.parse.ParseException e) {
@@ -56,18 +86,7 @@ public class login_activity extends Activity {
 
 
                 });
-            }
-        });
-
-        registerButton = (Button) findViewById(R.id.registerButton);
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), registration_activity.class);
-                startActivity(intent);
-
-                //Toast.makeText(getApplicationContext(), "Redirection to registration", Toast.LENGTH_SHORT).show();
-
+                */
             }
         });
     }
