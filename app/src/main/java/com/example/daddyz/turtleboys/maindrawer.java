@@ -113,7 +113,7 @@ public class maindrawer extends AppCompatActivity {
 
                         // For rest of the options we just show a toast on click
 
-                        case R.id.starred:
+                        case R.id.my_experiences:
                             //Toast.makeText(getApplicationContext(), "Stared Selected", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), experience_activity.class);
                             startActivity(intent);
@@ -132,9 +132,10 @@ public class maindrawer extends AppCompatActivity {
                                 @Override
                                 public void done(com.parse.ParseException e) {
                                     finish();
-                                    Intent intent = new Intent(getApplicationContext(), login_activity.class);
+                                    Intent intent = new Intent(getApplicationContext(), maindrawer.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
                                     Toast.makeText(getApplicationContext(), "Logout Successful!", Toast.LENGTH_SHORT).show();
-
                                     startActivity(intent);
 
                                 }
@@ -205,7 +206,9 @@ public class maindrawer extends AppCompatActivity {
                 @Override
                 public void done(com.parse.ParseException e) {
                     finish();
-                    Intent intent = new Intent(getApplicationContext(), login_activity.class);
+                    Intent intent = new Intent(getApplicationContext(), maindrawer.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                     Toast.makeText(getApplicationContext(), "Logout Successful!", Toast.LENGTH_SHORT).show();
                     startActivity(intent);
                 }
