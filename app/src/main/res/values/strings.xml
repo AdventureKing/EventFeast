@@ -41,5 +41,6 @@
     <string name="emailVerify_text">Verify Email</string>
     <string name="userPasswordVerify_text">Verify Password</string>
     <string name="cancelRegistration">Cancel Registration</string>
+    <string name="birthdaySelect">Select your birthday</string>
 
 </resources>

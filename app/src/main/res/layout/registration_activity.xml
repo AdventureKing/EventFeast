@@ -141,5 +141,16 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="36dp" />
 
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/birthday"
+            android:text="@string/birthdaySelect"
+            android:editable="false"
+            android:focusableInTouchMode="false"
+            android:layout_below="@+id/userConfirmPassword"
+            android:layout_centerHorizontal="true" />
+
+
     </RelativeLayout>
 </LinearLayout>
