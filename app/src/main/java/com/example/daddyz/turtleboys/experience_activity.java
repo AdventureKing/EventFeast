@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.subclasses.GigUser;
+import com.example.daddyz.turtleboys.subclasses.Camera;
 import com.parse.GetDataCallback;
 import com.parse.LogOutCallback;
 import com.parse.ParseFile;
@@ -71,15 +72,17 @@ public class experience_activity extends AppCompatActivity {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // create Intent to take a picture and return control to the calling application
+                /*// create Intent to take a picture and return control to the calling application
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
                 fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
 
                 // start the image capture Intent
-                startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);*/
 
+                Camera camera = new Camera(experience_activity.this);
+                fileUri = camera.startCamera();
             }
         });
 
@@ -87,6 +90,7 @@ public class experience_activity extends AppCompatActivity {
         // Initializing Toolbar and setting it as the actionbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("My Experiences");
 
         //set username and email in the header and user image
         userName = (TextView) findViewById(R.id.username);
@@ -155,7 +159,9 @@ public class experience_activity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Camera Selected", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.event_pictures:
-                        Toast.makeText(getApplicationContext(), "Event Pictures Selected", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Event Pictures Selected", Toast.LENGTH_SHORT).show();
+                        Intent gallery = new Intent(getApplicationContext(), gallery.class);
+                        startActivity(gallery);
                         return true;
                     case R.id.connect:
                         Toast.makeText(getApplicationContext(), "User wants to connect to other Users", Toast.LENGTH_SHORT).show();
@@ -316,12 +322,12 @@ public class experience_activity extends AppCompatActivity {
     }
 
     /** Create a file Uri for saving an image or video */
-    private static Uri getOutputMediaFileUri(int type){
+   /* private static Uri getOutputMediaFileUri(int type){
         return Uri.fromFile(getOutputMediaFile(type));
     }
 
     /** Create a File for saving an image or video */
-    private static File getOutputMediaFile(int type){
+   /* private static File getOutputMediaFile(int type){
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
 
@@ -347,13 +353,11 @@ public class experience_activity extends AppCompatActivity {
         } /*else if(type == MEDIA_TYPE_VIDEO) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
                     "VID_"+ timeStamp + ".mp4");
-        } */else {
+        } *//*else {
             return null;
         }
 
         return mediaFile;
-    }
-
-
+    }*/
 
 }

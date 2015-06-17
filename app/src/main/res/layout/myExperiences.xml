@@ -17,10 +17,6 @@
             android:id="@+id/toolbar"
             layout="@layout/tool_bar"
             />
-        <TextView android:text="@string/action_myExperiences"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/myexperiences" />
 
         <Button
             android:layout_width="wrap_content"
