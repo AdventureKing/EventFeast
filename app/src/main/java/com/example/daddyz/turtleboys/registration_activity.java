@@ -50,6 +50,7 @@ public class registration_activity extends Activity {
     private EditText imageText;
 
     private Button registerButton;
+    private Button cancelButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +127,18 @@ public class registration_activity extends Activity {
                 //Check if lastName is empty
                 if ( lastName.getText().toString().isEmpty() ) {
                     Toast.makeText(getApplicationContext(), R.string.lastNameEmpty, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //Check if userName is empty
+                if ( userName.getText().toString().isEmpty() ) {
+                    Toast.makeText(getApplicationContext(), R.string.userNameEmpty, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //Check if password is empty
+                if ( userName.getText().toString().isEmpty() ) {
+                    Toast.makeText(getApplicationContext(), R.string.passwordEmpty, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -206,6 +219,19 @@ public class registration_activity extends Activity {
 
                 });
 
+
+            }
+        });
+
+        cancelButton = (Button) findViewById(R.id.cancel);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Intent intent = new Intent(getApplicationContext(), registration_activity.class);
+                //startActivity(intent);
+                finish();
+
+                //Toast.makeText(getApplicationContext(), "Redirection to registration", Toast.LENGTH_SHORT).show();
 
             }
         });

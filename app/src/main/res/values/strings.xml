@@ -46,5 +46,8 @@
     <string name="passwordNoMatch">Passwords do not match</string>
     <string name="firstNameEmpty">First name is empty</string>
     <string name="lastNameEmpty">Last name is empty</string>
+    <string name="userImageSelect">Select an avatar image</string>
+    <string name="userNameEmpty">User name is empty</string>
+    <string name="passwordEmpty">Password is empty</string>
 
 </resources>

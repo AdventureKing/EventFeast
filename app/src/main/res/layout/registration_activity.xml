@@ -138,9 +138,9 @@
             android:layout_height="wrap_content"
             android:text="Register"
             android:id="@+id/registerButton"
-            android:background="@drawable/loginbuttonpic"
+            android:background="@drawable/greenbutton"
             android:textColor="#ff00f5ff"
-            android:layout_above="@+id/cancel"
+            android:layout_below="@+id/userImage"
             android:layout_centerHorizontal="true" />
 
 
@@ -160,7 +160,8 @@
             android:text="@string/cancelRegistration"
             android:id="@+id/cancel"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/lightgreenbutton" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -171,7 +172,9 @@
             android:focusableInTouchMode="false"
             android:layout_below="@+id/userPasswordVerify"
             android:layout_alignRight="@+id/userPasswordVerify"
-            android:layout_alignEnd="@+id/userPasswordVerify" />
+            android:layout_alignEnd="@+id/userPasswordVerify"
+            android:layout_toRightOf="@+id/birthdayImage"
+            android:layout_toEndOf="@+id/birthdayImage" />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -185,12 +188,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/userImage"
-            android:text="@string/birthdaySelect"
+            android:text="@string/userImageSelect"
             android:editable="false"
             android:focusableInTouchMode="false"
             android:layout_below="@+id/birthday"
             android:layout_alignRight="@+id/birthday"
-            android:layout_alignEnd="@+id/birthday" />
+            android:layout_alignEnd="@+id/birthday"
+            android:layout_toRightOf="@+id/userImageIcon"
+            android:layout_toEndOf="@+id/userImageIcon" />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
