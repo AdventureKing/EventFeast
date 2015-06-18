@@ -19,6 +19,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.daddyz.turtleboys.newsfeed.newsfeedAdapter;
+import com.example.daddyz.turtleboys.newsfeed.newsfeedObject;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.parse.GetDataCallback;
 import com.parse.LogOutCallback;
@@ -34,7 +36,7 @@ public class maindrawer extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private TextView userName;
     private TextView userEmail;
-    private ListView newsfeed;
+    private ListView myList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,19 @@ public class maindrawer extends AppCompatActivity {
             setSupportActionBar(toolbar);
 
             //generate newsfeed
-            newsfeed = (ListView) findViewById(R.id.expandableListView);
+            //stuff that goes in a row
+            newsfeedObject myDataArray[]=new newsfeedObject[]{
+                    new newsfeedObject("item1","10"),
+                    new newsfeedObject("item2","20"),
+                    new newsfeedObject("item3","30")
+            };
+            newsfeedAdapter myAdapter=new
+                    newsfeedAdapter( this,
+                    R.layout.newsfeedrow,
+                    myDataArray);
+            ListView myList = (ListView)
+                    findViewById(R.id.listview);
+            myList.setAdapter(myAdapter);
 
 
 
