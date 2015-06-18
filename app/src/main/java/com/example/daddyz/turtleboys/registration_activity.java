@@ -107,25 +107,25 @@ public class registration_activity extends Activity {
 
                 //Check to see if email and verify email fields are the same
                 if ( !(email.getText().toString().equals(emailVerify.getText().toString())) ) {
-                    Toast.makeText(getApplicationContext(), "Email and Verify email do not match", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.emailNoMatch, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 //Check to see if passwords match
                 if ( !(userPassword.getText().toString().equals(userPasswordVerify.getText().toString())) ) {
-                    Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.passwordNoMatch, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 //Check if firstName is empty
                 if ( firstName.getText().toString().isEmpty() ) {
-                    Toast.makeText(getApplicationContext(), "First name is empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.firstNameEmpty, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 //Check if lastName is empty
                 if ( lastName.getText().toString().isEmpty() ) {
-                    Toast.makeText(getApplicationContext(), "Last name is empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.lastNameEmpty, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
