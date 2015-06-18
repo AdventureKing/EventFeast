@@ -130,10 +130,12 @@ public class registration_activity extends Activity {
                 }
 
                 //Check if birthdayText is empty
+                /*
                 if ( birthdayText.getText().toString().equals(R.string.birthdaySelect) ) {
                     Toast.makeText(getApplicationContext(), "Birthday is empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                */
 
 
 
@@ -144,11 +146,17 @@ public class registration_activity extends Activity {
                 //comes in as month day year
                 //creating date for database
                 String[] dates = birthdayText.getText().toString().split("/");
+                if ( dates.length < 3 ) {
+                    Toast.makeText(getApplicationContext(), R.string.birthdaySelect , Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 int tempMonth=Integer.parseInt(dates[0]);
                 tempMonth -= 1;
                 int tempYear =Integer.parseInt(dates[2]);
                 tempYear -= 1900;
                 int tempDay = Integer.parseInt(dates[1]);
+
 
 
                 birthday = new Date(tempYear,tempMonth,tempDay);
