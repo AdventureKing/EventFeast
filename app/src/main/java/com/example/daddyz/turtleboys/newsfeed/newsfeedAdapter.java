@@ -47,7 +47,7 @@ public class newsfeedAdapter extends ArrayAdapter<newsfeedObject> {
         Log.d("test", viewType + "");
         switch(viewType) {
             case 0:
-                layoutResource = R.layout.newsfeedrow; break;
+                layoutResource = R.layout.newsfeedroweven; break;
             case 1:
                 layoutResource = R.layout.newsfeedrowodd; break;
         }

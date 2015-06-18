@@ -29,7 +29,7 @@ public class NewsFeedFragment extends Fragment {
                 new newsfeedObject("item3","30","tbd")
         };
 
-        newsfeedAdapter adapter = new newsfeedAdapter(getActivity() , R.layout.newsfeedrow, myDataArray);
+        newsfeedAdapter adapter = new newsfeedAdapter(getActivity() , R.layout.newsfeedroweven, myDataArray);
         list.setAdapter(adapter);
 
         Log.d("CustomAdapter", "MusicFragment onCreateView successful");
