@@ -10,6 +10,17 @@ public class newsfeedRequest {
 
     public newsfeedRequest(){
 
+        fillTable();
+
+    }
+
+    private void fillTable() {
+        //fills table items with http request
+
+
+
+
+
 
 
     }
