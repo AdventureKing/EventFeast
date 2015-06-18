@@ -25,10 +25,12 @@ public class newsfeedAdapter extends ArrayAdapter<newsfeedObject> {
         this.resource=resource;
         this.objects=objects;
     }
+    //return even or odd row
     public int getItemViewType(int position) {
         // return a value between 0 and (getViewTypeCount - 1)
         return position % 2;
     }
+    //total type of rows that are shown if we add more we need to change this to a 3
     public int getViewTypeCount() {
         // return the total number of view types. this value should never change at runtime
         return 2;
