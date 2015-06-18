@@ -5,11 +5,16 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.subclasses.GigUser;
@@ -41,6 +46,9 @@ public class registration_activity extends Activity {
     private DialogFragment birthdaySelector;
     private EditText birthdayText;
 
+    private DialogFragment imageSelector;
+    private EditText imageText;
+
     private Button registerButton;
 
     @Override
@@ -56,6 +64,16 @@ public class registration_activity extends Activity {
             public void onClick(View view) {
                 birthdaySelector.registerForContextMenu(birthdayText);
                 birthdaySelector.show(getFragmentManager(), "Date Picker");
+            }
+        });
+
+        imageSelector = new ImagePickerFragment();
+        imageText = (EditText) findViewById(R.id.userImage);
+        imageText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imageSelector.registerForContextMenu(imageText);
+                imageSelector.show(getFragmentManager(), "Image Picker");
             }
         });
 
@@ -75,19 +93,18 @@ public class registration_activity extends Activity {
         emailVerify = (EditText) findViewById(R.id.emailVerify);
         emailVerify.setHint(R.string.emailVerify_text);
 
-        userPassword = (EditText) findViewById(R.id.password);
+        userPassword = (EditText) findViewById(R.id.userPassword);
         userPassword.setHint(R.string.password_text);
 
-        userPasswordVerify = (EditText) findViewById(R.id.userConfirmPassword);
+        userPasswordVerify = (EditText) findViewById(R.id.userPasswordVerify);
         userPasswordVerify.setHint(R.string.userPasswordVerify_text);
 
         registerButton = (Button) findViewById(R.id.registerButton);
-
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                /*
+
                 //Check to see if email and verify email fields are the same
                 if ( !(email.getText().toString().equals(emailVerify.getText().toString())) ) {
                     Toast.makeText(getApplicationContext(), "Email and Verify email do not match", Toast.LENGTH_SHORT).show();
@@ -101,21 +118,25 @@ public class registration_activity extends Activity {
                 }
 
                 //Check if firstName is empty
-                if ( firstName.equals("") ) {
+                if ( firstName.getText().toString().isEmpty() ) {
                     Toast.makeText(getApplicationContext(), "First name is empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if ( lastName.equals("") ) {
+                //Check if lastName is empty
+                if ( lastName.getText().toString().isEmpty() ) {
                     Toast.makeText(getApplicationContext(), "Last name is empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if ( birthdayText.equals("") ) {
+                //Check if birthdayText is empty
+                if ( birthdayText.getText().toString().equals(R.string.birthdaySelect) ) {
                     Toast.makeText(getApplicationContext(), "Birthday is empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                */
+
+
+
 
 
                 //turn birthday text in to date object
@@ -124,15 +145,18 @@ public class registration_activity extends Activity {
                 //creating date for database
                 String[] dates = birthdayText.getText().toString().split("/");
                 int tempMonth=Integer.parseInt(dates[0]);
+                tempMonth -= 1;
                 int tempYear =Integer.parseInt(dates[2]);
+                tempYear -= 1900;
                 int tempDay = Integer.parseInt(dates[1]);
 
-                //birthday = new Date(tempYear,tempMonth,tempDay);
+
+                birthday = new Date(tempYear,tempMonth,tempDay);
+
 
                 //Verify info
                 //Create new account
-                GigUser newUser;
-                newUser = new GigUser();
+                GigUser newUser = new GigUser();
                 newUser.setUsername(userName.getText().toString());
                 newUser.setPassword(userPassword.getText().toString());
                 newUser.setEmail(email.getText().toString());
@@ -166,7 +190,7 @@ public class registration_activity extends Activity {
                                     Toast.makeText(getApplicationContext(), "Missing Email Address", Toast.LENGTH_SHORT).show();
                                     break;
                                 case ParseException.PASSWORD_MISSING:
-                                    Toast.makeText(getApplicationContext(), "Missing Email Address", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Missing Password", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -214,6 +238,48 @@ public class registration_activity extends Activity {
 
             timeformat = (String) android.text.format.DateFormat.format("M/dd/yyyy", time);
             dateset.setText(timeformat);
+        }
+
+    }
+
+    /* A fragment that will allow a user to pick an image from the galley
+        and return the image to the method that called the fragment.
+     */
+    public static class ImagePickerFragment extends DialogFragment {
+
+
+        public ImagePickerFragment() {
+        }
+
+        @Override
+        public void registerForContextMenu(View v) {
+            imageset = (EditText) v;
+        }
+
+        private EditText imageset;
+        private static final int SELECT_PICTURE = 1;
+        private String selectedImagePath;
+        private ImageView image;
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+        }
+
+        public void onActivityResult( int requestCode, int resultCode, Intent data) {
+            if ( resultCode == RESULT_OK) {
+                if (requestCode == SELECT_PICTURE) {
+                    Uri selectedImageUri = data.getData();
+                    image.setImageURI(selectedImageUri);
+                }
+            }
+        }
+
+        public ImageView getImage() {
+            return image;
         }
 
     }

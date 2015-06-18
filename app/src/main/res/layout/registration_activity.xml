@@ -18,6 +18,14 @@
             android:layout_marginTop="44dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/firstNameImage"
+            android:src="@drawable/ic_recent_actors_black_44x40"
+            android:layout_alignBottom="@+id/firstName"
+            android:layout_alignRight="@+id/passwordImage"
+            android:layout_alignEnd="@+id/passwordImage" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -29,6 +37,14 @@
             android:layout_below="@+id/firstName"
             android:layout_alignLeft="@+id/firstName"
             android:layout_alignStart="@+id/firstName" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lastNameImage"
+            android:src="@drawable/ic_recent_actors_black_44x40"
+            android:layout_alignBottom="@+id/lastName"
+            android:layout_alignRight="@+id/passwordImage"
+            android:layout_alignEnd="@+id/passwordImage" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -44,31 +60,47 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="text"
+            android:inputType="textEmailAddress"
             android:ems="10"
             android:imeOptions="actionDone"
             android:id="@+id/email"
             android:layout_below="@+id/userName"
             android:layout_alignLeft="@+id/userName"
             android:layout_alignStart="@+id/userName" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/emailImage"
+            android:src="@drawable/ic_email_black_44x40"
+            android:layout_alignBottom="@+id/email"
+            android:layout_alignRight="@+id/passwordImage"
+            android:layout_alignEnd="@+id/passwordImage" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="text"
+            android:inputType="textEmailAddress"
             android:ems="10"
             android:imeOptions="actionDone"
             android:id="@+id/emailVerify"
             android:layout_below="@+id/email"
             android:layout_alignLeft="@+id/email"
             android:layout_alignStart="@+id/email" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/emailVerifyImage"
+            android:src="@drawable/ic_email_black_44x40"
+            android:layout_alignBottom="@+id/emailVerify"
+            android:layout_alignRight="@+id/passwordImage"
+            android:layout_alignEnd="@+id/passwordImage" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:ems="10"
-            android:id="@+id/password"
+            android:id="@+id/userPassword"
             android:layout_centerVertical="true"
             android:layout_alignLeft="@+id/emailVerify"
             android:layout_alignStart="@+id/emailVerify" />
@@ -76,14 +108,13 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="text"
+            android:inputType="textPassword"
             android:ems="10"
             android:imeOptions="actionDone"
             android:id="@+id/userPasswordVerify"
-            android:layout_alignBaseline="@+id/userName"
-            android:layout_alignBottom="@+id/userName"
-            android:layout_toRightOf="@+id/userNameImage"
-            android:layout_toEndOf="@+id/userNameImage" />
+            android:layout_below="@+id/userPassword"
+            android:layout_alignLeft="@+id/userPassword"
+            android:layout_alignStart="@+id/userPassword" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -97,49 +128,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/passwordImage"
-            android:src="@drawable/key"
-            android:layout_alignTop="@+id/password"
-            android:layout_toLeftOf="@+id/password"
-            android:layout_toStartOf="@+id/password" />
+            android:src="@drawable/ic_lock_open_black_44x40"
+            android:layout_alignTop="@+id/userPassword"
+            android:layout_toLeftOf="@+id/userPassword"
+            android:layout_toStartOf="@+id/userPassword" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Register"
             android:id="@+id/registerButton"
-            android:layout_marginTop="49dp"
             android:background="@drawable/loginbuttonpic"
             android:textColor="#ff00f5ff"
-            android:layout_below="@+id/userConfirmPassword"
+            android:layout_above="@+id/cancel"
             android:layout_centerHorizontal="true" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10"
-            android:id="@+id/userConfirmPassword"
-            android:layout_below="@+id/password"
-            android:layout_alignLeft="@+id/password"
-            android:layout_alignStart="@+id/password" />
+
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageView"
-            android:src="@drawable/key"
-            android:layout_alignBottom="@+id/userConfirmPassword"
-            android:layout_toLeftOf="@+id/userConfirmPassword"
-            android:layout_toStartOf="@+id/userConfirmPassword" />
+            android:src="@drawable/ic_lock_open_black_44x40"
+            android:layout_alignBottom="@+id/userPasswordVerify"
+            android:layout_toLeftOf="@+id/userPasswordVerify"
+            android:layout_toStartOf="@+id/userPasswordVerify" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancelRegistration"
             android:id="@+id/cancel"
-            android:layout_below="@+id/registerButton"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="36dp" />
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -148,8 +169,37 @@
             android:text="@string/birthdaySelect"
             android:editable="false"
             android:focusableInTouchMode="false"
-            android:layout_below="@+id/userConfirmPassword"
-            android:layout_centerHorizontal="true" />
+            android:layout_below="@+id/userPasswordVerify"
+            android:layout_alignRight="@+id/userPasswordVerify"
+            android:layout_alignEnd="@+id/userPasswordVerify" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/birthdayImage"
+            android:src="@drawable/ic_redeem_black_44x40"
+            android:layout_alignBottom="@+id/birthday"
+            android:layout_toLeftOf="@+id/userPasswordVerify"
+            android:layout_toStartOf="@+id/userPasswordVerify" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/userImage"
+            android:text="@string/birthdaySelect"
+            android:editable="false"
+            android:focusableInTouchMode="false"
+            android:layout_below="@+id/birthday"
+            android:layout_alignRight="@+id/birthday"
+            android:layout_alignEnd="@+id/birthday" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/userImageIcon"
+            android:src="@drawable/ic_wallpaper_black_44x40"
+            android:layout_alignBottom="@+id/userImage"
+            android:layout_toLeftOf="@+id/userPasswordVerify"
+            android:layout_toStartOf="@+id/userPasswordVerify" />
+
 
 
     </RelativeLayout>
