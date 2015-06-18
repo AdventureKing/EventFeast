@@ -15,9 +15,11 @@ import com.example.daddyz.turtleboys.R;
  * Created by snow on 6/17/2015.
  */
 public class newsfeedAdapter extends ArrayAdapter<newsfeedObject> {
+
     private Context context;
     private int resource;
     private newsfeedObject[] objects;
+
     private int[] colors = new int[] { 0x30FF0000, 0x300000FF };
     public newsfeedAdapter(Context context, int resource, newsfeedObject[] objects) {
         super(context, resource,objects);
@@ -44,6 +46,7 @@ public class newsfeedAdapter extends ArrayAdapter<newsfeedObject> {
 
         //change row layout depending on row number
         int rowType = getItemViewType(position);
+
         int layoutResource = 0; // determined by view type
         int viewType = getItemViewType(position);
         Log.d("test", viewType + "");
