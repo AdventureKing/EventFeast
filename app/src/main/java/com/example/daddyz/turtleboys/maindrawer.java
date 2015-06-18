@@ -133,8 +133,11 @@ public class maindrawer extends AppCompatActivity {
                         case R.id.search_event:
                             Toast.makeText(getApplicationContext(), "Event Searched", Toast.LENGTH_SHORT).show();
                             return true;
-                        case R.id.drafts:
-
+                        case R.id.newsfeed:
+                            NewsFeedFragment fragment2 = new NewsFeedFragment();
+                            android.support.v4.app.FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
+                            fragmentTransaction2.replace(R.id.frame, fragment2);
+                            fragmentTransaction2.commit();
                             Toast.makeText(getApplicationContext(), "Drafts Selected", Toast.LENGTH_SHORT).show();
                             return true;
                         case R.id.connect:
