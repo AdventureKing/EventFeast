@@ -69,7 +69,7 @@ public class maindrawer extends AppCompatActivity {
                     R.layout.newsfeedrow,
                     myDataArray);
             ListView myList = (ListView)
-                    findViewById(R.id.listview);
+                    findViewById(R.id.newsfeed);
             myList.setAdapter(myAdapter);
 
 
