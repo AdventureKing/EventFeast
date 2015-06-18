@@ -23,6 +23,9 @@ public class NewsFeedFragment extends Fragment {
         newsfeedObject myDataArray[]=new newsfeedObject[]{
                 new newsfeedObject("item1","10","tbd"),
                 new newsfeedObject("item2","20","tbd"),
+                new newsfeedObject("item3","30","tbd"),
+                new newsfeedObject("item1","10","tbd"),
+                new newsfeedObject("item2","20","tbd"),
                 new newsfeedObject("item3","30","tbd")
         };
 
