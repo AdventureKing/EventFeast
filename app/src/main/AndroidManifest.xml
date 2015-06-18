@@ -33,6 +33,9 @@
         <activity android:name=".login_activity">
 
         </activity>
+        <Fragment android:name=".newsfeedfragment">
+
+        </Fragment>
 
         <activity
             android:name=".experience_activity"

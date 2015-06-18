@@ -19,7 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.daddyz.turtleboys.newsfeed.newsfeedAdapter;
+import com.example.daddyz.turtleboys.newsfeed.NewsFeedFragment;
 import com.example.daddyz.turtleboys.newsfeed.newsfeedObject;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.parse.GetDataCallback;
@@ -60,19 +60,20 @@ public class maindrawer extends AppCompatActivity {
             //generate newsfeed
             //stuff that goes in a row
             //create a list fragment and show
+
+
+
             newsfeedObject myDataArray[]=new newsfeedObject[]{
                     new newsfeedObject("item1","10","tbd"),
                     new newsfeedObject("item2","20","tbd"),
                     new newsfeedObject("item3","30","tbd")
             };
-            newsfeedAdapter myAdapter=new
-                    newsfeedAdapter( this,
-                    R.layout.newsfeedrow,
-                    myDataArray);
-            ListView myList = (ListView)
-                    findViewById(R.id.newsfeed);
-            myList.setAdapter(myAdapter);
 
+
+            NewsFeedFragment fragment = new NewsFeedFragment();
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frame, fragment);
+            fragmentTransaction.commit();
 
 
 
@@ -111,7 +112,7 @@ public class maindrawer extends AppCompatActivity {
                 // This method will trigger on item Click of navigation menu
                 @Override
                 public boolean onNavigationItemSelected(MenuItem menuItem) {
-
+                   
 
                     //Checking if the item is in checked state or not, if not make it in checked state
                     if (menuItem.isChecked()) menuItem.setChecked(false);
@@ -127,7 +128,7 @@ public class maindrawer extends AppCompatActivity {
                         //Replacing the main content with ContentFragment Which is our Inbox View;
                         case R.id.inbox:
                             Toast.makeText(getApplicationContext(), "Inbox Selected", Toast.LENGTH_SHORT).show();
-                            ContentFragment fragment = new ContentFragment();
+                            NewsFeedFragment fragment = new NewsFeedFragment();
                             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                             fragmentTransaction.replace(R.id.frame, fragment);
                             fragmentTransaction.commit();
@@ -144,6 +145,7 @@ public class maindrawer extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Event Searched", Toast.LENGTH_SHORT).show();
                             return true;
                         case R.id.drafts:
+
                             Toast.makeText(getApplicationContext(), "Drafts Selected", Toast.LENGTH_SHORT).show();
                             return true;
                         case R.id.connect:
