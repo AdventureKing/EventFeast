@@ -59,10 +59,11 @@ public class maindrawer extends AppCompatActivity {
 
             //generate newsfeed
             //stuff that goes in a row
+            //create a list fragment and show
             newsfeedObject myDataArray[]=new newsfeedObject[]{
-                    new newsfeedObject("item1","10"),
-                    new newsfeedObject("item2","20"),
-                    new newsfeedObject("item3","30")
+                    new newsfeedObject("item1","10","tbd"),
+                    new newsfeedObject("item2","20","tbd"),
+                    new newsfeedObject("item3","30","tbd")
             };
             newsfeedAdapter myAdapter=new
                     newsfeedAdapter( this,
@@ -71,6 +72,7 @@ public class maindrawer extends AppCompatActivity {
             ListView myList = (ListView)
                     findViewById(R.id.newsfeed);
             myList.setAdapter(myAdapter);
+
 
 
 

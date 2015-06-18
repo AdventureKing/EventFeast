@@ -28,15 +28,17 @@ public class newsfeedAdapter extends ArrayAdapter<newsfeedObject> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater=
                 ((Activity) context).getLayoutInflater();
-        View row=inflater.inflate(resource,parent,false);
+        View row=inflater.inflate(resource, parent, false);
 
         TextView title= (TextView)
                 row.findViewById(R.id.secondLine);
+        TextView date =(TextView)row.findViewById(R.id.date);
         TextView number=(TextView)
                 row.findViewById(R.id.firstLine);
         title.setText((CharSequence)
                 objects[position].description2);
         number.setText(objects[position].description);
+        date.setText(objects[position].date);
 
         return row;
     }
