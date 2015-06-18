@@ -17,6 +17,7 @@ public class newsfeedAdapter extends ArrayAdapter<newsfeedObject> {
     private Context context;
     private int resource;
     private newsfeedObject[] objects;
+
     public newsfeedAdapter(Context context, int resource, newsfeedObject[] objects) {
         super(context, resource,objects);
         this.context=context;
