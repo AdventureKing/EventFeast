@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.newsfeed.NewsFeedFragment;
-import com.example.daddyz.turtleboys.newsfeed.newsfeedObject;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.parse.GetDataCallback;
 import com.parse.LogOutCallback;
@@ -60,16 +59,6 @@ public class maindrawer extends AppCompatActivity {
             //generate newsfeed
             //stuff that goes in a row
             //create a list fragment and show
-
-
-
-            newsfeedObject myDataArray[]=new newsfeedObject[]{
-                    new newsfeedObject("item1","10","tbd"),
-                    new newsfeedObject("item2","20","tbd"),
-                    new newsfeedObject("item3","30","tbd")
-            };
-
-
             NewsFeedFragment fragment = new NewsFeedFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.frame, fragment);
