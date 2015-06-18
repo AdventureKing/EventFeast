@@ -5,10 +5,17 @@ package com.example.daddyz.turtleboys.newsfeed;
  */
 public class newsfeedRequest {
 
+    newsfeedObject[] tableitems;
+
 
     public newsfeedRequest(){
 
+
+
     }
 
+    public newsfeedObject[] getTableData(){
+        return tableitems;
+    }
 
 }

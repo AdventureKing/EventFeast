@@ -20,14 +20,11 @@ public class NewsFeedFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.listfragment, container, false);
 
         ListView list = (ListView) rootView.findViewById(R.id.listView);
-        newsfeedObject myDataArray[]=new newsfeedObject[]{
-                new newsfeedObject("item1","10","tbd"),
-                new newsfeedObject("item2","20","tbd"),
-                new newsfeedObject("item3","30","tbd"),
-                new newsfeedObject("item1","10","tbd"),
-                new newsfeedObject("item2","20","tbd"),
-                new newsfeedObject("item3","30","tbd")
-        };
+
+        //create newsfeed array from newsfeed request
+        newsfeedRequest dataRequest= new newsfeedRequest();
+
+        newsfeedObject myDataArray[]= dataRequest.getTableData();
 
         newsfeedAdapter adapter = new newsfeedAdapter(getActivity() , R.layout.newsfeedroweven, myDataArray);
         list.setAdapter(adapter);
