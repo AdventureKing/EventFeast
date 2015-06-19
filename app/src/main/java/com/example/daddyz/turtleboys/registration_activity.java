@@ -4,13 +4,16 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -46,7 +49,8 @@ public class registration_activity extends Activity {
     private DialogFragment birthdaySelector;
     private EditText birthdayText;
 
-    private DialogFragment imageSelector;
+    //private DialogFragment imageSelector;
+    private Fragment imageSelector;
     private EditText imageText;
 
     private Button registerButton;
@@ -68,15 +72,21 @@ public class registration_activity extends Activity {
             }
         });
 
+
+        /*
         imageSelector = new ImagePickerFragment();
         imageText = (EditText) findViewById(R.id.userImage);
         imageText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                imageSelector.registerForContextMenu(imageText);
-                imageSelector.show(getFragmentManager(), "Image Picker");
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame, imageSelector);
+                fragmentTransaction.commit();
             }
         });
+        */
+
+
 
 
         firstName = (EditText) findViewById(R.id.firstName);
@@ -136,8 +146,14 @@ public class registration_activity extends Activity {
                     return;
                 }
 
+                //Check if email is empty
+                if ( email.getText().toString().isEmpty() ) {
+                    Toast.makeText(getApplicationContext(), R.string.emailEmpty, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 //Check if password is empty
-                if ( userName.getText().toString().isEmpty() ) {
+                if ( userPassword.getText().toString().isEmpty() ) {
                     Toast.makeText(getApplicationContext(), R.string.passwordEmpty, Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -279,9 +295,21 @@ public class registration_activity extends Activity {
     /* A fragment that will allow a user to pick an image from the galley
         and return the image to the method that called the fragment.
      */
-    public static class ImagePickerFragment extends DialogFragment {
+    public class ImagePickerFragment extends Fragment {
+
+        public View onCreatView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.registration_activity, container, false);
 
 
+            return rootView;
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+        }
+
+        /*
         public ImagePickerFragment() {
         }
 
@@ -315,6 +343,7 @@ public class registration_activity extends Activity {
         public ImageView getImage() {
             return image;
         }
+        */
 
     }
 }

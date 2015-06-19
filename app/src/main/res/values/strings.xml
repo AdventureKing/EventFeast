@@ -49,5 +49,6 @@
     <string name="userImageSelect">Select an avatar image</string>
     <string name="userNameEmpty">User name is empty</string>
     <string name="passwordEmpty">Password is empty</string>
+    <string name="emailEmpty">Email is empty</string>
 
 </resources>
