@@ -41,7 +41,7 @@ public class experience_activity extends Activity {
         // Enable Local Datastore.
 
         preview = (ImageView) findViewById(R.id.picturePreview);
-        b1=(Button)findViewById(R.id.loginbutton);
+        b1=(Button)findViewById(R.id.registerButton);
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

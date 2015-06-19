@@ -19,6 +19,7 @@ public class login_activity extends Activity {
     private EditText userName;
     private EditText userPassword;
     private Button login;
+    private Button registerButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,7 @@ public class login_activity extends Activity {
         userName.setHint(R.string.username_text);
         userPassword = (EditText) findViewById(R.id.password);
         userPassword.setHint(R.string.password_text);
-        login = (Button) findViewById(R.id.loginbutton);
+        login = (Button) findViewById(R.id.loginButton);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +56,18 @@ public class login_activity extends Activity {
 
 
                 });
+            }
+        });
+
+        registerButton = (Button) findViewById(R.id.registerButton);
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), registration_activity.class);
+                startActivity(intent);
+
+                //Toast.makeText(getApplicationContext(), "Redirection to registration", Toast.LENGTH_SHORT).show();
+
             }
         });
     }

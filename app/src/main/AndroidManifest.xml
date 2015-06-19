@@ -37,6 +37,10 @@
 
         </Fragment>
 
+        <activity android:name=".registration_activity">
+
+        </activity>
+
         <activity
             android:name=".experience_activity"
             android:label="@string/app_name"

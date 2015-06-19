@@ -6,6 +6,7 @@
     <string name="action_myExperiences">My Experiences</string>
     <string name="username_text">Enter Username</string>
     <string name="password_text">Enter Password</string>
+    <string name="action_login">Login</string>
     <string name="action_logout">Logout</string>
 
 
@@ -29,5 +30,25 @@
     <string name="spam_string">Spams</string>
     <string name="closeDrawer">Navigation View</string>
     <string name="openDrawer">Navigation View Closed</string>
+
+    <!-- Registration Strings -->
+    <string name="confirmPassword_text">Confirm Password</string>
+    <string name="register">Register</string>
+    <string name="newUser">New User?</string>
+    <string name="firstName_text">Enter First Name</string>
+    <string name="lastName_text">Enter Last Name</string>
+    <string name="email_text">Enter Email</string>
+    <string name="emailVerify_text">Verify Email</string>
+    <string name="userPasswordVerify_text">Verify Password</string>
+    <string name="cancelRegistration">Cancel Registration</string>
+    <string name="birthdaySelect">Select your birthday</string>
+    <string name="emailNoMatch">Email and Verify email do not match</string>
+    <string name="passwordNoMatch">Passwords do not match</string>
+    <string name="firstNameEmpty">First name is empty</string>
+    <string name="lastNameEmpty">Last name is empty</string>
+    <string name="userImageSelect">Select an avatar image</string>
+    <string name="userNameEmpty">User name is empty</string>
+    <string name="passwordEmpty">Password is empty</string>
+    <string name="emailEmpty">Email is empty</string>
 
 </resources>
