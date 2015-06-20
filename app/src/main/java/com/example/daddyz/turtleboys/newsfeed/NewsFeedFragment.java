@@ -21,10 +21,16 @@ public class NewsFeedFragment extends Fragment {
 
         ListView list = (ListView) rootView.findViewById(R.id.listView);
 
-        //create newsfeed array from newsfeed request
-        newsfeedRequest dataRequest= new newsfeedRequest();
+        // create newsfeed array from newsfeed request
+        // newsfeedRequest dataRequest= new newsfeedRequest();
 
-        newsfeedObject myDataArray[]= dataRequest.getTableData();
+        // newsfeedRequest myDataArray[]= dataRequest.getTableData();
+        //String myDataArray[] = {"hello", "hi", "hi again"};
+        newsfeedObject[] myDataArray = new newsfeedObject[1];
+        //myDataArray[0].setEventDesc("Event Description");
+        //myDataArray[0].setEventCity("San Antonio");
+        //myDataArray[0].setEventDate("07/07/2015");
+
 
         newsfeedAdapter adapter = new newsfeedAdapter(getActivity() , R.layout.newsfeedroweven, myDataArray);
         list.setAdapter(adapter);

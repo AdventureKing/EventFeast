@@ -60,15 +60,14 @@ public class newsfeedAdapter extends ArrayAdapter<newsfeedObject> {
         View row=inflater.inflate(layoutResource,parent,false);
 
         //put info into view
-        TextView title= (TextView)
-                row.findViewById(R.id.secondLine);
-        TextView date =(TextView)row.findViewById(R.id.date);
-        TextView number=(TextView)
-                row.findViewById(R.id.firstLine);
-        title.setText((CharSequence)
-                objects[position].description2);
-        number.setText(objects[position].description);
-        date.setText(objects[position].date);
+        TextView city= (TextView) row.findViewById(R.id.firstLine);
+        TextView description = (TextView) row.findViewById(R.id.secondLine);
+        TextView date = (TextView)row.findViewById(R.id.date);
+
+        city.setText(objects[position].getEventCity());
+        description.setText((CharSequence) objects[position].getEventDesc());
+        date.setText(objects[position].getEventDate());
+
 
         return row;
     }
