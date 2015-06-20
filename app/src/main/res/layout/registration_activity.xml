@@ -212,7 +212,6 @@
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:padding="15dp"
-
             android:src = "@drawable/profile"
             android:layout_alignTop="@+id/birthdayImage"
             android:layout_alignLeft="@+id/registerButton"
