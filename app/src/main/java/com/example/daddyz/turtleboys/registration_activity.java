@@ -5,7 +5,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -19,6 +18,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.SignUpCallback;
+
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -116,7 +116,7 @@ public class registration_activity extends Activity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(getApplicationContext(),"BUTTON CLICKED", Toast.LENGTH_SHORT).show();
 
                 //Check to see if email and verify email fields are the same
                 if ( !(email.getText().toString().equals(emailVerify.getText().toString())) ) {
@@ -202,11 +202,18 @@ public class registration_activity extends Activity {
                 newUser.setBirthday(birthday);
                 newUser.setFirstName(firstName.getText().toString());
                 newUser.setLastName(lastName.getText().toString());
+                try {
+                    userImageParseFile.save();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 if(userImageFile != null) {
                     newUser.setUserImage(userImageParseFile);
                 }
+                Toast.makeText(getApplicationContext(),"Gonna make user", Toast.LENGTH_SHORT).show();
 
-                newUser.signUpInBackground(new SignUpCallback() {
+               newUser.signUpInBackground(new SignUpCallback() {
+
                     @Override
                     public void done(com.parse.ParseException e) {
                         if (e == null) {
