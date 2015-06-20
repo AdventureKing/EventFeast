@@ -15,9 +15,15 @@ import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.SignUpCallback;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -35,6 +41,7 @@ public class registration_activity extends Activity {
     private EditText userPassword;
     private EditText userPasswordVerify;
     private ParseImageView userImageFile;
+    private ParseFile userImageParseFile;
     private Date birthday;
     private static final int SELECT_PHOTO = 100;
     private DialogFragment birthdaySelector;
@@ -196,7 +203,7 @@ public class registration_activity extends Activity {
                 newUser.setBirthday(birthday);
                 newUser.setFirstName(firstName.getText().toString());
                 newUser.setLastName(lastName.getText().toString());
-
+                newUser.setUserImage(userImageParseFile);
 
                 newUser.signUpInBackground(new SignUpCallback() {
                     @Override
@@ -258,8 +265,25 @@ public class registration_activity extends Activity {
         //fill it with data
         userImageFile.setImageURI(data.getData());
         Toast.makeText(getApplicationContext(), data.getData().toString(), Toast.LENGTH_SHORT).show();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(new File(data.getData().toString()));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
+        byte[] buf = new byte[1024];
+        int n;
+        try {
+            while (-1 != (n = fis.read(buf)))
+                baos.write(buf, 0, n);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        byte[] videoBytes = baos.toByteArray(); //this is the video in bytes.
+        userImageParseFile = new ParseFile(videoBytes);
 
     }
 
