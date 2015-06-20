@@ -5,7 +5,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -19,6 +18,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.SignUpCallback;
+
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -116,7 +116,7 @@ public class registration_activity extends Activity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(getApplicationContext(),"BUTTON CLICKED", Toast.LENGTH_SHORT).show();
 
                 //Check to see if email and verify email fields are the same
                 if ( !(email.getText().toString().equals(emailVerify.getText().toString())) ) {
@@ -202,44 +202,55 @@ public class registration_activity extends Activity {
                 newUser.setBirthday(birthday);
                 newUser.setFirstName(firstName.getText().toString());
                 newUser.setLastName(lastName.getText().toString());
-                if(userImageFile != null) {
+
+                if(userImageParseFile != null) {
+
                     newUser.setUserImage(userImageParseFile);
-                }
-
-                newUser.signUpInBackground(new SignUpCallback() {
-                    @Override
-                    public void done(com.parse.ParseException e) {
-                        if (e == null) {
-
-
-                            Intent intent = new Intent(getApplicationContext(), maindrawer.class);
-                            finish();
-                            startActivity(intent);
-                        } else {
-                            switch (e.getCode()) {
-                                case ParseException.USERNAME_MISSING:
-                                    Toast.makeText(getApplicationContext(), "Missing Username", Toast.LENGTH_SHORT).show();
-                                    break;
-                                case ParseException.USERNAME_TAKEN:
-                                    Toast.makeText(getApplicationContext(), "Username Already Taken", Toast.LENGTH_SHORT).show();
-                                    break;
-                                case ParseException.INVALID_EMAIL_ADDRESS:
-                                    Toast.makeText(getApplicationContext(), "Invalid Email Address", Toast.LENGTH_SHORT).show();
-                                    break;
-                                case ParseException.EMAIL_TAKEN:
-                                    Toast.makeText(getApplicationContext(), "Email Address Already Taken", Toast.LENGTH_SHORT).show();
-                                    break;
-                                case ParseException.EMAIL_MISSING:
-                                    Toast.makeText(getApplicationContext(), "Missing Email Address", Toast.LENGTH_SHORT).show();
-                                    break;
-                                case ParseException.PASSWORD_MISSING:
-                                    Toast.makeText(getApplicationContext(), "Missing Password", Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                    try {
+                        userImageParseFile.save();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
 
+                }
 
-                });
+                Toast.makeText(getApplicationContext(),"Gonna make user", Toast.LENGTH_SHORT).show();
+
+               newUser.signUpInBackground(new SignUpCallback() {
+
+                   @Override
+                   public void done(com.parse.ParseException e) {
+                       if (e == null) {
+
+
+                           Intent intent = new Intent(getApplicationContext(), maindrawer.class);
+                           finish();
+                           startActivity(intent);
+                       } else {
+                           switch (e.getCode()) {
+                               case ParseException.USERNAME_MISSING:
+                                   Toast.makeText(getApplicationContext(), "Missing Username", Toast.LENGTH_SHORT).show();
+                                   break;
+                               case ParseException.USERNAME_TAKEN:
+                                   Toast.makeText(getApplicationContext(), "Username Already Taken", Toast.LENGTH_SHORT).show();
+                                   break;
+                               case ParseException.INVALID_EMAIL_ADDRESS:
+                                   Toast.makeText(getApplicationContext(), "Invalid Email Address", Toast.LENGTH_SHORT).show();
+                                   break;
+                               case ParseException.EMAIL_TAKEN:
+                                   Toast.makeText(getApplicationContext(), "Email Address Already Taken", Toast.LENGTH_SHORT).show();
+                                   break;
+                               case ParseException.EMAIL_MISSING:
+                                   Toast.makeText(getApplicationContext(), "Missing Email Address", Toast.LENGTH_SHORT).show();
+                                   break;
+                               case ParseException.PASSWORD_MISSING:
+                                   Toast.makeText(getApplicationContext(), "Missing Password", Toast.LENGTH_SHORT).show();
+                           }
+                       }
+                   }
+
+
+               });
 
 
             }
