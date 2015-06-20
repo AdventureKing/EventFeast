@@ -140,7 +140,7 @@
             android:id="@+id/registerButton"
             android:background="@drawable/btnorange_360"
             android:textColor="#ff00f5ff"
-            android:layout_below="@+id/userImage"
+            android:layout_above="@+id/cancel"
             android:layout_centerHorizontal="true" />
 
 
@@ -184,26 +184,14 @@
             android:layout_toLeftOf="@+id/userPasswordVerify"
             android:layout_toStartOf="@+id/userPasswordVerify" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/userImage"
-            android:text="@string/userImageSelect"
-            android:editable="false"
-            android:focusableInTouchMode="false"
-            android:layout_below="@+id/birthday"
-            android:layout_alignRight="@+id/birthday"
-            android:layout_alignEnd="@+id/birthday"
-            android:layout_toRightOf="@+id/userImageIcon"
-            android:layout_toEndOf="@+id/userImageIcon" />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/userImageIcon"
             android:src="@drawable/ic_wallpaper_black_44x40"
-            android:layout_alignBottom="@+id/userImage"
-            android:layout_toLeftOf="@+id/userPasswordVerify"
-            android:layout_toStartOf="@+id/userPasswordVerify" />
+            android:layout_below="@+id/birthdayImage"
+            android:layout_alignLeft="@+id/birthdayImage"
+            android:layout_alignStart="@+id/birthdayImage" />
 
         <com.parse.ParseImageView
             android:id="@+id/profile_image"
@@ -213,9 +201,10 @@
             android:scaleType="fitCenter"
             android:padding="15dp"
             android:src = "@drawable/profile"
-            android:layout_alignTop="@+id/birthdayImage"
+            android:layout_below="@+id/birthday"
             android:layout_alignLeft="@+id/registerButton"
-            android:layout_alignStart="@+id/registerButton" />
+            android:layout_alignStart="@+id/registerButton"
+            android:layout_above="@+id/registerButton" />
 
 
 

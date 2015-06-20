@@ -54,7 +54,7 @@ public class registration_activity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_activity);
         userImageFile = (ParseImageView) findViewById(R.id.profile_image);
-        userImageFile.setVisibility(View.INVISIBLE);
+
 
         birthdaySelector = new DatePickerFragment();
         birthdayText = (EditText) findViewById(R.id.birthday);
@@ -68,20 +68,17 @@ public class registration_activity extends Activity {
 
 
 
-        EditText userImageSelection = (EditText) findViewById(R.id.userImage);
-
-        userImageSelection.setOnClickListener(new View.OnClickListener() {
 
 
+        userImageFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, SELECT_PHOTO);
-                v.setVisibility(View.INVISIBLE);
-                userImageFile.setVisibility(View.VISIBLE);
             }
         });
+
         //user image is filled
 
 
