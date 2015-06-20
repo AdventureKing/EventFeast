@@ -158,7 +158,7 @@ public class experience_activity extends AppCompatActivity {
                         return true;
                     case R.id.event_pictures:
                         //Toast.makeText(getApplicationContext(), "Event Pictures Selected", Toast.LENGTH_SHORT).show();
-                        Intent gallery = new Intent(getApplicationContext(), gallery.class);
+                        Intent gallery = new Intent(getApplicationContext(), gallery1.class);
                         startActivity(gallery);
                         return true;
                     case R.id.connect:

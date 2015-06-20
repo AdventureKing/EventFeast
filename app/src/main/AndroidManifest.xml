@@ -45,7 +45,7 @@
 
         </activity>
 
-        <activity android:name=".gallery"
+        <activity android:name=".gallery1"
             android:screenOrientation="portrait" >
         </activity>
 

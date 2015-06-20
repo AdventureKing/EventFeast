@@ -8,9 +8,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
-import com.example.daddyz.turtleboys.gallery;
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;

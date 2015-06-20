@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
 /**
  * Created by Gregory Hooks Jr on 6/16/2015.
  */
-public class gallery extends AppCompatActivity {
+public class gallery1 extends AppCompatActivity {
     private Toolbar toolbar;
     private Button b1;
     private Uri fileUri;
@@ -77,7 +77,7 @@ public class gallery extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // create Intent to take a picture and return control to the calling application
-                Camera camera = new Camera(gallery.this);
+                Camera camera = new Camera(gallery1.this);
                 fileUri = camera.startCamera();
             }
         });
@@ -129,8 +129,8 @@ public class gallery extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, final int position,
                                 long id) {
-            final ImageView enlargedPicture = new ImageView(gallery.this);
-            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(gallery.this);
+            final ImageView enlargedPicture = new ImageView(gallery1.this);
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(gallery1.this);
             final String title = (String) parent.getItemAtPosition(position);
             Matcher matcher = pattern.matcher(title);
             if(matcher.find() == false){
@@ -139,7 +139,7 @@ public class gallery extends AppCompatActivity {
             alertDialog.setTitle(matcher.group(1));
             alertDialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                 public void onClick(final DialogInterface dialog, int which) {
-                    final AlertDialog.Builder confirmDialog = new AlertDialog.Builder(gallery.this);
+                    final AlertDialog.Builder confirmDialog = new AlertDialog.Builder(gallery1.this);
                     confirmDialog.setTitle("Confirm");
                     confirmDialog.setMessage("Are you sure you want to delete this picture?");
                     confirmDialog.setCancelable(false);
@@ -159,7 +159,7 @@ public class gallery extends AppCompatActivity {
 
                             //new another ImageAdapter, to prevent the adapter have
                             //mixed files
-                            myImageAdapter = new ImageAdapter(gallery.this);
+                            myImageAdapter = new ImageAdapter(gallery1.this);
                             gridview.setAdapter(myImageAdapter);
                             myAsyncTaskLoadFiles = new AsyncTaskLoadFiles(myImageAdapter);
                             myAsyncTaskLoadFiles.execute();
