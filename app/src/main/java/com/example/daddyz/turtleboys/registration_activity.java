@@ -53,6 +53,7 @@ public class registration_activity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_activity);
+
         userImageFile = (ParseImageView) findViewById(R.id.profile_image);
 
 
@@ -256,6 +257,9 @@ public class registration_activity extends Activity {
 
         //fill it with data
         userImageFile.setImageURI(data.getData());
+        Toast.makeText(getApplicationContext(), data.getData().toString(), Toast.LENGTH_SHORT).show();
+
+
 
     }
 
