@@ -202,51 +202,55 @@ public class registration_activity extends Activity {
                 newUser.setBirthday(birthday);
                 newUser.setFirstName(firstName.getText().toString());
                 newUser.setLastName(lastName.getText().toString());
-                try {
-                    userImageParseFile.save();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                if(userImageFile != null) {
+
+                if(userImageParseFile != null) {
+
                     newUser.setUserImage(userImageParseFile);
+                    try {
+                        userImageParseFile.save();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
                 }
+
                 Toast.makeText(getApplicationContext(),"Gonna make user", Toast.LENGTH_SHORT).show();
 
                newUser.signUpInBackground(new SignUpCallback() {
 
-                    @Override
-                    public void done(com.parse.ParseException e) {
-                        if (e == null) {
+                   @Override
+                   public void done(com.parse.ParseException e) {
+                       if (e == null) {
 
 
-                            Intent intent = new Intent(getApplicationContext(), maindrawer.class);
-                            finish();
-                            startActivity(intent);
-                        } else {
-                            switch (e.getCode()) {
-                                case ParseException.USERNAME_MISSING:
-                                    Toast.makeText(getApplicationContext(), "Missing Username", Toast.LENGTH_SHORT).show();
-                                    break;
-                                case ParseException.USERNAME_TAKEN:
-                                    Toast.makeText(getApplicationContext(), "Username Already Taken", Toast.LENGTH_SHORT).show();
-                                    break;
-                                case ParseException.INVALID_EMAIL_ADDRESS:
-                                    Toast.makeText(getApplicationContext(), "Invalid Email Address", Toast.LENGTH_SHORT).show();
-                                    break;
-                                case ParseException.EMAIL_TAKEN:
-                                    Toast.makeText(getApplicationContext(), "Email Address Already Taken", Toast.LENGTH_SHORT).show();
-                                    break;
-                                case ParseException.EMAIL_MISSING:
-                                    Toast.makeText(getApplicationContext(), "Missing Email Address", Toast.LENGTH_SHORT).show();
-                                    break;
-                                case ParseException.PASSWORD_MISSING:
-                                    Toast.makeText(getApplicationContext(), "Missing Password", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }
+                           Intent intent = new Intent(getApplicationContext(), maindrawer.class);
+                           finish();
+                           startActivity(intent);
+                       } else {
+                           switch (e.getCode()) {
+                               case ParseException.USERNAME_MISSING:
+                                   Toast.makeText(getApplicationContext(), "Missing Username", Toast.LENGTH_SHORT).show();
+                                   break;
+                               case ParseException.USERNAME_TAKEN:
+                                   Toast.makeText(getApplicationContext(), "Username Already Taken", Toast.LENGTH_SHORT).show();
+                                   break;
+                               case ParseException.INVALID_EMAIL_ADDRESS:
+                                   Toast.makeText(getApplicationContext(), "Invalid Email Address", Toast.LENGTH_SHORT).show();
+                                   break;
+                               case ParseException.EMAIL_TAKEN:
+                                   Toast.makeText(getApplicationContext(), "Email Address Already Taken", Toast.LENGTH_SHORT).show();
+                                   break;
+                               case ParseException.EMAIL_MISSING:
+                                   Toast.makeText(getApplicationContext(), "Missing Email Address", Toast.LENGTH_SHORT).show();
+                                   break;
+                               case ParseException.PASSWORD_MISSING:
+                                   Toast.makeText(getApplicationContext(), "Missing Password", Toast.LENGTH_SHORT).show();
+                           }
+                       }
+                   }
 
 
-                });
+               });
 
 
             }
