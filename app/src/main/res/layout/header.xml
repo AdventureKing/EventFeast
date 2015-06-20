@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="190dp"
-    android:background="@drawable/background_material"
+    android:background="@drawable/background_headersmall"
     android:orientation="vertical"
     >
 
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:text="NEEDS TO SHOW USER NAME"
         android:textSize="14sp"
-        android:textColor="@color/PrimaryColor"
+
         android:textStyle="bold"
         android:gravity="left"
         android:paddingBottom="4dp"
@@ -43,7 +43,7 @@
         android:gravity="left"
         android:layout_marginBottom="8dp"
         android:textSize="14sp"
-        android:textColor="@color/PrimaryColor"
+
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/username"
         android:layout_alignStart="@+id/username" />
