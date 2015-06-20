@@ -19,11 +19,6 @@ import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.SignUpCallback;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -264,8 +259,9 @@ public class registration_activity extends Activity {
 
         //fill it with data
         userImageFile.setImageURI(data.getData());
-        Toast.makeText(getApplicationContext(), data.getData().toString(), Toast.LENGTH_SHORT).show();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Toast.makeText(getApplicationContext(), data.getDataString(), Toast.LENGTH_LONG).show();
+
+       /* ByteArrayOutputStream baos = new ByteArrayOutputStream();
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(new File(data.getData().toString()));
@@ -283,7 +279,7 @@ public class registration_activity extends Activity {
         }
 
         byte[] videoBytes = baos.toByteArray(); //this is the video in bytes.
-        userImageParseFile = new ParseFile(videoBytes);
+        userImageParseFile = new ParseFile(videoBytes);*/
 
     }
 
