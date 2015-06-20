@@ -20,7 +20,7 @@
             android:title="@string/inbox_string" />
 
         <item
-            android:id="@+id/starred"
+            android:id="@+id/my_experiences"
             android:checked="false"
             android:icon="@drawable/ic_star_black"
             android:title="@string/My_experiences" />

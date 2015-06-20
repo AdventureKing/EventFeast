@@ -8,6 +8,7 @@
     <string name="password_text">Enter Password</string>
     <string name="action_login">Login</string>
     <string name="action_logout">Logout</string>
+    <string name="event_pictures">Event Pictures</string>
 
 
     <!-- drawer options strings -->
