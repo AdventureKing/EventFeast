@@ -260,28 +260,29 @@ public class registration_activity extends Activity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
-         //fill it with data
-        userImageFile.setImageURI(data.getData());
-        Toast.makeText(getApplicationContext(), data.getData().toString(), Toast.LENGTH_LONG).show();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        InputStream imageStream = null;
-        try {
-            imageStream = getContentResolver().openInputStream(data.getData());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        byte[] buf = new byte[1024];
-        int n;
-        try {
-            while (-1 != (n = imageStream.read(buf)))
-                baos.write(buf, 0, n);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if(resultCode == RESULT_OK) {
+            //fill it with data
+            userImageFile.setImageURI(data.getData());
+            Toast.makeText(getApplicationContext(), data.getData().toString(), Toast.LENGTH_LONG).show();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            InputStream imageStream = null;
+            try {
+                imageStream = getContentResolver().openInputStream(data.getData());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            byte[] buf = new byte[1024];
+            int n;
+            try {
+                while (-1 != (n = imageStream.read(buf)))
+                    baos.write(buf, 0, n);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        byte[] videoBytes = baos.toByteArray(); //this is the video in bytes.
-        userImageParseFile = new ParseFile(videoBytes);
-
+            byte[] videoBytes = baos.toByteArray(); //this is the video in bytes.
+            userImageParseFile = new ParseFile(videoBytes);
+        }
     }
 
     public static class DatePickerFragment extends DialogFragment
