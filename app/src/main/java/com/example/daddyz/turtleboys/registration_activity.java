@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -24,6 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -259,16 +261,13 @@ public class registration_activity extends Activity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        data.getData();
-
-
-        //fill it with data
+         //fill it with data
         userImageFile.setImageURI(data.getData());
-        Toast.makeText(getApplicationContext(), data.getData().toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), data.getData().toString(), Toast.LENGTH_LONG).show();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        FileInputStream fis = null;
+        InputStream imageStream = null;
         try {
-            fis = new FileInputStream(new File(data.getData().toString()));
+            imageStream = getContentResolver().openInputStream(data.getData());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -276,7 +275,7 @@ public class registration_activity extends Activity {
         byte[] buf = new byte[1024];
         int n;
         try {
-            while (-1 != (n = fis.read(buf)))
+            while (-1 != (n = imageStream.read(buf)))
                 baos.write(buf, 0, n);
         } catch (IOException e) {
             e.printStackTrace();
