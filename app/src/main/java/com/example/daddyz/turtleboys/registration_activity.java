@@ -19,10 +19,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.SignUpCallback;
-
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -205,7 +202,9 @@ public class registration_activity extends Activity {
                 newUser.setBirthday(birthday);
                 newUser.setFirstName(firstName.getText().toString());
                 newUser.setLastName(lastName.getText().toString());
-                newUser.setUserImage(userImageParseFile);
+                if(userImageFile != null) {
+                    newUser.setUserImage(userImageParseFile);
+                }
 
                 newUser.signUpInBackground(new SignUpCallback() {
                     @Override
@@ -271,7 +270,6 @@ public class registration_activity extends Activity {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
         byte[] buf = new byte[1024];
         int n;
         try {
