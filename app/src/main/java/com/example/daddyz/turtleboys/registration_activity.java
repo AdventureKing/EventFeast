@@ -4,33 +4,26 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.subclasses.GigUser;
-import com.parse.LogInCallback;
-import com.parse.ParseFile;
-import com.parse.ParseUser;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.SignUpCallback;
 
-//import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+//import java.text.ParseException;
 
 /**
  * Created by Jinbir on 6/15/2015.
@@ -45,7 +38,7 @@ public class registration_activity extends Activity {
     private EditText userPasswordVerify;
     private ParseFile userImage;
     private Date birthday;
-
+    private static final int SELECT_PHOTO = 100;
     private DialogFragment birthdaySelector;
     private EditText birthdayText;
 
@@ -72,6 +65,16 @@ public class registration_activity extends Activity {
             }
         });
 
+        EditText userImageSelection = (EditText) findViewById(R.id.userImage);
+        userImageSelection.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, SELECT_PHOTO);
+            }
+        });
 
         /*
         imageSelector = new ImagePickerFragment();
@@ -200,6 +203,7 @@ public class registration_activity extends Activity {
                 newUser.setBirthday(birthday);
                 newUser.setFirstName(firstName.getText().toString());
                 newUser.setLastName(lastName.getText().toString());
+
                 newUser.signUpInBackground(new SignUpCallback() {
                     @Override
                     public void done(com.parse.ParseException e) {
