@@ -138,7 +138,7 @@
             android:layout_height="wrap_content"
             android:text="Register"
             android:id="@+id/registerButton"
-            android:background="@drawable/greenbutton"
+            android:background="@drawable/btnorange_360"
             android:textColor="#ff00f5ff"
             android:layout_below="@+id/userImage"
             android:layout_centerHorizontal="true" />
@@ -161,7 +161,7 @@
             android:id="@+id/cancel"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/lightgreenbutton" />
+            android:background="@drawable/btnbluee_360" />
 
         <EditText
             android:layout_width="wrap_content"

@@ -58,9 +58,8 @@
             android:layout_marginTop="42dp"
             android:layout_alignRight="@+id/password"
             android:layout_alignEnd="@+id/password"
-
             android:textColor="#ff00f5ff"
-            android:background="@drawable/greenbutton" />
+            android:background="@drawable/btnbluee_360" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -77,7 +76,7 @@
             android:layout_height="wrap_content"
             android:text="@string/newUser"
             android:id="@+id/registerButton"
-            android:background="@drawable/lightgreenbutton"
+            android:background="@drawable/btnorange_360"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_alignEnd="@+id/password"
