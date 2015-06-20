@@ -7,9 +7,7 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -17,7 +15,7 @@ import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.parse.ParseException;
-import com.parse.ParseFile;
+import com.parse.ParseImageView;
 import com.parse.SignUpCallback;
 
 import java.util.Calendar;
@@ -36,7 +34,7 @@ public class registration_activity extends Activity {
     private EditText emailVerify;
     private EditText userPassword;
     private EditText userPasswordVerify;
-    private ParseFile userImage;
+    private ParseImageView userImageFile;
     private Date birthday;
     private static final int SELECT_PHOTO = 100;
     private DialogFragment birthdaySelector;
@@ -48,6 +46,7 @@ public class registration_activity extends Activity {
 
     private Button registerButton;
     private Button cancelButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +65,8 @@ public class registration_activity extends Activity {
         });
 
         EditText userImageSelection = (EditText) findViewById(R.id.userImage);
-        userImageSelection.setOnClickListener(new View.OnClickListener(){
+
+        userImageSelection.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -75,19 +75,8 @@ public class registration_activity extends Activity {
                 startActivityForResult(i, SELECT_PHOTO);
             }
         });
+        //user image is filled
 
-        /*
-        imageSelector = new ImagePickerFragment();
-        imageText = (EditText) findViewById(R.id.userImage);
-        imageText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame, imageSelector);
-                fragmentTransaction.commit();
-            }
-        });
-        */
 
 
 
@@ -204,6 +193,7 @@ public class registration_activity extends Activity {
                 newUser.setFirstName(firstName.getText().toString());
                 newUser.setLastName(lastName.getText().toString());
 
+
                 newUser.signUpInBackground(new SignUpCallback() {
                     @Override
                     public void done(com.parse.ParseException e) {
@@ -256,7 +246,12 @@ public class registration_activity extends Activity {
             }
         });
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        data.getData();
+        userImageFile = (ParseImageView) findViewById(R.id.profile_image);
 
+    }
 
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
@@ -296,58 +291,5 @@ public class registration_activity extends Activity {
 
     }
 
-    /* A fragment that will allow a user to pick an image from the galley
-        and return the image to the method that called the fragment.
-     */
-    public class ImagePickerFragment extends Fragment {
 
-        public View onCreatView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.registration_activity, container, false);
-
-
-            return rootView;
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-        }
-
-        /*
-        public ImagePickerFragment() {
-        }
-
-        @Override
-        public void registerForContextMenu(View v) {
-            imageset = (EditText) v;
-        }
-
-        private EditText imageset;
-        private static final int SELECT_PICTURE = 1;
-        private String selectedImagePath;
-        private ImageView image;
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
-        }
-
-        public void onActivityResult( int requestCode, int resultCode, Intent data) {
-            if ( resultCode == RESULT_OK) {
-                if (requestCode == SELECT_PICTURE) {
-                    Uri selectedImageUri = data.getData();
-                    image.setImageURI(selectedImageUri);
-                }
-            }
-        }
-
-        public ImageView getImage() {
-            return image;
-        }
-        */
-
-    }
 }

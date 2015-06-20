@@ -205,6 +205,19 @@
             android:layout_toLeftOf="@+id/userPasswordVerify"
             android:layout_toStartOf="@+id/userPasswordVerify" />
 
+        <com.parse.ParseImageView
+            android:id="@+id/profile_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:padding="15dp"
+
+            android:src = "@drawable/profile"
+            android:layout_alignTop="@+id/birthdayImage"
+            android:layout_alignLeft="@+id/registerButton"
+            android:layout_alignStart="@+id/registerButton" />
+
 
 
     </RelativeLayout>
