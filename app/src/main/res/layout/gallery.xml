@@ -18,7 +18,18 @@
         android:text="Take a Photo"
         android:id="@+id/camerabutton"
         android:layout_below="@+id/gallery"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"/>
+    <GridView
+        android:id="@+id/gridview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:columnWidth="120dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"/>
     <FrameLayout
         android:id="@+id/frame"
         android:layout_width="match_parent"

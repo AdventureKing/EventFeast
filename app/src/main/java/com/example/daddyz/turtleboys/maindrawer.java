@@ -4,6 +4,8 @@ package com.example.daddyz.turtleboys;
  * Created by snow on 6/13/2015.
  */
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -15,6 +17,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +37,7 @@ public class maindrawer extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private TextView userName;
     private TextView userEmail;
+    private ProgressBar mProgressBar;
 
 
     @Override
@@ -128,18 +133,37 @@ public class maindrawer extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "User wants to connect to other Users", Toast.LENGTH_SHORT).show();
                             return true;
                         case R.id.logoutDrawer:
-                            currentUser.logOutInBackground(new LogOutCallback() {
-                                @Override
-                                public void done(com.parse.ParseException e) {
-                                    finish();
-                                    Intent intent = new Intent(getApplicationContext(), maindrawer.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(intent);
-                                    Toast.makeText(getApplicationContext(), "Logout Successful!", Toast.LENGTH_SHORT).show();
-                                    startActivity(intent);
-
+                            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(maindrawer.this);
+                            alertDialog.setTitle("Logout");
+                            alertDialog.setMessage("Are you sure you want to logout?");
+                            alertDialog.setCancelable(false);
+                            alertDialog.setPositiveButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
                                 }
                             });
+                            alertDialog.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                    mProgressBar.setVisibility(View.VISIBLE);
+                                    GigUser.logOutInBackground(new LogOutCallback() {
+                                        @Override
+                                        public void done(com.parse.ParseException e) {
+                                            finish();
+                                            Intent intent = new Intent(getApplicationContext(), maindrawer.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                            Toast.makeText(getApplicationContext(), "Logout Successful!", Toast.LENGTH_SHORT).show();
+                                            startActivity(intent);
+                                            mProgressBar.setVisibility(View.GONE);
+                                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                        }
+                                    });
+                                }
+                            });
+                            //alertDialog.setIcon(R.drawable.icon);
+                            AlertDialog alert = alertDialog.create();
+                            alert.show();
                             return true;
                         case R.id.account_settings:
                             Toast.makeText(getApplicationContext(), "Account Settings Should be displayed", Toast.LENGTH_SHORT).show();
@@ -176,6 +200,9 @@ public class maindrawer extends AppCompatActivity {
             //calling sync state is necessay or else your hamburger icon wont show up
             actionBarDrawerToggle.syncState();
 
+            //Setup Progress Bar
+            mProgressBar = (ProgressBar)findViewById(R.id.login_progress_bar);
+            mProgressBar.setVisibility(View.GONE);
 
         }
 
@@ -200,20 +227,6 @@ public class maindrawer extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        }
-        if(id == R.id.action_logout){
-            GigUser.logOutInBackground(new LogOutCallback(){
-                @Override
-                public void done(com.parse.ParseException e) {
-                    finish();
-                    Intent intent = new Intent(getApplicationContext(), maindrawer.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    Toast.makeText(getApplicationContext(), "Logout Successful!", Toast.LENGTH_SHORT).show();
-                    startActivity(intent);
-                }
-            });
-
         }
 
         return super.onOptionsItemSelected(item);
