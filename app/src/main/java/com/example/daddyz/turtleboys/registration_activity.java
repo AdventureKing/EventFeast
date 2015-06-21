@@ -125,7 +125,7 @@ public class registration_activity extends Activity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"BUTTON CLICKED", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"BUTTON CLICKED", Toast.LENGTH_SHORT).show();
 
                 //Check to see if email and verify email fields are the same
                 if ( !(email.getText().toString().equals(emailVerify.getText().toString())) ) {
@@ -223,7 +223,7 @@ public class registration_activity extends Activity {
 
                 }
 
-                Toast.makeText(getApplicationContext(),"Gonna make user", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Gonna make user", Toast.LENGTH_SHORT).show();
 
                newUser.signUpInBackground(new SignUpCallback() {
 
