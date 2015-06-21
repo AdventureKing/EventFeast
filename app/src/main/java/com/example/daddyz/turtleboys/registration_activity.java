@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
@@ -278,8 +282,6 @@ public class registration_activity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(resultCode == RESULT_OK) {
             //fill it with data
-            userImageFile.setImageURI(data.getData());
-            Toast.makeText(getApplicationContext(), data.getData().toString(), Toast.LENGTH_LONG).show();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             InputStream imageStream = null;
             try {
@@ -300,32 +302,32 @@ public class registration_activity extends Activity {
             userImageParseFile = new ParseFile(videoBytes);
 
             //Setup Thumbnail
-            /*String path = data.getData().toString();
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = 4;
-            Bitmap thumbnail = BitmapFactory.decodeFile(path, options);
+            Bitmap thumbnail = BitmapFactory.decodeByteArray(videoBytes, 0, videoBytes.length, options);
 
-            try {
-                ExifInterface exif = new ExifInterface(path);
-                int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
-                Log.d("EXIF", "Exif: " + orientation);
-                Matrix matrix = new Matrix();
-                if (orientation == 6) {
-                    matrix.postRotate(90);
-                }
-                else if (orientation == 3) {
-                    matrix.postRotate(180);
-                }
-                else if (orientation == 8) {
-                    matrix.postRotate(270);
-                }
-                thumbnail = Bitmap.createBitmap(thumbnail, 0, 0, thumbnail.getWidth(), thumbnail.getHeight(), matrix, true); // rotating bitmap
+            //Rotate image if needed
+            int orientation;
+            Cursor cursor = getContentResolver().query(data.getData(),
+                    new String[] { MediaStore.Images.ImageColumns.ORIENTATION }, null, null, null);
+
+            if (cursor.getCount() != -1) {
+                orientation = -1;
             }
-            catch (Exception e) {
-
+            cursor.moveToFirst();
+            orientation = cursor.getInt(0);
+            Matrix matrix = new Matrix();
+            if (orientation == 90) {
+                matrix.postRotate(90);
             }
-
-            userImageFile.setImageBitmap(thumbnail);*/
+            else if (orientation == 180) {
+                matrix.postRotate(180);
+            }
+            else if (orientation == 270) {
+                matrix.postRotate(270);
+            }
+            thumbnail = Bitmap.createBitmap(thumbnail, 0, 0, thumbnail.getWidth(), thumbnail.getHeight(), matrix, true); // rotating bitmap
+            userImageFile.setImageBitmap(thumbnail);
         }
     }
 
@@ -366,6 +368,4 @@ public class registration_activity extends Activity {
         }
 
     }
-
-
 }
