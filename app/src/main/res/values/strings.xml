@@ -52,4 +52,7 @@
     <string name="passwordEmpty">Password is empty</string>
     <string name="emailEmpty">Email is empty</string>
 
+    <!-- Top right button strings -->
+    <string name="action_gallery">Gallery</string>
+
 </resources>

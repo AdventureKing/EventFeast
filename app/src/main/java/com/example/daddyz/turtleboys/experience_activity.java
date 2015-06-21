@@ -253,6 +253,13 @@ public class experience_activity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(getApplicationContext(), "Settings Selected", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        if (id == R.id.action_gallery) {
+            Intent intent = new Intent(getApplicationContext(), gallery1.class);
+            startActivity(intent);
             return true;
         }
 
