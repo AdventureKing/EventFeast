@@ -34,14 +34,16 @@
         android:name = ".App_Application"
         android:largeHeap="true">
 
-        <activity android:name=".login_activity">
+        <activity android:name=".login_activity"
+            android:screenOrientation="portrait">
 
         </activity>
         <Fragment android:name=".newsfeedfragment">
 
         </Fragment>
 
-        <activity android:name=".registration_activity">
+        <activity android:name=".registration_activity"
+            android:screenOrientation="portrait">
 
         </activity>
 
