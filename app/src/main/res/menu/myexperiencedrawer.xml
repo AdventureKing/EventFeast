@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
+
         <item
         android:id="@+id/main_page"
         android:checked="false"
@@ -9,28 +10,31 @@
         android:title="Main Page" />
 
         <item
-            android:id="@+id/camera"
-            android:checked="false"
-            android:icon="@drawable/ic_camera_enhance_black_24dp"
-            android:title="Camera" />
-
-        <item
-            android:id="@+id/event_pictures"
+            android:id="@+id/messaging"
             android:checked="false"
             android:icon="@drawable/ic_inbox_black"
-            android:title="Event Pictures" />
-
-        <!--<item
-            android:id="@+id/inbox"
-            android:checked="false"
-            android:icon="@drawable/ic_inbox_black"
-            android:title="@string/inbox_string" /> -->
+            android:title="@string/messaging" />
 
         <item
-            android:id="@+id/connect"
+            android:id="@+id/myEvents"
             android:checked="false"
-            android:icon="@drawable/ic_share_black_24dp"
-            android:title="@string/connect" />
+            android:icon="@drawable/ic_local_movies_black_24dp"
+            android:title="My Events" />
+        <item
+            android:id="@+id/myFriends"
+            android:checked="false"
+            android:icon="@drawable/ic_tag_faces_black_24dp"
+            android:title="@string/myfriends" />
+        <item
+            android:id="@+id/myPosts"
+            android:checked="false"
+            android:icon="@drawable/ic_assistant_black_24dp"
+            android:title="@string/myposts" />
+        <item
+            android:id="@+id/myListings"
+            android:checked="false"
+            android:icon="@drawable/ic_beenhere_black_24dp"
+            android:title="@string/mylistings" />
         <item
             android:id="@+id/logoutDrawer"
             android:checked="false"
