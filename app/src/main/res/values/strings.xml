@@ -33,7 +33,9 @@
     <string name="openDrawer">Navigation View Closed</string>
     <string name="eventfeed">Eventfeed</string>
     <string name="messaging">Messaging</string>
-
+    <string name="myfriends">My Friends</string>
+    <string name="myposts">My Post</string>
+    <string name="mylistings">My Listings</string>
     <!-- Registration Strings -->
     <string name="confirmPassword_text">Confirm Password</string>
     <string name="register">Register</string>

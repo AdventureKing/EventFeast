@@ -1,6 +1,5 @@
 package com.example.daddyz.turtleboys;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,8 +9,6 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -27,8 +24,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.daddyz.turtleboys.subclasses.GigUser;
+
 import com.example.daddyz.turtleboys.subclasses.Camera;
+import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.parse.GetDataCallback;
 import com.parse.LogOutCallback;
 import com.parse.ParseFile;
@@ -153,16 +151,20 @@ public class experience_activity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), maindrawer.class);
                         startActivity(intent);
                         return true;
-                    case R.id.camera:
-                        Toast.makeText(getApplicationContext(), "Camera Selected", Toast.LENGTH_SHORT).show();
+                    case R.id.myEvents:
+                        Toast.makeText(getApplicationContext(), "Events Selected", Toast.LENGTH_SHORT).show();
                         return true;
-                    case R.id.event_pictures:
-                        //Toast.makeText(getApplicationContext(), "Event Pictures Selected", Toast.LENGTH_SHORT).show();
-                        Intent gallery = new Intent(getApplicationContext(), gallery1.class);
-                        startActivity(gallery);
+                    case R.id.myFriends:
+                        Toast.makeText(getApplicationContext(), "Friends selected", Toast.LENGTH_SHORT).show();
                         return true;
-                    case R.id.connect:
-                        Toast.makeText(getApplicationContext(), "User wants to connect to other Users", Toast.LENGTH_SHORT).show();
+                    case R.id.myPosts:
+                        Toast.makeText(getApplicationContext(), "Post Selected", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.messaging:
+                        Toast.makeText(getApplicationContext(), "User wants to message", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.myListings:
+                        Toast.makeText(getApplicationContext(), "User wants to look at their listings", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.logoutDrawer:
                         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(experience_activity.this);
