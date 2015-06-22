@@ -3,21 +3,21 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/account_settings"
-            android:checked="false"
-            android:icon="@drawable/ic_account_box_black_24dp"
-            android:title="@string/accountSettings" />
-        <item
             android:id="@+id/newsfeed"
             android:checked="false"
-            android:icon="@drawable/ic_drafts_black"
+            android:icon="@drawable/ic_local_library_black_24dp"
             android:title="@string/newsfeed" />
+        <item
+            android:id="@+id/eventfeed"
+            android:checked="false"
+            android:icon="@drawable/ic_event_seat_black_24dp"
+            android:title="@string/eventfeed" />
 
         <item
-            android:id="@+id/inbox"
+            android:id="@+id/messaging"
             android:checked="false"
             android:icon="@drawable/ic_inbox_black"
-            android:title="@string/inbox_string" />
+            android:title="@string/messaging" />
 
         <item
             android:id="@+id/my_experiences"
@@ -32,12 +32,6 @@
             android:title="@string/searchEvent" />
 
 
-
-        <item
-            android:id="@+id/connect"
-            android:checked="false"
-            android:icon="@drawable/ic_share_black_24dp"
-            android:title="@string/connect" />
         <item
             android:id="@+id/logoutDrawer"
             android:checked="false"

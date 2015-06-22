@@ -119,14 +119,18 @@ public class maindrawer extends AppCompatActivity {
 
 
                         //Replacing the main content with ContentFragment Which is our Inbox View;
-                        case R.id.inbox:
-                            Toast.makeText(getApplicationContext(), "Inbox Selected", Toast.LENGTH_SHORT).show();
-                            ContentFragment fragment = new ContentFragment();
+                        case R.id.eventfeed:
+                            NewsFeedFragment fragment = new NewsFeedFragment();
                             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                             fragmentTransaction.replace(R.id.frame, fragment);
                             fragmentTransaction.commit();
                             return true;
-
+                        case R.id.newsfeed:
+                            Toast.makeText(getApplicationContext(), "newsfeed", Toast.LENGTH_SHORT).show();
+                            return true;
+                        case R.id.messaging:
+                            Toast.makeText(getApplicationContext(), "Messaging", Toast.LENGTH_SHORT).show();
+                            return true;
                         // For rest of the options we just show a toast on click
 
                         case R.id.my_experiences:
@@ -136,16 +140,6 @@ public class maindrawer extends AppCompatActivity {
                             return true;
                         case R.id.search_event:
                             Toast.makeText(getApplicationContext(), "Event Searched", Toast.LENGTH_SHORT).show();
-                            return true;
-                        case R.id.newsfeed:
-                            NewsFeedFragment fragment2 = new NewsFeedFragment();
-                            android.support.v4.app.FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
-                            fragmentTransaction2.replace(R.id.frame, fragment2);
-                            fragmentTransaction2.commit();
-                            Toast.makeText(getApplicationContext(), "Drafts Selected", Toast.LENGTH_SHORT).show();
-                            return true;
-                        case R.id.connect:
-                            Toast.makeText(getApplicationContext(), "User wants to connect to other Users", Toast.LENGTH_SHORT).show();
                             return true;
                         case R.id.logoutDrawer:
                             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(maindrawer.this);
@@ -179,9 +173,6 @@ public class maindrawer extends AppCompatActivity {
                             //alertDialog.setIcon(R.drawable.icon);
                             AlertDialog alert = alertDialog.create();
                             alert.show();
-                            return true;
-                        case R.id.account_settings:
-                            Toast.makeText(getApplicationContext(), "Account Settings Should be displayed", Toast.LENGTH_SHORT).show();
                             return true;
                         default:
                             Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
