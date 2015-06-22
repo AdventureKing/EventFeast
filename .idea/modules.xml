@@ -7,7 +7,6 @@
       <module fileurl="file://$PROJECT_DIR$/gimme_food.iml" filepath="$PROJECT_DIR$/gimme_food.iml" />
       <module fileurl="file://$PROJECT_DIR$/gimme_food1.iml" filepath="$PROJECT_DIR$/gimme_food1.iml" />
       <module fileurl="file://$PROJECT_DIR$/gimme_food2.iml" filepath="$PROJECT_DIR$/gimme_food2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/volley/volley.iml" filepath="$PROJECT_DIR$/volley/volley.iml" />
     </modules>
   </component>
 </project>
