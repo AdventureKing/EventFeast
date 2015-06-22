@@ -1,17 +1,21 @@
 package com.example.daddyz.turtleboys;
 
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.util.LruCache;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -36,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.concurrent.CountDownLatch;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,6 +56,7 @@ public class gallery1 extends AppCompatActivity {
     private ImageAdapter myImageAdapter;
     private Pattern pattern = Pattern.compile("(IMG.*)");
     private HashMap<Integer, Bitmap> finishedPictures;
+    private String title;
 
 
     @Override
@@ -131,7 +137,7 @@ public class gallery1 extends AppCompatActivity {
                                 long id) {
             final ImageView enlargedPicture = new ImageView(gallery1.this);
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(gallery1.this);
-            final String title = (String) parent.getItemAtPosition(position);
+            title = (String) parent.getItemAtPosition(position);
             Matcher matcher = pattern.matcher(title);
             if(matcher.find() == false){
                 return;
@@ -150,8 +156,14 @@ public class gallery1 extends AppCompatActivity {
                     });
                     confirmDialog.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog2, int which) {
-                            File picture = new File(title);
-                            picture.delete();
+                            //Remove picture from storage and external storage
+                            MediaScannerConnection.scanFile(gallery1.this, new String[]{title}, null, new MediaScannerConnection.OnScanCompletedListener() {
+                                public void onScanCompleted(String path, Uri contentUri) {
+                                    // TODO: Do something useful with contentUri, which now has content-scheme
+                                    getContentResolver().delete(contentUri, null, null);
+                                };
+                            });
+
                             myImageAdapter.remove(position);
                             myImageAdapter.notifyDataSetChanged();
                             finishedPictures.clear();
@@ -220,6 +232,7 @@ public class gallery1 extends AppCompatActivity {
 
         //Update Gallery List
         //Cancel the previous running task, if exist.
+        finishedPictures.clear();
         myAsyncTaskLoadFiles.cancel(true);
 
         //new another ImageAdapter, to prevent the adapter have
@@ -280,6 +293,8 @@ public class gallery1 extends AppCompatActivity {
             File[] files = targetDirector.listFiles();
             Arrays.sort(files, Collections.reverseOrder());
             for (File file : files) {
+                if(file.toString().equals(title)) //If picture was previously deleted, don't add it to list
+                    continue;
                 publishProgress(file.getAbsolutePath());
                 if (isCancelled()) break;
             }
