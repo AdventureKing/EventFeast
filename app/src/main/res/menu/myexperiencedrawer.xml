@@ -10,6 +10,12 @@
         android:title="Main Page" />
 
         <item
+            android:id="@+id/messaging"
+            android:checked="false"
+            android:icon="@drawable/ic_inbox_black"
+            android:title="@string/messaging" />
+
+        <item
             android:id="@+id/myEvents"
             android:checked="false"
             android:icon="@drawable/ic_local_movies_black_24dp"
@@ -24,13 +30,6 @@
             android:checked="false"
             android:icon="@drawable/ic_assistant_black_24dp"
             android:title="@string/myposts" />
-
-        <item
-            android:id="@+id/messaging"
-            android:checked="false"
-            android:icon="@drawable/ic_inbox_black"
-            android:title="@string/messaging" />
-
         <item
             android:id="@+id/myListings"
             android:checked="false"
