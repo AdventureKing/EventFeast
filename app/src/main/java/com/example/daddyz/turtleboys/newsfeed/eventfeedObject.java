@@ -3,7 +3,7 @@ package com.example.daddyz.turtleboys.newsfeed;
 /**
  * Created by snow on 6/17/2015.
  */
-public class newsfeedObject {
+public class eventfeedObject {
 
     private String eventID = null;
     private String eventSourceID = null;
@@ -18,7 +18,7 @@ public class newsfeedObject {
     private String eventURL = null;
 
 
-    public newsfeedObject(){
+    public eventfeedObject(){
 
     }
 

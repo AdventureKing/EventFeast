@@ -16,14 +16,14 @@ import java.util.ArrayList;
 /**
  * Created by snow on 6/17/2015.
  */
-public class newsfeedAdapter extends ArrayAdapter<newsfeedObject> {
+public class eventfeedAdapter extends ArrayAdapter<eventfeedObject> {
 
     private Context context;
     private int resource;
-    private ArrayList<newsfeedObject> objects;
+    private ArrayList<eventfeedObject> objects;
 
     private int[] colors = new int[] { 0x30FF0000, 0x300000FF };
-    public newsfeedAdapter(Context context, int resource, ArrayList<newsfeedObject> objects) {
+    public eventfeedAdapter(Context context, int resource, ArrayList<eventfeedObject> objects) {
         super(context, resource,objects);
         this.context=context;
         this.resource=resource;

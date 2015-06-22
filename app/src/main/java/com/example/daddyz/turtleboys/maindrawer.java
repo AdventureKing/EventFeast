@@ -19,7 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.daddyz.turtleboys.newsfeed.NewsFeedFragment;
+import com.example.daddyz.turtleboys.newsfeed.EventFeedFragment;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.parse.GetDataCallback;
 import com.parse.LogOutCallback;
@@ -59,7 +59,7 @@ public class maindrawer extends AppCompatActivity {
             //generate newsfeed
             //stuff that goes in a row
             //create a list fragment and show
-            NewsFeedFragment fragment = new NewsFeedFragment();
+            EventFeedFragment fragment = new EventFeedFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.frame, fragment);
             fragmentTransaction.commit();
@@ -134,7 +134,7 @@ public class maindrawer extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Event Searched", Toast.LENGTH_SHORT).show();
                             return true;
                         case R.id.newsfeed:
-                            NewsFeedFragment fragment2 = new NewsFeedFragment();
+                            EventFeedFragment fragment2 = new EventFeedFragment();
                             android.support.v4.app.FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
                             fragmentTransaction2.replace(R.id.frame, fragment2);
                             fragmentTransaction2.commit();
