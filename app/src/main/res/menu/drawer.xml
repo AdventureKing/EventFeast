@@ -30,8 +30,6 @@
             android:checked="false"
             android:icon="@drawable/ic_event_black_24dp"
             android:title="@string/searchEvent" />
-
-
         <item
             android:id="@+id/logoutDrawer"
             android:checked="false"
