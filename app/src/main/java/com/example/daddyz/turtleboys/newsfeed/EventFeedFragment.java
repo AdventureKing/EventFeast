@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by Admin on 04-06-2015.
@@ -31,6 +33,9 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
     private Button mButton;
     private TextView mTextView;
     private RequestQueue mQueue;
+    private ListView list;
+    private eventfeedAdapter adapter;
+    private ArrayList<eventfeedObject> eventfeedList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,20 +43,20 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main_volley);
         View rootView = inflater.inflate(R.layout.listfragment, container, false);
-        ListView list = (ListView) rootView.findViewById(R.id.listView);
+        list = (ListView) rootView.findViewById(R.id.listView);
 
         mTextView = (TextView) rootView.findViewById(R.id.textView);
         mButton = (Button) rootView.findViewById(R.id.button);
 
-        eventfeedObject obj1 = new eventfeedObject();
-        obj1.setEventDesc("Event Description");
-        obj1.setEventCity("San Antonio");
-        obj1.setEventDate("07/07/2015");
-        ArrayList<eventfeedObject> myDataArray = new ArrayList<>();
+        eventfeedObject obj = new eventfeedObject();
+        obj.setEventDesc("Event Description");
+        obj.setEventCity("San Antonio");
+        obj.setEventDate("07/07/2015");
+        eventfeedList = new ArrayList<>();
 
-        myDataArray.add(obj1);
+        eventfeedList.add(obj);
 
-        eventfeedAdapter adapter = new eventfeedAdapter(getActivity(), R.layout.newsfeedroweven, myDataArray);
+        adapter = new eventfeedAdapter(getActivity(), R.layout.newsfeedroweven, eventfeedList);
         list.setAdapter(adapter);
 
         Log.d("CustomAdapter", "MusicFragment onCreateView successful");
@@ -93,10 +98,31 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
 
     @Override
     public void onResponse(Object response) {
-        mTextView.setText("Response is: " + response);
+
+        //mTextView.setText("Response is: " + response);
         try {
-            mTextView.setText(mTextView.getText() + "\n\n" + ((JSONObject) response).getString
-                    ("name"));
+            JSONObject jObject = ((JSONObject) response);
+            Iterator<?> keys = jObject.keys();
+            eventfeedList = new ArrayList<>();
+
+            while( keys.hasNext() ) {
+                String key = (String)keys.next();
+                if ( jObject.get(key) instanceof JSONObject ) {
+                    Log.i("Ind Object", ((JSONObject) jObject.get(key)).toString());
+                    eventfeedObject obj = new eventfeedObject();
+                    obj.setEventDesc(((JSONObject) jObject.get(key)).getString("desc"));
+                    obj.setEventCity(((JSONObject) jObject.get(key)).getString("state"));
+                    obj.setEventDate(((JSONObject) jObject.get(key)).getString("date"));
+
+                    eventfeedList.add(obj);
+                }
+            }
+
+            adapter = new eventfeedAdapter(getActivity(), R.layout.newsfeedroweven, eventfeedList);
+            list.setAdapter(adapter);
+            ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
+
+            //mTextView.setText(mTextView.getText() + "\n\n" + ((JSONObject) response).getString("name"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
