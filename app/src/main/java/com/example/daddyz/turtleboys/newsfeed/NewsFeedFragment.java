@@ -10,6 +10,8 @@ import android.widget.ListView;
 
 import com.example.daddyz.turtleboys.R;
 
+import java.util.ArrayList;
+
 /**
  * Created by Admin on 04-06-2015.
  */
@@ -26,13 +28,20 @@ public class NewsFeedFragment extends Fragment {
 
         // newsfeedRequest myDataArray[]= dataRequest.getTableData();
         //String myDataArray[] = {"hello", "hi", "hi again"};
-        newsfeedObject[] myDataArray = new newsfeedObject[1];
+        //newsfeedObject[] myDataArray = new newsfeedObject[1];
         //myDataArray[0].setEventDesc("Event Description");
         //myDataArray[0].setEventCity("San Antonio");
         //myDataArray[0].setEventDate("07/07/2015");
 
+        newsfeedObject obj1 = new newsfeedObject();
+        obj1.setEventDesc("Event Description");
+        obj1.setEventCity("San Antonio");
+        obj1.setEventDate("07/07/2015");
+        ArrayList<newsfeedObject> myDataArray = new ArrayList<>();
 
-        newsfeedAdapter adapter = new newsfeedAdapter(getActivity() , R.layout.newsfeedroweven, myDataArray);
+        myDataArray.add(obj1);
+
+        newsfeedAdapter adapter = new newsfeedAdapter(getActivity(), R.layout.newsfeedroweven, myDataArray);
         list.setAdapter(adapter);
 
         Log.d("CustomAdapter", "MusicFragment onCreateView successful");

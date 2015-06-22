@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.example.daddyz.turtleboys.R;
 
+import java.util.ArrayList;
+
 /**
  * Created by snow on 6/17/2015.
  */
@@ -18,10 +20,10 @@ public class newsfeedAdapter extends ArrayAdapter<newsfeedObject> {
 
     private Context context;
     private int resource;
-    private newsfeedObject[] objects;
+    private ArrayList<newsfeedObject> objects;
 
     private int[] colors = new int[] { 0x30FF0000, 0x300000FF };
-    public newsfeedAdapter(Context context, int resource, newsfeedObject[] objects) {
+    public newsfeedAdapter(Context context, int resource, ArrayList<newsfeedObject> objects) {
         super(context, resource,objects);
         this.context=context;
         this.resource=resource;
@@ -64,9 +66,9 @@ public class newsfeedAdapter extends ArrayAdapter<newsfeedObject> {
         TextView description = (TextView) row.findViewById(R.id.secondLine);
         TextView date = (TextView)row.findViewById(R.id.date);
 
-        city.setText(objects[position].getEventCity());
-        description.setText((CharSequence) objects[position].getEventDesc());
-        date.setText(objects[position].getEventDate());
+        city.setText(objects.get(position).getEventCity());
+        description.setText((CharSequence) objects.get(position).getEventDesc());
+        date.setText(objects.get(position).getEventDate());
 
 
         return row;
