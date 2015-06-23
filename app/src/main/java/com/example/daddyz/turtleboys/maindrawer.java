@@ -23,7 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-port com.example.daddyz.turtleboys.eventfeed.EventFeedFragment;
+import com.example.daddyz.turtleboys.eventfeed.EventFeedFragment;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.parse.GetDataCallback;
 import com.parse.LogOutCallback;
@@ -125,9 +125,6 @@ public class maindrawer extends AppCompatActivity {
                             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                             fragmentTransaction.replace(R.id.frame, fragment);
                             fragmentTransaction.commit();
-                            return true;
-                        case R.id.newsfeed:
-                            Toast.makeText(getApplicationContext(), "newsfeed", Toast.LENGTH_SHORT).show();
                             return true;
                         case R.id.messaging:
                             Toast.makeText(getApplicationContext(), "Messaging", Toast.LENGTH_SHORT).show();
