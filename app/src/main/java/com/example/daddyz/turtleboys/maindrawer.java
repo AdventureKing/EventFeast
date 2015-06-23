@@ -168,7 +168,7 @@ public class maindrawer extends AppCompatActivity {
                                         public void done(com.parse.ParseException e) {
                                             finish();
                                             Intent intent = new Intent(getApplicationContext(), maindrawer.class);
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(intent);
                                             Toast.makeText(getApplicationContext(), "Logout Successful!", Toast.LENGTH_SHORT).show();
                                             startActivity(intent);
