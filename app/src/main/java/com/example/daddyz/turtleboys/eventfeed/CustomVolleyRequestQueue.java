@@ -1,4 +1,4 @@
-package com.example.daddyz.turtleboys.newsfeed;
+package com.example.daddyz.turtleboys.eventfeed;
 
 import android.content.Context;
 

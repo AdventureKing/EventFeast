@@ -1,4 +1,4 @@
-package com.example.daddyz.turtleboys.newsfeed;
+package com.example.daddyz.turtleboys.eventfeed;
 
 /**
  * Created by snow on 6/17/2015.
@@ -6,9 +6,9 @@ package com.example.daddyz.turtleboys.newsfeed;
 public class eventfeedObject {
 
     private String eventID = null;
-    private String eventSourceID = null;
     private String eventDesc = null;
     private String eventDate = null;
+    private String eventTime = null;
     private String eventVenue = null;
     private String eventState = null;
     private String eventCity = null;
@@ -18,33 +18,17 @@ public class eventfeedObject {
     private String eventURL = null;
 
 
-    public eventfeedObject(){
+    public String getEventDesc() { return eventDesc; }
 
-    }
+    public void setEventDesc(String eventDesc) { this.eventDesc = eventDesc; }
 
-    public String getEventDesc() {
-        return eventDesc;
-    }
+    public String getEventTime() { return eventTime; }
 
-    public void setEventDesc(String eventDesc) {
-        this.eventDesc = eventDesc;
-    }
+    public void setEventTime(String eventTime) { this.eventTime = eventTime; }
 
-    public String getEventID() {
-        return eventID;
-    }
+    public String getEventID() { return eventID; }
 
-    public void setEventID(String eventID) {
-        this.eventID = eventID;
-    }
-
-    public String getEventSourceID() {
-        return eventSourceID;
-    }
-
-    public void setEventSourceID(String eventSourceID) {
-        this.eventSourceID = eventSourceID;
-    }
+    public void setEventID(String eventID) { this.eventID = eventID; }
 
     public String getEventDate() {
         return eventDate;
