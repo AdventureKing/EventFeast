@@ -22,7 +22,8 @@ import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.daddyz.turtleboys.newsfeed.NewsFeedFragment;
+
+port com.example.daddyz.turtleboys.eventfeed.EventFeedFragment;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.parse.GetDataCallback;
 import com.parse.LogOutCallback;
@@ -63,7 +64,7 @@ public class maindrawer extends AppCompatActivity {
             //generate newsfeed
             //stuff that goes in a row
             //create a list fragment and show
-            NewsFeedFragment fragment = new NewsFeedFragment();
+            EventFeedFragment fragment = new EventFeedFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.frame, fragment);
             fragmentTransaction.commit();
@@ -105,7 +106,7 @@ public class maindrawer extends AppCompatActivity {
                 // This method will trigger on item Click of navigation menu
                 @Override
                 public boolean onNavigationItemSelected(MenuItem menuItem) {
-                   
+
 
                     //Checking if the item is in checked state or not, if not make it in checked state
                     if (menuItem.isChecked()) menuItem.setChecked(false);
@@ -120,7 +121,7 @@ public class maindrawer extends AppCompatActivity {
 
                         //Replacing the main content with ContentFragment Which is our Inbox View;
                         case R.id.eventfeed:
-                            NewsFeedFragment fragment = new NewsFeedFragment();
+                            EventFeedFragment fragment = new EventFeedFragment();
                             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                             fragmentTransaction.replace(R.id.frame, fragment);
                             fragmentTransaction.commit();
@@ -140,6 +141,16 @@ public class maindrawer extends AppCompatActivity {
                             return true;
                         case R.id.search_event:
                             Toast.makeText(getApplicationContext(), "Event Searched", Toast.LENGTH_SHORT).show();
+                            return true;
+                        case R.id.newsfeed:
+                            EventFeedFragment fragment2 = new EventFeedFragment();
+                            android.support.v4.app.FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
+                            fragmentTransaction2.replace(R.id.frame, fragment2);
+                            fragmentTransaction2.commit();
+                            Toast.makeText(getApplicationContext(), "Drafts Selected", Toast.LENGTH_SHORT).show();
+                            return true;
+                        case R.id.connect:
+                            Toast.makeText(getApplicationContext(), "User wants to connect to other Users", Toast.LENGTH_SHORT).show();
                             return true;
                         case R.id.logoutDrawer:
                             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(maindrawer.this);
@@ -173,6 +184,9 @@ public class maindrawer extends AppCompatActivity {
                             //alertDialog.setIcon(R.drawable.icon);
                             AlertDialog alert = alertDialog.create();
                             alert.show();
+                            return true;
+                        case R.id.account_settings:
+                            Toast.makeText(getApplicationContext(), "Account Settings Should be displayed", Toast.LENGTH_SHORT).show();
                             return true;
                         default:
                             Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
