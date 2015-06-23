@@ -54,7 +54,7 @@ public class gallery1 extends AppCompatActivity {
     private GridView gridview;
     private AsyncTaskLoadFiles myAsyncTaskLoadFiles;
     private ImageAdapter myImageAdapter;
-    private Pattern pattern = Pattern.compile("(IMG.*)");
+    private Pattern pattern = Pattern.compile("/GigIT/(.*)$");
     private HashMap<Integer, Bitmap> finishedPictures;
     private String title;
 
