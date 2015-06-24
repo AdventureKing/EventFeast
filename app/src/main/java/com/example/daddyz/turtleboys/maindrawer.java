@@ -185,6 +185,15 @@ public class maindrawer extends AppCompatActivity {
                         case R.id.account_settings:
                             Toast.makeText(getApplicationContext(), "Account Settings Should be displayed", Toast.LENGTH_SHORT).show();
                             return true;
+
+                        case R.id.activity_map:
+                            //Toast.makeText(getApplicationContext(), "Stared Selected", Toast.LENGTH_SHORT).show();
+                            Intent mapIntent = new Intent(getApplicationContext(), MapsActivity.class);
+                            startActivity(mapIntent);
+                            return true;
+
+
+
                         default:
                             Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
                             return true;
