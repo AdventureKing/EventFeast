@@ -5,17 +5,17 @@ package com.example.daddyz.turtleboys.eventfeed;
  */
 public class eventfeedObject {
 
-    private String eventID = null;
-    private String eventDesc = null;
-    private String eventDate = null;
-    private String eventTime = null;
-    private String eventVenue = null;
-    private String eventState = null;
-    private String eventCity = null;
-    private String eventZip = null;
-    private String eventAddress = null;
-    private String eventSource = null;
-    private String eventURL = null;
+    private String eventID = "";
+    private String eventDesc = "";
+    private String eventDate = "";
+    private String eventTime = "";
+    private String eventVenue = "";
+    private String eventState = "";
+    private String eventCity = "";
+    private String eventZip = "";
+    private String eventAddress = "";
+    private String eventSource = "";
+    private String eventURL = "";
 
 
     public String getEventDesc() { return eventDesc; }
