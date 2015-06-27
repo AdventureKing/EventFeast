@@ -6,10 +6,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -48,6 +50,15 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
 
         mTextView = (TextView) rootView.findViewById(R.id.textView);
         mButton = (Button) rootView.findViewById(R.id.button);
+        list.setClickable(true);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                //this is where we are gonna
+                Toast.makeText(getActivity(), "Clicked arow", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         Log.d("CustomAdapter", "MusicFragment onCreateView successful");
 
