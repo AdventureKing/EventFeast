@@ -54,6 +54,9 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+                //get object at that position
+                Object obj = list.getItemAtPosition(position);
+               eventfeedObject news = (eventfeedObject) obj;
 
                 //this is where we are gonna
                 Toast.makeText(getActivity(), "Clicked arow", Toast.LENGTH_SHORT).show();
