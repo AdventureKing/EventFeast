@@ -321,38 +321,39 @@ public class MapsActivity extends FragmentActivity implements
         // Get Current Location
         Location myLocation = locationManager.getLastKnownLocation(provider);
 
-        // Get latitude of the current location
-        double latitude = myLocation.getLatitude();
-        //double latitude = Double.parseDouble(lat);
+        if(myLocation != null) {
+            // Get latitude of the current location
+            double latitude = myLocation.getLatitude();
+            //double latitude = Double.parseDouble(lat);
 
-        // Get longitude of the current location
-        double longitude = myLocation.getLongitude();
-        //double longitude = Double.parseDouble(lon);
+            // Get longitude of the current location
+            double longitude = myLocation.getLongitude();
+            //double longitude = Double.parseDouble(lon);
 
-        // Create a LatLng object for the current location
-        LatLng latLng = new LatLng(latitude, longitude);
+            // Create a LatLng object for the current location
+            LatLng latLng = new LatLng(latitude, longitude);
 
-        // Show the current location in Google Map
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            // Show the current location in Google Map
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
-        // Zoom in the Google Map
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
-        //mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet("Consider yourself located"));
+            // Zoom in the Google Map
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+            //mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet("Consider yourself located"));
 
 
-        //add map markers
-        l = (latitude + 0.012345);
-        g = (longitude + 0.019876);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, g)).title("Sample Event Marker").snippet("123 Sample Rd. San Antonio, TX"));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(l, longitude)).title("Sample Event Marker").snippet("123 Sample Rd. San Antonio, TX"));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(l, g)).title("Sample Event Marker").snippet("123 Sample Rd. San Antonio, TX"));
+            //add map markers
+            l = (latitude + 0.012345);
+            g = (longitude + 0.019876);
+            mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, g)).title("Sample Event Marker").snippet("123 Sample Rd. San Antonio, TX"));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(l, longitude)).title("Sample Event Marker").snippet("123 Sample Rd. San Antonio, TX"));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(l, g)).title("Sample Event Marker").snippet("123 Sample Rd. San Antonio, TX"));
 
-        l = (latitude - 0.016574);
-        g = (longitude - 0.010023);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, g)).title("Sample Event Marker").snippet("123 Sample Rd. San Antonio, TX"));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(l, longitude)).title("Sample Event Marker").snippet("123 Sample Rd. San Antonio, TX"));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(l, g)).title("Sample Event Marker").snippet("123 Sample Rd. San Antonio, TX"));
-
+            l = (latitude - 0.016574);
+            g = (longitude - 0.010023);
+            mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, g)).title("Sample Event Marker").snippet("123 Sample Rd. San Antonio, TX"));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(l, longitude)).title("Sample Event Marker").snippet("123 Sample Rd. San Antonio, TX"));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(l, g)).title("Sample Event Marker").snippet("123 Sample Rd. San Antonio, TX"));
+        }
 
     }
 

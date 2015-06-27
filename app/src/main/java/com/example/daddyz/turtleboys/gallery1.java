@@ -94,6 +94,20 @@ public class gallery1 extends AppCompatActivity {
         gridview.setAdapter(myImageAdapter);
         finishedPictures = new HashMap<>();
 
+
+        //Check and if non-existent, create a GigIT photo directory
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "GigIT");
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                Log.d("MyCameraApp", "failed to create directory");
+            }
+        }
+
   /*
    * Move to asyncTaskLoadFiles String ExternalStorageDirectoryPath =
    * Environment .getExternalStorageDirectory() .getAbsolutePath();
