@@ -15,6 +15,7 @@ import com.example.daddyz.turtleboys.R;
  */
 public class eventDetailFragment extends Fragment {
     View view;
+    eventDetailObject obj;
 
     @Nullable
     @Override
@@ -32,5 +33,12 @@ public class eventDetailFragment extends Fragment {
 
     }
 
+
+    public void setObj(eventDetailObject obj) {
+        this.obj = obj;
+    }
+    public eventDetailObject getObj() {
+        return obj;
+    }
 
 }
