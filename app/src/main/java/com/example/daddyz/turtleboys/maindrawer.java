@@ -61,9 +61,10 @@ public class maindrawer extends AppCompatActivity {
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
 
-            //generate newsfeed
-            //stuff that goes in a row
-            //create a list fragment and show
+
+           //create eventfeed fragment and launch it to fill the main screen
+            //we get the current fragment manager and start a replacement transaction and we add this transaction to a stack
+            //so if we need to move through the stack we pop one off
             EventFeedFragment fragment = new EventFeedFragment();
             getFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("EventFeed").commit();
 
@@ -261,6 +262,9 @@ public class maindrawer extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    //this code allows user to hit backbutton and if you register your fragments correctly it will segway between the fragments they
+    //were at previously
     @Override
     public void onBackPressed() {
 
