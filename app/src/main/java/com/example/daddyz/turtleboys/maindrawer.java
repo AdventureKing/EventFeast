@@ -65,9 +65,9 @@ public class maindrawer extends AppCompatActivity {
             //stuff that goes in a row
             //create a list fragment and show
             EventFeedFragment fragment = new EventFeedFragment();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame, fragment);
-            fragmentTransaction.commit();
+            getFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("EventFeed").commit();
+
+
 
 
 
@@ -121,10 +121,8 @@ public class maindrawer extends AppCompatActivity {
 
                         //Replacing the main content with ContentFragment Which is our Inbox View;
                         case R.id.eventfeed:
-                            EventFeedFragment fragment = new EventFeedFragment();
-                            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.frame, fragment);
-                            fragmentTransaction.commit();
+                            EventFeedFragment fragment3 = new EventFeedFragment();
+                            getFragmentManager().beginTransaction().replace(R.id.frame, fragment3).addToBackStack("EventFeed").commit();
                             return true;
                         case R.id.messaging:
                             Toast.makeText(getApplicationContext(), "Messaging", Toast.LENGTH_SHORT).show();
@@ -141,9 +139,7 @@ public class maindrawer extends AppCompatActivity {
                             return true;
                         case R.id.newsfeed:
                             EventFeedFragment fragment2 = new EventFeedFragment();
-                            android.support.v4.app.FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
-                            fragmentTransaction2.replace(R.id.frame, fragment2);
-                            fragmentTransaction2.commit();
+                            getFragmentManager().beginTransaction().replace(R.id.frame, fragment2).addToBackStack("newsFeed").commit();
                             Toast.makeText(getApplicationContext(), "Drafts Selected", Toast.LENGTH_SHORT).show();
                             return true;
                         case R.id.connect:
@@ -263,5 +259,15 @@ public class maindrawer extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(getFragmentManager().getBackStackEntryCount() != 0) {
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
