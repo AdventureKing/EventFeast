@@ -29,19 +29,7 @@ public class eventDetailFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        /*view.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                Log.i("TEST", "keyCode: " + keyCode);
-                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-                    Log.i("TEST", "onKey Back listener is working!!!");
-                    getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });*/
+
     }
 
 
