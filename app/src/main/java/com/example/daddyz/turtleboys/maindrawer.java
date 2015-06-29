@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
@@ -267,7 +268,11 @@ public class maindrawer extends AppCompatActivity {
     //were at previously
     @Override
     public void onBackPressed() {
+        FrameLayout frame =(FrameLayout) findViewById(R.id.frame);
+        if(frame.getVisibility() == View.INVISIBLE){
+            frame.setVisibility(View.VISIBLE);
 
+        }
         if(getFragmentManager().getBackStackEntryCount() != 0) {
             getFragmentManager().popBackStack();
         } else {

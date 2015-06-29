@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.R;
+import com.example.daddyz.turtleboys.maindrawer;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,9 +62,9 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
                eventfeedObject news = (eventfeedObject) obj;
 
                 eventDetailFragment fragment = new eventDetailFragment();
-                android.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                getFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("EventFeedDetail").commit();
 
+                // getFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("EventFeedDetail").commit();
+                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer,fragment).addToBackStack("EventDetailFragment").commit();
                 //this is where we are gonna
                 Toast.makeText(getActivity(), "Clicked arow", Toast.LENGTH_SHORT).show();
             }
