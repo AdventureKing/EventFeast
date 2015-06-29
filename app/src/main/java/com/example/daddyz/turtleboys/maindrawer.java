@@ -273,7 +273,7 @@ public class maindrawer extends AppCompatActivity {
             frame.setVisibility(View.VISIBLE);
 
         }
-        if(getFragmentManager().getBackStackEntryCount() != 0) {
+        if(getFragmentManager().getBackStackEntryCount() > 1 ) {
             getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
