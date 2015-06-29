@@ -22,7 +22,7 @@ public class eventfeedAdapter extends ArrayAdapter<eventfeedObject> {
     private int resource;
     private ArrayList<eventfeedObject> objects;
 
-    private int[] colors = new int[] { 0x30FF0000, 0x300000FF };
+
     public eventfeedAdapter(Context context, int resource, ArrayList<eventfeedObject> objects) {
         super(context, resource,objects);
         this.context=context;

@@ -3,11 +3,6 @@ package com.example.daddyz.turtleboys;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -19,13 +14,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.daddyz.turtleboys.subclasses.Camera;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.parse.GetDataCallback;
 import com.parse.LogOutCallback;
@@ -37,7 +29,7 @@ import com.parse.ParseUser;
 /**
  * Created by Jinbir on 6/13/2015.
  */
-public class experience_activity extends AppCompatActivity {
+public class  experience_activity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private NavigationView navigationView;
@@ -239,4 +231,5 @@ public class experience_activity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
@@ -61,13 +62,14 @@ public class maindrawer extends AppCompatActivity {
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
 
-            //generate newsfeed
-            //stuff that goes in a row
-            //create a list fragment and show
+
+           //create eventfeed fragment and launch it to fill the main screen
+            //we get the current fragment manager and start a replacement transaction and we add this transaction to a stack
+            //so if we need to move through the stack we pop one off
             EventFeedFragment fragment = new EventFeedFragment();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame, fragment);
-            fragmentTransaction.commit();
+            getFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("EventFeed").commit();
+
+
 
 
 
@@ -121,10 +123,8 @@ public class maindrawer extends AppCompatActivity {
 
                         //Replacing the main content with ContentFragment Which is our Inbox View;
                         case R.id.eventfeed:
-                            EventFeedFragment fragment = new EventFeedFragment();
-                            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.frame, fragment);
-                            fragmentTransaction.commit();
+                            EventFeedFragment fragment3 = new EventFeedFragment();
+                            getFragmentManager().beginTransaction().replace(R.id.frame, fragment3).addToBackStack("EventFeed").commit();
                             return true;
                         case R.id.messaging:
                             Toast.makeText(getApplicationContext(), "Messaging", Toast.LENGTH_SHORT).show();
@@ -141,9 +141,7 @@ public class maindrawer extends AppCompatActivity {
                             return true;
                         case R.id.newsfeed:
                             EventFeedFragment fragment2 = new EventFeedFragment();
-                            android.support.v4.app.FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
-                            fragmentTransaction2.replace(R.id.frame, fragment2);
-                            fragmentTransaction2.commit();
+                            getFragmentManager().beginTransaction().replace(R.id.frame, fragment2).addToBackStack("newsFeed").commit();
                             Toast.makeText(getApplicationContext(), "Drafts Selected", Toast.LENGTH_SHORT).show();
                             return true;
                         case R.id.connect:
@@ -263,5 +261,22 @@ public class maindrawer extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    //this code allows user to hit backbutton and if you register your fragments correctly it will segway between the fragments they
+    //were at previously
+    @Override
+    public void onBackPressed() {
+        FrameLayout frame =(FrameLayout) findViewById(R.id.frame);
+        if(frame.getVisibility() == View.INVISIBLE){
+            frame.setVisibility(View.VISIBLE);
+
+        }
+        if(getFragmentManager().getBackStackEntryCount() > 1 ) {
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
