@@ -2,20 +2,26 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:isScrollContainer="true">
+    android:isScrollContainer="true"
+    >
 
 
     <LinearLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:orientation="vertical">
-        <include
+        android:orientation="vertical"
+        android:screenOrientation = "reverseLandscape"
+        >
+
+       <include
             android:id="@+id/toolbar"
             layout="@layout/tool_bar"
             />
+
         <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -30,12 +36,16 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_launcher" />
 
+
                 <TextView
-                    android:id="@+id/textView1"
+                    android:id="@+id/eventName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="whatever"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:text="Event Name"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toRightOf="@+id/textView2"
+                    android:layout_toEndOf="@+id/textView2" />
 
                 <TextView
                     android:id="@+id/textView2"
@@ -48,11 +58,32 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Reservation No :27210 10020"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/textView2"
+                    android:layout_toEndOf="@+id/textView2" />
 
-
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reservation No :27210 10020"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/textView2"
+                    android:layout_toEndOf="@+id/textView2" />
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reservation No :27210 10020"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/textView2"
+                    android:layout_toEndOf="@+id/textView2" />
             </LinearLayout>
 
         </ScrollView>
+
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

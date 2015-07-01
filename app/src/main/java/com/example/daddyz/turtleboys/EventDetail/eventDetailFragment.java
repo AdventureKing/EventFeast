@@ -73,6 +73,7 @@ public class eventDetailFragment extends Fragment {
         if(getFragmentManager().getBackStackEntryCount() != 0) {
             getFragmentManager().popBackStack();
             frame.setVisibility(View.VISIBLE);
+
         }
     }
 }
