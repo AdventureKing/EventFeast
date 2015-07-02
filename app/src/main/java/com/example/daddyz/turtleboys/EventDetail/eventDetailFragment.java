@@ -28,6 +28,7 @@ public class eventDetailFragment extends Fragment {
     private TextView eventName;
     private TextView eventDate;
     private TextView eventLocation;
+    private TextView eventDesc;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +66,8 @@ public class eventDetailFragment extends Fragment {
         eventDate.setText(obj.getEventDate());
         eventLocation = (TextView) view.findViewById(R.id.EventLocation);
         eventLocation.setText(obj.getEventAddress());
+        eventDesc = (TextView) view.findViewById(R.id.EventDesc);
+        eventDesc.setText(obj.getEventDesc());
 
         return view;
     }

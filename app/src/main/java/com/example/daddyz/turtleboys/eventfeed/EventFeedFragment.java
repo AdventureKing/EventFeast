@@ -63,7 +63,7 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
                EventDetailObject news = new EventDetailObject();
                 news.setEventDesc(obj.getEventDesc());
                 news.setEventDate(obj.getEventDate());
-                news.setEventAddress(obj.getEventAddress());
+                news.setEventAddress(obj.getEventVenue());
                 eventDetailFragment fragment = new eventDetailFragment();
                 fragment.setObj(news);
 
