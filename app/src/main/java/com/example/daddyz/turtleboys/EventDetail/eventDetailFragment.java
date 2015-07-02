@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.example.daddyz.turtleboys.R;
 
@@ -22,6 +23,11 @@ public class eventDetailFragment extends Fragment {
     private EventDetailObject obj;
     private Toolbar toolbar;
     private ActionBar actionbar;
+
+
+    private TextView eventName;
+    private TextView eventDate;
+    private TextView eventLocation;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,6 +44,7 @@ public class eventDetailFragment extends Fragment {
         frame.setVisibility(View.INVISIBLE);
 
 
+
         //Set up back arrow icon on toolbar
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeButtonEnabled(true);
@@ -49,6 +56,15 @@ public class eventDetailFragment extends Fragment {
                 onBackPressed(frame);
             }
         });
+
+
+        //set the stuff on the page
+        eventName = (TextView) view.findViewById(R.id.EventTitle);
+        eventName.setText(obj.getEventDesc());
+        eventDate = (TextView) view.findViewById(R.id.EventDate);
+        eventDate.setText(obj.getEventDate());
+        eventLocation = (TextView) view.findViewById(R.id.EventLocation);
+        eventLocation.setText(obj.getEventAddress());
 
         return view;
     }
