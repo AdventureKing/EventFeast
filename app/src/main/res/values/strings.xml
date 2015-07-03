@@ -90,5 +90,10 @@
 
     <string name="geofence_transition_notification_text">Click notification to return to app</string>
 
+    <!-- Search Event Strings -->
+    <string name="searchKeyword">Please enter a Keyword to search</string>
+    <string name="searchLocation">Location\n Tap to change Location</string>
+    <string name="setSearchRadius">Set Search Radius\t f kms / d miles</string>
+
 
 </resources>

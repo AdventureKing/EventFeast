@@ -1,0 +1,114 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/top">
+        <EditText
+            android:id="@+id/location"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:imeOptions="actionDone"/>
+
+        <EditText
+            android:id="@+id/keyword"
+            android:inputType="text"
+            android:layout_width="wrap_content"
+            android:background="#FFDDDDDD"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/location"
+            android:layout_marginTop="45dp"
+            android:imeOptions="actionDone"/>
+
+        <ImageView
+            android:id="@+id/keywordSearch"
+            android:src="@drawable/ic_search_black_44x40"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignBottom="@+id/keyword"
+            android:layout_toLeftOf="@+id/keyword"
+            android:layout_toStartOf="@+id/keyword" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/second"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/searcheventborder">
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/sortGroup">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sort by"
+                android:id="@+id/sort" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                android:id="@+id/sortDate"
+                android:checked="false"
+                android:layout_toRightOf="@+id/sort"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Distance"
+                android:id="@+id/sortDistance"
+                android:checked="false"
+                android:layout_toRightOf="@+id/sortDate"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Relevance"
+                android:id="@+id/sortRelevance"
+                android:checked="false"
+                android:layout_toRightOf="@+id/sortDistance"/>
+        </RadioGroup>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/third"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/searcheventborder">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PLACEHOLDER"
+            android:id="@+id/searchRadiusText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp" />
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/searchRadius"
+            android:max="100"
+            android:progress="10"
+            android:layout_below="@+id/searchRadiusText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="0dp" />
+    </RelativeLayout>
+
+
+</LinearLayout>
