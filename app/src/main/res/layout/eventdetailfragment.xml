@@ -143,6 +143,15 @@
                     android:layout_below="@+id/AddToCalendarButton"
                     android:paddingTop="5dp"
                     />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Buy Tickets"
+                    android:id="@+id/BuyTicketsButton"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/ShareButton"
+                    android:paddingTop="5dp"
+                    />
             </RelativeLayout>
         </ScrollView>
     </LinearLayout>
