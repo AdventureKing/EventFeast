@@ -1,15 +1,15 @@
 package com.example.daddyz.turtleboys;
 
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
-import android.net.Uri;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
+import android.app.FragmentManager;
+import android.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,14 +19,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.view.animation.Animation;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.daddyz.turtleboys.subclasses.Camera;
+import com.example.daddyz.turtleboys.settings.SettingsFragment;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
+import com.example.daddyz.turtleboys.subclasses.User_Icon_Animation;
 import com.parse.GetDataCallback;
 import com.parse.LogOutCallback;
 import com.parse.ParseFile;
@@ -44,9 +43,11 @@ public class experience_activity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private TextView userName;
     private TextView userEmail;
-
     private ProgressBar mProgressBar;
-
+    private boolean AnimationFlag;
+    private SharedPreferences preferences;
+    private FragmentManager fragManager;
+    private ParseImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,14 @@ public class experience_activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("My Experiences");
 
+        //Retrieve preferences and prepare fragment listener to allow dynamic changes to preferences while in fragments
+        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        AnimationFlag = preferences.getBoolean("animation_preference", false);
+        
+        //Setup the Fragment Manager
+        fragManager = getFragmentManager();
+        fragManager.addOnBackStackChangedListener(getListener());
+
         //set username and email in the header and user image
         userName = (TextView) findViewById(R.id.username);
         userName.setText(currentUser.getUsername().toString());
@@ -68,7 +77,7 @@ public class experience_activity extends AppCompatActivity {
 
         //get ParseImageView from xml
         ParseFile image = (ParseFile) currentUser.getUserImage();
-        final ParseImageView imageView = (ParseImageView) findViewById(R.id.profile_image);
+        imageView = (ParseImageView) findViewById(R.id.profile_image);
         imageView.setParseFile(image);
 
         //load the image from the parse database
@@ -83,6 +92,14 @@ public class experience_activity extends AppCompatActivity {
 
             }
         });
+
+        //Animate the imageview if preferences permit
+        final Animation User_Icon = new User_Icon_Animation(com.example.daddyz.turtleboys.subclasses.User_Icon_Animation.Rotate.RIGHT, User_Icon_Animation.Angle.TO_DEGREES_0, 500, false);
+        if(AnimationFlag) {
+            //hide user image until drawer is fully open if animations are enabled
+            imageView.setVisibility(View.INVISIBLE);
+        }
+
 
         //this is the drawer
 
@@ -186,13 +203,18 @@ public class experience_activity extends AppCompatActivity {
             @Override
             public void onDrawerClosed(View drawerView) {
                 // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
+                if(AnimationFlag)
+                    imageView.setVisibility(View.INVISIBLE);
                 super.onDrawerClosed(drawerView);
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
-
+                if(AnimationFlag) {
+                    imageView.setVisibility(View.VISIBLE);
+                    imageView.startAnimation(User_Icon);
+                }
                 super.onDrawerOpened(drawerView);
             }
         };
@@ -227,6 +249,8 @@ public class experience_activity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Fragment fragment = new SettingsFragment();
+            fragManager.beginTransaction().replace(R.id.myexperiencesdrawer, fragment).addToBackStack("MY_FRAGMENT_NAME").commit();
             Toast.makeText(getApplicationContext(), "Settings Selected", Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -238,5 +262,32 @@ public class experience_activity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d("Test","This is being called in my_experiences");
+        if(getFragmentManager().getBackStackEntryCount() != 0) {
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private OnBackStackChangedListener getListener(){
+        //This is when a fragment is added or popped off the stack, use this section to update anything when a fragment is changed,
+        //such as updating preferences on a fragment view after the settings fragment is finished
+        OnBackStackChangedListener result = new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                AnimationFlag = preferences.getBoolean("animation_preference", false);
+                if(AnimationFlag){
+                    imageView.setVisibility(View.INVISIBLE);
+                }else{
+                    imageView.setVisibility(View.VISIBLE);
+                }
+            }
+        };
+        return result;
     }
 }

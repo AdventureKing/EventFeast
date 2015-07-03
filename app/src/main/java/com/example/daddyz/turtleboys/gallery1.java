@@ -21,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -510,5 +511,17 @@ public class gallery1 extends AppCompatActivity {
             }
 
             return inSampleSize;
+        }
+
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu){
+            if (menu != null){
+                menu.clear();
+
+                //The following is how to hide individual menu items
+                //menu.findItem(R.id.action_gallery).setVisible(false);
+                //menu.findItem(R.id.action_settings).setVisible(false);
+            }
+            return true;
         }
     }

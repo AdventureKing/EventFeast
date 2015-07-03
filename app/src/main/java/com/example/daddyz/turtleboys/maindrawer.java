@@ -5,9 +5,12 @@ package com.example.daddyz.turtleboys;
  */
 
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -24,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.eventfeed.EventFeedFragment;
+import com.example.daddyz.turtleboys.settings.SettingsFragment;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.parse.GetDataCallback;
 import com.parse.LogOutCallback;
@@ -41,14 +45,15 @@ public class maindrawer extends AppCompatActivity {
     private TextView userEmail;
     private ListView myList;
     private ProgressBar mProgressBar;
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-
-
+        //Initialize all preferences to their default values if device does not have them previously saved
+        PreferenceManager.setDefaultValues(this, R.xml.settings_preference_fragment, true);
 
         if (GigUser.getCurrentUser() == null){
             Intent intent = new Intent(getApplicationContext(), login_activity.class);
@@ -252,6 +257,8 @@ public class maindrawer extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Fragment fragment = new SettingsFragment();
+            getFragmentManager().beginTransaction().replace(R.id.drawer, fragment).addToBackStack("MY_FRAGMENT_NAME").commit();
             Toast.makeText(getApplicationContext(), "Settings Selected", Toast.LENGTH_SHORT).show();
             return true;
         }
