@@ -57,7 +57,7 @@
 	
 		// Process JSON string - Convert JSON to PHP Array
 		$json = json_decode($body);
-		//var_dump($json);
+		//var_dump($body);
 	
 		// Number of Returned Results
 		$num = $json->response->numFound;
@@ -97,10 +97,14 @@
 				// Filter out results not in state
 				if (empty($filterState) || strcasecmp($filterState,$json->response->docs[$i]->state) == 0){
 					// Result format with JSON variables
+					$results_events[$i]['source'] = "stubhub";
 					$results_events[$i]['desc'] = $json->response->docs[$i]->description;
 					$results_events[$i]['date'] = $json->response->docs[$i]->event_date_local;
+					$results_events[$i]['time'] = $json->response->docs[$i]->event_time_local;
 					$results_events[$i]['venue'] = $json->response->docs[$i]->venue_name;
-					$results_events[$i]['state'] = $json->response->docs[$i]->city;
+					$results_events[$i]['state'] = $json->response->docs[$i]->state;
+					$results_events[$i]['city'] = $json->response->docs[$i]->city;
+					$results_events[$i]['urlpath'] = "http://www.stubhub.com/".$json->response->docs[$i]->genreUrlPath."/".$json->response->docs[$i]->urlpath."/";
 				}
 				}
 				}
