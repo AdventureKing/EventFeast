@@ -37,6 +37,7 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
 
     public static final String REQUEST_TAG = "MainVolleyActivity";
     private Button mButton;
+
     private TextView mTextView;
     private RequestQueue mQueue;
     private View rootView;

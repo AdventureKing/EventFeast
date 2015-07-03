@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -23,7 +24,9 @@ public class eventDetailFragment extends Fragment {
     private EventDetailObject obj;
     private Toolbar toolbar;
     private ActionBar actionbar;
-
+    private Button calendarButton;
+    private Button shareButton;
+    private Button buyButton;
 
     private TextView eventName;
     private TextView eventDate;
@@ -68,6 +71,10 @@ public class eventDetailFragment extends Fragment {
         eventLocation.setText(obj.getEventAddress());
         eventDesc = (TextView) view.findViewById(R.id.EventDesc);
         eventDesc.setText(obj.getEventDesc());
+
+
+
+        //actionlisteners for the buttons
 
         return view;
     }
