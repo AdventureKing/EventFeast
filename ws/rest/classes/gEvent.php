@@ -1,29 +1,30 @@
 <?php 
 	class gEvent{
 		/* Member Variables */
-		private $internal_id;
-		private $external_id;
-		private $datasource;
-		private $event_external_url;
-		private $title;
-		private $description;
-		private $start_time;
-		private $stop_time;
-		private $venue_external_id;
-		private $venue_external_url;
-		private $venue_name;
-		private $venue_display;
-		private $venue_address;
-		private $city_name;
-		private $region_name;
-		private $region_abbr;
-		private $postal_code;
-		private $country_name;
-		private $all_day;
-		private $latitude;
-		private $longitude;
-		private $performers;
-		private $images;
+		private $internal_id = "";
+		private $external_id = "";
+		private $datasource = "";
+		private $event_external_url = "";
+		private $title = "";
+		private $description = "";
+		private $start_time = "";
+		private $stop_time = "";
+		private $venue_external_id = "";
+		private $venue_external_url = "";
+		private $venue_name = "";
+		private $venue_display = "";
+		private $venue_address = "";
+		private $state_name = "";
+		private $city_name = "";
+		private $region_name = "";
+		private $region_abbr = "";
+		private $postal_code = "";
+		private $country_name = "";
+		private $all_day = "";
+		private $latitude = "";
+		private $longitude = "";
+		private $performers = "";
+		private $images = "";
 	
 	    /**
 	     * Gets the value of internal_id.
@@ -333,6 +334,30 @@
 	    public function setVenue_address($venue_address)
 	    {
 	        $this->venue_address = $venue_address;
+
+	        return $this;
+	    }
+
+		/**
+	     * Gets the value of state_name.
+	     *
+	     * @return mixed
+	     */
+	    public function getState_name()
+	    {
+	        return $this->state_name;
+	    }
+
+	    /**
+	     * Sets the value of state_name.
+	     *
+	     * @param mixed $state_name the state_name
+	     *
+	     * @return self
+	     */
+	    public function setState_name($state_name)
+	    {
+	        $this->state_name = $state_name;
 
 	        return $this;
 	    }

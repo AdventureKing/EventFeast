@@ -16,27 +16,50 @@
 		$json = json_decode($data);
 		$num = $json->response->numFound;
 		
+		$gEvents = null;
 		$i = 0;
 		while ($i<$num) {
+            
             $gEvent = new gEvent;
+            $gEvent->setExternal_id($json->response->docs[$i]->Id);
+            $gEvent->setDatasource("ticketmaster");
+            $gEvent->setTitle($json->response->docs[$i]->ShortEventName);
+            $gEvent->setDescription($json->response->docs[$i]->EventName);
 
+            $gEvent->setVenue_external_id($json->response->docs[$i]->VenueId);
+            $gEvent->setVenue_name($json->response->docs[$i]->VenueName);
+            $gEvent->setVenue_address($json->response->docs[$i]->VenueAddress);
 
+            $gEvent->setCountry_name($json->response->docs[$i]->VenueCountry);
+            $gEvent->setState_name($json->response->docs[$i]->VenueState);
+            $gEvent->setCity_name($json->response->docs[$i]->VenueCity);
+            $gEvent->setPostal_code($json->response->docs[$i]->VenuePostalCode);
 
-			$eventDesc = $json->response->docs[$i]->EventName;
-			$eventDateTime = explode("T",$json->response->docs[$i]->PostProcessedData->LocalEventDate);
+            $gEvent->setLatitude($json->response->docs[$i]->Latitude);
+            $gEvent->setLongitude($json->response->docs[$i]->Longitude);
+            
+            $gEvent->setStart_time(str_replace("T", " ", trim($json->response->docs[$i]->PostProcessedData->LocalEventDate, 0, -6)));           
+            
+            $gEvent->setEvent_external_url("http://ticketmaster.com".$json->response->docs[$i]->AttractionSEOLink[0]);
+
+            $gEventImages = null;
+
+            foreach ($json->response->docs[$i]->AttractionImage as $image) {
+            	$gImage = new gEventImage;
+            	$gImage->setImage_external_url("http://s1.ticketm.net/tm/en-us".$image);
+            	$gEventImages += $gImage;
+            }
+
+            if(isset($json->response->docs[$i]->VenueImage)){
+            	$gImage = new gEventImage;
+            	$gImage->setImage_external_url("http://s1.ticketm.net/tm/en-us".$json->response->docs[$i]->VenueImage)
+            	$gEventImages += $gImage;
+            }
+
+            $gEvent->setImages($gEventImages);
+            $gEvents += $gEvent;
 			
-			$eventDate = $eventDateTime[0];
-			$eventTime = explode("-",$eventDateTime[1]);
-			
-			$eventStartTime = $eventTime[0];
-			$eventEndTime = $eventTime[1];
-			$eventVenue = $json->response->docs[$i]->VenueName;
-			$eventCity = $json->response->docs[$i]->VenueCity;
-			$eventState = $json->response->docs[$i]->VenueState;
-			$eventAddress = $json->response->docs[$i]->VenueAddress;
-			$eventSource = "ticketmaster";
-			$eventURL= "http://ticketmaster.com".$json->response->docs[$i]->AttractionSEOLink[0];
-			
+			/*
 			if($eventDesc != null && $eventCity == $filterCity){
 				$results_events[$i]['desc'] = $eventDesc;
 				$results_events[$i]['date'] = $eventDate;
@@ -47,11 +70,12 @@
 				$results_events[$i]['source'] = $eventSource;
 				$results_events[$i]['urlpath'] = $eventURL;
 			}
+			*/
 			
 			$i++;
 		}
-		var_dump(json_encode($results_events));
-		return $results_events;
+		var_dump(json_encode($gEvents));
+		return $gEvents;
 	}
 	
 	function get_data($url)
