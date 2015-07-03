@@ -1,4 +1,6 @@
 <?php 
+	require_once('../../classes/gEvent.php');
+
 	$q = $_GET['q'];
 	$optionsArray['city'] = $_GET['city'];
 
@@ -16,6 +18,10 @@
 		
 		$i = 0;
 		while ($i<$num) {
+            $gEvent = new gEvent;
+
+
+
 			$eventDesc = $json->response->docs[$i]->EventName;
 			$eventDateTime = explode("T",$json->response->docs[$i]->PostProcessedData->LocalEventDate);
 			
