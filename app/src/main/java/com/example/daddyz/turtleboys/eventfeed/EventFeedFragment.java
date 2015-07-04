@@ -1,21 +1,26 @@
 package com.example.daddyz.turtleboys.eventfeed;
 
+
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.R;
+import com.example.daddyz.turtleboys.maindrawer;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +53,22 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
 
         mTextView = (TextView) rootView.findViewById(R.id.textView);
         mButton = (Button) rootView.findViewById(R.id.button);
+        list.setClickable(true);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                //get object at that position
+                Object obj = list.getItemAtPosition(position);
+               eventfeedObject news = (eventfeedObject) obj;
+
+                eventDetailFragment fragment = new eventDetailFragment();
+
+                // getFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("EventFeedDetail").commit();
+                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer,fragment).addToBackStack("EventDetailFragment").commit();
+                //this is where we are gonna
+                Toast.makeText(getActivity(), "Clicked arow", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         Log.d("CustomAdapter", "MusicFragment onCreateView successful");
 

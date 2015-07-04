@@ -36,7 +36,7 @@ import com.parse.ParseUser;
 /**
  * Created by Jinbir on 6/13/2015.
  */
-public class experience_activity extends AppCompatActivity {
+public class  experience_activity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private NavigationView navigationView;
