@@ -2,7 +2,9 @@ package com.example.daddyz.turtleboys.EventDetail;
 
 
 import android.app.Fragment;
+import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 import com.example.daddyz.turtleboys.R;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 /**
@@ -79,33 +82,37 @@ public class eventDetailFragment extends Fragment {
         eventDesc = (TextView) view.findViewById(R.id.EventDesc);
         eventDesc.setText(obj.getEventDesc());
 
+
+        //actionlisteners for the buttons
         calendarButton = (Button) view.findViewById(R.id.AddToCalendarButton);
         calendarButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                // create Intent to take a picture and return control to the calling application
-             /*   Intent calIntent = new Intent(Intent.ACTION_INSERT);
-                calIntent.setType("vnd.android.cursor.item/event");
-                calIntent.putExtra(CalendarContract.Events.TITLE, "My House Party");
-                calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, "My Beach House");
-                calIntent.putExtra(CalendarContract.Events.DESCRIPTION, "A Pig Roast on the Beach");
-                //instaiate with the time to start
-                GregorianCalendar calDate = new GregorianCalendar(2015, 7, 15,12,15,10);
-                calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
-                        calDate.getTimeInMillis());
-                calDate.set(2015, 7, 15,17,15,10);
-                calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
-                        calDate.getTimeInMillis());
 
-
-                startActivity(calIntent);*/
-
+                //createEvent();
                 autocreate();
             }
         });
 
-        //actionlisteners for the buttons
+        buyButton = (Button) view.findViewById(R.id.BuyTicketsButton);
+        buyButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+               Intent webBrowser = new Intent(Intent.ACTION_VIEW,Uri.parse("http://google.com"));
+                startActivity(webBrowser);
+            }
+        });
+
+        shareButton = (Button) view.findViewById(R.id.ShareButton);
+        shareButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         return view;
     }
@@ -135,22 +142,54 @@ public class eventDetailFragment extends Fragment {
     }
     public void autocreate(){
         Calendar beginTime = Calendar.getInstance();
-        beginTime.set(2015, 7, 20, 7, 30);
+        beginTime.set(2015, 6, 4, 10, 45);
         Calendar endTime = Calendar.getInstance();
-        endTime.set(2015, 7, 20, 8, 30);
+        endTime.set(2015, 6, 4, 12, 30);
 
-
+        //create content that will go into the calendar
         ContentValues calEvent = new ContentValues();
+        //create ability to insert into the calendar
+        ContentResolver cr = getActivity().getContentResolver();
+
+        //where/when/id_for_insert/start_time/end_time/time_zone
         calEvent.put(CalendarContract.Events.CALENDAR_ID, 1); // XXX pick)
-        calEvent.put(CalendarContract.Events.TITLE, "title is game time");
+        calEvent.put(CalendarContract.Events.TITLE, obj.getEventDesc());
         calEvent.put(CalendarContract.Events.DTSTART, beginTime.getTimeInMillis());
         calEvent.put(CalendarContract.Events.DTEND, endTime.getTimeInMillis());
         calEvent.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
-        Uri uri = getActivity().getContentResolver().insert(CalendarContract.Events.CONTENT_URI, calEvent);
+        calEvent.put(CalendarContract.Events.EVENT_LOCATION,obj.getEventVenue());
 
-        // The returned Uri contains the content-retriever URI for
-        // the newly-inserted event, including its id
+        Uri uri = getActivity().getContentResolver().insert(CalendarContract.Events.CONTENT_URI, calEvent);
+        //get id for reminders
         int id = Integer.parseInt(uri.getLastPathSegment());
-        Toast.makeText(getActivity(), "EVENT_TITLE WAS ADDED TO THE CALENDAR", Toast.LENGTH_SHORT).show();
+        //create a reminders value and put a reminder for XX mins
+        ContentValues reminders = new ContentValues();
+        reminders.put(CalendarContract.Reminders.EVENT_ID,id);
+        reminders.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
+        //reminder could be a setting??????????
+        reminders.put(CalendarContract.Reminders.MINUTES, 1);
+       //insert into the event they just added
+        Uri uri2 = cr.insert(CalendarContract.Reminders.CONTENT_URI, reminders);
+
+
+        Toast.makeText(getActivity(), obj.getEventDesc() + " was added to the Calendar", Toast.LENGTH_SHORT).show();
+    }
+
+    public void createEvent(){
+        Intent calIntent = new Intent(Intent.ACTION_INSERT);
+        calIntent.setType("vnd.android.cursor.item/event");
+        calIntent.putExtra(CalendarContract.Events.TITLE, obj.getEventDesc());
+        calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, "My Beach House");
+        calIntent.putExtra(CalendarContract.Events.DESCRIPTION, "A Pig Roast on the Beach");
+        //instaiate with the time to start
+        GregorianCalendar calDate = new GregorianCalendar(2015, 7, 15,12,15,10);
+        calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                calDate.getTimeInMillis());
+        calDate.set(2015, 7, 15,17,15,10);
+        calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
+                calDate.getTimeInMillis());
+
+
+        startActivity(calIntent);
     }
 }
