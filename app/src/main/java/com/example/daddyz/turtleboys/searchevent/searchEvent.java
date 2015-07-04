@@ -1,17 +1,27 @@
 package com.example.daddyz.turtleboys.searchevent;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.R;
+import com.example.daddyz.turtleboys.registration_activity;
+
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Jinbir on 6/26/2015.
@@ -29,6 +39,16 @@ public class searchEvent extends Fragment {
 
     private Button search;
     private Button reset;
+
+    private EditText toDateText;
+    private EditText fromDateText;
+    private DialogFragment fromDateSelector;
+    private DialogFragment toDateSelector;
+    private Date toDate;
+    private Date fromDate;
+
+    private RadioGroup radioSortbyGroup;
+    private RadioButton sortbyButton;
 
     private double MILESINAKILOMETER = 0.621;
 
@@ -62,10 +82,18 @@ public class searchEvent extends Fragment {
 
         searchRadiusText = (TextView) rootView.findViewById(R.id.searchRadiusText);
 
+        //Sortby RadioGroup
+        radioSortbyGroup = (RadioGroup) rootView.findViewById(R.id.sortGroup);
+        sortbyButton = (RadioButton) rootView.findViewById(radioSortbyGroup.getCheckedRadioButtonId());
+
         //SearchRadius Seekbar
         searchRadiusSeekBar = (SeekBar) rootView.findViewById(R.id.searchRadius);
         searchRadiusSeekBar.setOnSeekBarChangeListener(searchRadiusSeekbarListener);
-
+        //Inital Seekbar values
+        searchRadius_miles = searchRadiusSeekBar.getProgress();
+        searchRadius_kilometers = searchRadius_miles / MILESINAKILOMETER;
+        searchRadiusText.setText(String.format("Set Search Radius\t %d miles / %.02f km"
+                , searchRadius_miles, searchRadius_kilometers));
 
         searchRadiusSeekbarListener =
                 new SeekBar.OnSeekBarChangeListener() {
@@ -73,16 +101,19 @@ public class searchEvent extends Fragment {
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         searchRadius_miles = progress;
                         searchRadius_kilometers = searchRadius_miles / MILESINAKILOMETER;
-                        searchRadiusText.setText( String.format("Set Search Radius\t %2f kms / %d miles"
-                                , searchRadius_kilometers, searchRadius_miles));
+                        searchRadiusText.setText(String.format("Set Search Radius\t %d miles / %.02f km"
+                                , searchRadius_miles, searchRadius_kilometers));
                         rootView.refreshDrawableState();
                         Toast.makeText(getActivity().getApplicationContext(), "SeekBar", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onStartTrackingTouch(SeekBar seekBar) {
-
-
+                        searchRadius_miles = seekBar.getProgress();
+                        searchRadius_kilometers = searchRadius_miles / MILESINAKILOMETER;
+                        searchRadiusText.setText(String.format("Set Search Radius\t %d miles / %.02f km"
+                                , searchRadius_miles, searchRadius_kilometers));
+                        rootView.refreshDrawableState();
                     }
 
                     @Override
@@ -90,6 +121,28 @@ public class searchEvent extends Fragment {
 
                     }
                 };
+
+        //fromDate date picker
+        fromDateSelector = new DatePickerFragment();
+        fromDateText = (EditText) rootView.findViewById(R.id.fromDate);
+        fromDateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fromDateSelector.registerForContextMenu(fromDateText);
+                fromDateSelector.show(getFragmentManager(), "Date Picker");
+            }
+        });
+
+        //toDate date picker
+        toDateSelector = new DatePickerFragment();
+        toDateText = (EditText) rootView.findViewById(R.id.toDate);
+        toDateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toDateSelector.registerForContextMenu(toDateText);
+                toDateSelector.show(getFragmentManager(), "Date Picker");
+            }
+        });
 
         //Search Button
         search = (Button) rootView.findViewById(R.id.searchButton);
@@ -117,6 +170,45 @@ public class searchEvent extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+
+    public static class DatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+
+
+        @Override
+        public void registerForContextMenu(View v) {
+            dateset = (EditText) v;
+        }
+
+        private EditText dateset;
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            // Create a new instance of DatePickerDialog and return it
+            return new DatePickerDialog(getActivity(), this, year, month, day);
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            // Do something with the date chosen by the user
+            Calendar time = Calendar.getInstance();
+            String am_pm, timeformat;
+
+            time.set(Calendar.MONTH, month);
+            time.set(Calendar.DATE, day);
+            time.set(Calendar.YEAR, year);
+
+            timeformat = (String) android.text.format.DateFormat.format("M/dd/yyyy", time);
+            dateset.setText(timeformat);
+        }
+
     }
 
 

@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:imeOptions="actionDone"
-            android:drawableLeft="@drawable/ic_location_black_44x40"/>
+            android:drawableLeft="@drawable/ic_location_on_black_24dp_1x"/>
 
         <EditText
             android:id="@+id/keyword"
@@ -29,7 +29,7 @@
             android:layout_below="@+id/location"
             android:layout_marginTop="45dp"
             android:imeOptions="actionDone"
-            android:drawableLeft="@drawable/ic_search_black_44x40"/>
+            android:drawableLeft="@drawable/ic_search_black_24dp_1x"/>
 
 
     </RelativeLayout>
@@ -59,8 +59,6 @@
                 android:layout_height="wrap_content"
                 android:text="Date"
                 android:id="@+id/sortDate"
-                android:drawableLeft="@drawable/boxradiobtn"
-                android:button="@null"
                 android:checked="false"
                 android:layout_toRightOf="@+id/sort"/>
 
@@ -69,8 +67,6 @@
                 android:layout_height="wrap_content"
                 android:text="Distance"
                 android:id="@+id/sortDistance"
-                android:drawableLeft="@drawable/boxradiobtn"
-                android:button="@null"
                 android:checked="false"
                 android:layout_toRightOf="@+id/sortDate"/>
 
@@ -79,8 +75,6 @@
                 android:layout_height="wrap_content"
                 android:text="Relevance"
                 android:id="@+id/sortRelevance"
-                android:drawableLeft="@drawable/boxradiobtn"
-                android:button="@null"
                 android:checked="true"
                 android:layout_toRightOf="@+id/sortDistance"/>
         </RadioGroup>
@@ -176,7 +170,7 @@
                 android:textColor="#FFFFFF"
                 android:id="@+id/searchButton"
                 android:background="@color/PrimaryColor"
-                android:drawableLeft="@drawable/ic_check_circle_white_44x40"
+                android:drawableLeft="@drawable/ic_check_circle_white_24dp_1x"
                 android:layout_alignParentBottom="true" />
 
         </RelativeLayout>
@@ -192,7 +186,7 @@
                 android:textColor="#FFFFFF"
                 android:id="@+id/resetButton"
                 android:background="@color/PrimaryDarkColor"
-                android:drawableLeft="@drawable/ic_remove_circle_outline_white_44x40"
+                android:drawableLeft="@drawable/ic_remove_circle_outline_white_24dp_1x"
                 android:layout_alignParentBottom="true" />
         </RelativeLayout>
 
