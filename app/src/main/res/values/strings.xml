@@ -94,6 +94,7 @@
     <string name="searchKeyword">Please enter a Keyword to search</string>
     <string name="searchLocation">Location\n Tap to change Location</string>
     <string name="setSearchRadius">Set Search Radius\t f kms / d miles</string>
+    <string name="anyTime">Any Time</string>
 
 
 </resources>

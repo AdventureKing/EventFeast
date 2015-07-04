@@ -41,6 +41,7 @@
         android:id="@+id/second"
         android:layout_marginTop="35dp"
         android:background="@drawable/searcheventborder">
+
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,6 +59,8 @@
                 android:layout_height="wrap_content"
                 android:text="Date"
                 android:id="@+id/sortDate"
+                android:drawableLeft="@drawable/boxradiobtn"
+                android:button="@null"
                 android:checked="false"
                 android:layout_toRightOf="@+id/sort"/>
 
@@ -66,6 +69,8 @@
                 android:layout_height="wrap_content"
                 android:text="Distance"
                 android:id="@+id/sortDistance"
+                android:drawableLeft="@drawable/boxradiobtn"
+                android:button="@null"
                 android:checked="false"
                 android:layout_toRightOf="@+id/sortDate"/>
 
@@ -74,7 +79,9 @@
                 android:layout_height="wrap_content"
                 android:text="Relevance"
                 android:id="@+id/sortRelevance"
-                android:checked="false"
+                android:drawableLeft="@drawable/boxradiobtn"
+                android:button="@null"
+                android:checked="true"
                 android:layout_toRightOf="@+id/sortDistance"/>
         </RadioGroup>
     </RelativeLayout>
@@ -115,6 +122,41 @@
             android:layout_height="wrap_content"
             android:text="Set Date Range"
             android:id="@+id/setDateText" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="From"
+            android:id="@+id/fromDateText"
+            android:layout_below="@+id/setDateText"
+            android:layout_marginTop="10dp"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fromDate"
+            android:text="@string/anyTime"
+            android:editable="false"
+            android:focusableInTouchMode="false"
+            android:layout_below="@+id/fromDateText"
+            android:drawableLeft="@drawable/ic_today_black_24dp_1x"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To"
+            android:id="@+id/toDateText"
+            android:layout_below="@+id/setDateText"
+            android:layout_alignParentRight="true"
+            android:layout_alignLeft="@+id/toDate"
+            android:layout_marginTop="10dp"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/toDate"
+            android:text="@string/anyTime"
+            android:layout_below="@+id/toDateText"
+            android:layout_alignParentRight="true"
+            android:editable="false"
+            android:focusableInTouchMode="false"
+            android:drawableLeft="@drawable/ic_event_black_24dp_1x"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -136,6 +178,7 @@
                 android:background="@color/PrimaryColor"
                 android:drawableLeft="@drawable/ic_check_circle_white_44x40"
                 android:layout_alignParentBottom="true" />
+
         </RelativeLayout>
 
         <RelativeLayout
