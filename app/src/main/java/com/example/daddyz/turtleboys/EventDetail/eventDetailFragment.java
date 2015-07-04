@@ -141,8 +141,11 @@ public class eventDetailFragment extends Fragment {
         }
     }
     public void autocreate(){
+
+        //need to set the real times
         Calendar beginTime = Calendar.getInstance();
-        beginTime.set(2015, 6, 4, 10, 45);
+        beginTime.set(2015, 6, 4, 10, 50);
+        //need to set the real end time
         Calendar endTime = Calendar.getInstance();
         endTime.set(2015, 6, 4, 12, 30);
 
@@ -152,6 +155,7 @@ public class eventDetailFragment extends Fragment {
         ContentResolver cr = getActivity().getContentResolver();
 
         //where/when/id_for_insert/start_time/end_time/time_zone
+        //need address/description
         calEvent.put(CalendarContract.Events.CALENDAR_ID, 1); // XXX pick)
         calEvent.put(CalendarContract.Events.TITLE, obj.getEventDesc());
         calEvent.put(CalendarContract.Events.DTSTART, beginTime.getTimeInMillis());
@@ -167,7 +171,7 @@ public class eventDetailFragment extends Fragment {
         reminders.put(CalendarContract.Reminders.EVENT_ID,id);
         reminders.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
         //reminder could be a setting??????????
-        reminders.put(CalendarContract.Reminders.MINUTES, 1);
+        reminders.put(CalendarContract.Reminders.MINUTES, 3);
        //insert into the event they just added
         Uri uri2 = cr.insert(CalendarContract.Reminders.CONTENT_URI, reminders);
 
