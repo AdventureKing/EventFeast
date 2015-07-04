@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.R;
 
@@ -24,6 +26,9 @@ public class searchEvent extends Fragment {
     private View rootView;
     private SeekBar searchRadiusSeekBar;
     private SeekBar.OnSeekBarChangeListener searchRadiusSeekbarListener;
+
+    private Button search;
+    private Button reset;
 
     private double MILESINAKILOMETER = 0.621;
 
@@ -68,12 +73,15 @@ public class searchEvent extends Fragment {
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         searchRadius_miles = progress;
                         searchRadius_kilometers = searchRadius_miles / MILESINAKILOMETER;
-                        searchRadiusText.setText( String.format("Set Search Radius\t %f kms / %d miles"
+                        searchRadiusText.setText( String.format("Set Search Radius\t %2f kms / %d miles"
                                 , searchRadius_kilometers, searchRadius_miles));
+                        rootView.refreshDrawableState();
+                        Toast.makeText(getActivity().getApplicationContext(), "SeekBar", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onStartTrackingTouch(SeekBar seekBar) {
+
 
                     }
 
@@ -82,6 +90,26 @@ public class searchEvent extends Fragment {
 
                     }
                 };
+
+        //Search Button
+        search = (Button) rootView.findViewById(R.id.searchButton);
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Do a search
+                Toast.makeText(getActivity().getApplicationContext(), "Search Event", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //Reset all search fields; Nuke it button
+        reset = (Button) rootView.findViewById(R.id.resetButton);
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO Reset button resets all fields
+                Toast.makeText(getActivity().getApplicationContext(), "Reset fields", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }

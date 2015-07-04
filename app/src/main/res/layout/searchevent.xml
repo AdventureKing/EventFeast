@@ -16,28 +16,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:imeOptions="actionDone"/>
+            android:imeOptions="actionDone"
+            android:drawableLeft="@drawable/ic_location_black_44x40"/>
 
         <EditText
             android:id="@+id/keyword"
             android:inputType="text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:background="#FFDDDDDD"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"
             android:layout_below="@+id/location"
             android:layout_marginTop="45dp"
-            android:imeOptions="actionDone"/>
+            android:imeOptions="actionDone"
+            android:drawableLeft="@drawable/ic_search_black_44x40"/>
 
-        <ImageView
-            android:id="@+id/keywordSearch"
-            android:src="@drawable/ic_search_black_44x40"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignBottom="@+id/keyword"
-            android:layout_toLeftOf="@+id/keyword"
-            android:layout_toStartOf="@+id/keyword" />
+
     </RelativeLayout>
 
 
@@ -94,7 +88,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PLACEHOLDER"
+            android:text="@string/setSearchRadius"
             android:id="@+id/searchRadiusText"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="25dp" />
@@ -109,6 +103,59 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="0dp" />
     </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fourth"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/searcheventborder">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Set Date Range"
+            android:id="@+id/setDateText" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Search"
+                android:textColor="#FFFFFF"
+                android:id="@+id/searchButton"
+                android:background="@color/PrimaryColor"
+                android:drawableLeft="@drawable/ic_check_circle_white_44x40"
+                android:layout_alignParentBottom="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Reset"
+                android:textColor="#FFFFFF"
+                android:id="@+id/resetButton"
+                android:background="@color/PrimaryDarkColor"
+                android:drawableLeft="@drawable/ic_remove_circle_outline_white_44x40"
+                android:layout_alignParentBottom="true" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
 
 
 </LinearLayout>

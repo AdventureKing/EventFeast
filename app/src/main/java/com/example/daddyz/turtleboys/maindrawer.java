@@ -138,7 +138,6 @@ public class maindrawer extends AppCompatActivity {
                             startActivity(intent);
                             return true;
                         case R.id.search_event:
-                            Toast.makeText(getApplicationContext(), "Event Searched", Toast.LENGTH_SHORT).show();
                             searchEvent searchFragment = new searchEvent();
                             getFragmentManager().beginTransaction().replace(R.id.frame, searchFragment).addToBackStack("SearchEvent").commit();
                             return true;
