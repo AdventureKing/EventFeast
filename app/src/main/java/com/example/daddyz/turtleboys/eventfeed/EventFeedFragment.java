@@ -12,12 +12,12 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.example.daddyz.turtleboys.EventDetail.EventDetailObject;
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.maindrawer;
@@ -36,6 +36,7 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
 
     public static final String REQUEST_TAG = "MainVolleyActivity";
     private Button mButton;
+
     private TextView mTextView;
     private RequestQueue mQueue;
     private View rootView;
@@ -58,15 +59,19 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 //get object at that position
-                Object obj = list.getItemAtPosition(position);
-               eventfeedObject news = (eventfeedObject) obj;
-
+                //this code is gonna get nocked out monday
+                eventfeedObject obj = (eventfeedObject) list.getItemAtPosition(position);
+                EventDetailObject news = new EventDetailObject();
+                news.setEventDesc(obj.getEventDesc());
+                news.setEventDate(obj.getEventDate());
+                news.setEventAddress(obj.getEventVenue());
                 eventDetailFragment fragment = new eventDetailFragment();
+                fragment.setObj(news);
 
-                // getFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("EventFeedDetail").commit();
+                //start the fragment
                 ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer,fragment).addToBackStack("EventDetailFragment").commit();
                 //this is where we are gonna
-                Toast.makeText(getActivity(), "Clicked arow", Toast.LENGTH_SHORT).show();
+
             }
         });
 
