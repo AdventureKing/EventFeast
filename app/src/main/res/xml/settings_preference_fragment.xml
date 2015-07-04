@@ -7,7 +7,8 @@
         <CheckBoxPreference
             android:key="notification_preference"
             android:title="@string/notification_setting"
-            android:defaultValue="@string/default_notification_preference"/>
+            android:defaultValue="@string/default_notification_preference"
+            android:summary="@string/notification_summary"/>
 
         <!-- <EditTextPreference
             android:key="edittext_preference"
@@ -27,9 +28,15 @@
             android:defaultValue="@string/default_animations_preference"/>
 
         <CheckBoxPreference
+            android:key="auto_calendar_preference"
+            android:title="@string/auto_calendar_setting"
+            android:defaultValue="@string/default_auto_calendar_preference"/>
+
+        <CheckBoxPreference
             android:key="push_preference"
             android:title="@string/push_setting"
-            android:defaultValue="@string/default_push_preference"/>
+            android:defaultValue="@string/default_push_preference"
+            android:summary="@string/push_summary"/>
 
         <!-- <ListPreference
             android:key="list_preference"
