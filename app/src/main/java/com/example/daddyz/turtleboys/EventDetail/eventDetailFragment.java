@@ -110,7 +110,7 @@ public class eventDetailFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(getActivity(), "SHARE COMMING SOON", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -140,6 +140,8 @@ public class eventDetailFragment extends Fragment {
 
         }
     }
+
+    //auto add event algo
     public void autocreate(){
 
         //need to set the real times
@@ -178,7 +180,7 @@ public class eventDetailFragment extends Fragment {
 
         Toast.makeText(getActivity(), obj.getEventDesc() + " was added to the Calendar", Toast.LENGTH_SHORT).show();
     }
-
+    //manuel add event algo
     public void createEvent(){
         Intent calIntent = new Intent(Intent.ACTION_INSERT);
         calIntent.setType("vnd.android.cursor.item/event");
