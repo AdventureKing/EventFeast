@@ -300,16 +300,20 @@ public class maindrawer extends AppCompatActivity {
     //were at previously
     @Override
     public void onBackPressed() {
+
+
         FrameLayout frame =(FrameLayout) findViewById(R.id.frame);
         if(frame.getVisibility() == View.INVISIBLE){
             frame.setVisibility(View.VISIBLE);
 
         }
+
         if(fragManager.getBackStackEntryCount() > 1 ) {
             fragManager.popBackStack();
         } else {
             super.onBackPressed();
         }
+
     }
 
     private FragmentManager.OnBackStackChangedListener getListener(){
@@ -323,6 +327,9 @@ public class maindrawer extends AppCompatActivity {
                     imageView.setVisibility(View.INVISIBLE);
                 }else{
                     imageView.setVisibility(View.VISIBLE);
+                }
+                if(fragManager.getBackStackEntryCount() == 1 || fragManager.getBackStackEntryCount() == 0 ) {
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 }
             }
         };
