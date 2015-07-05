@@ -111,7 +111,7 @@
     <string name="setSearchRadius">Set Search Radius\t f kms / d miles</string>
     <string name="anyDay">Any Day</string>
     <string name="anyTime">Any Time</string>
-
+    <string name="auto_calendar_preferences_summary">Allow EventFEAST to add to default calendar and set a reminder for 30 minutes before the event.</string>
 
 
 </resources>
