@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -31,6 +32,7 @@ import com.example.daddyz.turtleboys.eventfeed.EventFeedFragment;
 import com.example.daddyz.turtleboys.settings.SettingsFragment;
 import com.example.daddyz.turtleboys.searchevent.searchEvent;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
+import com.example.daddyz.turtleboys.subclasses.User_Icon_Animation;
 import com.parse.GetDataCallback;
 import com.parse.LogOutCallback;
 import com.parse.ParseFile;
@@ -48,6 +50,8 @@ public class maindrawer extends AppCompatActivity {
     private ListView myList;
     private ProgressBar mProgressBar;
     private SharedPreferences preferences;
+    private boolean AnimationFlag;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +106,17 @@ public class maindrawer extends AppCompatActivity {
 
                 }
             });
+            //pulled from experience drawer thanks greg 1337 ha
+            //Animate the imageview if preferences permit
+            preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            AnimationFlag = preferences.getBoolean("animation_preference", false);
+            final Animation User_Icon = new User_Icon_Animation(com.example.daddyz.turtleboys.subclasses.User_Icon_Animation.Rotate.RIGHT, User_Icon_Animation.Angle.TO_DEGREES_0, 500, false);
+            if(AnimationFlag) {
+                //hide user image until drawer is fully open if animations are enabled
+                imageView.setVisibility(View.INVISIBLE);
+            }
+
+
 
             //this is the drawer
 
@@ -220,7 +235,8 @@ public class maindrawer extends AppCompatActivity {
                 @Override
                 public void onDrawerOpened(View drawerView) {
                     // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
-
+                    imageView.setVisibility(View.VISIBLE);
+                    imageView.startAnimation(User_Icon);
                     super.onDrawerOpened(drawerView);
                 }
             };
