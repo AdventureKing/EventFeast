@@ -4,7 +4,10 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.R;
@@ -49,6 +53,13 @@ public class searchEvent extends Fragment {
 
     private RadioGroup radioSortbyGroup;
     private RadioButton sortbyButton;
+
+    private EditText toTimeText;
+    private EditText fromTimeText;
+    private DialogFragment fromTimeSelector;
+    private DialogFragment toTimeSelector;
+    private Time toTime;
+    private Time fromTime;
 
     private double MILESINAKILOMETER = 0.621;
 
@@ -88,9 +99,8 @@ public class searchEvent extends Fragment {
 
         //SearchRadius Seekbar
         searchRadiusSeekBar = (SeekBar) rootView.findViewById(R.id.searchRadius);
-        searchRadiusSeekBar.setOnSeekBarChangeListener(searchRadiusSeekbarListener);
         //Inital Seekbar values
-        searchRadius_miles = searchRadiusSeekBar.getProgress();
+        searchRadius_miles = searchRadiusSeekBar.getProgress()+1;
         searchRadius_kilometers = searchRadius_miles / MILESINAKILOMETER;
         searchRadiusText.setText(String.format("Set Search Radius\t %d miles / %.02f km"
                 , searchRadius_miles, searchRadius_kilometers));
@@ -99,28 +109,21 @@ public class searchEvent extends Fragment {
                 new SeekBar.OnSeekBarChangeListener() {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        searchRadius_miles = progress;
+                        searchRadius_miles = progress+1;
                         searchRadius_kilometers = searchRadius_miles / MILESINAKILOMETER;
                         searchRadiusText.setText(String.format("Set Search Radius\t %d miles / %.02f km"
                                 , searchRadius_miles, searchRadius_kilometers));
-                        rootView.refreshDrawableState();
-                        Toast.makeText(getActivity().getApplicationContext(), "SeekBar", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onStartTrackingTouch(SeekBar seekBar) {
-                        searchRadius_miles = seekBar.getProgress();
-                        searchRadius_kilometers = searchRadius_miles / MILESINAKILOMETER;
-                        searchRadiusText.setText(String.format("Set Search Radius\t %d miles / %.02f km"
-                                , searchRadius_miles, searchRadius_kilometers));
-                        rootView.refreshDrawableState();
                     }
 
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
-
                     }
                 };
+        searchRadiusSeekBar.setOnSeekBarChangeListener(searchRadiusSeekbarListener);
 
         //fromDate date picker
         fromDateSelector = new DatePickerFragment();
@@ -141,6 +144,28 @@ public class searchEvent extends Fragment {
             public void onClick(View view) {
                 toDateSelector.registerForContextMenu(toDateText);
                 toDateSelector.show(getFragmentManager(), "Date Picker");
+            }
+        });
+
+        //fromTime time picker
+        fromTimeSelector = new TimePickerFragment();
+        fromTimeText = (EditText) rootView.findViewById(R.id.fromTime);
+        fromTimeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fromTimeSelector.registerForContextMenu(fromTimeText);
+                fromTimeSelector.show(getFragmentManager(), "Time Picker");
+            }
+        });
+
+        //toTime time picker
+        toTimeSelector = new TimePickerFragment();
+        toTimeText = (EditText) rootView.findViewById(R.id.toTime);
+        toTimeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toTimeSelector.registerForContextMenu(toTimeText);
+                toTimeSelector.show(getFragmentManager(), "Time Picker");
             }
         });
 
@@ -207,6 +232,49 @@ public class searchEvent extends Fragment {
 
             timeformat = (String) android.text.format.DateFormat.format("M/dd/yyyy", time);
             dateset.setText(timeformat);
+        }
+
+    }
+
+    public static class TimePickerFragment extends DialogFragment
+            implements TimePickerDialog.OnTimeSetListener {
+
+
+        @Override
+        public void registerForContextMenu(View v) {
+            timeset = (EditText) v;
+        }
+
+        private EditText timeset;
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current time as the default time in the picker
+            final Calendar c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR);
+            int minute = c.get(Calendar.MINUTE);
+
+            // Create a new instance of TimePickerDialog and return it
+            return new TimePickerDialog(getActivity(), this, hour, minute, false);
+        }
+
+        public void onTimeSet(TimePicker view, int hour, int minute) {
+            // Do something with the time chosen by the user
+            String am_pm;
+
+            if ( hour > 12) {
+                am_pm = "PM";
+                hour -= 12;
+            } else if ( hour == 12 ) {
+                am_pm = "PM";
+            } else if (hour == 0 ) {
+                am_pm = "AM";
+                hour = 12;
+            } else{
+                am_pm = "AM";
+            }
+
+            timeset.setText(hour + ":" + minute + " " + am_pm);
         }
 
     }
