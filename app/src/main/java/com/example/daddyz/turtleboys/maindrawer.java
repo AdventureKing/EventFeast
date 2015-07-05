@@ -240,8 +240,10 @@ public class maindrawer extends AppCompatActivity {
                 @Override
                 public void onDrawerOpened(View drawerView) {
                     // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
-                    imageView.setVisibility(View.VISIBLE);
-                    imageView.startAnimation(User_Icon);
+                    if(AnimationFlag) {
+                        imageView.setVisibility(View.VISIBLE);
+                        imageView.startAnimation(User_Icon);
+                    }
                     super.onDrawerOpened(drawerView);
                 }
             };
