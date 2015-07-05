@@ -30,7 +30,8 @@
         <CheckBoxPreference
             android:key="auto_calendar_preference"
             android:title="@string/auto_calendar_setting"
-            android:defaultValue="@string/default_auto_calendar_preference"/>
+            android:defaultValue="@string/default_auto_calendar_preference"
+            android:summary="@string/auto_calendar_preferences_summary"/>
 
         <CheckBoxPreference
             android:key="push_preference"
