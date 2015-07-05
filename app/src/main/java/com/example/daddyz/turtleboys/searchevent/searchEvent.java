@@ -260,7 +260,7 @@ public class searchEvent extends Fragment {
 
         public void onTimeSet(TimePicker view, int hour, int minute) {
             // Do something with the time chosen by the user
-            String am_pm;
+            String am_pm, minuteString;
 
             if ( hour > 12) {
                 am_pm = "PM";
@@ -274,7 +274,13 @@ public class searchEvent extends Fragment {
                 am_pm = "AM";
             }
 
-            timeset.setText(hour + ":" + minute + " " + am_pm);
+            if ( minute < 10) {
+                minuteString = "0"+Integer.toString(minute);
+            } else {
+                minuteString = Integer.toString(minute);
+            }
+
+            timeset.setText(hour + ":" + minuteString + " " + am_pm);
         }
 
     }
