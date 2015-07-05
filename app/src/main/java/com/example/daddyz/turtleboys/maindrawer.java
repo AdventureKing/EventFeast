@@ -328,9 +328,7 @@ public class maindrawer extends AppCompatActivity {
                 }else{
                     imageView.setVisibility(View.VISIBLE);
                 }
-                if(fragManager.getBackStackEntryCount() == 1 || fragManager.getBackStackEntryCount() == 0 ) {
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                }
+
             }
         };
         return result;
