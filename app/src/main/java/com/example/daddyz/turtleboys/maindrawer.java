@@ -6,6 +6,7 @@ package com.example.daddyz.turtleboys;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -51,8 +52,8 @@ public class maindrawer extends AppCompatActivity {
     private ProgressBar mProgressBar;
     private SharedPreferences preferences;
     private boolean AnimationFlag;
-
-
+    private ParseImageView imageView;
+    private FragmentManager fragManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,13 +72,15 @@ public class maindrawer extends AppCompatActivity {
             // Initializing Toolbar and setting it as the actionbar
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
-
+            //Setup the Fragment Manager
+            fragManager = getFragmentManager();
+            fragManager.addOnBackStackChangedListener(getListener());
 
            //create eventfeed fragment and launch it to fill the main screen
             //we get the current fragment manager and start a replacement transaction and we add this transaction to a stack
             //so if we need to move through the stack we pop one off
             EventFeedFragment fragment = new EventFeedFragment();
-            getFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("EventFeed").commit();
+            fragManager.beginTransaction().replace(R.id.frame, fragment).addToBackStack("EventFeed").commit();
 
 
 
@@ -91,7 +94,7 @@ public class maindrawer extends AppCompatActivity {
 
             //get ParseImageView from xml
             ParseFile image = (ParseFile) currentUser.getUserImage();
-            final ParseImageView imageView = (ParseImageView) findViewById(R.id.profile_image);
+            imageView = (ParseImageView) findViewById(R.id.profile_image);
             imageView.setParseFile(image);
 
             //load the image from the parse database
@@ -145,7 +148,7 @@ public class maindrawer extends AppCompatActivity {
                         //Replacing the main content with ContentFragment Which is our Inbox View;
                         case R.id.eventfeed:
                             EventFeedFragment fragment3 = new EventFeedFragment();
-                            getFragmentManager().beginTransaction().replace(R.id.frame, fragment3).addToBackStack("EventFeed").commit();
+                            fragManager.beginTransaction().replace(R.id.frame, fragment3).addToBackStack("EventFeed").commit();
                             return true;
                         case R.id.messaging:
                             Toast.makeText(getApplicationContext(), "Messaging", Toast.LENGTH_SHORT).show();
@@ -159,11 +162,11 @@ public class maindrawer extends AppCompatActivity {
                             return true;
                         case R.id.search_event:
                             searchEvent searchFragment = new searchEvent();
-                            getFragmentManager().beginTransaction().replace(R.id.frame, searchFragment).addToBackStack("SearchEvent").commit();
+                            fragManager.beginTransaction().replace(R.id.frame, searchFragment).addToBackStack("SearchEvent").commit();
                             return true;
                         case R.id.newsfeed:
                             EventFeedFragment fragment2 = new EventFeedFragment();
-                            getFragmentManager().beginTransaction().replace(R.id.frame, fragment2).addToBackStack("newsFeed").commit();
+                            fragManager.beginTransaction().replace(R.id.frame, fragment2).addToBackStack("newsFeed").commit();
                             Toast.makeText(getApplicationContext(), "Drafts Selected", Toast.LENGTH_SHORT).show();
                             return true;
                         case R.id.connect:
@@ -229,6 +232,8 @@ public class maindrawer extends AppCompatActivity {
                 @Override
                 public void onDrawerClosed(View drawerView) {
                     // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
+                    if(AnimationFlag)
+                        imageView.setVisibility(View.INVISIBLE);
                     super.onDrawerClosed(drawerView);
                 }
 
@@ -274,7 +279,7 @@ public class maindrawer extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Fragment fragment = new SettingsFragment();
-            getFragmentManager().beginTransaction().replace(R.id.drawer, fragment).addToBackStack("MY_FRAGMENT_NAME").commit();
+            fragManager.beginTransaction().replace(R.id.drawer, fragment).addToBackStack("MY_FRAGMENT_NAME").commit();
             Toast.makeText(getApplicationContext(), "Settings Selected", Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -298,10 +303,28 @@ public class maindrawer extends AppCompatActivity {
             frame.setVisibility(View.VISIBLE);
 
         }
-        if(getFragmentManager().getBackStackEntryCount() > 1 ) {
-            getFragmentManager().popBackStack();
+        if(fragManager.getBackStackEntryCount() > 1 ) {
+            fragManager.popBackStack();
         } else {
             super.onBackPressed();
         }
     }
+
+    private FragmentManager.OnBackStackChangedListener getListener(){
+        //This is when a fragment is added or popped off the stack, use this section to update anything when a fragment is changed,
+        //such as updating preferences on a fragment view after the settings fragment is finished
+        FragmentManager.OnBackStackChangedListener result = new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                AnimationFlag = preferences.getBoolean("animation_preference", false);
+                if(AnimationFlag){
+                    imageView.setVisibility(View.INVISIBLE);
+                }else{
+                    imageView.setVisibility(View.VISIBLE);
+                }
+            }
+        };
+        return result;
+    }
+
 }
