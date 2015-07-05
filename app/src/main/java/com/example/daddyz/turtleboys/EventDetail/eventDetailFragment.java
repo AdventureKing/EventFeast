@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -42,14 +43,20 @@ public class eventDetailFragment extends Fragment {
     private TextView eventDate;
     private TextView eventLocation;
     private TextView eventDesc;
+    private DrawerLayout mDrawer;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //lock the drawer because we are inception in this bitch
+        //main_activity->fragment->fragment
+        mDrawer = (DrawerLayout) this.getActivity().findViewById(R.id.drawer);
+        mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
 
         view = inflater.inflate(R.layout.eventdetailfragment,container,false);
 
-        //toolbar setup
 
+        //toolbar setup
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         actionbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
@@ -135,6 +142,7 @@ public class eventDetailFragment extends Fragment {
     public void onBackPressed(FrameLayout frame) {
 
         if(getFragmentManager().getBackStackEntryCount() != 0) {
+
             getFragmentManager().popBackStack();
             frame.setVisibility(View.VISIBLE);
 
