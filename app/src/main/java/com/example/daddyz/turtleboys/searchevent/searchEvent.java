@@ -181,7 +181,7 @@ public class searchEvent extends Fragment {
 
         //Reset all search fields; Nuke it button
         reset = (Button) rootView.findViewById(R.id.resetButton);
-        search.setOnClickListener(new View.OnClickListener() {
+        reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //TODO Reset button resets all fields
