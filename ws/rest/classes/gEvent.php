@@ -1,5 +1,7 @@
 <?php 
-	class gEvent{
+	require_once('gEventUtil.php');
+
+	class gEvent implements JsonSerializable{
 		/* Member Variables */
 		private $internal_id = "";
 		private $external_id = "";
@@ -7,8 +9,17 @@
 		private $event_external_url = "";
 		private $title = "";
 		private $description = "";
+		private $notes = "";
 		private $start_time = "";
-		private $stop_time = "";
+		private $end_time = "";
+		private $start_date_month = array();
+		private $start_date_day = array();
+		private $start_date_year = array();
+		private $start_date_time = array();
+		private $end_date_month = array();
+		private $end_date_day = array();
+		private $end_date_year = array();
+		private $end_date_time = array();
 		private $venue_external_id = "";
 		private $venue_external_url = "";
 		private $venue_name = "";
@@ -16,15 +27,17 @@
 		private $venue_address = "";
 		private $state_name = "";
 		private $city_name = "";
-		private $region_name = "";
-		private $region_abbr = "";
 		private $postal_code = "";
 		private $country_name = "";
-		private $all_day = "";
-		private $latitude = "";
-		private $longitude = "";
-		private $performers = "";
-		private $images = "";
+		private $all_day = false;
+		private $price_range = "";
+		private $is_free = null;
+		private $major_genre = array();
+		private $minor_genre = array();
+		private $latitude = 0;
+		private $longitude = 0;
+		private $performers = array();
+		private $images = array();
 	
 	    /**
 	     * Gets the value of internal_id.
@@ -171,6 +184,30 @@
 	    }
 
 	    /**
+	     * Gets the value of notes.
+	     *
+	     * @return mixed
+	     */
+	    public function getNotes()
+	    {
+	        return $this->notes;
+	    }
+
+	    /**
+	     * Sets the value of notes.
+	     *
+	     * @param mixed $notes the notes
+	     *
+	     * @return self
+	     */
+	    public function setNotes($notes)
+	    {
+	        $this->notes = $notes;
+
+	        return $this;
+	    }
+
+	    /**
 	     * Gets the value of start_time.
 	     *
 	     * @return mixed
@@ -195,25 +232,217 @@
 	    }
 
 	    /**
-	     * Gets the value of stop_time.
+	     * Gets the value of end_time.
 	     *
 	     * @return mixed
 	     */
-	    public function getStop_time()
+	    public function getEnd_time()
 	    {
-	        return $this->stop_time;
+	        return $this->end_time;
 	    }
 
 	    /**
-	     * Sets the value of stop_time.
+	     * Sets the value of end_time.
 	     *
-	     * @param mixed $stop_time the stop_time
+	     * @param mixed $end_time the send_time
 	     *
 	     * @return self
 	     */
-	    public function setStop_time($stop_time)
+	    public function setEnd_time($end_time)
 	    {
-	        $this->stop_time = $stop_time;
+	        $this->end_time = $end_time;
+
+	        return $this;
+	    }
+
+	    /**
+	     * Gets the value of start_date_month.
+	     *
+	     * @return mixed
+	     */
+	    public function getStart_date_month()
+	    {
+	        return $this->start_date_month;
+	    }
+
+	    /**
+	     * Sets the value of start_date_month.
+	     *
+	     * @param mixed $start_date_month the start_date_month
+	     *
+	     * @return self
+	     */
+	    public function setStart_date_month($start_date_month)
+	    {
+	        $this->start_date_month = $start_date_month;
+
+	        return $this;
+	    }
+
+	    /**
+	     * Gets the value of start_date_day.
+	     *
+	     * @return mixed
+	     */
+	    public function getStart_date_day()
+	    {
+	        return $this->start_date_day;
+	    }
+
+	    /**
+	     * Sets the value of start_date_day.
+	     *
+	     * @param mixed $start_date_day the start_date_day
+	     *
+	     * @return self
+	     */
+	    public function setStart_date_day($start_date_day)
+	    {
+	        $this->start_date_day = $start_date_day;
+
+	        return $this;
+	    }
+
+	    /**
+	     * Gets the value of start_date_year.
+	     *
+	     * @return mixed
+	     */
+	    public function getStart_date_year()
+	    {
+	        return $this->start_date_year;
+	    }
+
+	    /**
+	     * Sets the value of start_date_year.
+	     *
+	     * @param mixed $start_date_year the start_date_year
+	     *
+	     * @return self
+	     */
+	    public function setStart_date_year($start_date_year)
+	    {
+	        $this->start_date_year = $start_date_year;
+
+	        return $this;
+	    }
+
+	    /**
+	     * Gets the value of start_date_time.
+	     *
+	     * @return mixed
+	     */
+	    public function getStart_date_time()
+	    {
+	        return $this->start_date_time;
+	    }
+
+	    /**
+	     * Sets the value of start_date_time.
+	     *
+	     * @param mixed $start_date_time the start_date_time
+	     *
+	     * @return self
+	     */
+	    public function setStart_date_time($start_date_time)
+	    {
+	        $this->start_date_time = $start_date_time;
+
+	        return $this;
+	    }
+
+	    /**
+	     * Gets the value of end_date_month.
+	     *
+	     * @return mixed
+	     */
+	    public function getEnd_date_month()
+	    {
+	        return $this->end_date_month;
+	    }
+
+	    /**
+	     * Sets the value of end_date_month.
+	     *
+	     * @param mixed $end_date_month the end_date_month
+	     *
+	     * @return self
+	     */
+	    public function setEnd_date_month($end_date_month)
+	    {
+	        $this->end_date_month = $end_date_month;
+
+	        return $this;
+	    }
+
+	    /**
+	     * Gets the value of end_date_day.
+	     *
+	     * @return mixed
+	     */
+	    public function getEnd_date_day()
+	    {
+	        return $this->end_date_day;
+	    }
+
+	    /**
+	     * Sets the value of end_date_day.
+	     *
+	     * @param mixed $end_date_day the end_date_day
+	     *
+	     * @return self
+	     */
+	    public function setEnd_date_day($end_date_day)
+	    {
+	        $this->end_date_day = $end_date_day;
+
+	        return $this;
+	    }
+
+	    /**
+	     * Gets the value of end_date_year.
+	     *
+	     * @return mixed
+	     */
+	    public function getEnd_date_year()
+	    {
+	        return $this->end_date_year;
+	    }
+
+	    /**
+	     * Sets the value of end_date_year.
+	     *
+	     * @param mixed $end_date_year the end_date_year
+	     *
+	     * @return self
+	     */
+	    public function setEnd_date_year($end_date_year)
+	    {
+	        $this->end_date_year = $end_date_year;
+
+	        return $this;
+	    }
+
+	    /**
+	     * Gets the value of end_date_time.
+	     *
+	     * @return mixed
+	     */
+	    public function getEnd_date_time()
+	    {
+	        return $this->end_date_time;
+	    }
+
+	    /**
+	     * Sets the value of end_date_time.
+	     *
+	     * @param mixed $end_date_time the end_date_time
+	     *
+	     * @return self
+	     */
+	    public function setEnd_date_time($end_date_time)
+	    {
+	        $this->end_date_time = $end_date_time;
 
 	        return $this;
 	    }
@@ -387,54 +616,6 @@
 	    }
 
 	    /**
-	     * Gets the value of region_name.
-	     *
-	     * @return mixed
-	     */
-	    public function getRegion_name()
-	    {
-	        return $this->region_name;
-	    }
-
-	    /**
-	     * Sets the value of region_name.
-	     *
-	     * @param mixed $region_name the region_name
-	     *
-	     * @return self
-	     */
-	    public function setRegion_name($region_name)
-	    {
-	        $this->region_name = $region_name;
-
-	        return $this;
-	    }
-
-	    /**
-	     * Gets the value of region_abbr.
-	     *
-	     * @return mixed
-	     */
-	    public function getRegion_abbr()
-	    {
-	        return $this->region_abbr;
-	    }
-
-	    /**
-	     * Sets the value of region_abbr.
-	     *
-	     * @param mixed $region_abbr the region_abbr
-	     *
-	     * @return self
-	     */
-	    public function setRegion_abbr($region_abbr)
-	    {
-	        $this->region_abbr = $region_abbr;
-
-	        return $this;
-	    }
-
-	    /**
 	     * Gets the value of postal_code.
 	     *
 	     * @return mixed
@@ -502,6 +683,102 @@
 	    public function setAll_day($all_day)
 	    {
 	        $this->all_day = $all_day;
+
+	        return $this;
+	    }
+
+	    /**
+	     * Gets the value of price_range.
+	     *
+	     * @return mixed
+	     */
+	    public function getPrice_range()
+	    {
+	        return $this->price_range;
+	    }
+
+	    /**
+	     * Sets the value of price_range.
+	     *
+	     * @param mixed $price_range the price_range
+	     *
+	     * @return self
+	     */
+	    public function setPrice_range($price_range)
+	    {
+	        $this->price_range = $price_range;
+
+	        return $this;
+	    }
+
+	    /**
+	     * Gets the value of is_free.
+	     *
+	     * @return mixed
+	     */
+	    public function getIs_free()
+	    {
+	        return $this->is_free;
+	    }
+
+	    /**
+	     * Sets the value of is_free.
+	     *
+	     * @param mixed $is_free the is_free
+	     *
+	     * @return self
+	     */
+	    public function setIs_free($is_free)
+	    {
+	        $this->is_free = $is_free;
+
+	        return $this;
+	    }
+
+		/**
+	     * Gets the value of major_genre.
+	     *
+	     * @return mixed
+	     */
+	    public function getMajor_genre()
+	    {
+	        return $this->major_genre;
+	    }
+
+	    /**
+	     * Sets the value of major_genre.
+	     *
+	     * @param mixed $major_genre the major_genre
+	     *
+	     * @return self
+	     */
+	    public function setMajor_genre($major_genre)
+	    {
+	        $this->major_genre = $major_genre;
+
+	        return $this;
+	    }
+
+	    /**
+	     * Gets the value of minor_genre.
+	     *
+	     * @return mixed
+	     */
+	    public function getMinor_genre()
+	    {
+	        return $this->minor_genre;
+	    }
+
+	    /**
+	     * Sets the value of minor_genre.
+	     *
+	     * @param mixed $minor_genre the minor_genre
+	     *
+	     * @return self
+	     */
+	    public function setMinor_genre($minor_genre)
+	    {
+	        $this->minor_genre = $minor_genre;
 
 	        return $this;
 	    }
@@ -601,11 +878,18 @@
 
 	        return $this;
 	    }
+
+	    // function called when encoded with json_encode
+	    public function jsonSerialize()
+	    {
+	        return get_object_vars($this);
+	    }
 	}
 
-	class gEventPerformer{
+	class gEventPerformer implements JsonSerializable{
 		private $performer_external_id;
 		private $performer_external_url;
+		private $performer_external_image_url;
 		private $performer_name;
 		private $performer_short_bio;
 	
@@ -657,6 +941,30 @@
 	        return $this;
 	    }
 
+	     /**
+	     * Gets the value of performer_external_image_url.
+	     *
+	     * @return mixed
+	     */
+	    public function getPerformer_external_image_url()
+	    {
+	        return $this->performer_external_image_url;
+	    }
+
+	    /**
+	     * Sets the value of performer_external_image_url.
+	     *
+	     * @param mixed $performer_external_image_url the performer_external_image_url
+	     *
+	     * @return self
+	     */
+	    public function setPerformer_external_image_url($performer_external_image_url)
+	    {
+	        $this->performer_external_image_url = $performer_external_image_url;
+
+	        return $this;
+	    }
+
 	    /**
 	     * Gets the value of performer_name.
 	     *
@@ -704,10 +1012,17 @@
 
 	        return $this;
 	    }
+
+	    // function called when encoded with json_encode
+	    public function jsonSerialize()
+	    {
+	        return get_object_vars($this);
+	    }
 	}
 
-	class gEventImage{
+	class gEventImage implements JsonSerializable{
 		private $image_external_url;
+		private $image_category;
 		private $image_height;
 		private $image_width;
 	
@@ -731,6 +1046,30 @@
 	    public function setImage_external_url($image_external_url)
 	    {
 	        $this->image_external_url = $image_external_url;
+
+	        return $this;
+	    }
+
+	    /**
+	     * Gets the value of image_category.
+	     *
+	     * @return mixed
+	     */
+	    public function getImage_category()
+	    {
+	        return $this->image_category;
+	    }
+
+	    /**
+	     * Sets the value of image_category
+	     *
+	     * @param mixed $image_category the image_category
+	     *
+	     * @return self
+	     */
+	    public function setImage_category($image_category)
+	    {
+	        $this->image_category = $image_category;
 
 	        return $this;
 	    }
@@ -782,6 +1121,12 @@
 
 	        return $this;
     	}
-	}
 
+    	// function called when encoded with json_encode
+	    public function jsonSerialize()
+	    {
+	        return get_object_vars($this);
+	    }
+
+    }
 ?>

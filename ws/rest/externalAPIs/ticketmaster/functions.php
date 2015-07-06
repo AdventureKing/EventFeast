@@ -1,5 +1,6 @@
 <?php 
 	require_once('../../classes/gEvent.php');
+	require_once('../../classes/curlUtil.php');
 
 	$q = $_GET['q'];
 	$optionsArray['city'] = $_GET['city'];
@@ -7,97 +8,113 @@
 	ticketmasterAPI_findEvents($q, $optionsArray);
 	
 	function ticketmasterAPI_findEvents($queryString, $optionsArray){
+		
+		// Filter Parameters
 		$q = $queryString;
 		$filterCity = $optionsArray['city'];
 		$filterState = $optionsArray['state'];
 		$filterDate = $optionsArray['date'];
+		$filterSource = $optionsArray['source'];
+		$filterDesc = $optionsArray['desc'];
 	
 		$data = get_data("http://www.ticketmaster.com/json/search/event?q=$queryString");
 		$json = json_decode($data);
 		$num = $json->response->numFound;
 		
-		$gEvents = null;
+		$gEvents = array();
 		$i = 0;
-		while ($i<$num) {
-            
-            $gEvent = new gEvent;
-            $gEvent->setExternal_id($json->response->docs[$i]->Id);
-            $gEvent->setDatasource("ticketmaster");
-            $gEvent->setTitle($json->response->docs[$i]->ShortEventName);
-            $gEvent->setDescription($json->response->docs[$i]->EventName);
 
-            $gEvent->setVenue_external_id($json->response->docs[$i]->VenueId);
-            $gEvent->setVenue_name($json->response->docs[$i]->VenueName);
-            $gEvent->setVenue_address($json->response->docs[$i]->VenueAddress);
+		// Loop through Json Results from CURL resuest
+		while ($i < $num) {
+            $externalId = $json->response->docs[$i]->Id;
 
-            $gEvent->setCountry_name($json->response->docs[$i]->VenueCountry);
-            $gEvent->setState_name($json->response->docs[$i]->VenueState);
-            $gEvent->setCity_name($json->response->docs[$i]->VenueCity);
-            $gEvent->setPostal_code($json->response->docs[$i]->VenuePostalCode);
+           	// If no externalId is set, don't pull record. Avoids empty 
+           	// records from getting pulled.
+            if(isset($externalId)){
+	            $gEvent = new gEvent;
+	            $gEvent->setExternal_id($externalId);
+	            $gEvent->setDatasource("ticketmaster");
+	            $gEvent->setTitle($json->response->docs[$i]->EventName);
+	            $gEvent->setDescription($json->response->docs[$i]->EventName);
+	            $gEvent->setNotes($json->response->docs[$i]->EventNotes);
 
-            $gEvent->setLatitude($json->response->docs[$i]->Latitude);
-            $gEvent->setLongitude($json->response->docs[$i]->Longitude);
-            
-            $gEvent->setStart_time(str_replace("T", " ", trim($json->response->docs[$i]->PostProcessedData->LocalEventDate, 0, -6)));           
-            
-            $gEvent->setEvent_external_url("http://ticketmaster.com".$json->response->docs[$i]->AttractionSEOLink[0]);
+	            $gEvent->setVenue_external_id($json->response->docs[$i]->VenueId);
+	            $gEvent->setVenue_name($json->response->docs[$i]->VenueName);
+	            $gEvent->setVenue_address($json->response->docs[$i]->VenueAddress);
 
-            $gEventImages = null;
+	            $gEvent->setCountry_name($json->response->docs[$i]->VenueCountry);
+	            $gEvent->setState_name($json->response->docs[$i]->VenueState);
+	            $gEvent->setCity_name($json->response->docs[$i]->VenueCity);
+	            $gEvent->setPostal_code($json->response->docs[$i]->VenuePostalCode);
+	            $gEvent->setVenue_external_url("http://ticketmaster.com".$json->response->docs[$i]->VenueSEOLink);
 
-            foreach ($json->response->docs[$i]->AttractionImage as $image) {
-            	$gImage = new gEventImage;
-            	$gImage->setImage_external_url("http://s1.ticketm.net/tm/en-us".$image);
-            	$gEventImages += $gImage;
-            }
+	            $venueLatLong = explode(",", $json->response->docs[$i]->VenueLatLong);
+	            $gEvent->setLatitude($venueLatLong[0]);
+	            $gEvent->setLongitude($venueLatLong[1]);
+	            
+	            $gEvent->setStart_time(str_replace("T", " ", substr($json->response->docs[$i]->PostProcessedData->LocalEventDate, 0, -6)));   
+	            $gEvent->setEnd_time("");
+	            $gEvent->setStart_date_month(convertDateToMonthOptions($gEvent->getStart_time()));
+	            $gEvent->setStart_date_day(convertDateToDayOptions($gEvent->getStart_time()));
+	            $gEvent->setStart_date_year(convertDateToYearOptions($gEvent->getStart_time()));
+	            $gEvent->setStart_date_time(convertDateToTimeOptions($gEvent->getStart_time()));
 
-            if(isset($json->response->docs[$i]->VenueImage)){
-            	$gImage = new gEventImage;
-            	$gImage->setImage_external_url("http://s1.ticketm.net/tm/en-us".$json->response->docs[$i]->VenueImage)
-            	$gEventImages += $gImage;
-            }
+	            $gEvent->setPrice_range($json->response->docs[$i]->PriceRange);
+	            if(substr($gEvent->getPrice_range(), 0, 2 ) === "0 ") {
+	            	$gEvent->setIs_free(true);
+	            } else if($gEvent->getPrice_range() !== null){
+	            	$gEvent->setIs_free(false);
+	            }
 
-            $gEvent->setImages($gEventImages);
-            $gEvents += $gEvent;
-			
-			/*
-			if($eventDesc != null && $eventCity == $filterCity){
-				$results_events[$i]['desc'] = $eventDesc;
-				$results_events[$i]['date'] = $eventDate;
-				$results_events[$i]['time'] = $eventStartTime;
-				$results_events[$i]['venue'] = $eventVenue;
-				$results_events[$i]['city'] = $eventCity;
-				$results_events[$i]['state'] = $eventState;
-				$results_events[$i]['source'] = $eventSource;
-				$results_events[$i]['urlpath'] = $eventURL;
+	            $minorGenre = (isset($json->response->docs[$i]->Genre[0])) ? $json->response->docs[$i]->Genre : $json->response->docs[$i]->MinorGenre;
+	            $majorGenre = $json->response->docs[$i]->MajorGenre;
+	            $gEvent->setMinor_genre($minorGenre);
+	            $gEvent->setMajor_genre($majorGenre);
+	                     
+	            $gEvent->setEvent_external_url("http://ticketmaster.com".$json->response->docs[$i]->AttractionSEOLink[0]);
+
+	            // Populate image links found
+	            $gEventImages = array();
+	            if(isset($json->response->docs[$i]->AttractionImage[0])){
+	            	foreach ($json->response->docs[$i]->AttractionImage as $image) {
+		            	if(isset($image) && null != $image && $image != ""){
+			            	$gImage = new gEventImage;
+			            	$gImage->setImage_external_url("http://s1.ticketm.net/tm/en-us".$image);
+			            	$gImage->setImage_category("attraction");
+			            	array_push($gEventImages, $gImage);
+		            	}
+	            	}
+	            }         
+	            if(isset($json->response->docs[$i]->VenueImage)){
+	            	$gImage = new gEventImage;
+	            	$gImage->setImage_external_url("http://s1.ticketm.net/tm/en-us".$json->response->docs[$i]->VenueImage);
+	            	$gImage->setImage_category("venue");
+	            	array_push($gEventImages, $gImage);
+	            }
+	            $gEvent->setImages($gEventImages);
+
+	            //Populate performers found
+	            $gEventPerformers = array();
+	            if(isset($json->response->docs[$i]->AttractionName[0])){
+	            	$aI = 0;
+	            	foreach ($json->response->docs[$i]->AttractionName as $performer) {
+		            	if(isset($performer) && null != $performer && $performer != ""){
+			            	$gPerformer = new gEventPerformer;
+			            	$gPerformer->setPerformer_name($performer);
+			            	$gPerformer->setPerformer_external_image_url("http://s1.ticketm.net/tm/en-us".$json->response->docs[$i]->AttractionImage[$aI]);
+			            	array_push($gEventPerformers, $gPerformer);
+		            	}
+		            	$aI++;
+	            	}
+	            }
+	            $gEvent->setPerformers($gEventPerformers);
+
+	            // Push gEvent object onto arraylist of gEvent objects
+	            array_push($gEvents, $gEvent);
 			}
-			*/
-			
 			$i++;
 		}
-		var_dump(json_encode($gEvents));
+		var_dump(json_encode($gEvents, JSON_UNESCAPED_SLASHES));
 		return $gEvents;
 	}
-	
-	function get_data($url)
-	{
-		$ch1 = curl_init();
-		$timeout = 5;
-		curl_setopt($ch1,CURLOPT_URL,$url);
-		curl_setopt($ch1, CURLOPT_HEADER, 0);
-		curl_setopt($ch1,CURLOPT_VERBOSE,1);
-		curl_setopt($ch1, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 1.0.3705; .NET CLR 1.1.4322; Media Center PC 4.0)');
-		curl_setopt ($ch1, CURLOPT_REFERER,'http://www.google.com');  //just a fake referer
-		curl_setopt($ch1, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch1,CURLOPT_POST,0);
-		curl_setopt($ch1, CURLOPT_FOLLOWLOCATION, 20);
-		$data = curl_exec($ch1);
-
-		if(!curl_errno($ch1)){ 
-			return $data;
-		}else{
-			echo 'Curl error: ' . curl_error($ch1); 
-		}
-		curl_close($ch1);
-	}
-
 ?>
