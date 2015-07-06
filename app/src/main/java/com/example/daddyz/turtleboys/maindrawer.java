@@ -29,9 +29,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.eventfeed.EventFeedFragment;
-import com.example.daddyz.turtleboys.settings.SettingsFragment;
 import com.example.daddyz.turtleboys.searchevent.searchEvent;
+import com.example.daddyz.turtleboys.settings.SettingsFragment;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.example.daddyz.turtleboys.subclasses.User_Icon_Animation;
 import com.parse.GetDataCallback;
@@ -80,7 +81,7 @@ public class maindrawer extends AppCompatActivity {
             //we get the current fragment manager and start a replacement transaction and we add this transaction to a stack
             //so if we need to move through the stack we pop one off
             EventFeedFragment fragment = new EventFeedFragment();
-            fragManager.beginTransaction().replace(R.id.frame, fragment).addToBackStack("EventFeed").commit();
+            fragManager.beginTransaction().replace(R.id.frame, fragment,"EventFeedFragment").addToBackStack("EventFeed").commit();
 
 
 
@@ -148,7 +149,7 @@ public class maindrawer extends AppCompatActivity {
                         //Replacing the main content with ContentFragment Which is our Inbox View;
                         case R.id.eventfeed:
                             EventFeedFragment fragment3 = new EventFeedFragment();
-                            fragManager.beginTransaction().replace(R.id.frame, fragment3).addToBackStack("EventFeed").commit();
+                            fragManager.beginTransaction().replace(R.id.frame, fragment3,"EventFeedFragment").addToBackStack("EventFeedFragment").commit();
                             return true;
                         case R.id.messaging:
                             Toast.makeText(getApplicationContext(), "Messaging", Toast.LENGTH_SHORT).show();
@@ -162,11 +163,11 @@ public class maindrawer extends AppCompatActivity {
                             return true;
                         case R.id.search_event:
                             searchEvent searchFragment = new searchEvent();
-                            fragManager.beginTransaction().replace(R.id.frame, searchFragment).addToBackStack("SearchEvent").commit();
+                            fragManager.beginTransaction().replace(R.id.frame, searchFragment,"SearchEventFragment").addToBackStack("SearchEventFragment").commit();
                             return true;
                         case R.id.newsfeed:
                             EventFeedFragment fragment2 = new EventFeedFragment();
-                            fragManager.beginTransaction().replace(R.id.frame, fragment2).addToBackStack("newsFeed").commit();
+                            fragManager.beginTransaction().replace(R.id.frame, fragment2,"newsFeedFragment").addToBackStack("newsFeedFragment").commit();
                             Toast.makeText(getApplicationContext(), "Drafts Selected", Toast.LENGTH_SHORT).show();
                             return true;
                         case R.id.connect:
@@ -281,7 +282,7 @@ public class maindrawer extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Fragment fragment = new SettingsFragment();
-            fragManager.beginTransaction().replace(R.id.drawer, fragment).addToBackStack("MY_FRAGMENT_NAME").commit();
+            fragManager.beginTransaction().replace(R.id.drawer, fragment,"SettingsFragment").addToBackStack("SettingsFragment").commit();
             Toast.makeText(getApplicationContext(), "Settings Selected", Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -329,6 +330,16 @@ public class maindrawer extends AppCompatActivity {
                     imageView.setVisibility(View.VISIBLE);
                 }
 
+                //if its a subview with a arrow check if thats visible if its visible lock the drawer cause they have
+                //a back button to segway back to the parent view
+                eventDetailFragment myFragment = (eventDetailFragment)fragManager.findFragmentByTag("EventDetailFragment");
+                SettingsFragment myFragment2 = (SettingsFragment) fragManager.findFragmentByTag("SettingsFragment");
+                if ((myFragment != null && myFragment.isVisible()) || (myFragment2 != null && myFragment2.isVisible())) {
+                    // add your code here
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                }else{
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                }
             }
         };
         return result;
