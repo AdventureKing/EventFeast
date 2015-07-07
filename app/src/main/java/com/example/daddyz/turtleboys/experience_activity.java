@@ -23,6 +23,8 @@ import android.view.animation.Animation;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.settings.SettingsFragment;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.example.daddyz.turtleboys.subclasses.User_Icon_Animation;
@@ -250,7 +252,7 @@ public class  experience_activity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Fragment fragment = new SettingsFragment();
-            fragManager.beginTransaction().replace(R.id.myexperiencesdrawer, fragment).addToBackStack("MY_FRAGMENT_NAME").commit();
+            fragManager.beginTransaction().replace(R.id.myexperiencesdrawer, fragment,"SettingsFragment").addToBackStack("SettingsFragment").commit();
             Toast.makeText(getApplicationContext(), "Settings Selected", Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -285,6 +287,14 @@ public class  experience_activity extends AppCompatActivity {
                     imageView.setVisibility(View.INVISIBLE);
                 }else{
                     imageView.setVisibility(View.VISIBLE);
+                }
+                eventDetailFragment myFragment = (eventDetailFragment)fragManager.findFragmentByTag("EventDetailFragment");
+                SettingsFragment myFragment2 = (SettingsFragment) fragManager.findFragmentByTag("SettingsFragment");
+                if ((myFragment != null && myFragment.isVisible()) || (myFragment2 != null && myFragment2.isVisible())) {
+                    // add your code here
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                }else{
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 }
             }
         };

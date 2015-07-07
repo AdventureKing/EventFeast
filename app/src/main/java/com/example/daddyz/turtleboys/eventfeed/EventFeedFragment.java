@@ -69,7 +69,7 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
                 fragment.setObj(news);
 
                 //start the fragment
-                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer,fragment).addToBackStack("EventDetailFragment").commit();
+                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer,fragment,"EventDetailFragment").addToBackStack("EventDetailFragment").commit();
                 //this is where we are gonna
 
             }
