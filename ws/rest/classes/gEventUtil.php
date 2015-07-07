@@ -1,5 +1,4 @@
 <?php
-	
 	function convertDateToYearOptions($date){
 		$dateOptions = array();
 
@@ -88,7 +87,7 @@
 		return $date;
 	}
 
-	function convertDateToDayOptions($date){
+	function convertDateToDayOptions($date, $timezone){
 		$dateOptions = array();
 
 		// Date Example: 2015-07-15
@@ -101,7 +100,7 @@
 			$dateDay= $dateSplit[2];
 
 			$dateDayNumber = $dateDay;
-			date_default_timezone_set("America/Chicago");
+			date_default_timezone_set($timezone);
 			$dateDayLong = (string) date('l', strtotime($dateOnly));
 			$dateDayShort = (string) date('D', strtotime($dateOnly));
 
@@ -109,7 +108,6 @@
 			array_push($dateOptions, $dateDayLong);
 			array_push($dateOptions, $dateDayShort);
 			
-
 			return $dateOptions;
 		}
 		
@@ -141,7 +139,7 @@
 				$timeShort = $hour.":".$timeSplit[1]."pm";
 			} else{
 				$hour = $timeSplit[0];
-				str_replace("0","",$hour);
+				$hour = str_replace('0','',$hour);
 				$timeShort = $hour.":".$timeSplit[1]."am";
 			}
 
@@ -154,5 +152,18 @@
 		
 		return $date;
 	}
-
+	
+	function convertTimezoneToAbbr($timezone){
+		$dateTime = new DateTime();
+		$dateTime->setTimeZone(new DateTimeZone($timezone)); 
+		return (string)$dateTime->format('T'); 
+	}
+	
+	function sortgEventsByDate($a, $b){
+		$timezone = $a->getTimezone();
+		date_default_timezone_set($timezone);
+		$aStartTime = strtotime($a->getStart_time());
+		$bStartTime = strtotime($b->getStart_time());
+		return $aStartTime - $bStartTime;
+	}
 ?>

@@ -1,121 +1,139 @@
-<?php
-	//ini_set('display_errors',1);
-	//ini_set('display_startup_errors',1);
-	//error_reporting(-1);
-        
+<?php 
 	function stubhubAPI_findEvents($queryString, $optionsArray){
-		// Keywords from Query String
-		$q = $queryString;
+		
+		// Filter Parameters
+		$q = urlencode(strtolower($queryString));
 		$filterCity = $optionsArray['city'];
 		$filterState = $optionsArray['state'];
 		$filterDate = $optionsArray['date'];
-
-		$searched_lower = strtolower($q);
-		$searched = strtoupper($searched_lower);
-		$searchedURL = urlencode($searched); 
-	
+		$filterDesc = $optionsArray['desc'];
+		
 		$endpoint_stubhub = "http://publicfeed.stubhub.com/listingCatalog/select/";
-	
-		if(!empty($_POST['ancestorDescriptions'])){
-			$ancestorDescriptions = $_POST['ancestorDescriptions'];
-		}elseif(empty($_POST['ancestorDescriptions'])){
-			$ancestorDescriptions = '';
-		}
-	
-		if(!empty($_POST['sort_what'])){
-			$sort_what = $_POST['sort_what'];
-		}elseif(empty($_POST['sort_what'])){
-			$sort_what = 'event_date_time_local';
-		}
-	
-		if(!empty($_POST['sort_how'])){
-			$sort_how = $_POST['sort_how'];
-		}elseif(empty($_POST['sort_how'])){
-			$sort_how = 'asc';
-		}
-	
-		// StubHub API Query - JSON Response
-		$url = "$endpoint_stubhub?q=%252BstubhubDocumentType%253Aevent%250D%250A%252B"
-				. "%2Bleaf%253A%2Btrue%250D%250A%252B"
-				. "%2Bdescription%253A%2B%22$searchedURL%22%250D%250A%252B"
-				. "%3B$sort_what%20$sort_how"
-				. "&version=2.2"
-				. "&start=0"
-				. "&indent=on"
-				. "&wt=json"
-				. "&fl=description+event_date+event_date_local+event_time_local+geography_parent+venue_name+city+state+genreUrlPath+urlpath+leaf+channel";
-	
-	
-		// Send Request
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_REFERER, "http://www.45.55.142.106.com/");
-		$body = curl_exec($ch);
-	
-		curl_close($ch);
-	
-		// Process JSON string - Convert JSON to PHP Array
-		$json = json_decode($body);
-		//var_dump($body);
-	
-		// Number of Returned Results
+		$url = "$endpoint_stubhub?q=$q&wt=json&stubhubDocumentType=event&rows=50&city=$filterCity";
+		$data = get_data($url);
+		$json = json_decode($data);
 		$num = $json->response->numFound;
 
-		function contains($str, $content, $ignorecase=true){
-			if ($ignorecase){
-				$str = strtolower($str);
-				$content = strtolower($content);
-			}  
-			return strpos($content,$str) ? true : false;
-		}
+		$gEvents = array();
+		$i = 0;
 		
-		$results_events = NULL;
-							
-		if ($num > 0){
+		// Loop through Json Results from CURL resuest
+		while ($i < $num) {
+
+            $externalId = empty($json->response->docs[$i]->event_id) ? null : $json->response->docs[$i]->event_id;
+			$city = empty($json->response->docs[$i]->city) ? null : $json->response->docs[$i]->city;
+			$state = empty($json->response->docs[$i]->state) ? null : $json->response->docs[$i]->state;
+			$date = empty($json->response->docs[$i]->event_date) ? null : substr($json->response->docs[$i]->event_date, 0, -10);
+			$desc = empty($json->response->docs[$i]->description) ? null : $json->response->docs[$i]->description;
 			
-			// Today's timestamp date
-			$today = strtotime("now");
-			
-			if(!empty($filterDate)){
-				$today = strtotime($filterDate);
+			$title = empty($json->response->docs[$i]->title) ? null : $json->response->docs[$i]->title;
+			$venueExternalId = empty($json->response->docs[$i]->venue_config_id) ? null : $json->response->docs[$i]->venue_config_id;
+			$venueName = empty($json->response->docs[$i]->venue_name) ? null : $json->response->docs[$i]->venue_name;
+			$venueAddress = empty($json->response->docs[$i]->addr1) ? null : $json->response->docs[$i]->addr1;
+			$country = empty($json->response->docs[$i]->country) ? null : $json->response->docs[$i]->country;
+			$postalCode = empty($json->response->docs[$i]->zip) ? null : $json->response->docs[$i]->zip;
+			$defaultDomain = empty($json->response->docs[$i]->defaultDomain) ? "http://stubhub.com" : $json->response->docs[$i]->defaultDomain;
+			$venueExternalUrl = empty($json->response->docs[$i]->venueDetailUrlPath) ? null : "http://".$defaultDomain."/".$json->response->docs[$i]->venueDetailUrlPath;
+			$latitude = empty($json->response->docs[$i]->latitude) ? null : $json->response->docs[$i]->latitude;
+			$longitude = empty($json->response->docs[$i]->longitude) ? null : $json->response->docs[$i]->longitude;
+			$timezone = empty($json->response->docs[$i]->jdk_timezone) ? null : $json->response->docs[$i]->jdk_timezone;
+			$startTime = empty($json->response->docs[$i]->event_date) ? null : str_replace("T", " ", substr($json->response->docs[$i]->event_date, 0, -1));
+			$minPrice = empty($json->response->docs[$i]->minPrice) ? null : $json->response->docs[$i]->minPrice;
+			$maxPrice = empty($json->response->docs[$i]->maxPrice) ? null : $json->response->docs[$i]->maxPrice;
+			$channel = empty($json->response->docs[$i]->channel) ? null : strtolower($json->response->docs[$i]->channel);
+			$eventExternalUrl = empty($json->response->docs[$i]->urlpath) ? null : "http://".$defaultDomain."/".$json->response->docs[$i]->urlpath;
+			$imageExternalUrl = empty($json->response->docs[$i]->image_url) ? null : $json->response->docs[$i]->image_url;
+			$geoParent = empty($json->response->docs[$i]->geography_parent) ? null : $json->response->docs[$i]->geography_parent;
+			$imageExternalUrlLong = empty($json->response->docs[$i]->image_url) ? null : "http://cache1.stubhubstatic.com/data/venue_maps/".$geoParent."/".$json->response->docs[$i]->image_url;
+
+           	// If no externalId is set, don't pull record. Avoids empty 
+           	// records from getting pulled.
+            if(!empty($externalId)){
+			if(empty($filterCity)  || strtolower($filterCity) == strtolower($city)){
+			if(empty($filterState) || strtolower($filterState) == strtolower($state)){
+		    if(empty($filterDate)  || $filterDate == $date){
+			if(empty($filterDesc)  || (strpos(strtolower($desc), strtolower($filterDesc)) !== FALSE)){
+	            $gEvent = new gEvent;
+	            $gEvent->setExternal_id($externalId);
+	            $gEvent->setDatasource("stubhub");
+	            $gEvent->setTitle($title);
+	            $gEvent->setDescription($desc);
+	            $gEvent->setNotes("");
+
+	            $gEvent->setVenue_external_id($venueExternalId);
+	            $gEvent->setVenue_name($venueName);
+	            $gEvent->setVenue_address($venueAddress);
+
+	            $gEvent->setCountry_name($country);
+	            $gEvent->setState_name($state);
+	            $gEvent->setCity_name($city);
+	            $gEvent->setPostal_code($postalCode);
+	            $gEvent->setVenue_external_url($venueExternalUrl);
+
+	            $gEvent->setLatitude($latitude);
+	            $gEvent->setLongitude($longitude);
+	            
+				$gEvent->setTimezone($timezone);
+				$gEvent->setTimezone_abbr(convertTimezoneToAbbr($timezone));
+	            $gEvent->setStart_time($startTime);   
+	            $gEvent->setEnd_time("");
+	            $gEvent->setStart_date_month(convertDateToMonthOptions($startTime));
+	            $gEvent->setStart_date_day(convertDateToDayOptions($startTime, $timezone));
+	            $gEvent->setStart_date_year(convertDateToYearOptions($startTime));
+	            $gEvent->setStart_date_time(convertDateToTimeOptions($startTime));
+
+	            $gEvent->setPrice_range($minPrice." - ".$maxPrice);
+	            if(substr($gEvent->getPrice_range(), 0, 2 ) === "0 ") {
+	            	$gEvent->setIs_free(true);
+	            } else if($gEvent->getPrice_range() !== null){
+	            	$gEvent->setIs_free(false);
+	            }
+
+	            $minorGenre = trim(str_replace("tickets", " ", $channel));
+	            $majorGenre = trim(str_replace("tickets", " ", $channel));
+	            $gEvent->setMinor_genre(array($minorGenre));
+	            $gEvent->setMajor_genre(array($majorGenre));
+	                     
+	            $gEvent->setEvent_external_url($eventExternalUrl);
+				
+				
+	            // Populate image links found
+	            $gEventImages = array();    
+	            if(isset($imageExternalUrl)){
+	            	$gImage = new gEventImage;
+	            	$gImage->setImage_external_url($imageExternalUrlLong);
+	            	$gImage->setImage_category("venue");
+	            	array_push($gEventImages, $gImage);
+	            }
+	            $gEvent->setImages($gEventImages);
+				
+				/*
+	            //Populate performers found
+	            $gEventPerformers = array();
+	            if(isset($json->response->docs[$i]->AttractionName[0])){
+	            	$aI = 0;
+	            	foreach ($json->response->docs[$i]->AttractionName as $performer) {
+		            	if(isset($performer) && null != $performer && $performer != ""){
+			            	$gPerformer = new gEventPerformer;
+			            	$gPerformer->setPerformer_name($performer);
+			            	$gPerformer->setPerformer_external_image_url("http://s1.ticketm.net/tm/en-us".$json->response->docs[$i]->AttractionImage[$aI]);
+			            	array_push($gEventPerformers, $gPerformer);
+		            	}
+		            	$aI++;
+	            	}
+	            }
+	            $gEvent->setPerformers($gEventPerformers);
+				*/
+				
+	            // Push gEvent object onto arraylist of gEvent objects
+	            array_push($gEvents, $gEvent);
 			}
-			
-			// Results Loop 
-			$i = 0;
-			while ($i<$num) {
-				// Filter out results with event title "mirror" - StubHub API anomaly
-				if(strstr($json->response->docs[$i]->description,"mirror") == false){
-				// Filter out results with event title "coming soon" - StubHub API anomaly
-				if(strstr($json->response->docs[$i]->description,"coming soon") == false){
-				// Filter out results with event title "posted here" - StubHub API anomaly
-				if(strstr($json->response->docs[$i]->description,"posted here") == false){
-				// Filter out results with event date earlier than today or date filter
-				if (!empty($json->response->docs[$i]->event_date) && strtotime($json->response->docs[$i]->event_date) >= $today){
-				// Filter out results not in city
-				if (empty($filterCity) || strcasecmp($filterCity,$json->response->docs[$i]->city) == 0){
-				// Filter out results not in state
-				if (empty($filterState) || strcasecmp($filterState,$json->response->docs[$i]->state) == 0){
-					// Result format with JSON variables
-					$results_events[$i]['source'] = "stubhub";
-					$results_events[$i]['desc'] = $json->response->docs[$i]->description;
-					$results_events[$i]['date'] = $json->response->docs[$i]->event_date_local;
-					$results_events[$i]['time'] = $json->response->docs[$i]->event_time_local;
-					$results_events[$i]['venue'] = $json->response->docs[$i]->venue_name;
-					$results_events[$i]['state'] = $json->response->docs[$i]->state;
-					$results_events[$i]['city'] = $json->response->docs[$i]->city;
-					$results_events[$i]['urlpath'] = "http://www.stubhub.com/".$json->response->docs[$i]->genreUrlPath."/".$json->response->docs[$i]->urlpath."/";
-				}
-				}
-				}
-				}
-				}
-				}
-				// Loop continuance - finite
-				$i++;
 			}
+			}
+			}
+			}
+			$i++;
 		}
-		
-		return $results_events;
+		return $gEvents;
 	}
 ?>

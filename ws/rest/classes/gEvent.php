@@ -1,6 +1,4 @@
 <?php 
-	require_once('gEventUtil.php');
-
 	class gEvent implements JsonSerializable{
 		/* Member Variables */
 		private $internal_id = "";
@@ -10,6 +8,8 @@
 		private $title = "";
 		private $description = "";
 		private $notes = "";
+		private $timezone = "";
+		private $timezone_abbr = "";
 		private $start_time = "";
 		private $end_time = "";
 		private $start_date_month = array();
@@ -206,7 +206,55 @@
 
 	        return $this;
 	    }
+		
+		/**
+	     * Gets the value of timezone.
+	     *
+	     * @return mixed
+	     */
+	    public function getTimezone()
+	    {
+	        return $this->timezone;
+	    }
 
+	    /**
+	     * Sets the value of timezone.
+	     *
+	     * @param mixed $timezone the timezone
+	     *
+	     * @return self
+	     */
+	    public function setTimezone($timezone)
+	    {
+	        $this->timezone = $timezone;
+
+	        return $this;
+	    }
+		
+		/**
+	     * Gets the value of timezone_abbr.
+	     *
+	     * @return mixed
+	     */
+	    public function getTimezone_abbr()
+	    {
+	        return $this->timezone_abbr;
+	    }
+
+	    /**
+	     * Sets the value of timezone_abbr.
+	     *
+	     * @param mixed $timezone_abbr the timezone_abbr
+	     *
+	     * @return self
+	     */
+	    public function setTimezone_abbr($timezone_abbr)
+	    {
+	        $this->timezone_abbr = $timezone_abbr;
+
+	        return $this;
+	    }
+		
 	    /**
 	     * Gets the value of start_time.
 	     *
