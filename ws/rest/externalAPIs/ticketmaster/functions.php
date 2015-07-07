@@ -44,10 +44,20 @@
 			$minorGenre = empty($json->response->docs[$i]->MinorGenre[0]) ? null : $json->response->docs[$i]->MinorGenre;
 			$majorGenre = empty($json->response->docs[$i]->MajorGenre[0]) ? null : $json->response->docs[$i]->MajorGenre;
 			$eventExternalUrl = empty($json->response->docs[$i]->AttractionSEOLink[0]) ? null : "http://ticketmaster.com".$json->response->docs[$i]->AttractionSEOLink[0];
-
+			
+			$currentEvent = true;
+			
+			if(!empty($startTime)){
+				date_default_timezone_set($timezone);
+				$currentUnixTime = strtotime("now");
+				$eventUnixTime = strtotime($startTime);
+				
+				$currentEvent = ($currentUnixTime > $eventUnixTime) ? false : true;
+			}
+			
            	// If no externalId is set, don't pull record. Avoids empty 
            	// records from getting pulled.
-            if(!empty($externalId)){
+            if(!empty($externalId) && $currentEvent){
 			if(empty($filterCity)  || strtolower($filterCity) == strtolower($city)){
 			if(empty($filterState) || strtolower($filterState) == strtolower($state)){
 		    if(empty($filterDate)  || $filterDate == $date){

@@ -7,7 +7,7 @@
 		$filterState = $optionsArray['state'];
 		$filterDate = $optionsArray['date'];
 		$filterDesc = $optionsArray['desc'];
-		
+
 		$endpoint_stubhub = "http://publicfeed.stubhub.com/listingCatalog/select/";
 		$url = "$endpoint_stubhub?q=$q&wt=json&stubhubDocumentType=event&rows=50&city=$filterCity";
 		$data = get_data($url);
@@ -45,10 +45,20 @@
 			$imageExternalUrl = empty($json->response->docs[$i]->image_url) ? null : $json->response->docs[$i]->image_url;
 			$geoParent = empty($json->response->docs[$i]->geography_parent) ? null : $json->response->docs[$i]->geography_parent;
 			$imageExternalUrlLong = empty($json->response->docs[$i]->image_url) ? null : "http://cache1.stubhubstatic.com/data/venue_maps/".$geoParent."/".$json->response->docs[$i]->image_url;
-
+			
+			$currentEvent = true;
+			
+			if(!empty($startTime)){
+				date_default_timezone_set($timezone);
+				$currentUnixTime = strtotime("now");
+				$eventUnixTime = strtotime($startTime);
+				
+				$currentEvent = ($currentUnixTime > $eventUnixTime) ? false : true;
+			}
+				
            	// If no externalId is set, don't pull record. Avoids empty 
            	// records from getting pulled.
-            if(!empty($externalId)){
+            if(!empty($externalId) && $currentEvent){
 			if(empty($filterCity)  || strtolower($filterCity) == strtolower($city)){
 			if(empty($filterState) || strtolower($filterState) == strtolower($state)){
 		    if(empty($filterDate)  || $filterDate == $date){
