@@ -1,11 +1,9 @@
 package com.example.daddyz.turtleboys;
 
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -15,14 +13,10 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.util.LruCache;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,18 +25,15 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.example.daddyz.turtleboys.subclasses.Camera;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
-import com.parse.LogOutCallback;
+import com.example.daddyz.turtleboys.subclasses.ThumbnailGetter;
 import com.parse.ParseUser;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.concurrent.CountDownLatch;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -415,7 +406,21 @@ public class gallery1 extends AppCompatActivity {
                     if(itemList.size() <= position){
                         return null;
                     }
-                    Bitmap bm = decodeSampledBitmapFromUri(itemList.get(position), 512, 512);
+                    //Bitmap bm = decodeSampledBitmapFromUri(itemList.get(position), 512, 512);
+                    //Bitmap bm = MediaStore.Images.Thumbnails.getThumbnail(getContentResolver(), 0, MediaStore.Images.Thumbnails.MINI_KIND, (BitmapFactory.Options) null);
+                    Bitmap bm = null;
+                    try {
+                        bm = ThumbnailGetter.getThumbnail(getContentResolver(), itemList.get(position));
+
+                        //Check if bitmap is empty
+                        Bitmap empty = Bitmap.createBitmap(bm.getWidth(), bm.getHeight(), bm.getConfig());
+                        if (bm.sameAs(empty)){
+                            bm = decodeSampledBitmapFromUri(itemList.get(position), 512, 512);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        bm = decodeSampledBitmapFromUri(itemList.get(position), 512, 512);
+                    }
                     //Rotate images to correct orientation
                     try {
                         ExifInterface exif = new ExifInterface(itemList.get(position));
