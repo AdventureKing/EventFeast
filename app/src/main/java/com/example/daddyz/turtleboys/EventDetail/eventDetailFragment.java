@@ -19,11 +19,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.R;
+import com.example.daddyz.turtleboys.eventfeed.gEventImageObject;
 import com.example.daddyz.turtleboys.eventfeed.gEventObject;
+import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -45,6 +48,7 @@ public class eventDetailFragment extends Fragment {
     private TextView eventDate;
     private TextView eventLocation;
     private TextView eventDesc;
+    private ImageView eventImage;
     private DrawerLayout mDrawer;
 
     @Nullable
@@ -52,9 +56,6 @@ public class eventDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //lock the drawer because we are inception in this bitch
         //main_activity->fragment->fragment
-
-
-
 
         view = inflater.inflate(R.layout.eventdetailfragment,container,false);
 
@@ -66,8 +67,6 @@ public class eventDetailFragment extends Fragment {
         actionbar.setTitle("Event Detail");
         final FrameLayout frame = (FrameLayout) container.findViewById(R.id.frame);
         frame.setVisibility(View.INVISIBLE);
-
-
 
         //Set up back arrow icon on toolbar
         actionbar.setDisplayHomeAsUpEnabled(true);
@@ -83,6 +82,7 @@ public class eventDetailFragment extends Fragment {
 
 
         //set the stuff on the page
+        eventImage = (ImageView) view.findViewById(R.id.eventImage);
         eventName = (TextView) view.findViewById(R.id.EventTitle);
         eventName.setText(obj.getDescription());
         eventDate = (TextView) view.findViewById(R.id.EventDate);
@@ -91,6 +91,29 @@ public class eventDetailFragment extends Fragment {
         eventLocation.setText(obj.getVenue_address());
         eventDesc = (TextView) view.findViewById(R.id.EventDesc);
         eventDesc.setText(obj.getDescription());
+
+        String placeholderImageUrl = "http://www.grommr.com/Content/Images/placeholder-event-p.png";
+        String imageUrl = placeholderImageUrl;
+        String imageVenueUrl = placeholderImageUrl;
+
+        //Loop through available image objects to populate image url
+        for(gEventImageObject image : obj.getImages()){
+            if(null != image.getImage_external_url() && image.getImage_category().equals("attraction")){
+                imageUrl = image.getImage_external_url();
+                break;
+            }
+            if(null != image.getImage_external_url() && image.getImage_category().equals("venue")){
+                imageVenueUrl = image.getImage_external_url();
+                break;
+            }
+        }
+
+        //If no attraction image url was picked up, set to venue URL.
+        //Else it uses default placeholder image I placed above.
+        if(imageUrl.equals(placeholderImageUrl) && !imageVenueUrl.equals(placeholderImageUrl)){
+            imageUrl = imageVenueUrl;
+        }
+        Picasso.with(view.getContext()).load(imageUrl).into(eventImage);
 
 
         //actionlisteners for the buttons
