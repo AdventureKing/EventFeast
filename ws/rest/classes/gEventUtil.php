@@ -127,16 +127,27 @@
 			$timeMilitary = $timeOnly;
 			if($timeSplit[0] > 12){
 				$hour = $timeSplit[0] - 12;
-				$timeNonMilitary = "0".$hour.":".$timeSplit[1].":".$timeSplit[2];
+				if($hour == 10 || $hour == 11 || $hour == 12){
+					$timeNonMilitary = $hour.":".$timeSplit[1].":".$timeSplit[2];
+				} else{
+					$timeNonMilitary = "0".$hour.":".$timeSplit[1].":".$timeSplit[2];
+				}			
+			} else if($timeSplit[0] == "00"){
+				$hour = 12;
+				$timeNonMilitary = $hour.":".$timeSplit[1].":".$timeSplit[2];
 			} else{
 				$timeNonMilitary = $timeOnly;
 			}
+			
 			if($timeSplit[0] > 12){
 				$hour = $timeSplit[0] - 12;
 				$timeShort = $hour.":".$timeSplit[1]."pm";
 			} else if($timeSplit[0] == 12){
 				$hour = $timeSplit[0];
 				$timeShort = $hour.":".$timeSplit[1]."pm";
+			} else if($timeSplit[0] == "00"){
+				$hour = 12;
+				$timeShort = $hour.":".$timeSplit[1]."am";
 			} else{
 				$hour = $timeSplit[0];
 				$hour = str_replace('0','',$hour);
