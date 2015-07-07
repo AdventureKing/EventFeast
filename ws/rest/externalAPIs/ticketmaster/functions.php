@@ -26,14 +26,15 @@
 			$desc = empty($json->response->docs[$i]->EventName) ? null : $json->response->docs[$i]->EventName;
 			
 			$title = empty($json->response->docs[$i]->EventName) ? null : $json->response->docs[$i]->EventName;
-			$eventNotes = empty($json->response->docs[$i]->EventNotes) ? null : htmlspecialchars($json->response->docs[$i]->EventNotes, ENT_QUOTES);
+			$eventInfo = empty($json->response->docs[$i]->EventInfo) ? null : htmlspecialchars($json->response->docs[$i]->EventInfo."\n\n", ENT_QUOTES);
+			$eventNotes = empty($json->response->docs[$i]->EventNotes) ? null : (htmlspecialchars($json->response->docs[$i]->EventNotes, ENT_QUOTES));
 			$venueExternalId = empty($json->response->docs[$i]->VenueId) ? null : $json->response->docs[$i]->VenueId;
 			$venueName = empty($json->response->docs[$i]->VenueName) ? null : $json->response->docs[$i]->VenueName;
 			$venueAddress = empty($json->response->docs[$i]->VenueAddress) ? null : $json->response->docs[$i]->VenueAddress;
 			$country = empty($json->response->docs[$i]->VenueCountry) ? null : $json->response->docs[$i]->VenueCountry;
 			$postalCode = empty($json->response->docs[$i]->VenuePostalCode) ? null : $json->response->docs[$i]->VenuePostalCode;
 			$defaultDomain = "http://ticketmaster.com";
-			$venueExternalUrl = empty($json->response->docs[$i]->VenueSEOLink) ? null : $defaultDomain."/".$json->response->docs[$i]->VenueSEOLink;
+			$venueExternalUrl = empty($json->response->docs[$i]->VenueSEOLink) ? null : $defaultDomain.$json->response->docs[$i]->VenueSEOLink;
 			$venueLatLongString = empty($json->response->docs[$i]->VenueLatLong) ? null : $json->response->docs[$i]->VenueLatLong;
 			$timezone = empty($json->response->docs[$i]->Timezone) ? null : $json->response->docs[$i]->Timezone;
 			$startTime = empty($json->response->docs[$i]->PostProcessedData->LocalEventDate) ? null : str_replace("T", " ", substr($json->response->docs[$i]->PostProcessedData->LocalEventDate, 0, -6));
@@ -43,7 +44,9 @@
 			$genre = empty($json->response->docs[$i]->Genre[0]) ? null : $json->response->docs[$i]->Genre;
 			$minorGenre = empty($json->response->docs[$i]->MinorGenre[0]) ? null : $json->response->docs[$i]->MinorGenre;
 			$majorGenre = empty($json->response->docs[$i]->MajorGenre[0]) ? null : $json->response->docs[$i]->MajorGenre;
-			$eventExternalUrl = empty($json->response->docs[$i]->AttractionSEOLink[0]) ? null : "http://ticketmaster.com".$json->response->docs[$i]->AttractionSEOLink[0];
+			$eventSEOName = empty($json->response->docs[$i]->EventSEOName) ? null : $json->response->docs[$i]->EventSEOName;
+			$eventExternalUrl = $defaultDomain."/".$eventSEOName."/event/".$externalId;
+			$eventExternalAttractionUrl = empty($json->response->docs[$i]->AttractionSEOLink[0]) ? null : "http://ticketmaster.com".$json->response->docs[$i]->AttractionSEOLink[0];
 			
 			$currentEvent = true;
 			
@@ -67,7 +70,7 @@
 	            $gEvent->setDatasource("ticketmaster");
 	            $gEvent->setTitle($title);
 	            $gEvent->setDescription($desc);
-	            $gEvent->setNotes($eventNotes);
+	            $gEvent->setNotes($eventInfo.$eventNotes);
 
 	            $gEvent->setVenue_external_id($venueExternalId);
 	            $gEvent->setVenue_name($venueName);
