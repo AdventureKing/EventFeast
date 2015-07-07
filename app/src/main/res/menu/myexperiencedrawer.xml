@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+        android:id="@+id/main_page"
+        android:checked="false"
+        android:icon="@drawable/ic_account_box_black_24dp"
+        android:title="Main Page" />
+
+        <item
+            android:id="@+id/messaging"
+            android:checked="false"
+            android:icon="@drawable/ic_inbox_black"
+            android:title="@string/messaging" />
+
+        <item
+            android:id="@+id/myEvents"
+            android:checked="false"
+            android:icon="@drawable/ic_local_movies_black_24dp"
+            android:title="My Events" />
+        <item
+            android:id="@+id/myFriends"
+            android:checked="false"
+            android:icon="@drawable/ic_tag_faces_black_24dp"
+            android:title="@string/myfriends" />
+        <item
+            android:id="@+id/myPosts"
+            android:checked="false"
+            android:icon="@drawable/ic_assistant_black_24dp"
+            android:title="@string/myposts" />
+        <item
+            android:id="@+id/myListings"
+            android:checked="false"
+            android:icon="@drawable/ic_beenhere_black_24dp"
+            android:title="@string/mylistings" />
+        <item
+            android:id="@+id/logoutDrawer"
+            android:checked="false"
+            android:icon="@drawable/ic_person_outline_black_24dp"
+            android:title="@string/action_logout" />
+
+
+    </group>
+</menu>

@@ -3,7 +3,92 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_myExperiences">My Experiences</string>
     <string name="username_text">Enter Username</string>
     <string name="password_text">Enter Password</string>
+    <string name="action_login">Login</string>
     <string name="action_logout">Logout</string>
+    <string name="event_pictures">Event Pictures</string>
+
+
+    <!-- drawer options strings -->
+    <string name="My_experiences">My Experiences</string>
+    <string name="searchEvent">Search Event</string>
+    <string name="accountSettings">Account Settings</string>
+    <string name="newsfeed">Newsfeed</string>
+    <string name="connect">Connect</string>
+
+    <!-- pre built options that need to phased out -->
+    <string name="navigation_item_1">Home</string>
+    <string name="navigation_item_2">Events</string>
+    <string name="starred_string">Starred</string>
+    <string name="inbox_string">Inbox</string>
+    <string name="sent_mail_string">Sent mail</string>
+    <string name="draft_string">Drafts</string>
+    <string name="subheader">Subheader</string>
+    <string name="trash_string">Trash</string>
+    <string name="all_mail_string">All mails</string>
+    <string name="spam_string">Spams</string>
+    <string name="closeDrawer">Navigation View</string>
+    <string name="openDrawer">Navigation View Closed</string>
+    <string name="eventfeed">Eventfeed</string>
+    <string name="messaging">Messaging</string>
+    <string name="myfriends">My Friends</string>
+    <string name="myposts">My Post</string>
+    <string name="mylistings">My Listings</string>
+    <!-- Registration Strings -->
+    <string name="confirmPassword_text">Confirm Password</string>
+    <string name="register">Register</string>
+    <string name="newUser">Register</string>
+    <string name="firstName_text">Enter First Name</string>
+    <string name="lastName_text">Enter Last Name</string>
+    <string name="email_text">Enter Email</string>
+    <string name="emailVerify_text">Verify Email</string>
+    <string name="userPasswordVerify_text">Verify Password</string>
+    <string name="cancelRegistration">Cancel</string>
+    <string name="birthdaySelect">Select your birthday</string>
+    <string name="emailNoMatch">Email and Verify email do not match</string>
+    <string name="passwordNoMatch">Passwords do not match</string>
+    <string name="firstNameEmpty">First name is empty</string>
+    <string name="lastNameEmpty">Last name is empty</string>
+    <string name="userImageSelect">Select an avatar image</string>
+    <string name="userNameEmpty">User name is empty</string>
+    <string name="passwordEmpty">Password is empty</string>
+    <string name="emailEmpty">Email is empty</string>
+
+    <!-- Top right button strings -->
+    <string name="action_gallery">Gallery</string>
+    <string name="title_activity_maps">Map</string>
+
+
+
+    <!-- Geofence strings -->
+    <string name="add_geofences">Add geofences</string>
+    <string name="remove_geofences">Remove geofences</string>
+
+    <string name="geofences_added">Geofences added</string>
+    <string name="geofences_removed">Geofences removed</string>
+
+    <!-- Error strings -->
+    <string name="not_connected">GoogleApiClient no yet connected. Try again.</string>
+    <string name="geofence_not_available">Geofence service is not available now</string>
+    <string name="geofence_too_many_geofences">Your app has registered too many geofences</string>
+    <string name="geofence_too_many_pending_intents">
+        You have provided too many PendingIntents to the addGeofences() call
+    </string>
+    <string name="unknown_geofence_error">
+        Unknown error: the Geofence service is not available now
+    </string>
+    <string name="geofence_transition_invalid_type">
+        Geofence transition error: invalid transition type %1$d
+    </string>
+
+    <!-- Transition type strings -->
+    <string name="geofence_transition_entered">Entered</string>
+    <string name="geofence_transition_exited">Exited</string>
+    <string name="unknown_geofence_transition">Unknown Transition</string>
+
+    <string name="geofence_transition_notification_text">Click notification to return to app</string>
+
+
 </resources>
