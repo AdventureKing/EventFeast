@@ -16,18 +16,18 @@ import java.util.ArrayList;
 /**
  * Created by snow on 6/17/2015.
  */
-public class eventfeedAdapter extends ArrayAdapter<eventfeedObject> {
+public class eventfeedAdapter extends ArrayAdapter<gEventObject> {
 
     private Context context;
     private int resource;
-    private ArrayList<eventfeedObject> objects;
+    private ArrayList<gEventObject> eventObjects;
 
 
-    public eventfeedAdapter(Context context, int resource, ArrayList<eventfeedObject> objects) {
-        super(context, resource,objects);
-        this.context=context;
-        this.resource=resource;
-        this.objects=objects;
+    public eventfeedAdapter(Context context, int resource, ArrayList<gEventObject> eventObjects) {
+        super(context, resource,eventObjects);
+        this.context = context;
+        this.resource = resource;
+        this.eventObjects = eventObjects;
     }
     //return even or odd row
     public int getItemViewType(int position) {
@@ -70,11 +70,11 @@ public class eventfeedAdapter extends ArrayAdapter<eventfeedObject> {
         //TextView urlpath = (TextView) row.findViewById(R.id.urlpathLine);
 
         //source.setText(objects.get(position).getEventSource());
-        description.setText(objects.get(position).getEventDesc());
-        citystate.setText(objects.get(position).getEventCity() + "," + objects.get(position).getEventState());
-        date.setText(objects.get(position).getEventDate());
-        time.setText(objects.get(position).getEventTime());
-        venue.setText(objects.get(position).getEventVenue());
+        description.setText(eventObjects.get(position).getDescription());
+        citystate.setText(eventObjects.get(position).getCity_name() + "," + eventObjects.get(position).getState_name());
+        date.setText(eventObjects.get(position).getStart_date_month().get(2) + " " + eventObjects.get(position).getStart_date_day().get(0) + ", " + eventObjects.get(position).getStart_date_year().get(0));
+        time.setText(eventObjects.get(position).getStart_date_time().get(2));
+        venue.setText(eventObjects.get(position).getVenue_name());
         //urlpath.setText(objects.get(position).getEventURL());
 
 
