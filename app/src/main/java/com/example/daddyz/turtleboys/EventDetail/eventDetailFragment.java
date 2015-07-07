@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.R;
+import com.example.daddyz.turtleboys.eventfeed.gEventObject;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -31,7 +33,7 @@ import java.util.TimeZone;
  */
 public class eventDetailFragment extends Fragment {
     private View view;
-    private EventDetailObject obj;
+    private gEventObject obj;
     private Toolbar toolbar;
     private ActionBar actionbar;
     private Button calendarButton;
@@ -42,6 +44,7 @@ public class eventDetailFragment extends Fragment {
     private TextView eventDate;
     private TextView eventLocation;
     private TextView eventDesc;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,8 +60,6 @@ public class eventDetailFragment extends Fragment {
         final FrameLayout frame = (FrameLayout) container.findViewById(R.id.frame);
         frame.setVisibility(View.INVISIBLE);
 
-
-
         //Set up back arrow icon on toolbar
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeButtonEnabled(true);
@@ -71,17 +72,15 @@ public class eventDetailFragment extends Fragment {
             }
         });
 
-
         //set the stuff on the page
         eventName = (TextView) view.findViewById(R.id.EventTitle);
-        eventName.setText(obj.getEventDesc());
+        eventName.setText(obj.getDescription());
         eventDate = (TextView) view.findViewById(R.id.EventDate);
-        eventDate.setText(obj.getEventDate());
+        eventDate.setText(obj.getStart_date_month().get(2) + " " + obj.getStart_date_day().get(0) + ", " + obj.getStart_date_year().get(0));
         eventLocation = (TextView) view.findViewById(R.id.EventLocation);
-        eventLocation.setText(obj.getEventAddress());
+        eventLocation.setText(obj.getVenue_address());
         eventDesc = (TextView) view.findViewById(R.id.EventDesc);
-        eventDesc.setText(obj.getEventDesc());
-
+        eventDesc.setText(obj.getDescription());
 
         //actionlisteners for the buttons
         calendarButton = (Button) view.findViewById(R.id.AddToCalendarButton);
@@ -96,11 +95,12 @@ public class eventDetailFragment extends Fragment {
         });
 
         buyButton = (Button) view.findViewById(R.id.BuyTicketsButton);
+
         buyButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-               Intent webBrowser = new Intent(Intent.ACTION_VIEW,Uri.parse("http://google.com"));
+               Intent webBrowser = new Intent(Intent.ACTION_VIEW,Uri.parse(obj.getEvent_external_url()));
                 startActivity(webBrowser);
             }
         });
@@ -125,10 +125,10 @@ public class eventDetailFragment extends Fragment {
     }
 
 
-    public void setObj(EventDetailObject obj) {
+    public void setObj(gEventObject obj) {
         this.obj = obj;
     }
-    public EventDetailObject getObj() {
+    public gEventObject getObj() {
         return obj;
     }
 
@@ -159,11 +159,11 @@ public class eventDetailFragment extends Fragment {
         //where/when/id_for_insert/start_time/end_time/time_zone
         //need address/description
         calEvent.put(CalendarContract.Events.CALENDAR_ID, 1); // XXX pick)
-        calEvent.put(CalendarContract.Events.TITLE, obj.getEventDesc());
+        calEvent.put(CalendarContract.Events.TITLE, obj.getDescription());
         calEvent.put(CalendarContract.Events.DTSTART, beginTime.getTimeInMillis());
         calEvent.put(CalendarContract.Events.DTEND, endTime.getTimeInMillis());
         calEvent.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
-        calEvent.put(CalendarContract.Events.EVENT_LOCATION,obj.getEventVenue());
+        calEvent.put(CalendarContract.Events.EVENT_LOCATION,obj.getVenue_name());
 
         Uri uri = getActivity().getContentResolver().insert(CalendarContract.Events.CONTENT_URI, calEvent);
         //get id for reminders
@@ -178,13 +178,13 @@ public class eventDetailFragment extends Fragment {
         Uri uri2 = cr.insert(CalendarContract.Reminders.CONTENT_URI, reminders);
 
 
-        Toast.makeText(getActivity(), obj.getEventDesc() + " was added to the Calendar", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), obj.getDescription() + " was added to the Calendar", Toast.LENGTH_SHORT).show();
     }
     //manuel add event algo
     public void createEvent(){
         Intent calIntent = new Intent(Intent.ACTION_INSERT);
         calIntent.setType("vnd.android.cursor.item/event");
-        calIntent.putExtra(CalendarContract.Events.TITLE, obj.getEventDesc());
+        calIntent.putExtra(CalendarContract.Events.TITLE, obj.getTitle());
         calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, "My Beach House");
         calIntent.putExtra(CalendarContract.Events.DESCRIPTION, "A Pig Roast on the Beach");
         //instaiate with the time to start
