@@ -8,6 +8,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,9 +23,11 @@ public class Camera extends Activity {
     private Uri fileUri;
     public static final int MEDIA_TYPE_IMAGE = 1;
     //public static final int MEDIA_TYPE_VIDEO = 2;
-    private Context context;
+    private static Context context;
+    private static String sub_directory;
 
-    public Camera (Context context){
+    public Camera (Context context, String sub_dir){
+        this.sub_directory = sub_dir;
         this.context = context;
     }
 
@@ -55,7 +59,7 @@ public class Camera extends Activity {
         // using Environment.getExternalStorageState() before doing this.
 
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "GigIT");
+                Environment.DIRECTORY_PICTURES), "GigIT/" + sub_directory);
         // This location works best if you want the created images to be shared
         // between applications and persist after your app has been uninstalled.
 
@@ -76,7 +80,8 @@ public class Camera extends Activity {
         } /*else if(type == MEDIA_TYPE_VIDEO) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
                     "VID_"+ timeStamp + ".mp4");
-        } */else {
+        }*/ else {
+            Log.i("MyCameraApp", "type returned was " + type);
             return null;
         }
 

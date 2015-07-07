@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.example.daddyz.turtleboys.subclasses.Camera;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.parse.LogOutCallback;
+import com.parse.ParseUser;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,9 +56,10 @@ public class gallery1 extends AppCompatActivity {
     private GridView gridview;
     private AsyncTaskLoadFiles myAsyncTaskLoadFiles;
     private ImageAdapter myImageAdapter;
-    private Pattern pattern = Pattern.compile("/GigIT/(.*)$");
+    private Pattern pattern;
     private HashMap<Integer, Bitmap> finishedPictures;
     private String title;
+    private String userName;
 
 
     @Override
@@ -84,7 +86,7 @@ public class gallery1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // create Intent to take a picture and return control to the calling application
-                Camera camera = new Camera(gallery1.this);
+                Camera camera = new Camera(gallery1.this, userName);
                 fileUri = camera.startCamera();
             }
         });
@@ -95,10 +97,18 @@ public class gallery1 extends AppCompatActivity {
         gridview.setAdapter(myImageAdapter);
         finishedPictures = new HashMap<>();
 
+        //Get Username for directory and sharing customization
+        if (GigUser.getCurrentUser() == null){
+            Toast.makeText(getApplicationContext(), "You should be logged in, and thus not able to see this", Toast.LENGTH_LONG).show();
+            finish();
+        }
+        final GigUser currentUser = ParseUser.createWithoutData(GigUser.class, ParseUser.getCurrentUser().getObjectId());
+        userName = currentUser.getUsername().toString();
+        pattern = Pattern.compile("/GigIT/" + userName + "/(.*)$");
 
         //Check and if non-existent, create a GigIT photo directory
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "GigIT");
+                Environment.DIRECTORY_PICTURES), "GigIT/" + userName);
         // This location works best if you want the created images to be shared
         // between applications and persist after your app has been uninstalled.
 
@@ -295,7 +305,7 @@ public class gallery1 extends AppCompatActivity {
                     .getExternalStorageDirectory().getAbsolutePath();
 
             //String targetPath = ExternalStorageDirectoryPath + "/test/";
-            String targetPath = ExternalStorageDirectoryPath + "/Pictures/GigIT";
+            String targetPath = ExternalStorageDirectoryPath + "/Pictures/GigIT/" + userName;
             targetDirector = new File(targetPath);
             myTaskAdapter.clear();
 
