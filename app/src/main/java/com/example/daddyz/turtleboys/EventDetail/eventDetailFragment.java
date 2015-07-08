@@ -88,7 +88,10 @@ public class eventDetailFragment extends Fragment {
         eventName = (TextView) view.findViewById(R.id.EventTitle);
         eventName.setText(obj.getTitle());
         eventDate = (TextView) view.findViewById(R.id.EventDate);
-        eventDate.setText(obj.getStart_date_month().get(2) + " " + obj.getStart_date_day().get(0) + ", " + obj.getStart_date_year().get(0));
+        eventDate.setText(obj.getStart_date_month().get(2) + " " +
+                obj.getStart_date_day().get(0) + ", " +
+                obj.getStart_date_year().get(0) + "     " +
+                obj.getStart_date_time().get(2));
         eventLocation = (TextView) view.findViewById(R.id.EventLocation);
         eventLocation.setText(obj.getVenue_address());
         eventDesc = (TextView) view.findViewById(R.id.EventDesc);
