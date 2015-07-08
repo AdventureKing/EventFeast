@@ -1,5 +1,7 @@
 package com.example.daddyz.turtleboys.eventfeed;
 
+import android.text.Html;
+
 import java.util.ArrayList;
 
 /**
@@ -78,7 +80,7 @@ public class gEventObject {
     }
 
     public String getTitle() {
-        return title;
+        return Html.fromHtml(Html.fromHtml(title).toString()).toString();
     }
 
     public void setTitle(String title) {
@@ -86,7 +88,7 @@ public class gEventObject {
     }
 
     public String getDescription() {
-        return description;
+        return Html.fromHtml(Html.fromHtml(description).toString()).toString();
     }
 
     public void setDescription(String description) {
@@ -94,7 +96,7 @@ public class gEventObject {
     }
 
     public String getNotes() {
-        return notes;
+        return Html.fromHtml(Html.fromHtml(notes).toString()).toString();
     }
 
     public void setNotes(String notes) {
