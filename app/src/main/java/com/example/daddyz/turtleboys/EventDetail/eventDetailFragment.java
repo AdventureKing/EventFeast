@@ -234,7 +234,7 @@ public class eventDetailFragment extends Fragment {
         calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, obj.getVenue_name());
         calIntent.putExtra(CalendarContract.Events.DESCRIPTION, obj.getNotes());
         //instaiate with the time to start
-        GregorianCalendar calDate = new GregorianCalendar(2015, Integer.parseInt(obj.getStart_date_month().get(0)) -1 ,  Integer.parseInt(obj.getStart_date_day().get(0)));
+        GregorianCalendar calDate = new GregorianCalendar(Integer.parseInt(obj.getStart_date_year().get(0)), Integer.parseInt(obj.getStart_date_month().get(0)) -1 ,  Integer.parseInt(obj.getStart_date_day().get(0)));
         calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
                 calDate.getTimeInMillis());
         calDate.set(2015, 7, 8,2,30);
