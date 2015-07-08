@@ -221,6 +221,9 @@ public class eventDetailFragment extends Fragment {
 
         Toast.makeText(getActivity(), Integer.parseInt(obj.getStart_date_day().get(0)) + " was added to the Calendar", Toast.LENGTH_SHORT).show();
         //Toast.makeText(getActivity(), obj.getDescription() + " was added to the Calendar", Toast.LENGTH_SHORT).show();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.EN_US);
+         cal.setTime(sdf.parse("Mon Mar 14 16:02:37 GMT 2011"));
         */
         //need to set the real times
         Calendar beginTime = Calendar.getInstance();
