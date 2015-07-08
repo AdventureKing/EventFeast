@@ -5,15 +5,16 @@ import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,8 @@ public class eventDetailFragment extends Fragment {
     private TextView eventDesc;
     private ImageView eventImage;
     private DrawerLayout mDrawer;
-
+    private boolean AutoAddFlag;
+    private SharedPreferences preferences;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -90,7 +92,7 @@ public class eventDetailFragment extends Fragment {
         eventLocation = (TextView) view.findViewById(R.id.EventLocation);
         eventLocation.setText(obj.getVenue_address());
         eventDesc = (TextView) view.findViewById(R.id.EventDesc);
-        eventDesc.setText(obj.getDescription());
+        eventDesc.setText(obj.getNotes());
 
         String placeholderImageUrl = "http://www.grommr.com/Content/Images/placeholder-event-p.png";
         String imageUrl = placeholderImageUrl;
@@ -118,13 +120,17 @@ public class eventDetailFragment extends Fragment {
 
         //actionlisteners for the buttons
         calendarButton = (Button) view.findViewById(R.id.AddToCalendarButton);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        AutoAddFlag = preferences.getBoolean("auto_calendar_preference", false);
         calendarButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-
-                //createEvent();
+                if(AutoAddFlag)
                 autocreate();
+                else
+                createEvent();
             }
         });
 
@@ -176,11 +182,49 @@ public class eventDetailFragment extends Fragment {
     }
 
     //auto add event algo
-    public void autocreate(){
 
+    public void autocreate(){
+/*
         //need to set the real times
         Calendar beginTime = Calendar.getInstance();
-        beginTime.set(2015, 6, 4, 10, 50);
+
+        beginTime.set(Integer.parseInt(obj.getStart_date_year().get(0)),Integer.parseInt(obj.getStart_date_month().get(0)), Integer.parseInt(obj.getStart_date_day().get(0)), 10, 50);
+        //need to set the real end time
+        Calendar endTime = Calendar.getInstance();
+        endTime.set(7,7, 30, 1, 30);
+
+        //create content that will go into the calendar
+        ContentValues calEvent = new ContentValues();
+        //create ability to insert into the calendar
+        ContentResolver cr = getActivity().getContentResolver();
+
+        //where/when/id_for_insert/start_time/end_time/time_zone
+        //need address/description
+        calEvent.put(CalendarContract.Events.CALENDAR_ID,1); // XXX pick)
+        calEvent.put(CalendarContract.Events.TITLE, obj.getDescription());
+        calEvent.put(CalendarContract.Events.DTSTART, beginTime.getTimeInMillis());
+        calEvent.put(CalendarContract.Events.DTEND, endTime.getTimeInMillis());
+        calEvent.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
+        calEvent.put(CalendarContract.Events.EVENT_LOCATION,obj.getVenue_name());
+
+        Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, calEvent);
+        //get id for reminders
+        int id = Integer.parseInt(uri.getLastPathSegment());
+        //create a reminders value and put a reminder for XX mins
+        ContentValues reminders = new ContentValues();
+        reminders.put(CalendarContract.Reminders.EVENT_ID,id);
+        reminders.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
+        //reminder could be a setting??????????
+        reminders.put(CalendarContract.Reminders.MINUTES, 30);
+       //insert into the event they just added
+        Uri uri2 = cr.insert(CalendarContract.Reminders.CONTENT_URI, reminders);
+
+        Toast.makeText(getActivity(), Integer.parseInt(obj.getStart_date_day().get(0)) + " was added to the Calendar", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), obj.getDescription() + " was added to the Calendar", Toast.LENGTH_SHORT).show();
+        */
+        //need to set the real times
+        Calendar beginTime = Calendar.getInstance();
+        beginTime.set(Integer.parseInt(obj.getStart_date_year().get(0)), 7, Integer.parseInt(obj.getStart_date_day().get(0)), 10, 50);
         //need to set the real end time
         Calendar endTime = Calendar.getInstance();
         endTime.set(2015, 6, 4, 12, 30);
@@ -208,24 +252,24 @@ public class eventDetailFragment extends Fragment {
         reminders.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
         //reminder could be a setting??????????
         reminders.put(CalendarContract.Reminders.MINUTES, 3);
-       //insert into the event they just added
+        //insert into the event they just added
         Uri uri2 = cr.insert(CalendarContract.Reminders.CONTENT_URI, reminders);
 
 
-        Toast.makeText(getActivity(), obj.getDescription() + " was added to the Calendar", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), obj.getStart_date_month().get(0) + " was added to the Calendar", Toast.LENGTH_SHORT).show();
     }
     //manuel add event algo
     public void createEvent(){
         Intent calIntent = new Intent(Intent.ACTION_INSERT);
         calIntent.setType("vnd.android.cursor.item/event");
         calIntent.putExtra(CalendarContract.Events.TITLE, obj.getTitle());
-        calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, "My Beach House");
-        calIntent.putExtra(CalendarContract.Events.DESCRIPTION, "A Pig Roast on the Beach");
+        calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, obj.getVenue_name());
+        calIntent.putExtra(CalendarContract.Events.DESCRIPTION, obj.getNotes());
         //instaiate with the time to start
-        GregorianCalendar calDate = new GregorianCalendar(2015, 7, 15,12,15,10);
+        GregorianCalendar calDate = new GregorianCalendar(Integer.parseInt(obj.getStart_date_year().get(0)), Integer.parseInt(obj.getStart_date_month().get(0)), Integer.parseInt(obj.getStart_date_day().get(0)), 10, 50);
         calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
                 calDate.getTimeInMillis());
-        calDate.set(2015, 7, 15,17,15,10);
+        calDate.set(Integer.parseInt(obj.getEnd_date_year().get(1)),Integer.parseInt(obj.getEnd_date_month().get(0)), Integer.parseInt(obj.getStart_date_day().get(0)), 1, 30);
         calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
                 calDate.getTimeInMillis());
 
