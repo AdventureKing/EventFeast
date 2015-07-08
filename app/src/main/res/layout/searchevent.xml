@@ -198,7 +198,7 @@
             android:layout_alignParentRight="true"
             android:editable="false"
             android:focusableInTouchMode="false"
-            android:drawableLeft="@drawable/ic_timelapse_black_24dp_1x"/>
+            android:drawableLeft="@drawable/ic_access_time_black_24dp_1x"/>
     </RelativeLayout>
 
     <LinearLayout
