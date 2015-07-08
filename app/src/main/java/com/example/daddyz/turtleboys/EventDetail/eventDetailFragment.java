@@ -187,11 +187,11 @@ public class eventDetailFragment extends Fragment {
     //auto add event algo
 
     public void autocreate(){
-/*
+
         //need to set the real times
         Calendar beginTime = Calendar.getInstance();
 
-        beginTime.set(Integer.parseInt(obj.getStart_date_year().get(0)),Integer.parseInt(obj.getStart_date_month().get(0)), Integer.parseInt(obj.getStart_date_day().get(0)), 10, 50);
+        beginTime.set(2015,6,8);
         //need to set the real end time
         Calendar endTime = Calendar.getInstance();
         endTime.set(7,7, 30, 1, 30);
@@ -225,46 +225,6 @@ public class eventDetailFragment extends Fragment {
         Toast.makeText(getActivity(), Integer.parseInt(obj.getStart_date_day().get(0)) + " was added to the Calendar", Toast.LENGTH_SHORT).show();
         //Toast.makeText(getActivity(), obj.getDescription() + " was added to the Calendar", Toast.LENGTH_SHORT).show();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.EN_US);
-         cal.setTime(sdf.parse("Mon Mar 14 16:02:37 GMT 2011"));
-        */
-        //need to set the real times
-        Calendar beginTime = Calendar.getInstance();
-        String date = obj.getStart_date_day().get(0);
-        int date_int = Integer.parseInt(obj.getStart_date_day().get(0));
-        beginTime.set(Integer.parseInt(obj.getStart_date_year().get(0)), 7, date_int, 10, 50);
-        //need to set the real end time
-        Calendar endTime = Calendar.getInstance();
-        endTime.set(2015, 6, 4, 12, 30);
-
-        //create content that will go into the calendar
-        ContentValues calEvent = new ContentValues();
-        //create ability to insert into the calendar
-        ContentResolver cr = getActivity().getContentResolver();
-
-        //where/when/id_for_insert/start_time/end_time/time_zone
-        //need address/description
-        calEvent.put(CalendarContract.Events.CALENDAR_ID, 1); // XXX pick)
-        calEvent.put(CalendarContract.Events.TITLE, obj.getDescription());
-        calEvent.put(CalendarContract.Events.DTSTART, beginTime.getTimeInMillis());
-        calEvent.put(CalendarContract.Events.DTEND, endTime.getTimeInMillis());
-        calEvent.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
-        calEvent.put(CalendarContract.Events.EVENT_LOCATION,obj.getVenue_name());
-
-        Uri uri = getActivity().getContentResolver().insert(CalendarContract.Events.CONTENT_URI, calEvent);
-        //get id for reminders
-        int id = Integer.parseInt(uri.getLastPathSegment());
-        //create a reminders value and put a reminder for XX mins
-        ContentValues reminders = new ContentValues();
-        reminders.put(CalendarContract.Reminders.EVENT_ID,id);
-        reminders.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
-        //reminder could be a setting??????????
-        reminders.put(CalendarContract.Reminders.MINUTES, 3);
-        //insert into the event they just added
-        Uri uri2 = cr.insert(CalendarContract.Reminders.CONTENT_URI, reminders);
-
-
-        Toast.makeText(getActivity(), obj.getStart_date_month().get(0) + " was added to the Calendar", Toast.LENGTH_SHORT).show();
     }
     //manuel add event algo
     public void createEvent(){
@@ -274,10 +234,10 @@ public class eventDetailFragment extends Fragment {
         calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, obj.getVenue_name());
         calIntent.putExtra(CalendarContract.Events.DESCRIPTION, obj.getNotes());
         //instaiate with the time to start
-        GregorianCalendar calDate = new GregorianCalendar(Integer.parseInt(obj.getStart_date_year().get(0)), Integer.parseInt(obj.getStart_date_month().get(0)), Integer.parseInt(obj.getStart_date_day().get(0)), 10, 50);
+        GregorianCalendar calDate = new GregorianCalendar(2015, 7, 8,2,30);
         calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
                 calDate.getTimeInMillis());
-        calDate.set(Integer.parseInt(obj.getEnd_date_year().get(1)),Integer.parseInt(obj.getEnd_date_month().get(0)), Integer.parseInt(obj.getStart_date_day().get(0)), 1, 30);
+        calDate.set(2015, 7, 8,2,30);
         calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
                 calDate.getTimeInMillis());
 
