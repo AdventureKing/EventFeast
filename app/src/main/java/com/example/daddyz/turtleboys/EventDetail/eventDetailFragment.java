@@ -86,7 +86,7 @@ public class eventDetailFragment extends Fragment {
         //set the stuff on the page
         eventImage = (ImageView) view.findViewById(R.id.eventImage);
         eventName = (TextView) view.findViewById(R.id.EventTitle);
-        eventName.setText(obj.getDescription());
+        eventName.setText(obj.getTitle());
         eventDate = (TextView) view.findViewById(R.id.EventDate);
         eventDate.setText(obj.getStart_date_month().get(2) + " " + obj.getStart_date_day().get(0) + ", " + obj.getStart_date_year().get(0));
         eventLocation = (TextView) view.findViewById(R.id.EventLocation);
@@ -224,7 +224,9 @@ public class eventDetailFragment extends Fragment {
         */
         //need to set the real times
         Calendar beginTime = Calendar.getInstance();
-        beginTime.set(Integer.parseInt(obj.getStart_date_year().get(0)), 7, Integer.parseInt(obj.getStart_date_day().get(0)), 10, 50);
+        String date = obj.getStart_date_day().get(0);
+        int date_int = Integer.parseInt(obj.getStart_date_day().get(0));
+        beginTime.set(Integer.parseInt(obj.getStart_date_year().get(0)), 7, date_int, 10, 50);
         //need to set the real end time
         Calendar endTime = Calendar.getInstance();
         endTime.set(2015, 6, 4, 12, 30);

@@ -96,7 +96,7 @@ public class eventfeedAdapter extends ArrayAdapter<gEventObject> {
         Picasso.with(context).load(imageUrl).resize(200, 150).into(eventImage);
 
         //source.setText(objects.get(position).getEventSource());
-        description.setText(eventObjects.get(position).getDescription());
+        description.setText(eventObjects.get(position).getTitle());
         citystate.setText(eventObjects.get(position).getCity_name() + "," + eventObjects.get(position).getState_name());
         date.setText(eventObjects.get(position).getStart_date_month().get(2) + " " + eventObjects.get(position).getStart_date_day().get(0) + ", " + eventObjects.get(position).getStart_date_year().get(0));
         time.setText(eventObjects.get(position).getStart_date_time().get(2));
