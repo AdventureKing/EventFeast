@@ -191,10 +191,10 @@ public class eventDetailFragment extends Fragment {
         //need to set the real times
         Calendar beginTime = Calendar.getInstance();
 
-        beginTime.set(2015,6,8);
+        beginTime.set(2015, 6, 8, 7, 30);
         //need to set the real end time
         Calendar endTime = Calendar.getInstance();
-        endTime.set(7,7, 30, 1, 30);
+        endTime.set(2015, 7, 30, 1, 30);
 
         //create content that will go into the calendar
         ContentValues calEvent = new ContentValues();
@@ -225,6 +225,26 @@ public class eventDetailFragment extends Fragment {
         Toast.makeText(getActivity(), Integer.parseInt(obj.getStart_date_day().get(0)) + " was added to the Calendar", Toast.LENGTH_SHORT).show();
         //Toast.makeText(getActivity(), obj.getDescription() + " was added to the Calendar", Toast.LENGTH_SHORT).show();
 
+
+        /*Calendar beginTime = Calendar.getInstance();
+        beginTime.set(2015, 7, 20, 7, 30);
+        Calendar endTime = Calendar.getInstance();
+        endTime.set(2015, 7, 20, 8, 30);
+
+
+        ContentValues calEvent = new ContentValues();
+        calEvent.put(CalendarContract.Events.CALENDAR_ID, 1); // XXX pick)
+        calEvent.put(CalendarContract.Events.TITLE, "title is game time");
+        calEvent.put(CalendarContract.Events.DTSTART, beginTime.getTimeInMillis());
+        calEvent.put(CalendarContract.Events.DTEND, endTime.getTimeInMillis());
+        calEvent.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
+        ContentResolver cr = getActivity().getApplicationContext().getContentResolver();
+        Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, calEvent);
+
+        // The returned Uri contains the content-retriever URI for
+        // the newly-inserted event, including its id
+        int id = Integer.parseInt(uri.getLastPathSegment());
+        Toast.makeText(getActivity().getApplicationContext(), "EVENT_TITLE WAS ADDED TO THE CALENDAR", Toast.LENGTH_LONG).show();*/
     }
     //manuel add event algo
     public void createEvent(){
