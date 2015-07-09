@@ -81,7 +81,7 @@ public class Camera extends Activity {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
                     "VID_"+ timeStamp + ".mp4");
         }*/ else {
-            Log.i("MyCameraApp", "type returned was " + type);
+            Log.d("MyCameraApp", "type returned was " + type);
             return null;
         }
 
