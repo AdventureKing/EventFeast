@@ -100,7 +100,7 @@
     <string name="animations_setting">Animations</string>
     <string name="default_animations_preference">true</string>
     <string name="auto_calendar_setting">Auto-Add Events to Calendar</string>
-    <string name="default_auto_calendar_preference">true</string>
+    <string name="default_auto_calendar_preference">false</string>
     <string name="push_setting">General Push Notifications</string>
     <string name="default_push_preference">true</string>
     <string name="push_summary">Enables occasional notifications about on-going events</string>
