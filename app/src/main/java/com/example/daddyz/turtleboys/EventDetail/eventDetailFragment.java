@@ -29,9 +29,12 @@ import com.example.daddyz.turtleboys.eventfeed.gEventImageObject;
 import com.example.daddyz.turtleboys.eventfeed.gEventObject;
 import com.squareup.picasso.Picasso;
 
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by snow on 6/25/2015.
@@ -53,6 +56,9 @@ public class eventDetailFragment extends Fragment {
     private DrawerLayout mDrawer;
     private boolean AutoAddFlag;
     private SharedPreferences preferences;
+    private Pattern getPartOfTime = Pattern.compile("([0-9][0-9])");
+    private Matcher matcher;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -188,13 +194,45 @@ public class eventDetailFragment extends Fragment {
 
     public void autocreate(){
 
-        //need to set the real times
-        Calendar beginTime = Calendar.getInstance();
+        //Get Begin Time and Day from Parse
+        int year = Integer.parseInt(obj.getStart_date_year().get(0));
+        int month = Integer.parseInt(obj.getStart_date_month().get(0)) - 1;  //month is stored into an array, thus minus one
+        int day = Integer.parseInt(obj.getStart_date_day().get(0));
 
-        beginTime.set(2015, 6, 8, 7, 30);
-        //need to set the real end time
+        String time = obj.getStart_date_time().get(0);
+
+        //Get hour from time string
+        matcher = getPartOfTime.matcher(time);  //The matcher works by grabbing each component of hh:mm:ss time format from left to right, each .find() command will grab the next part
+        matcher.find();
+        int hour = Integer.parseInt(matcher.group(0));
+
+        //Get minutes from time string
+        matcher.find();
+        int minutes = Integer.parseInt(matcher.group(0));
+
+        Calendar beginTime = Calendar.getInstance();
+        beginTime.set(year, month, day, hour, minutes);
+
+        //Get End Time and Day from Parse
+        /*                                              !!!Change the three following lines to grab end year, month, and day!!!
+        year = Integer.parseInt(obj.getStart_date_year().get(0));
+        month = Integer.parseInt(obj.getStart_date_month().get(0)) - 1;  //month is stored into an array, thus minus one
+        day = Integer.parseInt(obj.getStart_date_day().get(0));
+
+        time = obj.getStart_date_time().get(0);  //Change this line to grab end date
+
+        //Get hour from time string
+        matcher = getPartOfTime.matcher(time);  //Leave these matcher lines and hour / minute assignments alone
+        matcher.find();
+        hour = Integer.parseInt(matcher.group(0));
+
+        //Get minutes from time string
+        matcher.find();
+        minutes = Integer.parseInt(matcher.group(0));
+        */
+
         Calendar endTime = Calendar.getInstance();
-        endTime.set(2015, 7, 30, 1, 30);
+        endTime.set(year, month, day, hour, minutes);
 
         //create content that will go into the calendar
         ContentValues calEvent = new ContentValues();
@@ -222,29 +260,8 @@ public class eventDetailFragment extends Fragment {
        //insert into the event they just added
         Uri uri2 = cr.insert(CalendarContract.Reminders.CONTENT_URI, reminders);
 
-        Toast.makeText(getActivity(), Integer.parseInt(obj.getStart_date_day().get(0)) + " was added to the Calendar", Toast.LENGTH_SHORT).show();
-        //Toast.makeText(getActivity(), obj.getDescription() + " was added to the Calendar", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), obj.getTitle() + " was added to the Calendar", Toast.LENGTH_SHORT).show();
 
-
-        /*Calendar beginTime = Calendar.getInstance();
-        beginTime.set(2015, 7, 20, 7, 30);
-        Calendar endTime = Calendar.getInstance();
-        endTime.set(2015, 7, 20, 8, 30);
-
-
-        ContentValues calEvent = new ContentValues();
-        calEvent.put(CalendarContract.Events.CALENDAR_ID, 1); // XXX pick)
-        calEvent.put(CalendarContract.Events.TITLE, "title is game time");
-        calEvent.put(CalendarContract.Events.DTSTART, beginTime.getTimeInMillis());
-        calEvent.put(CalendarContract.Events.DTEND, endTime.getTimeInMillis());
-        calEvent.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
-        ContentResolver cr = getActivity().getApplicationContext().getContentResolver();
-        Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, calEvent);
-
-        // The returned Uri contains the content-retriever URI for
-        // the newly-inserted event, including its id
-        int id = Integer.parseInt(uri.getLastPathSegment());
-        Toast.makeText(getActivity().getApplicationContext(), "EVENT_TITLE WAS ADDED TO THE CALENDAR", Toast.LENGTH_LONG).show();*/
     }
     //manuel add event algo
     public void createEvent(){
@@ -254,10 +271,38 @@ public class eventDetailFragment extends Fragment {
         calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, obj.getVenue_name());
         calIntent.putExtra(CalendarContract.Events.DESCRIPTION, obj.getNotes());
         //instaiate with the time to start
-        GregorianCalendar calDate = new GregorianCalendar(Integer.parseInt(obj.getStart_date_year().get(0)), Integer.parseInt(obj.getStart_date_month().get(0)) -1 ,  Integer.parseInt(obj.getStart_date_day().get(0)));
+
+        //get Start Time from Parse
+        String time = obj.getStart_date_time().get(0);
+
+        //Get hour from time string
+        matcher = getPartOfTime.matcher(time);  //The matcher works by grabbing each component of hh:mm:ss time format from left to right, each .find() command will grab the next part
+        matcher.find();
+        int hour = Integer.parseInt(matcher.group(0));
+
+        //Get minutes from time string
+        matcher.find();
+        int minutes = Integer.parseInt(matcher.group(0));
+
+        GregorianCalendar calDate = new GregorianCalendar(Integer.parseInt(obj.getStart_date_year().get(0)), Integer.parseInt(obj.getStart_date_month().get(0)) -1 ,  Integer.parseInt(obj.getStart_date_day().get(0)), hour, minutes);
         calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
                 calDate.getTimeInMillis());
-        calDate.set(2015, 7, 8,2,30);
+
+        //Get End Time and Day from Parse
+        /*
+        time = obj.getStart_date_time().get(0);  //Change this line to grab end date
+
+        //Get hour from time string
+        matcher = getPartOfTime.matcher(time);  //Leave these matcher lines and hour / minute assignments alone
+        matcher.find();
+        hour = Integer.parseInt(matcher.group(0));
+
+        //Get minutes from time string
+        matcher.find();
+        minutes = Integer.parseInt(matcher.group(0));
+        */
+
+        calDate.set(Integer.parseInt(obj.getStart_date_year().get(0)), Integer.parseInt(obj.getStart_date_month().get(0)) -1 ,  Integer.parseInt(obj.getStart_date_day().get(0)), hour, minutes);  //Change the first three parameters to get the End Times instead
         calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
                 calDate.getTimeInMillis());
 
