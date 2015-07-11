@@ -53,6 +53,7 @@ public class searchEvent extends Fragment {
 
     private RadioGroup radioSortbyGroup;
     private RadioButton sortbyButton;
+    private RadioButton defaultButton;
 
     private EditText toTimeText;
     private EditText fromTimeText;
@@ -96,6 +97,7 @@ public class searchEvent extends Fragment {
         //Sortby RadioGroup
         radioSortbyGroup = (RadioGroup) rootView.findViewById(R.id.sortGroup);
         sortbyButton = (RadioButton) rootView.findViewById(radioSortbyGroup.getCheckedRadioButtonId());
+        defaultButton = (RadioButton) rootView.findViewById(R.id.sortRelevance);
 
         //SearchRadius Seekbar
         searchRadiusSeekBar = (SeekBar) rootView.findViewById(R.id.searchRadius);
@@ -185,7 +187,16 @@ public class searchEvent extends Fragment {
             @Override
             public void onClick(View view) {
                 //TODO Reset button resets all fields
-                Toast.makeText(getActivity().getApplicationContext(), "Reset fields", Toast.LENGTH_SHORT).show();
+                location.setText("");
+                keyword.setText("");
+                radioSortbyGroup.clearCheck();
+                defaultButton.toggle();
+                fromTimeText.setText(R.string.anyTime);
+                toTimeText.setText(R.string.anyTime);
+                fromDateText.setText(R.string.anyDay);
+                toDateText.setText(R.string.anyDay);
+                searchRadiusSeekBar.setProgress(9);
+                //Toast.makeText(getActivity().getApplicationContext(), "Reset fields", Toast.LENGTH_SHORT).show();
             }
         });
 
