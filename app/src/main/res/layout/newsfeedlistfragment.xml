@@ -12,7 +12,7 @@
         android:cacheColorHint="@android:color/transparent"
         android:headerDividersEnabled="false"/>
     <!--Ripple is What color it turns when pressed
-        Cant seem to get shadowing to work-->
+        -->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
