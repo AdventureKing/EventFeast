@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.eventfeed.EventFeedFragment;
+import com.example.daddyz.turtleboys.newsfeed.newsfeedFragment;
 import com.example.daddyz.turtleboys.searchevent.searchEvent;
 import com.example.daddyz.turtleboys.settings.SettingsFragment;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
@@ -166,9 +167,9 @@ public class maindrawer extends AppCompatActivity {
                             fragManager.beginTransaction().replace(R.id.frame, searchFragment,"SearchEventFragment").addToBackStack("SearchEventFragment").commit();
                             return true;
                         case R.id.newsfeed:
-                            EventFeedFragment fragment2 = new EventFeedFragment();
+                           newsfeedFragment fragment2 = new newsfeedFragment();
                             fragManager.beginTransaction().replace(R.id.frame, fragment2,"newsFeedFragment").addToBackStack("newsFeedFragment").commit();
-                            Toast.makeText(getApplicationContext(), "Drafts Selected", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "newsfeed Selected", Toast.LENGTH_SHORT).show();
                             return true;
                         case R.id.connect:
                             Toast.makeText(getApplicationContext(), "User wants to connect to other Users", Toast.LENGTH_SHORT).show();

@@ -48,7 +48,7 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
                          Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        rootView = inflater.inflate(R.layout.listfragment, container, false);
+        rootView = inflater.inflate(R.layout.eventfeedlistfragment, container, false);
         list = (ListView) rootView.findViewById(R.id.listView);
 
         mTextView = (TextView) rootView.findViewById(R.id.textView);
