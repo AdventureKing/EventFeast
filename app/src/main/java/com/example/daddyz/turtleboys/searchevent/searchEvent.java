@@ -22,6 +22,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.R;
+import com.example.daddyz.turtleboys.maindrawer;
 import com.example.daddyz.turtleboys.registration_activity;
 
 import java.util.Calendar;
@@ -177,7 +178,8 @@ public class searchEvent extends Fragment {
             @Override
             public void onClick(View view) {
                 //Do a search
-                Toast.makeText(getActivity().getApplicationContext(), "Search Event", Toast.LENGTH_SHORT).show();
+                searchResultsFragment fragment = new searchResultsFragment();
+                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer,fragment,"searchResultsFragment").addToBackStack("searchResultsFragment").commit();                Toast.makeText(getActivity().getApplicationContext(), "Search Event", Toast.LENGTH_SHORT).show();
             }
         });
 

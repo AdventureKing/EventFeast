@@ -16,12 +16,12 @@ import java.util.ArrayList;
 /**
  * Created by Jinbir on 7/12/2015.
  */
-public class searchEventAdapter extends ArrayAdapter<gEventObject> {
+public class searchResultsAdapter extends ArrayAdapter<gEventObject> {
     private Context context;
     private int resource;
     private ArrayList<gEventObject> searchEventObjects;
 
-    public searchEventAdapter(Context context, int resource, ArrayList<gEventObject> searchEventObjects) {
+    public searchResultsAdapter(Context context, int resource, ArrayList<gEventObject> searchEventObjects) {
         super(context, resource,searchEventObjects);
         this.context = context;
         this.resource = resource;
