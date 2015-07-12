@@ -56,6 +56,7 @@ public class maindrawer extends AppCompatActivity {
     private boolean AnimationFlag;
     private ParseImageView imageView;
     private FragmentManager fragManager;
+    GigUser currentUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +71,7 @@ public class maindrawer extends AppCompatActivity {
             finish();
         }else {
 
-            final GigUser currentUser = ParseUser.createWithoutData(GigUser.class,ParseUser.getCurrentUser().getObjectId());
+            currentUser = ParseUser.createWithoutData(GigUser.class,ParseUser.getCurrentUser().getObjectId());
             // Initializing Toolbar and setting it as the actionbar
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
@@ -324,6 +325,8 @@ public class maindrawer extends AppCompatActivity {
         FragmentManager.OnBackStackChangedListener result = new FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
+
+                //Update Views based on preferences
                 AnimationFlag = preferences.getBoolean("animation_preference", false);
                 if(AnimationFlag){
                     imageView.setVisibility(View.INVISIBLE);
@@ -340,7 +343,25 @@ public class maindrawer extends AppCompatActivity {
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 }else{
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+
+                    //Update User Information
+                    imageView.setParseFile(currentUser.getUserImage());
+                    //load the image from the parse database
+                    imageView.loadInBackground(new GetDataCallback() {
+                        @Override
+                        public void done(byte[] bytes, com.parse.ParseException e) {
+                            // The image is loaded and displayed!
+                            int oldHeight = imageView.getHeight();
+                            int oldWidth = imageView.getWidth();
+                            Log.v("LOG!!!!!!", "imageView height = " + oldHeight);      // DISPLAYS 90 px
+                            Log.v("LOG!!!!!!", "imageView width = " + oldWidth);        // DISPLAYS 90 px
+
+                        }
+                    });
+                    userName.setText(currentUser.getUsername().toString());
+                    userEmail.setText(currentUser.getEmail().toString());
                 }
+
             }
         };
         return result;

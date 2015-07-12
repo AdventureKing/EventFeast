@@ -50,6 +50,7 @@ public class  experience_activity extends AppCompatActivity {
     private SharedPreferences preferences;
     private FragmentManager fragManager;
     private ParseImageView imageView;
+    private final GigUser currentUser = ParseUser.createWithoutData(GigUser.class, ParseUser.getCurrentUser().getObjectId());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,6 @@ public class  experience_activity extends AppCompatActivity {
         setContentView(R.layout.myexperiences1);
         // Enable Local Datastore.
 
-        final GigUser currentUser = ParseUser.createWithoutData(GigUser.class, ParseUser.getCurrentUser().getObjectId());
         // Initializing Toolbar and setting it as the actionbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -295,6 +295,23 @@ public class  experience_activity extends AppCompatActivity {
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 }else{
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+
+                    //Update User Information
+                    imageView.setParseFile(currentUser.getUserImage());
+                    //load the image from the parse database
+                    imageView.loadInBackground(new GetDataCallback() {
+                        @Override
+                        public void done(byte[] bytes, com.parse.ParseException e) {
+                            // The image is loaded and displayed!
+                            int oldHeight = imageView.getHeight();
+                            int oldWidth = imageView.getWidth();
+                            Log.v("LOG!!!!!!", "imageView height = " + oldHeight);      // DISPLAYS 90 px
+                            Log.v("LOG!!!!!!", "imageView width = " + oldWidth);        // DISPLAYS 90 px
+
+                        }
+                    });
+                    userName.setText(currentUser.getUsername().toString());
+                    userEmail.setText(currentUser.getEmail().toString());
                 }
             }
         };

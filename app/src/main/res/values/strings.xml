@@ -105,6 +105,22 @@
     <string name="default_push_preference">true</string>
     <string name="push_summary">Enables occasional notifications about on-going events</string>
 
+    <!-- Java Packages -->
+    <string name="turtleboys_package">com.example.daddyz.turtleboys</string>
+
+    <!-- Java Classes -->
+    <string name="changeInfo_activity">com.example.daddyz.turtleboys.change_account_info_activity</string>
+
+    <!-- Account Information Settings Strings -->
+    <string name="account_password">Account Password</string>
+    <string name="account_information_summary">Change details about your account, such as password</string>
+    <string name="account_old_password">Enter Old Password</string>
+    <string name="account_password_option">New Password (optional)</string>
+    <string name="account_password_verify_option">Verify New Password</string>
+    <string name="old_password_incorrect">Old password is incorrect</string>
+    <string name="new_password_mismatch">New passwords do not match, leave blank to maintain current password</string>
+    <string name="new_password_empty">Your new password cannot be blank</string>
+
     <!-- Search Event Strings -->
     <string name="searchKeyword">Please enter a Keyword to search</string>
     <string name="searchLocation">Location\n Tap to change Location</string>

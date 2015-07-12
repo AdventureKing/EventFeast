@@ -4,6 +4,17 @@
     <PreferenceCategory
         android:title="@string/account_settings">
 
+        <PreferenceScreen
+            android:title="Change Account Information"
+            android:summary="@string/account_information_summary">
+
+                <intent
+                    android:action="android.intent.action.VIEW"
+                    android:targetPackage="@string/turtleboys_package"
+                    android:targetClass="@string/changeInfo_activity" />
+
+        </PreferenceScreen>
+
         <CheckBoxPreference
             android:key="notification_preference"
             android:title="@string/notification_setting"

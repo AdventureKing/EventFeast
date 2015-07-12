@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -42,7 +43,6 @@ import java.util.regex.Pattern;
  */
 public class gallery1 extends AppCompatActivity {
     private Toolbar toolbar;
-    private Button b1;
     private Uri fileUri;
     private GridView gridview;
     private AsyncTaskLoadFiles myAsyncTaskLoadFiles;
@@ -51,6 +51,7 @@ public class gallery1 extends AppCompatActivity {
     private HashMap<Integer, Bitmap> finishedPictures;
     private String title;
     private String userName;
+    private FloatingActionButton fab;
 
 
     @Override
@@ -72,13 +73,15 @@ public class gallery1 extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        b1 = (Button) findViewById(R.id.camerabutton);
-        b1.setOnClickListener(new View.OnClickListener() {
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                // create Intent to take a picture and return control to the calling application
-                Camera camera = new Camera(gallery1.this, userName);
-                fileUri = camera.startCamera();
+            public void onClick(View view) {
+            // create Intent to take a picture and return control to the calling application
+            Camera camera = new Camera(gallery1.this, userName);
+            fileUri = camera.startCamera();
             }
         });
 

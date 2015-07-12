@@ -62,6 +62,10 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name=".change_account_info_activity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name=".gallery1"
             android:screenOrientation="portrait" >
         </activity>
