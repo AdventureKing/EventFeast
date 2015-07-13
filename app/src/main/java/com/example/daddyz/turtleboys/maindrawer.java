@@ -208,9 +208,6 @@ public class maindrawer extends AppCompatActivity {
                             AlertDialog alert = alertDialog.create();
                             alert.show();
                             return true;
-                        case R.id.account_settings:
-                            Toast.makeText(getApplicationContext(), "Account Settings Should be displayed", Toast.LENGTH_SHORT).show();
-                            return true;
 
                         case R.id.activity_map:
                             //Toast.makeText(getApplicationContext(), "Stared Selected", Toast.LENGTH_SHORT).show();

@@ -3,11 +3,6 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/account_settings"
-            android:checked="false"
-            android:icon="@drawable/ic_account_box_black_24dp"
-            android:title="@string/accountSettings" />
-        <item
             android:id="@+id/newsfeed"
             android:checked="false"
             android:icon="@drawable/ic_local_library_black_24dp"

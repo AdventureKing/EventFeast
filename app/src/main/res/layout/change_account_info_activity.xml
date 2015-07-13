@@ -15,6 +15,13 @@
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal">
 
+        <ProgressBar
+            android:id="@+id/login_progress_bar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -162,10 +169,10 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Register"
-            android:id="@+id/registerButton"
-            android:background="@drawable/btnorange_360"
-            android:textColor="#ff00f5ff"
+            android:text="Save"
+            android:id="@+id/saveButton"
+            android:background="@drawable/btngreen_360"
+            android:textColor="#ffffffff"
             android:layout_above="@+id/cancel"
             android:layout_centerHorizontal="true" />
 
@@ -209,9 +216,9 @@
             android:padding="15dp"
             android:src = "@drawable/profile"
             android:layout_below="@+id/userPasswordVerify"
-            android:layout_alignLeft="@+id/registerButton"
-            android:layout_alignStart="@+id/registerButton"
-            android:layout_above="@+id/registerButton" />
+            android:layout_alignLeft="@+id/saveButton"
+            android:layout_alignStart="@+id/saveButton"
+            android:layout_above="@+id/saveButton" />
 
 
 

@@ -21,9 +21,11 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.R;
@@ -64,20 +66,14 @@ public class change_account_info_activity extends Activity {
     private EditText userPasswordVerify;
     private ParseImageView userImageFile;
     private ParseFile userImageParseFile;
-    private Date birthday;
     private static final int SELECT_PHOTO = 100;
-    private DialogFragment birthdaySelector;
-    private EditText birthdayText;
     private final GigUser currentUser = ParseUser.createWithoutData(GigUser.class, ParseUser.getCurrentUser().getObjectId());
     private GigUser oldPasswordCheck;
     private boolean changePassword;
     private boolean updateGallery;
+    private ProgressBar mProgressBar;
 
-    //private DialogFragment imageSelector;
-    private Fragment imageSelector;
-    private EditText imageText;
-
-    private Button registerButton;
+    private Button saveButton;
     private Button cancelButton;
 
 
@@ -109,8 +105,9 @@ public class change_account_info_activity extends Activity {
             }
         });
 
-        //user image is filled
-
+        //Setup Progress Bar
+        mProgressBar = (ProgressBar)findViewById(R.id.login_progress_bar);
+        mProgressBar.setVisibility(View.GONE);
 
 
 
@@ -143,14 +140,20 @@ public class change_account_info_activity extends Activity {
         userPasswordVerify = (EditText) findViewById(R.id.userPasswordVerify);
         userPasswordVerify.setHint(R.string.account_password_verify_option);
 
-        registerButton = (Button) findViewById(R.id.registerButton);
-        registerButton.setOnClickListener(new View.OnClickListener() {
+        saveButton = (Button) findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(getApplicationContext(),"BUTTON CLICKED", Toast.LENGTH_SHORT).show();
 
+                //Show ProgressBar and lock screen
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                mProgressBar.setVisibility(View.VISIBLE);
+
                 //Check to see if email and verify email fields are the same
                 if ( !(email.getText().toString().equals(emailVerify.getText().toString())) ) {
+                    mProgressBar.setVisibility(View.GONE);
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     Toast.makeText(getApplicationContext(), R.string.emailNoMatch, Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -160,6 +163,8 @@ public class change_account_info_activity extends Activity {
                     oldPasswordCheck.logIn(currentUser.getUsername(), oldUserPassword.getText().toString());
                 } catch (ParseException e) {
                     // Nope, the user entered the wrong password
+                    mProgressBar.setVisibility(View.GONE);
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     Toast.makeText(getApplicationContext(), R.string.old_password_incorrect, Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -169,13 +174,17 @@ public class change_account_info_activity extends Activity {
                 }else {
                     //Check if new password is empty
                     if ( userPassword.getText().toString().isEmpty() ) {
+                        mProgressBar.setVisibility(View.GONE);
+                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                         Toast.makeText(getApplicationContext(), R.string.new_password_empty, Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     //Check to see if new passwords match
                     if (!(userPassword.getText().toString().equals(userPasswordVerify.getText().toString()))) {
-                        Toast.makeText(getApplicationContext(), R.string.new_password_mismatch, Toast.LENGTH_SHORT).show();
+                        mProgressBar.setVisibility(View.GONE);
+                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                        Toast.makeText(getApplicationContext(), R.string.new_password_mismatch, Toast.LENGTH_LONG).show();
                         return;
                     }
                     changePassword = true;
@@ -183,18 +192,24 @@ public class change_account_info_activity extends Activity {
 
                 //Check if firstName is empty
                 if ( firstName.getText().toString().isEmpty() ) {
+                    mProgressBar.setVisibility(View.GONE);
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     Toast.makeText(getApplicationContext(), R.string.firstNameEmpty, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 //Check if lastName is empty
                 if ( lastName.getText().toString().isEmpty() ) {
+                    mProgressBar.setVisibility(View.GONE);
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     Toast.makeText(getApplicationContext(), R.string.lastNameEmpty, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 //Check if userName is empty
                 if ( userName.getText().toString().isEmpty() ) {
+                    mProgressBar.setVisibility(View.GONE);
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     Toast.makeText(getApplicationContext(), R.string.userNameEmpty, Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -208,6 +223,8 @@ public class change_account_info_activity extends Activity {
 
                 //Check if email is empty
                 if ( email.getText().toString().isEmpty() ) {
+                    mProgressBar.setVisibility(View.GONE);
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     Toast.makeText(getApplicationContext(), R.string.emailEmpty, Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -270,54 +287,35 @@ public class change_account_info_activity extends Activity {
                             }
 
                            finish();
+
+                            //Hide ProgressBar and Unlock Screen
+                            mProgressBar.setVisibility(View.GONE);
+                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                         } else {
+                            mProgressBar.setVisibility(View.GONE);
+                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                            currentUser.setUsername(oldName);
+                            currentUser.setEmail(oldEmail);
+                            currentUser.setFirstName(oldFirst);
+                            currentUser.setLastName(oldLast);
+                            currentUser.setUserImage(oldPicture);
                             switch (e.getCode()) {
                                 case ParseException.USERNAME_MISSING:
-                                    currentUser.setUsername(oldName);
-                                    currentUser.setEmail(oldEmail);
-                                    currentUser.setFirstName(oldFirst);
-                                    currentUser.setLastName(oldLast);
-                                    currentUser.setUserImage(oldPicture);
                                     Toast.makeText(getApplicationContext(), "Missing Username", Toast.LENGTH_SHORT).show();
                                     break;
                                 case ParseException.USERNAME_TAKEN:
-                                    currentUser.setUsername(oldName);
-                                    currentUser.setEmail(oldEmail);
-                                    currentUser.setFirstName(oldFirst);
-                                    currentUser.setLastName(oldLast);
-                                    currentUser.setUserImage(oldPicture);
                                     Toast.makeText(getApplicationContext(), "Username Already Taken", Toast.LENGTH_SHORT).show();
                                     break;
                                 case ParseException.INVALID_EMAIL_ADDRESS:
-                                    currentUser.setUsername(oldName);
-                                    currentUser.setEmail(oldEmail);
-                                    currentUser.setFirstName(oldFirst);
-                                    currentUser.setLastName(oldLast);
-                                    currentUser.setUserImage(oldPicture);
                                     Toast.makeText(getApplicationContext(), "Invalid Email Address", Toast.LENGTH_SHORT).show();
                                     break;
                                 case ParseException.EMAIL_TAKEN:
-                                    currentUser.setUsername(oldName);
-                                    currentUser.setEmail(oldEmail);
-                                    currentUser.setFirstName(oldFirst);
-                                    currentUser.setLastName(oldLast);
-                                    currentUser.setUserImage(oldPicture);
                                     Toast.makeText(getApplicationContext(), "Email Address Already Taken", Toast.LENGTH_SHORT).show();
                                     break;
                                 case ParseException.EMAIL_MISSING:
-                                    currentUser.setUsername(oldName);
-                                    currentUser.setEmail(oldEmail);
-                                    currentUser.setFirstName(oldFirst);
-                                    currentUser.setLastName(oldLast);
-                                    currentUser.setUserImage(oldPicture);
                                     Toast.makeText(getApplicationContext(), "Missing Email Address", Toast.LENGTH_SHORT).show();
                                     break;
                                 case ParseException.PASSWORD_MISSING:
-                                    currentUser.setUsername(oldName);
-                                    currentUser.setEmail(oldEmail);
-                                    currentUser.setFirstName(oldFirst);
-                                    currentUser.setLastName(oldLast);
-                                    currentUser.setUserImage(oldPicture);
                                     Toast.makeText(getApplicationContext(), "Missing Password", Toast.LENGTH_SHORT).show();
                             }
                         }
