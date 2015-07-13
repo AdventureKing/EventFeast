@@ -9,37 +9,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.R;
 
 /**
- * Created by snow on 7/11/2015.
+ * Created by snow on 7/13/2015.
  */
-public class newsfeedPostDetail extends Fragment {
-
-
-
+public class newsfeedPostForm extends Fragment {
 
     private View view;
     private newsfeedObject obj;
     private Toolbar toolbar;
     private ActionBar actionbar;
-    private ImageView eventImage;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //lock the drawer because we are inception in this bitch
         //main_activity->fragment->fragment
 
-        view = inflater.inflate(R.layout.newsfeedpostdetail,container,false);
+        view = inflater.inflate(R.layout.newsfeed_post_form,container,false);
 
         //toolbar setup
 
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         actionbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        actionbar.setTitle("Newsfeed Post Form");
+        actionbar.setTitle("Newsfeed Post Detail");
         final FrameLayout frame = (FrameLayout) container.findViewById(R.id.frame);
         frame.setVisibility(View.INVISIBLE);
 
@@ -54,18 +48,10 @@ public class newsfeedPostDetail extends Fragment {
                 onBackPressed(frame);
             }
         });
-        eventImage = (ImageView) view.findViewById(R.id.eventImage);
-        eventImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "User wants to view image closely", Toast.LENGTH_SHORT).show();
-            }
-        });
-        //set the stuff on the page
+
 
         return view;
     }
-
     public void onBackPressed(FrameLayout frame) {
 
         if(getFragmentManager().getBackStackEntryCount() != 0) {
@@ -74,13 +60,4 @@ public class newsfeedPostDetail extends Fragment {
 
         }
     }
-
-    public newsfeedObject getObj() {
-        return obj;
-    }
-
-    public void setObj(newsfeedObject obj) {
-        this.obj = obj;
-    }
-
 }

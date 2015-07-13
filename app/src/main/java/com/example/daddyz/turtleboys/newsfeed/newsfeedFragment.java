@@ -65,7 +65,9 @@ public class newsfeedFragment extends Fragment{
             @Override
             public void onClick(View view) {
 
+                newsfeedPostForm fragment = new newsfeedPostForm();
 
+                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer,fragment,"NewsFeedPostForm").addToBackStack("NewsFeedPostForm").commit();
                 Toast.makeText(getActivity(), "User Wants to make a post", Toast.LENGTH_SHORT).show();
             }
         });

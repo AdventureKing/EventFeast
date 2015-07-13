@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/tool_bar"
+        />
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <ImageView
+                    android:id="@+id/eventImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:contentDescription="event_image"
+                    android:scaleType="fitXY"
+                    android:background="@drawable/background_header_new" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/userNameTag"
+                    android:text="USER_NAME"
+                    android:textSize="20sp"
+                    android:layout_alignBottom="@+id/eventImage"
+                    android:layout_weight="1"
+                    android:ellipsize="none"
+                    android:maxLines="100"
+                    android:scrollHorizontally="false"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:padding="12dip"
+                    android:background="#AA000000"
+                    android:textColor="#ffffffff"
+                    android:layout_gravity="center_horizontal|bottom" />
+
+            </FrameLayout>
+
+
+            <TextView
+                android:id="@+id/EventDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="USER_CONTENT_POST"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginTop="250dp"
+                android:layout_marginLeft="20dp" />
+        </RelativeLayout>
+    </ScrollView>
+
+</LinearLayout>
