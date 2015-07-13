@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.R;
 
@@ -24,12 +26,13 @@ public class newsfeedPostDetail extends Fragment {
     private newsfeedObject obj;
     private Toolbar toolbar;
     private ActionBar actionbar;
+    private ImageView eventImage;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //lock the drawer because we are inception in this bitch
         //main_activity->fragment->fragment
 
-        view = inflater.inflate(R.layout.newsfeed_post_form_fragment,container,false);
+        view = inflater.inflate(R.layout.newsfeed_post_detail,container,false);
 
         //toolbar setup
 
@@ -51,8 +54,13 @@ public class newsfeedPostDetail extends Fragment {
                 onBackPressed(frame);
             }
         });
-
-
+        eventImage = (ImageView) view.findViewById(R.id.eventImage);
+        eventImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "User wants to view image closly", Toast.LENGTH_SHORT).show();
+            }
+        });
         //set the stuff on the page
 
         return view;
