@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.example.daddyz.turtleboys.R;
+import com.example.daddyz.turtleboys.maindrawer;
 
 import java.util.ArrayList;
 
@@ -49,11 +50,11 @@ public class newsfeedFragment extends Fragment{
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 //get object at that position
-                //this code is gonna get nocked out monday
+                newsfeedObject obj = (newsfeedObject) list.getItemAtPosition(position);
+                newsfeedPostDetail fragment = new newsfeedPostDetail();
+                fragment.setObj(obj);
 
-                //start the fragment
-
-                //this is where we are gonna
+                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer,fragment,"NewsFeedPostDetail").addToBackStack("NewsFeedPostDetail").commit();
 
             }
         });
