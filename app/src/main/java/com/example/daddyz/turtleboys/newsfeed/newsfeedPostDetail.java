@@ -2,6 +2,7 @@ package com.example.daddyz.turtleboys.newsfeed;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +28,8 @@ public class newsfeedPostDetail extends Fragment {
     private Toolbar toolbar;
     private ActionBar actionbar;
     private ImageView eventImage;
+    private FloatingActionButton likeButton;
+    private FloatingActionButton dislikeButton;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //lock the drawer because we are inception in this bitch
@@ -62,6 +65,21 @@ public class newsfeedPostDetail extends Fragment {
             }
         });
         //set the stuff on the page
+        likeButton = (FloatingActionButton) view.findViewById(R.id.fabLIKE);
+        likeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "User LIKES THIS POST", Toast.LENGTH_SHORT).show();
+            }
+        });
+        dislikeButton = (FloatingActionButton) view.findViewById(R.id.fabDISLIKE);
+        dislikeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "User DISLIKES THIS POST", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         return view;
     }
