@@ -25,6 +25,5 @@
         fab:rippleColor="@color/ripple"
         fab:backgroundTint="@color/primaryButtonColor"
         app:elevation="6dp"
-
         />
 </FrameLayout>
