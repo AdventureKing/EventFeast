@@ -39,7 +39,7 @@ public class newsfeedPostDetail extends Fragment {
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         actionbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        actionbar.setTitle("Newsfeed Post Form");
+        actionbar.setTitle("Newsfeed Post Detail");
         final FrameLayout frame = (FrameLayout) container.findViewById(R.id.frame);
         frame.setVisibility(View.INVISIBLE);
 
