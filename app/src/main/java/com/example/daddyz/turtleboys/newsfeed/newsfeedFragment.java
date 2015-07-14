@@ -54,7 +54,7 @@ public class newsfeedFragment extends Fragment{
                 newsfeedPostDetail fragment = new newsfeedPostDetail();
                 fragment.setObj(obj);
 
-                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer,fragment,"NewsFeedPostDetail").addToBackStack("NewsFeedPostDetail").commit();
+                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer, fragment, "NewsFeedPostDetail").addToBackStack("NewsFeedPostDetail").commit();
 
             }
         });
@@ -67,10 +67,12 @@ public class newsfeedFragment extends Fragment{
 
                 newsfeedPostForm fragment = new newsfeedPostForm();
 
-                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer,fragment,"NewsFeedPostForm").addToBackStack("NewsFeedPostForm").commit();
+                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer, fragment, "NewsFeedPostForm").addToBackStack("NewsFeedPostForm").commit();
                 Toast.makeText(getActivity(), "User Wants to make a post", Toast.LENGTH_SHORT).show();
             }
         });
+
+
         newsfeedList = new ArrayList<newsfeedObject>();
         newsfeedObject obj = new newsfeedObject();
         newsfeedObject obj3 = new newsfeedObject();
