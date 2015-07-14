@@ -28,12 +28,34 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/editText"
+            android:id="@+id/UploadAImageMessage"
             android:text="Upload A Image to Newsfeed"
 
             android:layout_below="@+id/userImageToUpload"
             android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true" />
+            />
+        <EditText
+            android:id="@+id/postBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="USER TYPES HERE"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_below="@id/UploadAImageMessage"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+             />
+        <EditText
+            android:id="@+id/EventDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="USER CURRENT LOCATION"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_below="@id/postBody"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            />
 
 
     </RelativeLayout>
