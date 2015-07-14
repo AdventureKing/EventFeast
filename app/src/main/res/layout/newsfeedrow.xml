@@ -41,16 +41,38 @@
     android:id="@+id/likeimage"
     android:layout_below="@id/description"
     android:src="@drawable/thumbsup"
+        android:layout_marginLeft="20dp"
      />
+    <TextView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:inputType="number"
+        android:text="1"
+        android:id="@+id/likeCount"
+        android:layout_below="@id/description"
+        android:layout_toRightOf="@id/likeimage"
+
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/dislikeimage"
         android:layout_below="@id/description"
         android:src="@drawable/thumbsdown"
-        android:layout_alignRight="@id/description"
-        android:layout_marginRight="40dp"
+        android:layout_toLeftOf="@+id/dislikeCount"
         />
+    <TextView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:inputType="number"
+        android:text="1"
+        android:id="@+id/dislikeCount"
+        android:layout_below="@id/description"
+        android:layout_alignRight="@id/description"
+
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
 
 
 </RelativeLayout>
