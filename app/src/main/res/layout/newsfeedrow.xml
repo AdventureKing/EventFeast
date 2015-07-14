@@ -30,13 +30,27 @@
         android:layout_alignParentRight="true"
 
         android:ellipsize="marquee"
-        android:singleLine="true"
         android:text="Description"
         android:textSize="12sp"
 
-        android:layout_alignParentBottom="true"
         android:layout_below="@+id/example" />
 
+    <ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/likeimage"
+    android:layout_below="@id/description"
+    android:src="@drawable/thumbsup"
+     />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dislikeimage"
+        android:layout_below="@id/description"
+        android:src="@drawable/thumbsdown"
+        android:layout_alignRight="@id/description"
+        android:layout_marginRight="40dp"
+        />
 
 
-</RelativeLayout> 
+</RelativeLayout>
