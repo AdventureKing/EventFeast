@@ -3,11 +3,9 @@
 	ini_set('display_startup_errors',1);
 	error_reporting(-1);
 	
-	require_once('classes/gEventUtil.php');
-	require_once("classes/gEvent.php");
-	require_once("classes/curlUtil.php");
-	require_once('externalAPIs/stubhub/functions.php');
-	require_once('externalAPIs/ticketmaster/functions.php');
+	$base_path = $_SERVER['DOCUMENT_ROOT']."/dev/ws/rest/";
+	require_once($base_path.'externalAPIs/stubhub/functions.php');
+	require_once($base_path.'externalAPIs/ticketmaster/functions.php');
         
 	$app->get('/findEvents/:eventDesc', function ($eventDesc) use ($app){
 
