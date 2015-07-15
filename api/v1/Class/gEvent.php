@@ -1,5 +1,5 @@
 <?php 
-	require_once($projectDir.'class/gEventUtil.php');
+	require_once($projectDir.'Class/gEventUtil.php');
 
 	class gEvent implements JsonSerializable{
 		/* Member Variables */

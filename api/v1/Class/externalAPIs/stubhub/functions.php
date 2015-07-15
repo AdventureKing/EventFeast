@@ -1,6 +1,6 @@
 <?php 
-	require_once($projectDir.'class/gEvent.php');
-	require_once($projectDir.'class/curlUtil.php');
+	require_once($projectDir.'Class/gEvent.php');
+	require_once($projectDir.'Class/curlUtil.php');
 
 	function stubhubAPI_findEvents($queryString, $optionsArray){
 		
