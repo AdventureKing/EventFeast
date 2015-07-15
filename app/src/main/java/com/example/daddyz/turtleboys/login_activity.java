@@ -8,10 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.parse.LogInCallback;
 import com.parse.ParseUser;
-
-import java.text.ParseException;
 
 /**
  * Created by Jinbir on 6/6/2015.
@@ -20,6 +19,7 @@ public class login_activity extends Activity {
     private EditText userName;
     private EditText userPassword;
     private Button login;
+    private Button registerButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,18 +32,18 @@ public class login_activity extends Activity {
         userName.setHint(R.string.username_text);
         userPassword = (EditText) findViewById(R.id.password);
         userPassword.setHint(R.string.password_text);
-        login = (Button) findViewById(R.id.loginbutton);
+        login = (Button) findViewById(R.id.loginButton);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ParseUser.logInInBackground(userName.getText().toString(), userPassword.getText().toString(), new LogInCallback() {
+                GigUser.logInInBackground(userName.getText().toString(), userPassword.getText().toString(), new LogInCallback() {
                     @Override
-                    public void done(ParseUser parseUser, com.parse.ParseException e) {
-                        if (parseUser != null) {
+                    public void done(ParseUser GigUser, com.parse.ParseException e) {
+                        if (GigUser != null) {
                             // Hooray! The user is logged in.
 
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), maindrawer.class);
                             finish();
                             startActivity(intent);
 
@@ -56,6 +56,18 @@ public class login_activity extends Activity {
 
 
                 });
+            }
+        });
+
+        registerButton = (Button) findViewById(R.id.registerButton);
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), registration_activity.class);
+                startActivity(intent);
+
+                //Toast.makeText(getApplicationContext(), "Redirection to registration", Toast.LENGTH_SHORT).show();
+
             }
         });
     }
