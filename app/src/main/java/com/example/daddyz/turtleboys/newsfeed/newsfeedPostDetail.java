@@ -9,11 +9,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.R;
+
+import java.util.ArrayList;
 
 /**
  * Created by snow on 7/11/2015.
@@ -30,6 +34,9 @@ public class newsfeedPostDetail extends Fragment {
     private ImageView eventImage;
     private FloatingActionButton likeButton;
     private FloatingActionButton dislikeButton;
+    private ListView userCommentsList;
+    private ArrayAdapter<String> adapter;
+    ArrayList<String> userComments = new ArrayList<String>();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //lock the drawer because we are inception in this bitch
@@ -79,6 +86,29 @@ public class newsfeedPostDetail extends Fragment {
                 Toast.makeText(getActivity(), "User DISLIKES THIS POST", Toast.LENGTH_SHORT).show();
             }
         });
+
+        userCommentsList = (ListView) view.findViewById(R.id.userCommentsList);
+        userComments.add("wutang");
+        userComments.add("wutang");
+        userComments.add("wutang");
+        userComments.add("wutang");
+        userComments.add("wutang");
+        userComments.add("wutang");
+        userComments.add("wutang");
+        userComments.add("wutang");
+        userComments.add("wutang");
+        userComments.add("wutang");
+        userComments.add("wutang");
+        userComments.add("wutang");
+        userComments.add("wutang");
+        userComments.add("wutang");
+        userComments.add("wutang");
+        userComments.add("wutang");
+        userComments.add("wutang");
+        adapter=new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1,
+                userComments);
+        userCommentsList.setAdapter(adapter);
 
 
         return view;

@@ -90,8 +90,6 @@
                     android:textColor="#ffffffff"
                     android:layout_gravity="center_horizontal|bottom" />
 
-
-
             </FrameLayout>
 
             <TextView
@@ -102,11 +100,53 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_marginTop="250dp"
                 android:layout_marginLeft="20dp" />
-
+            <TextView
+                android:id="@+id/EventDesc1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="USER_CONTENT_POST"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_below="@+id/EventDesc"/>
+            <TextView
+                android:id="@+id/EventDesc11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="USER_CONTENT_POST"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_below="@+id/EventDesc1"/>
+            <TextView
+                android:id="@+id/EventDesc111"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="USER_CONTENT_POST"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_below="@+id/EventDesc11"/>
+            <TextView
+                android:id="@+id/EventDesc1111"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="USER_CONTENT_POST"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_below="@+id/EventDesc111"/>
+            <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="166dp"
+                android:id="@+id/userCommentsList"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_below="@+id/EventDesc1111"
+                android:layout_marginTop="200dp">
+         </ListView>
+            </ScrollView>
         </RelativeLayout>
 
 
     </ScrollView>
+
+
 
     </FrameLayout>
 </LinearLayout>
