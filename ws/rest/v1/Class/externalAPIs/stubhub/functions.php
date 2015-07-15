@@ -1,7 +1,6 @@
 <?php 
-	$base_path = $_SERVER['DOCUMENT_ROOT']."/dev/ws/rest/";
-	require_once($base_path.'classes/gEvent.php');
-	require_once($base_path.'classes/curlUtil.php');
+	require_once($projectDir.'class/gEvent.php');
+	require_once($projectDir.'class/curlUtil.php');
 
 	function stubhubAPI_findEvents($queryString, $optionsArray){
 		

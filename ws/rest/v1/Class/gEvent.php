@@ -1,6 +1,5 @@
 <?php 
-	$base_path = $_SERVER['DOCUMENT_ROOT']."/dev/ws/rest/";
-	require_once($base_path.'classes/gEventUtil.php');
+	require_once($projectDir.'class/gEventUtil.php');
 
 	class gEvent implements JsonSerializable{
 		/* Member Variables */
