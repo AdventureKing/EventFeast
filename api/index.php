@@ -1,19 +1,15 @@
 <?php
-	require 'Slim/Slim.php';
-	\Slim\Slim::registerAutoloader();
-	
-	$app = new \Slim\Slim();
-
-	/**
-	 * include route definitions
-	 */
-	
-	$CURR_VERSION = "v1";
-	
-	include "{$CURR_VERSION}/hello.php";
-	include "{$CURR_VERSION}/findEvents.php";
-		
-	$app->run();
-
+	// AKA Environment name
+	$parentDir = strtoupper(dirname(__FILE__));
+	$parentDirArray = explode("/",$parentDir);
+	$envName = $parentDirArray[count($parentDirArray)-2]; 
 ?>
-	
+
+<html>
+  <head>
+    <title>www.api.turtleboys.com</title>
+  </head>
+  <body>
+    <h1>Turtleboys API (<?php echo $envName; ?>  Environment)</h1>
+  </body>
+</html>
