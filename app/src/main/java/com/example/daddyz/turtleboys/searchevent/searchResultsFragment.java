@@ -31,7 +31,7 @@ public class searchResultsFragment extends Fragment {
     private View rootView;
     private ListView list;
     private searchResultsAdapter adapter;
-    private ArrayList<gEventObject> searchResultsList;
+    private ArrayList<searchResultsObject> searchResultsList;
     //private  FloatingActionButton fab;
 
     @Override
@@ -70,16 +70,16 @@ public class searchResultsFragment extends Fragment {
             }
         });
         */
-        searchResultsList = new ArrayList<gEventObject>();
-        gEventObject obj = new gEventObject();
-        gEventObject obj3 = new gEventObject();
-        gEventObject obj4 = new gEventObject();
-        gEventObject obj5 = new gEventObject();
-        gEventObject obj6 = new gEventObject();
-        gEventObject obj7 = new gEventObject();
-        gEventObject obj8 = new gEventObject();
-        gEventObject obj9 = new gEventObject();
-        gEventObject obj10 = new gEventObject();
+        searchResultsList = new ArrayList<searchResultsObject>();
+        searchResultsObject obj = new searchResultsObject();
+        searchResultsObject obj3 = new searchResultsObject();
+        searchResultsObject obj4 = new searchResultsObject();
+        searchResultsObject obj5 = new searchResultsObject();
+        searchResultsObject obj6 = new searchResultsObject();
+        searchResultsObject obj7 = new searchResultsObject();
+        searchResultsObject obj8 = new searchResultsObject();
+        searchResultsObject obj9 = new searchResultsObject();
+        searchResultsObject obj10 = new searchResultsObject();
         searchResultsList.add(obj);
         searchResultsList.add(obj3);
         searchResultsList.add(obj4);
@@ -89,7 +89,7 @@ public class searchResultsFragment extends Fragment {
         searchResultsList.add(obj8);
         searchResultsList.add(obj9);
         searchResultsList.add(obj10);
-        adapter = new searchResultsAdapter(getActivity(), R.layout.eventfeedroweven, searchResultsList);
+        adapter = new searchResultsAdapter(getActivity(), R.layout.searchresultsrow, searchResultsList);
         list.setAdapter(adapter);
         Log.d("CustomAdapter", "Search Results Launched successfully");
 

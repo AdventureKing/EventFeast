@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -179,7 +180,8 @@ public class searchEvent extends Fragment {
             public void onClick(View view) {
                 //Do a search
                 searchResultsFragment fragment = new searchResultsFragment();
-                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer,fragment,"searchResultsFragment").addToBackStack("searchResultsFragment").commit();                Toast.makeText(getActivity().getApplicationContext(), "Search Event", Toast.LENGTH_SHORT).show();
+                getFragmentManager().beginTransaction().replace(R.id.frame,fragment,"searchResultsFragment").addToBackStack("searchResultsFragment").commit();
+                //Toast.makeText(getActivity().getApplicationContext(), "Search Event", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -188,7 +190,7 @@ public class searchEvent extends Fragment {
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO Reset button resets all fields
+
                 location.setText("");
                 keyword.setText("");
                 radioSortbyGroup.clearCheck();
@@ -209,6 +211,9 @@ public class searchEvent extends Fragment {
     public void onStop() {
         super.onStop();
     }
+
+
+
 
 
     public static class DatePickerFragment extends DialogFragment

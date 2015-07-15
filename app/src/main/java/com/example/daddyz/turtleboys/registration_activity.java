@@ -217,12 +217,12 @@ public class registration_activity extends Activity {
                 //Verify info
                 //Create new account
                 GigUser newUser = new GigUser();
-                newUser.setUsername(userName.getText().toString());
+                newUser.setUsername(userName.getText().toString().trim());
                 newUser.setPassword(userPassword.getText().toString());
-                newUser.setEmail(email.getText().toString());
+                newUser.setEmail(email.getText().toString().trim());
                 newUser.setBirthday(birthday);
-                newUser.setFirstName(firstName.getText().toString());
-                newUser.setLastName(lastName.getText().toString());
+                newUser.setFirstName(firstName.getText().toString().trim());
+                newUser.setLastName(lastName.getText().toString().trim());
 
                 if(userImageParseFile != null) {
 

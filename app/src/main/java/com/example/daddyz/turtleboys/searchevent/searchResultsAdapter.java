@@ -16,31 +16,29 @@ import java.util.ArrayList;
 /**
  * Created by Jinbir on 7/12/2015.
  */
-public class searchResultsAdapter extends ArrayAdapter<gEventObject> {
+public class searchResultsAdapter extends ArrayAdapter<searchResultsObject> {
+
     private Context context;
     private int resource;
-    private ArrayList<gEventObject> searchEventObjects;
+    private ArrayList<searchResultsObject> searchResultsObjects;
 
-    public searchResultsAdapter(Context context, int resource, ArrayList<gEventObject> searchEventObjects) {
-        super(context, resource,searchEventObjects);
+    public searchResultsAdapter(Context context, int resource, ArrayList<searchResultsObject> searchResultsObjects) {
+        super(context, resource,searchResultsObjects);
         this.context = context;
         this.resource = resource;
-        this.searchEventObjects = searchEventObjects;
+        this.searchResultsObjects = searchResultsObjects;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.eventfeedroweven, parent, false);
-
-        ImageView eventImage = (ImageView) rowView.findViewById(R.id.icon);
+        View rowView = inflater.inflate(R.layout.searchresultsrow, parent, false);
+        //TextView messageBox1 = (TextView) rowView.findViewById(R.id.example);
         TextView description = (TextView) rowView.findViewById(R.id.descLine);
-        TextView citystate = (TextView) rowView.findViewById(R.id.citystateLine);
-        TextView date = (TextView)rowView.findViewById(R.id.dateLine);
-        TextView time = (TextView) rowView.findViewById(R.id.timeLine);
-        TextView venue = (TextView) rowView.findViewById(R.id.venueLine);
+        ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 
+        //messageBox1.setText("This is the Test example message");
         description.setText("The description of the post will go here");
 
 
