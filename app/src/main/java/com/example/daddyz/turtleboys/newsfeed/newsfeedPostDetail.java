@@ -106,6 +106,7 @@ public class newsfeedPostDetail extends Fragment {
         userComments.add("wutang");
         userComments.add("wutang");
         userComments.add("wutang");
+
         adapter=new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1,
                 userComments);

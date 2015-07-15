@@ -44,7 +44,8 @@ public class newsfeedFragment extends Fragment{
         rootView = inflater.inflate(R.layout.newsfeedlistfragment, container, false);
         //swipe layout
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.activity_main_swipe_refresh_layout);
-        //pull down to refresh the list
+        //pull down to refresh the list and set the colors of the loading icon
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.loadingorange, R.color.loadinggreen, R.color.loadingblue);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -116,7 +117,10 @@ public class newsfeedFragment extends Fragment{
     private void refreshContent() {
         adapter = new newsfeedAdapter(getActivity(), R.layout.eventfeedroweven, newsfeedList);
         list.setAdapter(adapter);
-        //refreshing is done at this point
+
+
+        //refreshing is done at this point make the icon disappear
+
         mSwipeRefreshLayout.setRefreshing(false);
         Toast.makeText(getActivity(), "User Wants to refresh the list", Toast.LENGTH_SHORT).show();
     }
