@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_add_black_24dp"
+        android:src="@drawable/eventfeedposticon"
         android:scaleType="fitXY"
         app:borderWidth="0dp"
         fab:rippleColor="@color/ripple"
