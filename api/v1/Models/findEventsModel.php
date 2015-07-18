@@ -1,4 +1,5 @@
 <?php
+
 	class findEventsModel{
 		private $app;
 		private $eventDesc;

@@ -28,7 +28,7 @@
 			// echo error json and stop the app
 			$response = array();
 			$app = \Slim\Slim::getInstance();
-			$response["error"] = true;
+			$response["result"] = "error";
 			$response["message"] = 'Required field(s) ' . substr($error_fields, 0, -2) . ' is missing or empty';
 			echoRespnse(400, $response);
 			$app->stop();
@@ -41,8 +41,21 @@
 	function validateEmail($email) {
 		$app = \Slim\Slim::getInstance();
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			$response["error"] = true;
+			$response["result"] = "error";
 			$response["message"] = 'Email address is not valid';
+			echoRespnse(400, $response);
+			$app->stop();
+		}
+	}
+
+	/**
+	 * Validating date
+	 */
+	function validateDate($date) {
+		$app = \Slim\Slim::getInstance();
+		if (!DateTime::createFromFormat('m/d/Y', $date)) {
+			$response["result"] = "error";
+			$response["message"] = 'Date is not valid format (m/d/Y)';
 			echoRespnse(400, $response);
 			$app->stop();
 		}
@@ -61,7 +74,7 @@
 		// setting response content type to json
 		$app->contentType('application/json');
 
-		echo json_encode($response);
+		echo json_encode($response, JSON_FORCE_OBJECT | JSON_UNESCAPED_SLASHES);
 	}
 	
 	/**
@@ -75,29 +88,44 @@
 		$app = \Slim\Slim::getInstance();
 
 		// Verifying Authorization Header
-		if (isset($headers['Authorization'])) {
-			$db = new DbHandler();
+		if (isset($headers['Authorization']) && isset($headers['Token'])) {
+			$db = new DbHandlerParse();
 
 			// get the api key
 			$api_key = $headers['Authorization'];
+			// get the session token
+			$session_token = $headers['Token'];
+
 			// validating api key
 			if (!$db->isValidApiKey($api_key)) {
 				// api key is not present in users table
-				$response["error"] = true;
+				$response["result"] = "error";
 				$response["message"] = "Access Denied. Invalid Api key";
+				echoRespnse(401, $response);
+				$app->stop();
+			} else if(!$db->isValidSessionToken($session_token, $api_key)) {
+				// session token does not match api key or is just invalid
+				$response["result"] = "error";
+				$response["message"] = "Access Denied. Invalid Token";
 				echoRespnse(401, $response);
 				$app->stop();
 			} else {
 				global $user_id;
 				// get user primary key id
-				$user = $db->getUserId($api_key);
-				if ($user != NULL)
-					$user_id = $user["id"];
+				$userID = $db->getUserId($api_key);
+				if (NULL != $userID)
+					$user_id = $userID;
 			}
-		} else {
+		} else if(!isset($headers['Authorization'])){
 			// api key is missing in header
-			$response["error"] = true;
+			$response["result"] = "error";
 			$response["message"] = "Api key is misssing";
+			echoRespnse(400, $response);
+			$app->stop();
+		} else {
+			// token is missing in header
+			$response["result"] = "error";
+			$response["message"] = "Token is misssing";
 			echoRespnse(400, $response);
 			$app->stop();
 		}

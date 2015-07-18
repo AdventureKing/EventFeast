@@ -8,32 +8,41 @@
 	 */
 	$app->post('/user/register', function() use ($app) {
 		// check for required params
-		verifyRequiredParams(array('name', 'email', 'password'));
+		verifyRequiredParams(array('firstName', 'lastName', 'username', 'email', 'password', 'birthday'));
 
 		$response = array();
 
+		$newUser = new CustomParseUser();
+
 		// reading post params
-		$name = $app->request->post('name');
-		$email = $app->request->post('email');
-		$password = $app->request->post('password');
+		$newUser->setFirstName($app->request->post('firstName'));
+		$newUser->setLastName($app->request->post('lastName'));
+		$newUser->setUsername($app->request->post('username'));
+		$newUser->setEmail($app->request->post('email'));
+		$newUser->setPassword($app->request->post('password'));
+		$newUser->setBirthday($app->request->post('birthday'));
 
 		// validating email address
-		validateEmail($email);
+		validateEmail($newUser->getEmail());
 
-		$db = new DbHandler();
-		$res = $db->createUser($name, $email, $password);
+		// validating date
+		validateDate($newUser->getBirthday());
+		$newUser->setBirthday(DateTime::createFromFormat('m/d/Y', $newUser->getBirthday()));
 
-		if ($res == USER_CREATED_SUCCESSFULLY) {
-			$response["error"] = false;
+		$db = new DbHandlerParse();
+		$res = $db->createUser($newUser);
+
+		if ($res == 'USER_CREATED_SUCCESSFULLY') {
+			$response["result"] = 'success';
 			$response["message"] = "You are successfully registered";
 			echoRespnse(201, $response);
-		} else if ($res == USER_CREATE_FAILED) {
-			$response["error"] = true;
+		} else if ($res == 'USER_CREATE_FAILED') {
+			$response["result"] = 'error';
 			$response["message"] = "Oops! An error occurred while registereing";
 			echoRespnse(200, $response);
-		} else if ($res == USER_ALREADY_EXISTED) {
-			$response["error"] = true;
-			$response["message"] = "Sorry, this email already existed";
+		} else if ($res == 'USER_ALREADY_EXISTED') {
+			$response["result"] = 'error';
+			$response["message"] = "Sorry, this username or email is already in use";
 			echoRespnse(200, $response);
 		}
 	});
@@ -53,30 +62,33 @@
 		$password = $app->request()->post('password');
 		$response = array();
 
-		$db = new DbHandler();
+		$db = new DbHandlerParse();
+		$sessionToken = $db->checkLogin($email, $password);
+
 		// check for correct email and password
-		if ($db->checkLogin($email, $password)) {
+		if ($sessionToken) {
 			// get the user by email
 			$user = $db->getUserByEmail($email);
 
 			if ($user != NULL) {
-				$response["error"] = false;
-				$response['name'] = $user['name'];
-				$response['email'] = $user['email'];
-				$response['apiKey'] = $user['api_key'];
-				$response['createdAt'] = $user['created_at'];
+				$response["result"] = 'success';
+				$response['name'] = $user->get('firstName')." ".$user->get('lastName');
+				$response['email'] = $user->get('email');
+				$response['apiKey'] = $user->get('apiKey');
+				$response['sessionToken'] = $sessionToken;
+				$response['createdAt'] = $user->getCreatedAt()->format('Y-m-d H:i:s');
 			} else {
 				// unknown error occurred
-				$response['error'] = true;
+				$response['result'] = 'error';
 				$response['message'] = "An error occurred. Please try again";
 			}
 		} else {
 			// user credentials are wrong
-			$response['error'] = true;
+			$response['result'] = 'error';
 			$response['message'] = 'Login failed. Incorrect credentials';
 		}
 
 		echoRespnse(200, $response);
 	});
-			
+
 ?>

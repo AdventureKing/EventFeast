@@ -6,7 +6,7 @@
 	 * url - /calls/
 	 */
 	$app->post('/calls', 'authenticate', function() use ($app) {
-				// check for required params
+		// check for required params
 		verifyRequiredParams(array('call'));
 
 		$response = array();
