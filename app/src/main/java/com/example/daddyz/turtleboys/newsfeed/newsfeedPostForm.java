@@ -10,8 +10,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.daddyz.turtleboys.R;
 
@@ -24,6 +26,8 @@ public class newsfeedPostForm extends Fragment {
     private newsfeedObject obj;
     private Toolbar toolbar;
     private ActionBar actionbar;
+    private EditText userMessage;
+    private TextView userLocation;
     private ImageView upload;
 
 
@@ -43,8 +47,15 @@ public class newsfeedPostForm extends Fragment {
 
         actionbar.setTitle("Newsfeed Post Form");
 
+
+        //get the frame from the main view and set it invisible
         final FrameLayout frame = (FrameLayout) container.findViewById(R.id.frame);
         frame.setVisibility(View.INVISIBLE);
+
+
+        //set hints on user description
+        userMessage = (EditText) view.findViewById(R.id.postBody);
+        userMessage.setHint("Enter a Post Message");
 
         //Set up back arrow icon on toolbar
         actionbar.setDisplayHomeAsUpEnabled(true);
@@ -58,6 +69,8 @@ public class newsfeedPostForm extends Fragment {
             }
         });
 
+
+        //get user image to upload
         upload = (ImageView) view.findViewById(R.id.userImageToUpload);
         upload.setClickable(true);
         upload.setOnClickListener(new View.OnClickListener() {
