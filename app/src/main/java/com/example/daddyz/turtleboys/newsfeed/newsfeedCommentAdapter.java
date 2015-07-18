@@ -24,6 +24,8 @@ public class newsfeedCommentAdapter extends ArrayAdapter<newsfeedCommentObjects>
         super(context, resource,commentObjects);
         this.context = context;
         this.resource = resource;
+
+        //comment objects filled in the newsfeedPostDetail.java
         this.commentObjects = commentObjects;
     }
     //return even or odd row
