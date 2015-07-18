@@ -37,7 +37,10 @@ public class newsfeedPostDetail extends Fragment {
     private FloatingActionButton dislikeButton;
     private ListView userCommentsList;
     private ArrayAdapter<String> adapter;
+    private newsfeedCommentAdapter adapter1;
+    ArrayList<newsfeedCommentObjects> userComments1;
     ArrayList<String> userComments = new ArrayList<String>();
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //lock the drawer because we are inception in this bitch
@@ -89,28 +92,32 @@ public class newsfeedPostDetail extends Fragment {
         });
 
         userCommentsList = (ListView) view.findViewById(R.id.userCommentsList);
-        userComments.add("wutang");
-        userComments.add("wutang");
-        userComments.add("wutang");
-        userComments.add("wutang");
-        userComments.add("wutang");
-        userComments.add("wutang");
-        userComments.add("wutang");
-        userComments.add("wutang");
-        userComments.add("wutang");
-        userComments.add("wutang");
-        userComments.add("wutang");
-        userComments.add("wutang");
-        userComments.add("wutang");
-        userComments.add("wutang");
-        userComments.add("wutang");
-        userComments.add("wutang");
-        userComments.add("wutang");
 
-        adapter=new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1,
-                userComments);
-        userCommentsList.setAdapter(adapter);
+        ///fill comment list from webservice
+        userComments1 = new ArrayList<newsfeedCommentObjects>();
+        newsfeedCommentObjects fakeComment = new newsfeedCommentObjects();
+        //fake data
+        fakeComment.setUserComment("I AM THE SMARTEST MAN ALIVE");
+        fakeComment.setUserName("BILLY MADISON");
+        //fill comment table with fake data
+        userComments1.add(fakeComment);
+        userComments1.add(fakeComment);
+        userComments1.add(fakeComment);
+        userComments1.add(fakeComment);
+        userComments1.add(fakeComment);
+        userComments1.add(fakeComment);
+        userComments1.add(fakeComment);
+        userComments1.add(fakeComment);
+        userComments1.add(fakeComment);
+        userComments1.add(fakeComment);
+        userComments1.add(fakeComment);
+        //webservice call to fill arrayList Full of bullshit
+
+        //create adapter
+        adapter1 = new newsfeedCommentAdapter(getActivity(), R.layout.eventfeedroweven,userComments1);
+        //set adapter for comments to a post
+        userCommentsList.setAdapter(adapter1);
+
         //allow user to scroll through the user comment listlist
         userCommentsList.setOnTouchListener(new View.OnTouchListener() {
             // Setting on Touch Listener for handling the touch inside ScrollView

@@ -73,6 +73,7 @@ public class newsfeedPostForm extends Fragment {
         //get user image to upload
         upload = (ImageView) view.findViewById(R.id.userImageToUpload);
         upload.setClickable(true);
+        //click on image to upload to view
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
