@@ -35,6 +35,10 @@ public class GigUser extends ParseUser {
         String first = getString("lastName");
         return first;
     }
+    public String getApiKey(){
+        String apiKey = getString("apiKey");
+        return apiKey;
+    }
 
 
     //setters
@@ -50,6 +54,9 @@ public class GigUser extends ParseUser {
     }
     public void setLastName(String last){
         put("lastName",last);
+    }
+    public void setApiKey(String key){
+        put("apiKey",key);
     }
 
 
