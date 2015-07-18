@@ -22,7 +22,7 @@
             android:id="@+id/userImageToUpload"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="10dp"
             android:src="@mipmap/ic_launcher"/>
 
         <TextView

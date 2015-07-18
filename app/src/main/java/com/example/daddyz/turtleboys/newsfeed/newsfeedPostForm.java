@@ -1,6 +1,8 @@
 package com.example.daddyz.turtleboys.newsfeed;
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.example.daddyz.turtleboys.R;
 
@@ -21,12 +24,16 @@ public class newsfeedPostForm extends Fragment {
     private newsfeedObject obj;
     private Toolbar toolbar;
     private ActionBar actionbar;
+    private ImageView upload;
+
+
+    private static final int SELECT_PHOTO = 100;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //lock the drawer because we are inception in this bitch
         //main_activity->fragment->fragment
 
-        view = inflater.inflate(R.layout.newsfeed_post_form,container,false);
+        view = inflater.inflate(R.layout.newsfeed_post_form, container, false);
 
         //toolbar setup
 
@@ -51,15 +58,34 @@ public class newsfeedPostForm extends Fragment {
             }
         });
 
+        upload = (ImageView) view.findViewById(R.id.userImageToUpload);
+        upload.setClickable(true);
+        upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, SELECT_PHOTO);
+            }
+        });
+
 
         return view;
     }
+
     public void onBackPressed(FrameLayout frame) {
 
-        if(getFragmentManager().getBackStackEntryCount() != 0) {
+        if (getFragmentManager().getBackStackEntryCount() != 0) {
             getFragmentManager().popBackStack();
             frame.setVisibility(View.VISIBLE);
 
         }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        Uri imageUri = imageReturnedIntent.getData();
+        upload.setImageURI(imageUri);
+
     }
 }
