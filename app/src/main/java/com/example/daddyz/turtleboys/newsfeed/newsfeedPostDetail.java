@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -27,7 +26,7 @@ public class newsfeedPostDetail extends Fragment {
 
 
 
-
+    //global vars
     private View view;
     private newsfeedObject obj;
     private Toolbar toolbar;
@@ -36,10 +35,11 @@ public class newsfeedPostDetail extends Fragment {
     private FloatingActionButton likeButton;
     private FloatingActionButton dislikeButton;
     private ListView userCommentsList;
-    private ArrayAdapter<String> adapter;
+
     private newsfeedCommentAdapter adapter1;
+
     ArrayList<newsfeedCommentObjects> userComments1;
-    ArrayList<String> userComments = new ArrayList<String>();
+
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,6 +76,8 @@ public class newsfeedPostDetail extends Fragment {
             }
         });
         //set the stuff on the page
+
+        //like fab button
         likeButton = (FloatingActionButton) view.findViewById(R.id.fabLIKE);
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +85,8 @@ public class newsfeedPostDetail extends Fragment {
                 Toast.makeText(getActivity(), "User LIKES THIS POST", Toast.LENGTH_SHORT).show();
             }
         });
+
+        //dislike fab button
         dislikeButton = (FloatingActionButton) view.findViewById(R.id.fabDISLIKE);
         dislikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +95,7 @@ public class newsfeedPostDetail extends Fragment {
             }
         });
 
+        //comments on a users post
         userCommentsList = (ListView) view.findViewById(R.id.userCommentsList);
 
         ///fill comment list from webservice
@@ -141,7 +146,7 @@ public class newsfeedPostDetail extends Fragment {
 
         }
     }
-
+//gettters and setters for the newsfeedobject
     public newsfeedObject getObj() {
         return obj;
     }

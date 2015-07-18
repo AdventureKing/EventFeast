@@ -41,11 +41,15 @@ public class newsfeedCommentAdapter extends ArrayAdapter<newsfeedCommentObjects>
     }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         //get inflator so it will strech the view to fill the row data
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //get view and apply the postdetailcommentrow xml to it
         View row = inflater.inflate(R.layout.postdetailcommentrow, parent, false);
 
+
+        //get the section of the array your in and apply to view
         TextView postComment = (TextView) row.findViewById(R.id.post);
         postComment.setText(commentObjects.get(position).getUserComment());
         TextView userNameComment = (TextView) row.findViewById(R.id.userName);
