@@ -16,7 +16,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -68,6 +70,16 @@ public class registration_activity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_activity);
+        View view = findViewById(R.id.registrationPage);
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.
+                        INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                return true;
+            }
+        });
 
         userImageFile = (ParseImageView) findViewById(R.id.profile_image);
 
@@ -205,12 +217,12 @@ public class registration_activity extends Activity {
                 //Verify info
                 //Create new account
                 GigUser newUser = new GigUser();
-                newUser.setUsername(userName.getText().toString());
+                newUser.setUsername(userName.getText().toString().trim());
                 newUser.setPassword(userPassword.getText().toString());
-                newUser.setEmail(email.getText().toString());
+                newUser.setEmail(email.getText().toString().trim());
                 newUser.setBirthday(birthday);
-                newUser.setFirstName(firstName.getText().toString());
-                newUser.setLastName(lastName.getText().toString());
+                newUser.setFirstName(firstName.getText().toString().trim());
+                newUser.setLastName(lastName.getText().toString().trim());
 
                 if(userImageParseFile != null) {
 

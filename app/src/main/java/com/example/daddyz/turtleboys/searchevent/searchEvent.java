@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.R;
+import com.example.daddyz.turtleboys.maindrawer;
 import com.example.daddyz.turtleboys.registration_activity;
 
 import java.util.Calendar;
@@ -53,6 +55,7 @@ public class searchEvent extends Fragment {
 
     private RadioGroup radioSortbyGroup;
     private RadioButton sortbyButton;
+    private RadioButton defaultButton;
 
     private EditText toTimeText;
     private EditText fromTimeText;
@@ -96,6 +99,7 @@ public class searchEvent extends Fragment {
         //Sortby RadioGroup
         radioSortbyGroup = (RadioGroup) rootView.findViewById(R.id.sortGroup);
         sortbyButton = (RadioButton) rootView.findViewById(radioSortbyGroup.getCheckedRadioButtonId());
+        defaultButton = (RadioButton) rootView.findViewById(R.id.sortRelevance);
 
         //SearchRadius Seekbar
         searchRadiusSeekBar = (SeekBar) rootView.findViewById(R.id.searchRadius);
@@ -175,7 +179,9 @@ public class searchEvent extends Fragment {
             @Override
             public void onClick(View view) {
                 //Do a search
-                Toast.makeText(getActivity().getApplicationContext(), "Search Event", Toast.LENGTH_SHORT).show();
+                searchResultsFragment fragment = new searchResultsFragment();
+                getFragmentManager().beginTransaction().replace(R.id.frame,fragment,"searchResultsFragment").addToBackStack("searchResultsFragment").commit();
+                //Toast.makeText(getActivity().getApplicationContext(), "Search Event", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -184,8 +190,17 @@ public class searchEvent extends Fragment {
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO Reset button resets all fields
-                Toast.makeText(getActivity().getApplicationContext(), "Reset fields", Toast.LENGTH_SHORT).show();
+
+                location.setText("");
+                keyword.setText("");
+                radioSortbyGroup.clearCheck();
+                defaultButton.toggle();
+                fromTimeText.setText(R.string.anyTime);
+                toTimeText.setText(R.string.anyTime);
+                fromDateText.setText(R.string.anyDay);
+                toDateText.setText(R.string.anyDay);
+                searchRadiusSeekBar.setProgress(9);
+                //Toast.makeText(getActivity().getApplicationContext(), "Reset fields", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -196,6 +211,9 @@ public class searchEvent extends Fragment {
     public void onStop() {
         super.onStop();
     }
+
+
+
 
 
     public static class DatePickerFragment extends DialogFragment
