@@ -2,6 +2,8 @@ package com.example.daddyz.turtleboys.searchevent;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +15,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
+import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.eventfeed.gEventObject;
+import com.example.daddyz.turtleboys.maindrawer;
 
 import java.util.ArrayList;
 
@@ -32,7 +36,7 @@ public class searchResultsFragment extends Fragment {
     private ListView list;
     private searchResultsAdapter adapter;
     private ArrayList<searchResultsObject> searchResultsList;
-    //private  FloatingActionButton fab;
+    private ActionBar actionBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,34 +46,25 @@ public class searchResultsFragment extends Fragment {
         rootView = inflater.inflate(R.layout.searchresultslistfragment, container, false);
         list = (ListView) rootView.findViewById(R.id.listView);
 
+        //actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        //actionBar.setTitle("Search Results");
+
         mTextView = (TextView) rootView.findViewById(R.id.textView);
         mButton = (Button) rootView.findViewById(R.id.button);
         list.setClickable(true);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                //get object at that position
-                //this code is gonna get nocked out monday
+                searchResultsObject obj = (searchResultsObject) list.getItemAtPosition(position);
+                eventDetailFragment fragment = new eventDetailFragment();
+                fragment.setObj(obj);
 
-                //start the fragment
-
-                //this is where we are gonna
-
+                //Toast.makeText(getActivity().getApplicationContext(), fragment.getObj().toString(), Toast.LENGTH_SHORT).show();
+                //Pain in the arse trouble maker.
+                getFragmentManager().beginTransaction().replace(R.id.drawer,fragment,"searchResultDetailFragment").addToBackStack("searchResultDetailFragment").commit();
             }
         });
 
-        /*
-        fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-                Toast.makeText(getActivity(), "User Wants to make a post", Toast.LENGTH_SHORT).show();
-            }
-        });
-        */
         searchResultsList = new ArrayList<searchResultsObject>();
         searchResultsObject obj = new searchResultsObject();
         searchResultsObject obj3 = new searchResultsObject();
@@ -94,5 +89,12 @@ public class searchResultsFragment extends Fragment {
         Log.d("CustomAdapter", "Search Results Launched successfully");
 
         return rootView;
+    }
+
+    public void onBackPressed() {
+        Log.d("Test","This is being called in searchResults");
+        if(getFragmentManager().getBackStackEntryCount() != 0) {
+            getFragmentManager().popBackStack();
+        }
     }
 }
