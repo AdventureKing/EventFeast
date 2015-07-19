@@ -20,8 +20,10 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -82,6 +84,17 @@ public class change_account_info_activity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.change_account_info_activity);
+
+        View view = findViewById(R.id.account_info);
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.
+                        INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                return true;
+            }
+        });
 
         userImageFile = (ParseImageView) findViewById(R.id.profile_image);
 
@@ -215,7 +228,7 @@ public class change_account_info_activity extends Activity {
                 }
 
                 //Check if userName is the same
-                if ( userName.getText().toString().equals(currentUser.getUsername())){
+                if ( userName.getText().toString().trim().equals(currentUser.getUsername())){
                     updateGallery = false;
                 }else{
                     updateGallery = true;
@@ -239,12 +252,12 @@ public class change_account_info_activity extends Activity {
                 //Verify info
                 //Save new account info
 
-                currentUser.setUsername(userName.getText().toString());
+                currentUser.setUsername(userName.getText().toString().trim());
                 if (changePassword)
                     currentUser.setPassword(userPassword.getText().toString());
-                currentUser.setEmail(email.getText().toString());
-                currentUser.setFirstName(firstName.getText().toString());
-                currentUser.setLastName(lastName.getText().toString());
+                currentUser.setEmail(email.getText().toString().trim());
+                currentUser.setFirstName(firstName.getText().toString().trim());
+                currentUser.setLastName(lastName.getText().toString().trim());
 
                 if(userImageParseFile != null) {
 

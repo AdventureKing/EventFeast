@@ -128,6 +128,12 @@
     <string name="anyDay">Any Day</string>
     <string name="anyTime">Any Time</string>
     <string name="auto_calendar_preferences_summary">Allow EventFEAST to add to default calendar and set a reminder for 30 minutes before the event.</string>
+    <string name="userAvatar">Contains user\'s avatar</string>
+    <string name="greyBackground">Just a plain grey background</string>
+    <string name="posts_text">Posts</string>
+    <string name="meals_text">Meals Enjoyed</string>
+    <string name="user_level_text">Level</string>
+    <string name="user_level_outline_image">User\'s Level</string>
 
 
 </resources>

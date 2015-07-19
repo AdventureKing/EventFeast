@@ -1,9 +1,12 @@
 package com.example.daddyz.turtleboys;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -26,6 +29,16 @@ public class login_activity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loginview);
+        View view = findViewById(R.id.login_page);
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.
+                        INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                return true;
+            }
+        });
 
 
         userName = (EditText) findViewById(R.id.userName);
@@ -37,7 +50,7 @@ public class login_activity extends Activity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GigUser.logInInBackground(userName.getText().toString(), userPassword.getText().toString(), new LogInCallback() {
+                GigUser.logInInBackground(userName.getText().toString().trim(), userPassword.getText().toString(), new LogInCallback() {
                     @Override
                     public void done(ParseUser GigUser, com.parse.ParseException e) {
                         if (GigUser != null) {
