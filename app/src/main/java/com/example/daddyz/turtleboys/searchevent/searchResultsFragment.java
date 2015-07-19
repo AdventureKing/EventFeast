@@ -56,6 +56,25 @@ public class searchResultsFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 searchResultsObject obj = (searchResultsObject) list.getItemAtPosition(position);
+
+                //Hard coding obj attributes until backend is ready
+                ArrayList<String> month = new ArrayList<String>();
+                month.add("0");
+                month.add("1");
+                month.add("Jul");
+                obj.setStart_date_month(new ArrayList<String>(month));
+                ArrayList<String> day = new ArrayList<String>();
+                day.add("19");
+                obj.setStart_date_day(new ArrayList<String>(day));
+                ArrayList<String> year = new ArrayList<String>();
+                year.add("2015");
+                obj.setStart_date_year(new ArrayList<String>(year));
+                ArrayList<String> time = new ArrayList<String>();
+                time.add("0");
+                time.add("1");
+                time.add("1:12AM");
+                obj.setStart_date_time(new ArrayList<String>(time));
+
                 eventDetailFragment fragment = new eventDetailFragment();
                 fragment.setObj(obj);
 
