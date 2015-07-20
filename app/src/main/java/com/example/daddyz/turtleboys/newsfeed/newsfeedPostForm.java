@@ -98,8 +98,11 @@ public class newsfeedPostForm extends Fragment {
 
     public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-        Uri imageUri = imageReturnedIntent.getData();
-        upload.setImageURI(imageUri);
+
+        if (imageReturnedIntent != null) {
+            Uri imageUri = imageReturnedIntent.getData();
+            upload.setImageURI(imageUri);
+        }
 
     }
 }
