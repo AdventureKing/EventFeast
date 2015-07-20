@@ -375,9 +375,15 @@ public class  experience_activity extends AppCompatActivity {
                     currentUser.fetchInBackground(new GetCallback<ParseObject>() {
                         @Override
                         public void done(ParseObject parseObject, ParseException e) {
-                            userLevel.setText(currentUser.getUserLevel().toString());
-                            userPosts.setText(currentUser.getUserTotalPost().toString());
-                            userNumberAttended.setText(currentUser.getUserEventsAttended().toString());
+                            if (e == null){
+                                userLevel.setText(currentUser.getUserLevel().toString());
+                                userPosts.setText(currentUser.getUserTotalPost().toString());
+                                userNumberAttended.setText(currentUser.getUserEventsAttended().toString());
+                            }else{
+                                userLevel.setText("0");
+                                userPosts.setText("0");
+                                userNumberAttended.setText("0");
+                            }
                         }
                     });
 
@@ -433,9 +439,15 @@ public class  experience_activity extends AppCompatActivity {
             currentUser.fetchInBackground(new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject parseObject, ParseException e) {
-                    userLevel.setText(currentUser.getUserLevel().toString());
-                    userPosts.setText(currentUser.getUserTotalPost().toString());
-                    userNumberAttended.setText(currentUser.getUserEventsAttended().toString());
+                    if (e == null) {
+                        userLevel.setText(currentUser.getUserLevel().toString());
+                        userPosts.setText(currentUser.getUserTotalPost().toString());
+                        userNumberAttended.setText(currentUser.getUserEventsAttended().toString());
+                    }else{
+                        userLevel.setText("0");
+                        userPosts.setText("0");
+                        userNumberAttended.setText("0");
+                    }
                 }
             });
             if (AnimationFlag) {
