@@ -366,23 +366,24 @@ public class  experience_activity extends AppCompatActivity {
                             Log.v("LOG!!!!!!", "imageView height = " + oldHeight);      // DISPLAYS 90 px
                             Log.v("LOG!!!!!!", "imageView width = " + oldWidth);        // DISPLAYS 90 px
 
+                            userAvatar.setParseFile(currentUser.getUserImage());
+                            //load the image from the parse database
+                            userAvatar.loadInBackground(new GetDataCallback() {
+                                @Override
+                                public void done(byte[] bytes, com.parse.ParseException e) {
+                                    // The image is loaded and displayed!
+                                    int oldHeight = userAvatar.getHeight();
+                                    int oldWidth = userAvatar.getWidth();
+                                    Log.v("LOG!!!!!!", "userAvatar height = " + oldHeight);      // DISPLAYS 90 px
+                                    Log.v("LOG!!!!!!", "userAvatar width = " + oldWidth);        // DISPLAYS 90 px
+
+                                }
+                            });
+
                         }
                     });
                     userName.setText(currentUser.getUsername().toString());
                     userEmail.setText(currentUser.getEmail().toString());
-                    userAvatar.setParseFile(currentUser.getUserImage());
-                    //load the image from the parse database
-                    userAvatar.loadInBackground(new GetDataCallback() {
-                        @Override
-                        public void done(byte[] bytes, com.parse.ParseException e) {
-                            // The image is loaded and displayed!
-                            int oldHeight = userAvatar.getHeight();
-                            int oldWidth = userAvatar.getWidth();
-                            Log.v("LOG!!!!!!", "userAvatar height = " + oldHeight);      // DISPLAYS 90 px
-                            Log.v("LOG!!!!!!", "userAvatar width = " + oldWidth);        // DISPLAYS 90 px
-
-                        }
-                    });
                     userFirstName.setText(currentUser.getFirstName());
                     userLastName.setText(currentUser.getLastName());
                     if (AnimationFlag){
