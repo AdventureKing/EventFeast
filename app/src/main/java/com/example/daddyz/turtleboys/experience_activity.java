@@ -34,11 +34,16 @@ import com.example.daddyz.turtleboys.my_experiences.historyAdapter;
 import com.example.daddyz.turtleboys.settings.SettingsFragment;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.example.daddyz.turtleboys.subclasses.User_Icon_Animation;
+import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.LogOutCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -63,6 +68,9 @@ public class  experience_activity extends AppCompatActivity {
     private ParseImageView userAvatar;
     private TextView userFirstName;
     private TextView userLastName;
+    private TextView userPosts;
+    private TextView userNumberAttended;
+    private TextView userLevel;
     private RelativeLayout userStatistics;
     private final Animation User_Icon = new User_Icon_Animation(com.example.daddyz.turtleboys.subclasses.User_Icon_Animation.Rotate.RIGHT, User_Icon_Animation.Angle.TO_DEGREES_0, 500, false);
     private final Animation user_statistics_animation = new User_Icon_Animation(com.example.daddyz.turtleboys.subclasses.User_Icon_Animation.Rotate.DOWN, User_Icon_Animation.Angle.TO_DEGREES_0, 500, false);
@@ -277,6 +285,15 @@ public class  experience_activity extends AppCompatActivity {
         userLastName = (TextView) findViewById(R.id.userLastName);
         userLastName.setText(currentUser.getLastName());
 
+        userPosts = (TextView) findViewById(R.id.numberOfPosts);
+        userPosts.setText(currentUser.getUserTotalPost().toString());
+
+        userNumberAttended = (TextView) findViewById(R.id.numberOfMeals);
+        userNumberAttended.setText(currentUser.getUserEventsAttended().toString());
+
+        userLevel = (TextView) findViewById(R.id.userRank);
+        userLevel.setText(currentUser.getUserLevel().toString());
+
         list = (ListView) findViewById(R.id.historyListView);
         list.setClickable(false);
 
@@ -354,6 +371,16 @@ public class  experience_activity extends AppCompatActivity {
                 }else{
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 
+                    //Fetch latest Parse Information
+                    currentUser.fetchInBackground(new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(ParseObject parseObject, ParseException e) {
+                            userLevel.setText(currentUser.getUserLevel().toString());
+                            userPosts.setText(currentUser.getUserTotalPost().toString());
+                            userNumberAttended.setText(currentUser.getUserEventsAttended().toString());
+                        }
+                    });
+
                     //Update User Information
                     imageView.setParseFile(currentUser.getUserImage());
                     //load the image from the parse database
@@ -402,6 +429,15 @@ public class  experience_activity extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus){
         if (hasFocus){
+            //Fetch latest Parse Information
+            currentUser.fetchInBackground(new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject parseObject, ParseException e) {
+                    userLevel.setText(currentUser.getUserLevel().toString());
+                    userPosts.setText(currentUser.getUserTotalPost().toString());
+                    userNumberAttended.setText(currentUser.getUserEventsAttended().toString());
+                }
+            });
             if (AnimationFlag) {
                 if (onceAnimateFlag) {
                     userStatistics.setVisibility(View.INVISIBLE);

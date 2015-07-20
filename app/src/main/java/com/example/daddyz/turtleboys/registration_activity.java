@@ -223,6 +223,9 @@ public class registration_activity extends Activity {
                 newUser.setBirthday(birthday);
                 newUser.setFirstName(firstName.getText().toString().trim());
                 newUser.setLastName(lastName.getText().toString().trim());
+                newUser.setUserTotalPost(0);
+                newUser.setUserEventsAttended(0);
+                newUser.setUserLevel(0);
 
                 if(userImageParseFile != null) {
 

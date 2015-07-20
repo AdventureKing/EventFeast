@@ -35,6 +35,19 @@ public class GigUser extends ParseUser {
         String first = getString("lastName");
         return first;
     }
+    public Number getUserLevel(){
+        Number UserLevel = getNumber("userLevel");
+        return UserLevel;
+    }
+    public Number getUserTotalPost(){
+        Number UserTotalPost = getNumber("userTotalPost");
+        return UserTotalPost;
+    }
+    public Number getUserEventsAttended(){
+        Number UserEventsAttended = getNumber("userEventsAttended");
+        return UserEventsAttended;
+    }
+
 
 
     //setters
@@ -48,9 +61,13 @@ public class GigUser extends ParseUser {
     public void setFirstName(String first){
         put("firstName",first);
     }
-    public void setLastName(String last){
-        put("lastName",last);
+    public void setLastName(String last){ put("lastName",last); }
+    public void setUserLevel(Number UserLevel){
+        put("userLevel",UserLevel);
     }
-
+    public void setUserTotalPost(Number UserTotalPost){
+        put("userTotalPost",UserTotalPost);
+    }
+    public void setUserEventsAttended(Number UserEventsAttended){ put("userEventsAttended",UserEventsAttended); }
 
 }
