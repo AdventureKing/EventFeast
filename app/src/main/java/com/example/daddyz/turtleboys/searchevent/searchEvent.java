@@ -8,6 +8,8 @@ import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +67,7 @@ public class searchEvent extends Fragment {
     private Time fromTime;
 
     private double MILESINAKILOMETER = 0.621;
+    private ActionBar actionBar;
 
 
 
@@ -84,6 +87,9 @@ public class searchEvent extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        actionBar.setTitle("Search Events");
 
         //Might use Google geolocation api to autocomplete
         //TODO Add Google's city autocomplete
