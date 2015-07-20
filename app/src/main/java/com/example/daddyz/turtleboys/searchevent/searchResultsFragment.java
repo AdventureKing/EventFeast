@@ -80,7 +80,7 @@ public class searchResultsFragment extends Fragment {
 
                 //Toast.makeText(getActivity().getApplicationContext(), fragment.getObj().toString(), Toast.LENGTH_SHORT).show();
                 //Pain in the arse trouble maker.
-                getFragmentManager().beginTransaction().replace(R.id.drawer,fragment,"searchResultDetailFragment").addToBackStack("searchResultDetailFragment").commit();
+                getFragmentManager().beginTransaction().replace(R.id.drawer,fragment,"EventDetailFragment").addToBackStack("EventDetailFragment").commit();
             }
         });
 
