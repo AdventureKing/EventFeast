@@ -1,16 +1,14 @@
 package com.example.daddyz.turtleboys.friendFeed;
 
-import android.app.Activity;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,16 +18,16 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.daddyz.turtleboys.R;
-import com.example.daddyz.turtleboys.eventfeed.CustomJSONObjectRequest;
-import com.example.daddyz.turtleboys.eventfeed.CustomVolleyRequestQueue;
-import com.example.daddyz.turtleboys.eventfeed.eventfeedAdapter;
+import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
+import com.example.daddyz.turtleboys.VolleyRequestQueue;
 import com.example.daddyz.turtleboys.friendFeed.dummy.DummyContent;
-import com.example.daddyz.turtleboys.subclasses.FollowUser;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * A fragment representing a list of Items.
@@ -46,7 +44,7 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    public static final String REQUEST_TAG = "MainVolleyActivity";
+    public static final String REQUEST_TAG = "User List Fragment";
     //private Button mButton;
 
     // TODO: Rename and change types of parameters
@@ -159,10 +157,10 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
     public void onStart() {
         super.onStart();
 
-        mQueue = CustomVolleyRequestQueue.getInstance(this.getActivity().getApplicationContext())
+        mQueue = VolleyRequestQueue.getInstance(this.getActivity().getApplicationContext())
                 .getRequestQueue();
-        String url = "https://api.turtleboys.com/v1/events/find/kendrick";
-        final CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method
+        String url = "http://api.dev.turtleboys.com/v1/users/list";
+        final VolleyJSONObjectRequest jsonRequest = new VolleyJSONObjectRequest(Request.Method
                 .GET, url,
                 new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);
@@ -172,11 +170,12 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
 
     @Override
     public void onResponse(Object response) {
+        Log.i("Response: ", response.toString());
         loadEvents(response);
     }
 
     public void loadEvents(Object response){
-        userArray = createFakeArrayList();
+        userArray = createGigUserObjectsFromResponse(response);
 
         adapter = new userListAdapter(getActivity(), R.layout.user_list_row, userArray);
         list.setAdapter(adapter);
@@ -237,6 +236,39 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(String id);
+    }
+
+    public ArrayList<GigUser> createGigUserObjectsFromResponse(Object response){
+        ArrayList<GigUser> userTmpArray = new ArrayList<>();
+
+        try{
+            JSONObject mainObject = ((JSONObject) response);
+            JSONObject itemsObject = mainObject.getJSONObject("items");
+            Iterator<?> keys = itemsObject.keys();
+
+
+            //JSONObject jObject = ((JSONObject) response);
+            //Iterator<?> keys = jObject.keys();
+
+            while( keys.hasNext() ) {
+                String key = (String)keys.next();
+                if ( itemsObject.get(key) instanceof JSONObject ) {
+                    GigUser gUser = new GigUser();
+                    gUser.setUserId(((JSONObject) itemsObject.get(key)).getString("userId"));
+                    gUser.setUsername(((JSONObject) itemsObject.get(key)).getString("username"));
+                    gUser.setFirstName(((JSONObject) itemsObject.get(key)).getString("firstName"));
+                    gUser.setLastName(((JSONObject) itemsObject.get(key)).getString("lastName"));
+                    gUser.setEmail(((JSONObject) itemsObject.get(key)).getString("email"));
+
+                    userTmpArray.add(gUser);
+                    //Log.i("Ind Object JSON", ((JSONObject) jObject.get(key)).toString());
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return userTmpArray;
     }
 
 }

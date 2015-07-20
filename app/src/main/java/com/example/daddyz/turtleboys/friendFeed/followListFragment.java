@@ -1,6 +1,5 @@
 package com.example.daddyz.turtleboys.friendFeed;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,9 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,12 +17,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.daddyz.turtleboys.R;
-import com.example.daddyz.turtleboys.eventfeed.CustomJSONObjectRequest;
-import com.example.daddyz.turtleboys.eventfeed.CustomVolleyRequestQueue;
-import com.example.daddyz.turtleboys.eventfeed.eventfeedAdapter;
+import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
+import com.example.daddyz.turtleboys.VolleyRequestQueue;
 import com.example.daddyz.turtleboys.friendFeed.dummy.DummyContent;
 import com.example.daddyz.turtleboys.subclasses.FollowUser;
-import com.example.daddyz.turtleboys.subclasses.GigUser;
 
 import org.json.JSONObject;
 
@@ -146,10 +141,10 @@ public class followListFragment extends Fragment implements Response.Listener,Ab
     public void onStart() {
         super.onStart();
 
-        mQueue = CustomVolleyRequestQueue.getInstance(this.getActivity().getApplicationContext())
+        mQueue = VolleyRequestQueue.getInstance(this.getActivity().getApplicationContext())
                 .getRequestQueue();
         String url = "https://api.turtleboys.com/v1/events/find/kendrick";
-        final CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method
+        final VolleyJSONObjectRequest jsonRequest = new VolleyJSONObjectRequest(Request.Method
                 .GET, url,
                 new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);

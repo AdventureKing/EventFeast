@@ -1,9 +1,12 @@
-package com.example.daddyz.turtleboys.eventfeed;
+package com.example.daddyz.turtleboys;
+
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.parse.ParseUser;
 
 import org.json.JSONObject;
 
@@ -13,9 +16,9 @@ import java.util.Map;
 /**
  * Created by zachary.rodriguez on 6/22/2015.
  */
-public class CustomJSONObjectRequest extends JsonObjectRequest {
+public class VolleyJSONObjectRequest extends JsonObjectRequest {
 
-    public CustomJSONObjectRequest(int method, String url, JSONObject jsonRequest,
+    public VolleyJSONObjectRequest(int method, String url, JSONObject jsonRequest,
                                    Response.Listener<JSONObject> listener,
                                    Response.ErrorListener errorListener) {
         super(method, url, jsonRequest, listener, errorListener);
@@ -23,8 +26,15 @@ public class CustomJSONObjectRequest extends JsonObjectRequest {
 
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+
+        Log.i("API key: ", currentUser.getString("firstName"));
+        Log.i("Token: ", currentUser.getSessionToken());
+
         HashMap<String, String> headers = new HashMap<String, String>();
         headers.put("Content-Type", "application/json; charset=utf-8");
+        headers.put("Authorization", currentUser.getString("apiKey"));
+        headers.put("Token", currentUser.getSessionToken());
         return headers;
     }
 

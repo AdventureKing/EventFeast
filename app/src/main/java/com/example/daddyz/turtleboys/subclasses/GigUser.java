@@ -2,7 +2,6 @@ package com.example.daddyz.turtleboys.subclasses;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
 import java.util.Date;
@@ -12,7 +11,7 @@ import java.util.Date;
  */
 @ParseClassName("_User")
 public class GigUser extends ParseUser {
-
+    private String userId;
 
     public GigUser(){
 
@@ -35,6 +34,14 @@ public class GigUser extends ParseUser {
     public String getLastName(){
         String first = getString("lastName");
         return first;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 
