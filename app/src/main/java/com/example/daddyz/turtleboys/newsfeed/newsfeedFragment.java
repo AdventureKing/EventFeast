@@ -3,6 +3,7 @@ package com.example.daddyz.turtleboys.newsfeed;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,18 +35,30 @@ public class newsfeedFragment extends Fragment{
     private newsfeedAdapter adapter;
     private ArrayList<newsfeedObject> newsfeedList;
     private  FloatingActionButton fab;
-
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         rootView = inflater.inflate(R.layout.newsfeedlistfragment, container, false);
-        list = (ListView) rootView.findViewById(R.id.listView);
+        //swipe layout
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.activity_main_swipe_refresh_layout);
+        //pull down to refresh the list and set the colors of the loading icon
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.loadingorange, R.color.loadinggreen, R.color.loadingblue);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
 
+            }
+        });
+        //list
+        list = (ListView) rootView.findViewById(R.id.listView);
         mTextView = (TextView) rootView.findViewById(R.id.textView);
         mButton = (Button) rootView.findViewById(R.id.button);
         list.setClickable(true);
+
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
@@ -54,7 +67,7 @@ public class newsfeedFragment extends Fragment{
                 newsfeedPostDetail fragment = new newsfeedPostDetail();
                 fragment.setObj(obj);
 
-                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer,fragment,"NewsFeedPostDetail").addToBackStack("NewsFeedPostDetail").commit();
+                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer, fragment, "NewsFeedPostDetail").addToBackStack("NewsFeedPostDetail").commit();
 
             }
         });
@@ -67,10 +80,12 @@ public class newsfeedFragment extends Fragment{
 
                 newsfeedPostForm fragment = new newsfeedPostForm();
 
-                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer,fragment,"NewsFeedPostForm").addToBackStack("NewsFeedPostForm").commit();
+                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer, fragment, "NewsFeedPostForm").addToBackStack("NewsFeedPostForm").commit();
                 Toast.makeText(getActivity(), "User Wants to make a post", Toast.LENGTH_SHORT).show();
             }
         });
+
+
         newsfeedList = new ArrayList<newsfeedObject>();
         newsfeedObject obj = new newsfeedObject();
         newsfeedObject obj3 = new newsfeedObject();
@@ -96,4 +111,19 @@ public class newsfeedFragment extends Fragment{
 
         return rootView;
     }
+
+
+    //refresh the list
+    private void refreshContent() {
+        adapter = new newsfeedAdapter(getActivity(), R.layout.eventfeedroweven, newsfeedList);
+        list.setAdapter(adapter);
+
+
+        //refreshing is done at this point make the icon disappear
+
+        mSwipeRefreshLayout.setRefreshing(false);
+        Toast.makeText(getActivity(), "User Wants to refresh the list", Toast.LENGTH_SHORT).show();
+    }
+
+
 }

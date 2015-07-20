@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,18 +11,56 @@
         android:id="@+id/toolbar"
         layout="@layout/tool_bar"
         />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabLIKE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|bottom"
+            android:src="@drawable/thumbsup"
+            android:scaleType="fitXY"
+            app:borderWidth="0dp"
+            fab:rippleColor="@color/ripple"
+            fab:backgroundTint="@color/primaryButtonColor"
+            app:elevation="6dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_centerHorizontal="true" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabDISLIKE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:src="@drawable/thumbsdown"
+            android:scaleType="fitXY"
+            app:borderWidth="0dp"
+            fab:rippleColor="@color/ripple"
+            fab:backgroundTint="@color/PrimaryDarkColor"
+            app:elevation="6dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_centerHorizontal="true" />
+
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical">
 
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
+
             <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
+
+
 
                 <ImageView
                     android:id="@+id/eventImage"
@@ -52,6 +93,15 @@
             </FrameLayout>
 
 
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_mms_black_24dp"
+                android:layout_above="@+id/happy"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="50dp"/>
             <TextView
                 android:id="@+id/EventDesc"
                 android:layout_width="match_parent"
@@ -59,8 +109,41 @@
                 android:text="USER_CONTENT_POST"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_marginTop="250dp"
-                android:layout_marginLeft="20dp" />
+                android:layout_marginLeft="40dp"
+                android:layout_marginBottom="50dp"/>
+            <ImageView
+                android:id="@+id/happy"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_insert_emoticon_black_24dp"
+                android:layout_above="@+id/userCommentsList"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="10dp"
+                />
+            <TextView
+                android:id="@+id/numberOfLikes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="NUMBER_OF_LIKES"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_below="@+id/EventDesc"
+                android:layout_alignLeft="@id/EventDesc"
+               />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="166dp"
+                android:id="@+id/userCommentsList"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_below="@+id/numberOfLikes"
+                android:layout_marginTop="100dp"
+                android:layout_marginBottom="70dp">
+         </ListView>
+
         </RelativeLayout>
+
     </ScrollView>
 
+    </FrameLayout>
 </LinearLayout>
