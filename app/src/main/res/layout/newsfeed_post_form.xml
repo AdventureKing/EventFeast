@@ -30,7 +30,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/UploadAImageMessage"
             android:text="Upload A Image to Newsfeed"
-
             android:layout_below="@+id/userImageToUpload"
             android:layout_centerHorizontal="true"
             />
@@ -47,7 +46,7 @@
              />
 
         <EditText
-            android:id="@+id/EventDesc"
+            android:id="@+id/postLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -55,7 +54,18 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+
             />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Post"
+            android:id="@+id/postButton"
+            android:layout_alignTop="@+id/postLocation"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/postLocation"
+            android:layout_marginTop="100dp" />
 
 
     </RelativeLayout>
