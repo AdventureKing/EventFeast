@@ -128,12 +128,13 @@
 							"result"=>$this->result,
 							"message"=>$this->message,
 							"numFound"=>$this->numFound,
-							"offset"=>$this->offset,
-							"limit"=>$this->limit,
-							"first"=>$this->first,
-							"previous"=>$this->previous,
-							"next"=>$this->next,
-							"last"=>$this->last,
+							"cursor"=>array(
+								"offset"=>$this->offset,
+								"limit"=>$this->limit,
+								"first"=>$this->first,
+								"previous"=>$this->previous,
+								"next"=>$this->next,
+								"last"=>$this->last),
 							"items"=>$this->items
 						), 
 						JSON_FORCE_OBJECT | JSON_UNESCAPED_SLASHES

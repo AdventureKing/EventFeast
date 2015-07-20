@@ -13,7 +13,7 @@
 		$call = $app->request->post('call');
 
 		global $user_id;
-		$db = new DbHandler();
+		$db = new Calls();
 
 		// creating new call
 		$call_id = $db->createCall($user_id, $call);
@@ -37,7 +37,7 @@
 	$app->get('/calls', 'authenticate', function() {
 		global $user_id;
 		$response = array();
-		$db = new DbHandler();
+		$db = new Calls();
 
 		// fetching all user calls
 		$result = $db->getAllUserCalls($user_id);
@@ -67,7 +67,7 @@
 	$app->get('/calls/:id', 'authenticate', function($call_id) {
 		global $user_id;
 		$response = array();
-		$db = new DbHandler();
+		$db = new Calls();
 
 		// fetch call
 		$result = $db->getCall($call_id, $user_id);

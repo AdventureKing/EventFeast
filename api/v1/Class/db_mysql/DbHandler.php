@@ -4,7 +4,7 @@
 	 * Class to handle all db operations
 	 * This class will have CRUD methods for database tables
 	 */
-	class DbHandlerMySql extends DbHandlerParse{
+	class DbHandlerMySql {
 
 		private $conn;
 
@@ -15,108 +15,61 @@
 			$this->conn = $db->connect();
 		}
 		
-		/* ------------- `calls` table method ------------------ */
+		 /* ------------- `users` table method ------------------ */
+ 
+	    /**
+	     * Creating new user
+	     * @param String $name User full name
+	     * @param String $email User login email id
+	     * @param String $password User login password
+	     */
+	    public function createUser($userId, $username, $email, $createdAt) {
+	        $response = array();
+	 
+	        // First check if user already existed in db
+	        if (!$this->isUserExists($userId)) {
+	        	echo "Creating User!";
 
-		/**
-		 * Creating new call
-		 * @param String $user_id user id to whom call belongs to
-		 * @param String $call call text
-		 */
-		public function createCall($user_id, $call) {        
-			$stmt = $this->conn->prepare("INSERT INTO calls(call) VALUES(?)");
-			$stmt->bind_param("s", $call);
-			$result = $stmt->execute();
-			$stmt->close();
+	        	$date = $createdAt->format("Y-m-d H:i:s");
 
-			if ($result) {
-				// call row created
-				// now assign the call to user
-				$new_call_id = $this->conn->insert_id;
-				$res = $this->createUserCall($user_id, $new_call_id);
-				if ($res) {
-					// call created successfully
-					return $new_call_id;
-				} else {
-					// call failed to create
-					return NULL;
-				}
-			} else {
-				// call failed to create
-				return NULL;
-			}
-		}
+	            // insert query
+	            $stmt = $this->conn->prepare("INSERT INTO users(`user_id`, `username`, `email`, `status`, `created_at`) values(?, ?, ?, 1, ?)");
+	            $stmt->bind_param("ssss", $userId, $username, $email, $date);
+	 
+	            $result = $stmt->execute();
+	 
+	            $stmt->close();
+	 
+	            // Check for successful insertion
+	            if ($result) {
+	                // User successfully inserted
+	                return USER_CREATED_SUCCESSFULLY;
+	            } else {
+	                // Failed to create user
+	                return USER_CREATE_FAILED;
+	            }
+	        } else {
+	            // User with same email already existed in the db
+	            return USER_ALREADY_EXISTED;
+	        }
+	 
+	        return $response;
+    	}
 
-		/**
-		 * Fetching single call
-		 * @param String $call_id id of the call
-		 */
-		public function getCall($call_id, $user_id) {
-			$stmt = $this->conn->prepare("SELECT c.id, c.call, c.status, c.created_at from calls c, user_calls uc WHERE c.id = ? AND uc.call_id = c.id AND uc.user_id = ?");
-			$stmt->bind_param("ii", $call_id, $user_id);
-			if ($stmt->execute()) {
-				$call = $stmt->get_result()->fetch_assoc();
-				$stmt->close();
-				return $call;
-			} else {
-				return NULL;
-			}
-		}
-
-		/**
-		 * Fetching all user calls
-		 * @param String $user_id id of the user
-		 */
-		public function getAllUserCalls($user_id) {
-			$stmt = $this->conn->prepare("SELECT c.* FROM calls c, user_calls uc WHERE c.id = uc.call_id AND uc.user_id = ?");
-			$stmt->bind_param("i", $user_id);
-			$stmt->execute();
-			$calls = $stmt->get_result();
-			$stmt->close();
-			return $calls;
-		}
-
-		/**
-		 * Updating call
-		 * @param String $call_id id of the call
-		 * @param String $call call text
-		 * @param String $status call status
-		 */
-		public function updateCall($user_id, $call_id, $call, $status) {
-			$stmt = $this->conn->prepare("UPDATE calls c, user_calls uc set c.call = ?, c.status = ? WHERE c.id = ? AND c.id = uc.call_id AND uc.user_id = ?");
-			$stmt->bind_param("siii", $call, $status, $call_id, $user_id);
-			$stmt->execute();
-			$num_affected_rows = $stmt->affected_rows;
-			$stmt->close();
-			return $num_affected_rows > 0;
-		}
-
-		/**
-		 * Deleting a call
-		 * @param String $call_id id of the call to delete
-		 */
-		public function deleteCall($user_id, $call_id) {
-			$stmt = $this->conn->prepare("DELETE c FROM calls c, user_calls uc WHERE c.id = ? AND uc.call_id = c.id AND uc.user_id = ?");
-			$stmt->bind_param("ii", $call_id, $user_id);
-			$stmt->execute();
-			$num_affected_rows = $stmt->affected_rows;
-			$stmt->close();
-			return $num_affected_rows > 0;
-		}
-
-		/* ------------- `user_calls` table method ------------------ */
-
-		/**
-		 * Function to assign a call to user
-		 * @param String $user_id id of the user
-		 * @param String $call_id id of the call
-		 */
-		public function createUserCall($user_id, $call_id) {
-			$stmt = $this->conn->prepare("INSERT INTO user_calls(user_id, call_id) values(?, ?)");
-			$stmt->bind_param("ii", $user_id, $call_id);
-			$result = $stmt->execute();
-			$stmt->close();
-			return $result;
-		}
+    	/**
+	     * Checking for existing user by user id
+	     * @param String $userId userId to check in db
+	     * @return boolean
+	     */
+	    public function isUserExists($userId) {
+	        $stmt = $this->conn->prepare("SELECT id from users WHERE user_id = ?");
+	        $stmt->bind_param("s", $userId);
+	        $stmt->execute();
+	        $stmt->store_result();
+	        $num_rows = $stmt->num_rows;
+	        $stmt->close();
+	        return $num_rows > 0;
+	    }
 
 	}
 

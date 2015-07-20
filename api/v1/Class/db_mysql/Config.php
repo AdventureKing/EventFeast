@@ -4,7 +4,7 @@
 	 */
 	define('DB_USERNAME', 'zachrdz');
 	define('DB_PASSWORD', '$Skategrand4');
-	define('DB_HOST', 'localhost');
+	define('DB_HOST', 'turtleboys.com');
 	define('DB_NAME', 'dev_api');
 
 	define('USER_CREATED_SUCCESSFULLY', 0);

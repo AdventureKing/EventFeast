@@ -113,8 +113,9 @@
 				global $user_id;
 				// get user primary key id
 				$userID = $db->getUserId($api_key);
-				if (NULL != $userID)
+				if (NULL != $userID){
 					$user_id = $userID;
+				}
 			}
 		} else if(!isset($headers['Authorization'])){
 			// api key is missing in header
