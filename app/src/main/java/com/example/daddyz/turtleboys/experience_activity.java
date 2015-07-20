@@ -25,6 +25,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
+import com.example.daddyz.turtleboys.friendFeed.followListFragment;
+import com.example.daddyz.turtleboys.friendFeed.followerListFragment;
+import com.example.daddyz.turtleboys.friendFeed.userListFragment;
 import com.example.daddyz.turtleboys.settings.SettingsFragment;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.example.daddyz.turtleboys.subclasses.User_Icon_Animation;
@@ -146,7 +149,16 @@ public class  experience_activity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Events Selected", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.myFriends:
-                        Toast.makeText(getApplicationContext(), "Friends selected", Toast.LENGTH_SHORT).show();
+                        followListFragment fragment2 = new followListFragment();
+                        fragManager.beginTransaction().replace(R.id.frame, fragment2,"followListFragment").addToBackStack("followListFragment").commit();
+                        return true;
+                    case R.id.myFollowers:
+                        followerListFragment fragment3 = new followerListFragment();
+                        fragManager.beginTransaction().replace(R.id.frame, fragment3,"followerListFragment").addToBackStack("followerListFragment").commit();
+                        return true;
+                    case R.id.users:
+                        userListFragment fragment4 = new userListFragment();
+                        fragManager.beginTransaction().replace(R.id.frame, fragment4,"userListFragment").addToBackStack("userListFragment").commit();
                         return true;
                     case R.id.myPosts:
                         Toast.makeText(getApplicationContext(), "Post Selected", Toast.LENGTH_SHORT).show();

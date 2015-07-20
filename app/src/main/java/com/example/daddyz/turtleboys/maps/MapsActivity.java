@@ -1,4 +1,4 @@
-package com.example.daddyz.turtleboys;
+package com.example.daddyz.turtleboys.maps;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.daddyz.turtleboys.R;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;

@@ -64,16 +64,6 @@
             android:layout_alignLeft="@+id/lastName"
             android:layout_alignStart="@+id/lastName" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:ems="10"
-
-            android:id="@+id/email"
-            android:layout_below="@+id/userName"
-            android:layout_alignLeft="@+id/userName"
-            android:layout_alignStart="@+id/userName" />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -82,6 +72,16 @@
             android:layout_alignBottom="@+id/email"
             android:layout_alignRight="@+id/passwordImage"
             android:layout_alignEnd="@+id/passwordImage" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+
+            android:id="@+id/email"
+            android:layout_below="@+id/userName"
+
+            android:layout_alignStart="@+id/userName" />
 
         <EditText
             android:layout_width="wrap_content"

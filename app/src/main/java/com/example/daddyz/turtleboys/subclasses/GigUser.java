@@ -2,6 +2,7 @@ package com.example.daddyz.turtleboys.subclasses;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
 import java.util.Date;
@@ -51,6 +52,7 @@ public class GigUser extends ParseUser {
     public void setLastName(String last){
         put("lastName",last);
     }
+    //public void setUserHome(ParseGeoPoint latlon) { put("userHome", userHome);}
 
 
 }
