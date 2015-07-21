@@ -10,10 +10,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.R;
 
@@ -29,6 +31,8 @@ public class newsfeedPostForm extends Fragment {
     private EditText userMessage;
     private TextView userLocation;
     private ImageView upload;
+
+    private Button postButton;
 
 
     private static final int SELECT_PHOTO = 100;
@@ -83,6 +87,20 @@ public class newsfeedPostForm extends Fragment {
             }
         });
 
+
+
+
+
+        //hit this button and post to the newsfeed that is in the location textfield wutang
+        postButton = (Button) view.findViewById(R.id.postButton);
+        postButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "User MAKES A POST", Toast.LENGTH_SHORT).show();
+                getFragmentManager().popBackStack();
+                frame.setVisibility(View.VISIBLE);
+            }
+        });
 
         return view;
     }

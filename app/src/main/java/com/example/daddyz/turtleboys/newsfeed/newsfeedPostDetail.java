@@ -32,6 +32,7 @@ public class newsfeedPostDetail extends Fragment {
     private Toolbar toolbar;
     private ActionBar actionbar;
     private ImageView eventImage;
+
     private FloatingActionButton likeButton;
     private FloatingActionButton dislikeButton;
     private ListView userCommentsList;
