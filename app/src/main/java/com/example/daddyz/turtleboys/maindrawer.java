@@ -90,10 +90,6 @@ public class maindrawer extends AppCompatActivity {
             EventFeedFragment fragment = new EventFeedFragment();
             fragManager.beginTransaction().replace(R.id.frame, fragment,"EventFeedFragment").addToBackStack("EventFeed").commit();
 
-
-
-
-
             //set username and email in the header and user image
             userName = (TextView) findViewById(R.id.username);
             userName.setText(currentUser.getUsername().toString());
