@@ -1,10 +1,13 @@
+
 package com.example.daddyz.turtleboys.maps;
 
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -16,6 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.R;
+import com.example.daddyz.turtleboys.eventfeed.gEventObject;
+import com.example.daddyz.turtleboys.login_activity;
+import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -32,7 +38,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -43,9 +54,7 @@ public class MapsActivity extends FragmentActivity implements
         LocationListener {
 
     private final String TAG = "MyAwesomeMapApp";
-
     private TextView mLocationView;
-
     // Buttons for kicking off the process of adding or removing geofences.
     private Button mAddGeofencesButton;
     private Button mRemoveGeofencesButton;
@@ -54,69 +63,154 @@ public class MapsActivity extends FragmentActivity implements
      * Used to keep track of whether geofences were added.
      */
     private boolean mGeofencesAdded;
-
     private GoogleApiClient mGoogleApiClient;
-
     private LocationRequest mLocationRequest;
-
+    private LocationManager locationManager ;
+    private long time = 2000;
+    private LatLng  mapCenter = null;
+    private float distance = (float) 10.00;
     /**
      * Used to persist application state about whether geofences were added.
      */
     private SharedPreferences mSharedPreferences;
-
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
-
-    private String s, lat, lon;
-
+    private static final int TWO_MINUTES = 1000 * 60 * 2;
+    private Location currentLocation = null;
+    private LocationListener locationListener;
+    private String s, lat, lon, currentAddress;
     private String[] split,coordinates;
-
-    protected ArrayList<Geofence> mGeofenceList;
-
+    private Location myLocation, newLocation = null;
+    protected ArrayList<Geofence> mGeofenceList = new ArrayList<Geofence>();
+    private ArrayList<gEventObject> eventFeedList = new ArrayList<gEventObject>();
     private double l,g;
-
     /**
      * Used when requesting to add or remove geofences.
      */
     private PendingIntent mGeofencePendingIntent;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
-        //setContentView(mLocationView);
 
-        setUpMapIfNeeded();
+        if (GigUser.getCurrentUser() == null){
+            buildGoogleApiClient();
+        }else {
+            setContentView(R.layout.activity_maps);
+            //setContentView(mLocationView);
+            // mLocationView = new TextView(this);
 
-        // Kick off the request to build GoogleApiClient.
-        buildGoogleApiClient();
+            setUpEventList();
+            setUpMapIfNeeded();
 
-        mLocationView = new TextView(this);
-        mGeofenceList = new ArrayList<Geofence>();
-        mGeofencePendingIntent = null;
+            // Kick off the request to build GoogleApiClient.
+            buildGoogleApiClient();
 
-        // Get the value of mGeofencesAdded from SharedPreferences. Set to false as a default.
-         //mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
+            //mGeofencePendingIntent = null;
 
-        // Get the geofences used. Geofence data is hard coded in this sample.
-        populateGeofenceList();
-        getGeofencePendingIntent();
-        getGeofencingRequest();
+            // Get the value of mGeofencesAdded from SharedPreferences. Set to false as a default.
+            //mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
 
+            // Get the geofences used. Geofence data is hard coded in this sample.
+            // populateGeofenceList();
+            // getGeofencePendingIntent();
+            // getGeofencingRequest();
 
+            //addGeofencesButtonHandler(this);
 
+            //Get the UI widgets.
+            //mAddGeofencesButton = (Button) findViewById(R.id.add_geofences_button);
+            //mRemoveGeofencesButton = (Button) findViewById(R.id.remove_geofences_button);
 
-        //addGeofencesButtonHandler(this);
-
-        //Get the UI widgets.
-        //mAddGeofencesButton = (Button) findViewById(R.id.add_geofences_button);
-        //mRemoveGeofencesButton = (Button) findViewById(R.id.remove_geofences_button);
-
-        //mSharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME,
-        //MODE_PRIVATE);
-
+            //mSharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME,
+            //MODE_PRIVATE);
+        }
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setUpMapIfNeeded();
+
+        //locationManager.requestLocationUpdates(2000, 10, LocationManager.GPS_PROVIDER, locationListener);
+        //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, time, distance,  locationListener);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Connect the client.
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        // Disconnecting the client invalidates it.
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(1000); // Update location every second
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i(TAG, "GoogleApiClient connection has been suspend");
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.i(TAG, "GoogleApiClient connection has failed");
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        /*if(isBetterLocation(myLocation, location)){
+            myLocation = location;
+        }*/
+
+        //You had this as int. It is advised to have Lat/Long as double.
+        double lat = location.getLatitude();
+        double lng = location.getLongitude();
+
+        if(mapCenter == null){
+            mapCenter = new LatLng(lat,lng);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(mapCenter));
+        }
+
+        Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
+        StringBuilder builder = new StringBuilder();
+        try {
+            List<Address> address = geoCoder.getFromLocation(lat, lng, 1);
+            int maxLines = address.get(0).getMaxAddressLineIndex();
+            for (int i = 0; i < maxLines; i++) {
+                String addressStr = address.get(0).getAddressLine(i);
+                builder.append(addressStr);
+                builder.append(" ");
+            }
+
+            String finalAddress = builder.toString(); //This is the complete address.
+
+            //latituteField.setText(String.valueOf(lat));
+            //longitudeField.setText(String.valueOf(lng));
+            setCurrentAddress(finalAddress);
+            //Toast.makeText(getApplicationContext(), finalAddress, Toast.LENGTH_SHORT).show();
+
+
+        } catch (IOException e) {}
+        catch (NullPointerException e) {}
+
+    }
+
 
 
     /**
@@ -130,7 +224,155 @@ public class MapsActivity extends FragmentActivity implements
                 .build();
     }
 
+    private void setUpMapIfNeeded() {
+        // Do a null check to confirm that we have not already instantiated the map.
+        if (mMap == null) {
+            // Try to obtain the map from the SupportMapFragment.
+            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+                    .getMap();
+            // Check if we were successful in obtaining the map.
+            if (mMap != null) {
+                setUpMap();
+            }
+        }
+    }
 
+
+    private void setUpMap() {
+
+        // Enable MyLocation Layer of Google Map
+        mMap.setMyLocationEnabled(true);
+
+        // Get LocationManager object from System Service LOCATION_SERVICE
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        // set map type
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+        // Get the name of the best provider
+        String networkProvider = locationManager.NETWORK_PROVIDER;
+        String gpsProvider = locationManager.GPS_PROVIDER;
+
+        // Get Best Current Location
+        myLocation = locationManager.getLastKnownLocation(networkProvider);
+        newLocation = locationManager.getLastKnownLocation(gpsProvider);
+        boolean loc = isBetterLocation(myLocation, newLocation);
+
+        if(loc == true){
+            myLocation = newLocation;
+        }
+
+        if(myLocation != null) {
+            // Get latitude of the current location
+            double latitude = myLocation.getLatitude();
+
+            // Get longitude of the current location
+            double longitude = myLocation.getLongitude();
+
+            // Create a LatLng object for the current location
+            LatLng latLng = new LatLng(latitude, longitude);
+
+            // Show the current location in Google Map
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+            // Zoom in the Google Map
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+
+            //Add Marker For event
+            Intent myIntent = getIntent();
+            String desc = myIntent.getStringExtra("desc");
+            String addr = myIntent.getStringExtra("addr");
+            Double lat = myIntent.getDoubleExtra("lat", 0.0);
+            Double lon = myIntent.getDoubleExtra("lon", 0.0);
+
+            mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title(desc).snippet(addr));
+
+            //Get Markers For Map
+            /* gEventObject object = new gEventObject();
+            if(eventFeedList.get(0) != null) {
+                object = eventFeedList.get(0);
+            }*/
+        }
+
+    }
+
+
+
+    /** Determines whether one Location reading is better than the current Location fix
+     * @param location  The new Location that you want to evaluate
+     * @param currentBestLocation  The current Location fix, to which you want to compare the new one
+     */
+    protected boolean isBetterLocation(Location location, Location currentBestLocation) {
+        if (currentBestLocation == null) {
+            // A new location is always better than no location
+            return true;
+        }
+
+        // Check whether the new location fix is newer or older
+        long timeDelta = location.getTime() - currentBestLocation.getTime();
+        boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
+        boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
+        boolean isNewer = timeDelta > 0;
+
+        // If it's been more than two minutes since the current location, use the new location
+        // because the user has likely moved
+        if (isSignificantlyNewer) {
+            return true;
+            // If the new location is more than two minutes older, it must be worse
+        } else if (isSignificantlyOlder) {
+            return false;
+        }
+
+        // Check whether the new location fix is more or less accurate
+        int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
+        boolean isLessAccurate = accuracyDelta > 0;
+        boolean isMoreAccurate = accuracyDelta < 0;
+        boolean isSignificantlyLessAccurate = accuracyDelta > 200;
+
+        // Check if the old and new location are from the same provider
+        boolean isFromSameProvider = isSameProvider(location.getProvider(),
+                currentBestLocation.getProvider());
+
+        // Determine location quality using a combination of timeliness and accuracy
+        if (isMoreAccurate) {
+            return true;
+        } else if (isNewer && !isLessAccurate) {
+            return true;
+        } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
+            return true;
+        }
+        return false;
+    }
+
+    /** Checks whether two providers are the same */
+    private boolean isSameProvider(String provider1, String provider2) {
+        if (provider1 == null) {
+            return provider2 == null;
+        }
+        return provider1.equals(provider2);
+    }
+
+
+
+
+    /*
+    *
+    *
+    *
+    *
+    *
+    *
+    *
+    *
+    * Geofence Stuff
+    *
+    *
+    *
+    *
+    *
+    *
+    *
+     */
 
 
     private PendingIntent getGeofencePendingIntent() {
@@ -151,6 +393,7 @@ public class MapsActivity extends FragmentActivity implements
         builder.addGeofences(mGeofenceList);
         return builder.build();
     }
+
 
     /**
      * This sample hard codes geofence data. A real app might dynamically create geofences based on
@@ -186,72 +429,8 @@ public class MapsActivity extends FragmentActivity implements
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //setUpMapIfNeeded();
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // Connect the client.
-        mGoogleApiClient.connect();
-    }
 
-    @Override
-    protected void onStop() {
-        // Disconnecting the client invalidates it.
-        mGoogleApiClient.disconnect();
-        super.onStop();
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-
-        mLocationRequest = LocationRequest.create();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(1000); // Update location every second
-
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, this);
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.i(TAG, "GoogleApiClient connection has been suspend");
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.i(TAG, "GoogleApiClient connection has failed");
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-        s = location.toString();
-        // mLocationView.setText("Location received: " + location.toString());
-        split = s.split("\\s+");
-
-        coordinates = split[1].split(",");
-        lat = coordinates[0];
-        lon = coordinates[1];
-
-        //l = Double.parseDouble(lat);
-        //g = Double.parseDouble(lon);
-
-        // setMapCenter(lat,lon);
-
-        // if(split[1].equals("29.472620,-98.571342")){
-        //   mLocationView.setText("Location received: " + split[0]);
-
-        //}else {
-        mLocationView.setText("Location received: " + split[1]);
-
-        // mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet("Consider yourself located"));
-        //}
-    }
     public void addGeofencesButtonHandler(View view) {
         if (!mGoogleApiClient.isConnected()) {
             Toast.makeText(this, getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
@@ -274,89 +453,7 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
-    private void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
-        if (mMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
-            // Check if we were successful in obtaining the map.
-            if (mMap != null) {
-                setUpMap();
-            }
-        }
-    }
 
-  /*  private void setMapCenter(String lat, String lng){
-        // Get latitude of the current location
-        double latitude = Double.parseDouble(lat);
-
-        // Get longitude of the current location
-        double longitude = Double.parseDouble(lng);
-
-        // Create a LatLng object for the current location
-        LatLng latLng = new LatLng(latitude, longitude);
-
-        // Show the current location in Google Map
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-    }*/
-
-    private void setUpMap() {
-
-
-        // Enable MyLocation Layer of Google Map
-        mMap.setMyLocationEnabled(true);
-
-        // Get LocationManager object from System Service LOCATION_SERVICE
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        // Create a criteria object to retrieve provider
-        Criteria criteria = new Criteria();
-
-        // Get the name of the best provider
-        String provider = locationManager.getBestProvider(criteria, true);
-
-        // set map type
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-        // Get Current Location
-        Location myLocation = locationManager.getLastKnownLocation(provider);
-
-        if(myLocation != null) {
-            // Get latitude of the current location
-            double latitude = myLocation.getLatitude();
-            //double latitude = Double.parseDouble(lat);
-
-            // Get longitude of the current location
-            double longitude = myLocation.getLongitude();
-            //double longitude = Double.parseDouble(lon);
-
-            // Create a LatLng object for the current location
-            LatLng latLng = new LatLng(latitude, longitude);
-
-            // Show the current location in Google Map
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-            // Zoom in the Google Map
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
-            //mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet("Consider yourself located"));
-
-
-            //add map markers
-            l = (latitude + 0.012345);
-            g = (longitude + 0.019876);
-            mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, g)).title("Sample Event Marker").snippet("123 Sample Rd. San Antonio, TX"));
-            mMap.addMarker(new MarkerOptions().position(new LatLng(l, longitude)).title("Sample Event Marker").snippet("123 Sample Rd. San Antonio, TX"));
-            mMap.addMarker(new MarkerOptions().position(new LatLng(l, g)).title("Sample Event Marker").snippet("123 Sample Rd. San Antonio, TX"));
-
-            l = (latitude - 0.016574);
-            g = (longitude - 0.010023);
-            mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, g)).title("Sample Event Marker").snippet("123 Sample Rd. San Antonio, TX"));
-            mMap.addMarker(new MarkerOptions().position(new LatLng(l, longitude)).title("Sample Event Marker").snippet("123 Sample Rd. San Antonio, TX"));
-            mMap.addMarker(new MarkerOptions().position(new LatLng(l, g)).title("Sample Event Marker").snippet("123 Sample Rd. San Antonio, TX"));
-        }
-
-    }
 
     /**
      * Runs when the result of calling addGeofences() and removeGeofences() becomes available.
@@ -394,6 +491,11 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
+
+
+
+
+
     /**
      * Ensures that only one button is enabled at any time. The Add Geofences button is enabled
      * if the user hasn't yet added geofences. The Remove Geofences button is enabled if the
@@ -411,4 +513,72 @@ public class MapsActivity extends FragmentActivity implements
 
 
 
+
+
+
+
+
+
+
+
+
+
+/*
+*
+*
+*
+*
+*
+*
+*
+* Setters and Getters
+*
+*
+*
+*
+*
+*
+ */
+
+
+    private void setUpEventList(){
+
+        gEventObject obj = new gEventObject();
+
+        obj.setDescription("desc");
+        obj.setCity_name("city");
+        obj.setState_name("state");
+        obj.setLatitude(29.421264);
+        obj.setLongitude(-98.478011);
+        // obj.setStart_date_day(8);
+        //obj.setStart_date_month("9");
+        // obj.setStart_date_year("2015");
+        obj.setStart_time("7:00 PM");
+        obj.setVenue_name("Sunset Station");
+        obj.setVenue_address("1427 Gladstone");
+        obj.setEvent_external_url("urlpath");
+
+        eventFeedList.add(obj);
+
+    }
+
+    public void setCurrentLocation(Location location){
+        currentLocation = location;
+    }
+
+    public Location getCurrentLocation(){
+        return currentLocation;
+    }
+
+    public void setCurrentAddress(String address){
+        currentAddress = address;
+    }
+
+    public String getCurrentAddress(){
+        return currentAddress;
+    }
+
+
+
 }
+

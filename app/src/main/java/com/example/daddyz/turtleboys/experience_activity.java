@@ -156,10 +156,6 @@ public class  experience_activity extends AppCompatActivity {
                         followerListFragment fragment3 = new followerListFragment();
                         fragManager.beginTransaction().replace(R.id.frame, fragment3,"followerListFragment").addToBackStack("followerListFragment").commit();
                         return true;
-                    case R.id.users:
-                        userListFragment fragment4 = new userListFragment();
-                        fragManager.beginTransaction().replace(R.id.frame, fragment4,"userListFragment").addToBackStack("userListFragment").commit();
-                        return true;
                     case R.id.myPosts:
                         Toast.makeText(getApplicationContext(), "Post Selected", Toast.LENGTH_SHORT).show();
                         return true;

@@ -59,7 +59,7 @@ public class userListAdapter extends ArrayAdapter<GigUser> {
         //TextView source = (TextView) row.findViewById(R.id.sourceLine);
         // ImageView eventImage = (ImageView) row.findViewById(R.id.icon);
         TextView description = (TextView) row.findViewById(R.id.descLine);
-        TextView citystate = (TextView) row.findViewById(R.id.citystateLine);
+        TextView venue = (TextView) row.findViewById(R.id.venueLine);
         //TextView date = (TextView)row.findViewById(R.id.dateLine);
         //TextView time = (TextView) row.findViewById(R.id.timeLine);
         // TextView venue = (TextView) row.findViewById(R.id.venueLine);
@@ -90,8 +90,8 @@ public class userListAdapter extends ArrayAdapter<GigUser> {
 */
 
         //source.setText(objects.get(position).getEventSource());
-        description.setText(userObjects.get(position).getFirstName());
-        citystate.setText(userObjects.get(position).getLastName());
+        venue.setText(userObjects.get(position).getFirstName() + " " + userObjects.get(position).getLastName());
+        description.setText(userObjects.get(position).getUsername());
       /*  date.setText(followUserObjects.get(position).getStart_date_month().get(2) + " " + eventObjects.get(position).getStart_date_day().get(0) + ", " + eventObjects.get(position).getStart_date_year().get(0));
         time.setText(followUserObjects.get(position).getStart_date_time().get(2));
         venue.setText(followUserObjects.get(position).getVenue_name());*/

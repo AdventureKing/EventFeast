@@ -92,27 +92,16 @@ public class eventDetailFragment extends Fragment {
 
 
         ImageView locationBtn = (ImageView) view.findViewById((R.id.eventStockImage));
-
         locationBtn.setOnClickListener(new View.OnClickListener() {
 
-
-
             @Override
-
             public void onClick(View v) {
-
                 Intent mapIntent = new Intent(getActivity().getApplicationContext(), MapsActivity.class);
-
                 mapIntent.putExtra("desc", obj.getDescription());
-
                 mapIntent.putExtra("addr", obj.getVenue_address());
-
                 mapIntent.putExtra("lat", obj.getLatitude());
-
                 mapIntent.putExtra("lon", obj.getLongitude());
-
                 startActivity(mapIntent);
-
             }
 
         });
@@ -137,6 +126,7 @@ public class eventDetailFragment extends Fragment {
                 break;
             }
         }
+
 
         //If no attraction image url was picked up, set to venue URL.
         //Else it uses default placeholder image I placed above.
@@ -309,4 +299,5 @@ public class eventDetailFragment extends Fragment {
 
         startActivity(calIntent);
     }
+
 }

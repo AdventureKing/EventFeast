@@ -31,11 +31,6 @@
             android:icon="@drawable/ic_tag_faces_black_24dp"
             android:title="@string/myfollowers" />
         <item
-            android:id="@+id/users"
-            android:checked="false"
-            android:icon="@drawable/ic_tag_faces_black_24dp"
-            android:title="@string/users" />
-        <item
             android:id="@+id/myPosts"
             android:checked="false"
             android:icon="@drawable/ic_assistant_black_24dp"
