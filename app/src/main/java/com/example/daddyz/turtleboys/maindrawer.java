@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -58,7 +59,9 @@ public class maindrawer extends AppCompatActivity {
     private boolean AnimationFlag;
     private ParseImageView imageView;
     private FragmentManager fragManager;
-    GigUser currentUser;
+    private GigUser currentUser;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -229,7 +232,7 @@ public class maindrawer extends AppCompatActivity {
 
             // Initializing Drawer Layout and ActionBarToggle
             drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-            ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer) {
+            actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer) {
 
                 @Override
                 public void onDrawerClosed(View drawerView) {
@@ -339,7 +342,15 @@ public class maindrawer extends AppCompatActivity {
                 SettingsFragment myFragment2 = (SettingsFragment) fragManager.findFragmentByTag("SettingsFragment");
                 newsfeedPostDetail myFragment3 = (newsfeedPostDetail)fragManager.findFragmentByTag("NewsFeedPostDetail");
                 newsfeedPostForm myFragment4 = (newsfeedPostForm)fragManager.findFragmentByTag("NewsFeedPostForm");
-                if ((myFragment != null && myFragment.isVisible()) || (myFragment2 != null && myFragment2.isVisible()) || (myFragment3 != null && myFragment3.isVisible())|| (myFragment4 != null && myFragment4.isVisible())) {
+                searchEvent myFragment5 = (searchEvent) fragManager.findFragmentByTag("SearchEventFragment");
+                if (myFragment5 != null && myFragment5.isVisible()){
+                    actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+                    toolbar.setTitle("Search Event");
+                } else {
+                    actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
+                    toolbar.setTitle("GigIT");
+                }
+                if ((myFragment != null && myFragment.isVisible()) || (myFragment2 != null && myFragment2.isVisible()) || (myFragment3 != null && myFragment3.isVisible())|| (myFragment4 != null && myFragment4.isVisible()) || (myFragment5 != null && myFragment5.isVisible())) {
                     // add your code here
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 }else{

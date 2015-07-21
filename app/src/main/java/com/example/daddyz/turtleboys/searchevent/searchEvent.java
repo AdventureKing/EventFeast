@@ -4,13 +4,12 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +21,7 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
-
 import com.example.daddyz.turtleboys.R;
-import com.example.daddyz.turtleboys.maindrawer;
-import com.example.daddyz.turtleboys.registration_activity;
-
 import java.util.Calendar;
 import java.util.Date;
 
@@ -67,8 +61,6 @@ public class searchEvent extends Fragment {
     private Time fromTime;
 
     private double MILESINAKILOMETER = 0.621;
-    private ActionBar actionBar;
-
 
 
     @Override
@@ -78,18 +70,12 @@ public class searchEvent extends Fragment {
 
         rootView = inflater.inflate(R.layout.searchevent, container, false);
 
-
-
-
         return rootView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
-        actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-        actionBar.setTitle("Search Events");
 
         //Might use Google geolocation api to autocomplete
         //TODO Add Google's city autocomplete
@@ -308,6 +294,11 @@ public class searchEvent extends Fragment {
         }
 
     }
-
+    public void onBackPressed() {
+        Log.d("Test", "This is being called in maindrawer");
+        if(getFragmentManager().getBackStackEntryCount() != 0) {
+            getFragmentManager().popBackStack();
+        }
+    }
 
 }
