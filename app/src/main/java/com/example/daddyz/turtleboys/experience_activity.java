@@ -286,13 +286,28 @@ public class  experience_activity extends AppCompatActivity {
         userLastName.setText(currentUser.getLastName());
 
         userPosts = (TextView) findViewById(R.id.numberOfPosts);
-        userPosts.setText(currentUser.getUserTotalPost().toString());
+        if (currentUser.getUserTotalPost() != null)
+            userPosts.setText(currentUser.getUserTotalPost().toString());
+        else {
+            userPosts.setText("0");
+            currentUser.setUserTotalPost(0);
+        }
 
         userNumberAttended = (TextView) findViewById(R.id.numberOfMeals);
-        userNumberAttended.setText(currentUser.getUserEventsAttended().toString());
+        if (currentUser.getUserEventsAttended() != null)
+            userNumberAttended.setText(currentUser.getUserEventsAttended().toString());
+        else {
+            userNumberAttended.setText("0");
+            currentUser.setUserEventsAttended(0);
+        }
 
         userLevel = (TextView) findViewById(R.id.userRank);
-        userLevel.setText(currentUser.getUserLevel().toString());
+        if (currentUser.getUserLevel() != null)
+            userLevel.setText(currentUser.getUserLevel().toString());
+        else {
+            userLevel.setText("0");
+            currentUser.setUserLevel(0);
+        }
 
         list = (ListView) findViewById(R.id.historyListView);
         list.setClickable(false);
@@ -376,9 +391,24 @@ public class  experience_activity extends AppCompatActivity {
                         @Override
                         public void done(ParseObject parseObject, ParseException e) {
                             if (e == null){
-                                userLevel.setText(currentUser.getUserLevel().toString());
-                                userPosts.setText(currentUser.getUserTotalPost().toString());
-                                userNumberAttended.setText(currentUser.getUserEventsAttended().toString());
+                                if (currentUser.getUserTotalPost() != null)
+                                    userPosts.setText(currentUser.getUserTotalPost().toString());
+                                else {
+                                    userPosts.setText("0");
+                                    currentUser.setUserTotalPost(0);
+                                }
+                                if (currentUser.getUserEventsAttended() != null)
+                                    userNumberAttended.setText(currentUser.getUserEventsAttended().toString());
+                                else {
+                                    userNumberAttended.setText("0");
+                                    currentUser.setUserEventsAttended(0);
+                                }
+                                if (currentUser.getUserLevel() != null)
+                                    userLevel.setText(currentUser.getUserLevel().toString());
+                                else {
+                                    userLevel.setText("0");
+                                    currentUser.setUserLevel(0);
+                                }
                             }else{
                                 userLevel.setText("0");
                                 userPosts.setText("0");
@@ -440,9 +470,24 @@ public class  experience_activity extends AppCompatActivity {
                 @Override
                 public void done(ParseObject parseObject, ParseException e) {
                     if (e == null) {
-                        userLevel.setText(currentUser.getUserLevel().toString());
-                        userPosts.setText(currentUser.getUserTotalPost().toString());
-                        userNumberAttended.setText(currentUser.getUserEventsAttended().toString());
+                        if (currentUser.getUserTotalPost() != null)
+                            userPosts.setText(currentUser.getUserTotalPost().toString());
+                        else {
+                            userPosts.setText("0");
+                            currentUser.setUserTotalPost(0);
+                        }
+                        if (currentUser.getUserEventsAttended() != null)
+                            userNumberAttended.setText(currentUser.getUserEventsAttended().toString());
+                        else {
+                            userNumberAttended.setText("0");
+                            currentUser.setUserEventsAttended(0);
+                        }
+                        if (currentUser.getUserLevel() != null)
+                            userLevel.setText(currentUser.getUserLevel().toString());
+                        else {
+                            userLevel.setText("0");
+                            currentUser.setUserLevel(0);
+                        }
                     }else{
                         userLevel.setText("0");
                         userPosts.setText("0");
