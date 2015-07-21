@@ -78,6 +78,7 @@ public class MapsActivity extends FragmentActivity implements
     private Location currentLocation = null;
     private LocationListener locationListener;
     private String s, lat, lon, currentAddress;
+    private Double myLat, myLng, venueLat, venueLng = 0.0;
     private String[] split,coordinates;
     private Location myLocation, newLocation = null;
     protected ArrayList<Geofence> mGeofenceList = new ArrayList<Geofence>();
@@ -182,12 +183,30 @@ public class MapsActivity extends FragmentActivity implements
         double lat = location.getLatitude();
         double lng = location.getLongitude();
 
-        if(mapCenter == null){
-            mapCenter = new LatLng(lat,lng);
+        System.out.println(venueLat);
+        System.out.println(venueLng);
+
+        if(mapCenter == null && venueLat == 0.0 && venueLng != 0.0){
+            myLat = lat;
+            myLng = lng;
+            System.out.println(myLat);
+            System.out.println(myLng);
+            mapCenter = new LatLng(myLat, myLng);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(mapCenter));
         }
+        if(mapCenter == null && venueLat != 0.0 && venueLng != 0.0){
+            myLat = lat;
+            myLng = lng;
+            mapCenter = midPoint(myLat, myLng, venueLat, venueLng);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(mapCenter));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+        }
 
-        Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
+    }
+
+
+    //Get Address From Location
+     /*   Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
         StringBuilder builder = new StringBuilder();
         try {
             List<Address> address = geoCoder.getFromLocation(lat, lng, 1);
@@ -209,7 +228,7 @@ public class MapsActivity extends FragmentActivity implements
         } catch (IOException e) {}
         catch (NullPointerException e) {}
 
-    }
+    }*/
 
 
 
@@ -282,10 +301,10 @@ public class MapsActivity extends FragmentActivity implements
             Intent myIntent = getIntent();
             String desc = myIntent.getStringExtra("desc");
             String addr = myIntent.getStringExtra("addr");
-            Double lat = myIntent.getDoubleExtra("lat", 0.0);
-            Double lon = myIntent.getDoubleExtra("lon", 0.0);
+            venueLat = myIntent.getDoubleExtra("lat", 0.0);
+            venueLng = myIntent.getDoubleExtra("lon", 0.0);
 
-            mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title(desc).snippet(addr));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(venueLat, venueLng)).title(desc).snippet(addr));
 
             //Get Markers For Map
             /* gEventObject object = new gEventObject();
@@ -294,6 +313,28 @@ public class MapsActivity extends FragmentActivity implements
             }*/
         }
 
+    }
+
+
+    public static LatLng midPoint(double lat1,double lon1,double lat2,double lon2){
+
+        LatLng newCenter = null;
+        double dLon = Math.toRadians(lon2 - lon1);
+
+        //convert to radians
+        lat1 = Math.toRadians(lat1);
+        lat2 = Math.toRadians(lat2);
+        lon1 = Math.toRadians(lon1);
+
+        double Bx = Math.cos(lat2) * Math.cos(dLon);
+        double By = Math.cos(lat2) * Math.sin(dLon);
+        double lat3 = Math.atan2(Math.sin(lat1) + Math.sin(lat2), Math.sqrt((Math.cos(lat1) + Bx) * (Math.cos(lat1) + Bx) + By * By));
+        double lon3 = lon1 + Math.atan2(By, Math.cos(lat1) + Bx);
+
+        //print out in degrees
+        System.out.println(Math.toDegrees(lat3) + " " + Math.toDegrees(lon3));
+        newCenter = new LatLng(Math.toDegrees(lat3), Math.toDegrees(lon3));
+        return newCenter;
     }
 
 

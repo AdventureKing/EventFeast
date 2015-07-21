@@ -39,15 +39,15 @@ android:padding="8dip" >
     android:layout_toRightOf="@+id/icon"
     android:layout_toEndOf="@+id/icon" />
 
-    <Switch
+    <Button
+        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Follow"
-        android:id="@+id/switch1"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/descLine"
-        android:layout_alignEnd="@+id/descLine"
-        android:checked="false" />
+        android:id="@+id/button3"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true" />
 
 
 </RelativeLayout>

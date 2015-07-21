@@ -101,7 +101,7 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
         }
 
         // TODO: Change Adapter to display your content
-        adapter = new userListAdapter(getActivity(),  R.layout.user_list_row, userArray );
+        adapter = new userListAdapter(getActivity(),  R.layout.user_list_follow_row, userArray );
 
        /* mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);*/
@@ -177,7 +177,7 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
     public void loadEvents(Object response){
         userArray = createGigUserObjectsFromResponse(response);
 
-        adapter = new userListAdapter(getActivity(), R.layout.user_list_row, userArray);
+        adapter = new userListAdapter(getActivity(), R.layout.user_list_follow_row, userArray);
         list.setAdapter(adapter);
         ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
 

@@ -2,18 +2,14 @@ package com.example.daddyz.turtleboys.friendFeed;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.daddyz.turtleboys.R;
-import com.example.daddyz.turtleboys.eventfeed.gEventImageObject;
 import com.example.daddyz.turtleboys.subclasses.FollowUser;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -53,7 +49,7 @@ public class followListAdapter extends ArrayAdapter<FollowUser> {
                 layoutResource = R.layout.eventfeedrowodd; break;
         }*/
         //set the view to the odd or even row view
-        View row=inflater.inflate(R.layout.user_list_row,parent,false);
+        View row=inflater.inflate(R.layout.user_list_follow_row,parent,false);
 
         //TextView source = (TextView) row.findViewById(R.id.sourceLine);
         // ImageView eventImage = (ImageView) row.findViewById(R.id.icon);

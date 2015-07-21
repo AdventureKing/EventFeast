@@ -98,7 +98,7 @@ public class followerListFragment extends Fragment implements Response.Listener,
         }
 
         // TODO: Change Adapter to display your content
-        adapter = new followerListAdapter(getActivity(),  R.layout.user_list_row, followerArray );
+        adapter = new followerListAdapter(getActivity(),  R.layout.user_list_follow_row, followerArray );
 
        /* mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);*/
@@ -160,7 +160,7 @@ public class followerListFragment extends Fragment implements Response.Listener,
     public void loadEvents(Object response){
         followerArray = createFakeArrayList();
 
-        adapter = new followerListAdapter(getActivity(), R.layout.user_list_row, followerArray);
+        adapter = new followerListAdapter(getActivity(), R.layout.user_list_follow_row, followerArray);
         list.setAdapter(adapter);
         ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
 
