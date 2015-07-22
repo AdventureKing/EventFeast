@@ -3,13 +3,11 @@ package com.example.daddyz.turtleboys.eventfeed;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -36,7 +34,6 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
         Response.ErrorListener{
 
     public static final String REQUEST_TAG = "MainVolleyActivity";
-    private Button mButton;
 
     private TextView mTextView;
     private RequestQueue mQueue;
@@ -54,7 +51,6 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
         list = (ListView) rootView.findViewById(R.id.listView);
 
         mTextView = (TextView) rootView.findViewById(R.id.textView);
-        mButton = (Button) rootView.findViewById(R.id.button);
         list.setClickable(true);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
@@ -72,8 +68,6 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
             }
         });
 
-        Log.d("CustomAdapter", "MusicFragment onCreateView successful");
-
         return rootView;
     }
 
@@ -89,13 +83,6 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
                 new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);
         mQueue.add(jsonRequest);
-
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mQueue.add(jsonRequest);
-            }
-        });
     }
 
     @Override

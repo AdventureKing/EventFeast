@@ -6,8 +6,6 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +19,9 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
 import com.example.daddyz.turtleboys.R;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -30,7 +30,7 @@ import java.util.Date;
  */
 public class searchEvent extends Fragment {
 
-    private EditText location;
+    private EditText city;
     private EditText keyword;
     private TextView searchRadiusText;
     private long searchRadius_miles;
@@ -79,8 +79,8 @@ public class searchEvent extends Fragment {
 
         //Might use Google geolocation api to autocomplete
         //TODO Add Google's city autocomplete
-        location = (EditText) rootView.findViewById(R.id.location);
-        location.setHint(R.string.searchLocation);
+        city = (EditText) rootView.findViewById(R.id.location);
+        city.setHint(R.string.searchLocation);
 
         //Search keyword for events
         keyword = (EditText) rootView.findViewById(R.id.keyword);
@@ -170,8 +170,12 @@ public class searchEvent extends Fragment {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 //Do a search
                 searchResultsFragment fragment = new searchResultsFragment();
+                fragment.setSearchQuery(keyword.getText().toString());
+                fragment.setFilterCity(city.getText().toString());
+
                 getFragmentManager().beginTransaction().replace(R.id.frame,fragment,"searchResultsFragment").addToBackStack("searchResultsFragment").commit();
                 //Toast.makeText(getActivity().getApplicationContext(), "Search Event", Toast.LENGTH_SHORT).show();
             }
@@ -183,7 +187,7 @@ public class searchEvent extends Fragment {
             @Override
             public void onClick(View view) {
 
-                location.setText("");
+                city.setText("");
                 keyword.setText("");
                 radioSortbyGroup.clearCheck();
                 defaultButton.toggle();
