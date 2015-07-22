@@ -292,7 +292,7 @@ public class eventDetailFragment extends Fragment {
         GregorianCalendar calDate = new GregorianCalendar(Integer.parseInt(obj.getStart_date_year().get(0)), Integer.parseInt(obj.getStart_date_month().get(0)), Integer.parseInt(obj.getStart_date_day().get(0)), 10, 50);
         calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
                 calDate.getTimeInMillis());
-        calDate.set(Integer.parseInt(obj.getEnd_date_year().get(1)),Integer.parseInt(obj.getEnd_date_month().get(0)), Integer.parseInt(obj.getStart_date_day().get(0)), 1, 30);
+        calDate.set(Integer.parseInt(obj.getStart_date_year().get(1)),Integer.parseInt(obj.getStart_date_month().get(0)), Integer.parseInt(obj.getStart_date_day().get(0)), 1, 30);
         calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
                 calDate.getTimeInMillis());
 
