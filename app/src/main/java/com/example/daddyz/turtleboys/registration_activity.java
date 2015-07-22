@@ -10,12 +10,9 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.media.ExifInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -23,13 +20,12 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import com.example.daddyz.turtleboys.subclasses.ApiKeyGenerator;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.SignUpCallback;
-
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -226,6 +222,7 @@ public class registration_activity extends Activity {
                 newUser.setUserTotalPost(0);
                 newUser.setUserEventsAttended(0);
                 newUser.setUserLevel(0);
+                newUser.setApiKey(new ApiKeyGenerator(newUser.getEmail()).generateApiKey());
 
                 if(userImageParseFile != null) {
 

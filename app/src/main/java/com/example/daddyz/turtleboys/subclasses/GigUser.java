@@ -35,6 +35,7 @@ public class GigUser extends ParseUser {
         String first = getString("lastName");
         return first;
     }
+
     public Number getUserLevel(){
         Number UserLevel = getNumber("userLevel");
         return UserLevel;
@@ -48,6 +49,10 @@ public class GigUser extends ParseUser {
         return UserEventsAttended;
     }
 
+    public String getApiKey(){
+        String apiKey = getString("apiKey");
+        return apiKey;
+    }
 
 
     //setters
@@ -69,5 +74,8 @@ public class GigUser extends ParseUser {
         put("userTotalPost",UserTotalPost);
     }
     public void setUserEventsAttended(Number UserEventsAttended){ put("userEventsAttended",UserEventsAttended); }
+    public void setApiKey(String key){
+        put("apiKey",key);
+    }
 
 }
