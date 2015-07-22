@@ -1,8 +1,9 @@
-package com.example.daddyz.turtleboys;
+package com.example.daddyz.turtleboys.maps;
 
 import android.content.Context;
 import android.content.res.Resources;
 
+import com.example.daddyz.turtleboys.R;
 import com.google.android.gms.location.GeofenceStatusCodes;
 
 /**

@@ -1,4 +1,4 @@
-package com.example.daddyz.turtleboys.eventfeed;
+package com.example.daddyz.turtleboys;
 
 import android.content.Context;
 
@@ -15,20 +15,20 @@ import com.android.volley.toolbox.HurlStack;
 /**
  * Custom implementation of Volley Request Queue
  */
-public class CustomVolleyRequestQueue {
+public class VolleyRequestQueue {
 
-    private static CustomVolleyRequestQueue mInstance;
+    private static VolleyRequestQueue mInstance;
     private static Context mCtx;
     private RequestQueue mRequestQueue;
 
-    private CustomVolleyRequestQueue(Context context) {
+    private VolleyRequestQueue(Context context) {
         mCtx = context;
         mRequestQueue = getRequestQueue();
     }
 
-    public static synchronized CustomVolleyRequestQueue getInstance(Context context) {
+    public static synchronized VolleyRequestQueue getInstance(Context context) {
         if (mInstance == null) {
-            mInstance = new CustomVolleyRequestQueue(context);
+            mInstance = new VolleyRequestQueue(context);
         }
         return mInstance;
     }

@@ -2,6 +2,7 @@ package com.example.daddyz.turtleboys.subclasses;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
 import java.util.Date;
@@ -11,7 +12,7 @@ import java.util.Date;
  */
 @ParseClassName("_User")
 public class GigUser extends ParseUser {
-
+    private String userId;
 
     public GigUser(){
 
@@ -19,6 +20,11 @@ public class GigUser extends ParseUser {
 
 
     //getters
+    public ParseGeoPoint getUserHome(){
+        ParseGeoPoint point = getParseGeoPoint("userHome");
+        return point;
+    }
+
     public ParseFile getUserImage(){
         ParseFile user = getParseFile("userImage");
         return user;
@@ -36,6 +42,7 @@ public class GigUser extends ParseUser {
         return first;
     }
 
+
     public Number getUserLevel(){
         Number UserLevel = getNumber("userLevel");
         return UserLevel;
@@ -49,9 +56,17 @@ public class GigUser extends ParseUser {
         return UserEventsAttended;
     }
 
-    public String getApiKey(){
+    public String getApiKey() {
         String apiKey = getString("apiKey");
         return apiKey;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 
@@ -77,5 +92,6 @@ public class GigUser extends ParseUser {
     public void setApiKey(String key){
         put("apiKey",key);
     }
+    public void setUserHome(ParseGeoPoint latlon) { put("userHome",latlon);}
 
 }

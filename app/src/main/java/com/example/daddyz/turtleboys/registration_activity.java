@@ -10,6 +10,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -22,8 +24,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.example.daddyz.turtleboys.subclasses.ApiKeyGenerator;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
+import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseImageView;
 import com.parse.SignUpCallback;
 import java.io.ByteArrayOutputStream;
@@ -32,6 +36,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 //import java.text.ParseException;
 
@@ -43,15 +49,18 @@ public class registration_activity extends Activity {
     private EditText lastName;
     private EditText userName;
     private EditText email;
-    private EditText emailVerify;
+    private EditText userHome;
     private EditText userPassword;
     private EditText userPasswordVerify;
     private ParseImageView userImageFile;
     private ParseFile userImageParseFile;
+    private ParseGeoPoint point = new ParseGeoPoint(29.424122, -98.493628);
     private Date birthday;
     private static final int SELECT_PHOTO = 100;
     private DialogFragment birthdaySelector;
     private EditText birthdayText;
+    private Context context;
+    private String address = "San Antonio TX";
 
     //private DialogFragment imageSelector;
     private Fragment imageSelector;
@@ -64,6 +73,7 @@ public class registration_activity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        context = getApplicationContext();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_activity);
         View view = findViewById(R.id.registrationPage);
@@ -106,6 +116,7 @@ public class registration_activity extends Activity {
         //user image is filled
 
 
+        //searchLocationByName(context, address);
 
 
         firstName = (EditText) findViewById(R.id.firstName);
@@ -120,8 +131,8 @@ public class registration_activity extends Activity {
         email = (EditText) findViewById(R.id.email);
         email.setHint(R.string.email_text);
 
-        emailVerify = (EditText) findViewById(R.id.emailVerify);
-        emailVerify.setHint(R.string.emailVerify_text);
+        userHome = (EditText) findViewById(R.id.emailVerify);
+        userHome.setHint("Location");
 
         userPassword = (EditText) findViewById(R.id.userPassword);
         userPassword.setHint(R.string.password_text);
@@ -136,10 +147,10 @@ public class registration_activity extends Activity {
                 //Toast.makeText(getApplicationContext(),"BUTTON CLICKED", Toast.LENGTH_SHORT).show();
 
                 //Check to see if email and verify email fields are the same
-                if ( !(email.getText().toString().equals(emailVerify.getText().toString())) ) {
+              /*  if ( !(email.getText().toString().equals(userHome.getText().toString())) ) {
                     Toast.makeText(getApplicationContext(), R.string.emailNoMatch, Toast.LENGTH_SHORT).show();
                     return;
-                }
+                }*/
 
                 //Check to see if passwords match
                 if ( !(userPassword.getText().toString().equals(userPasswordVerify.getText().toString())) ) {
@@ -223,6 +234,7 @@ public class registration_activity extends Activity {
                 newUser.setUserEventsAttended(0);
                 newUser.setUserLevel(0);
                 newUser.setApiKey(new ApiKeyGenerator(newUser.getEmail()).generateApiKey());
+                newUser.setUserHome(searchLocationByName(context, userHome.getText().toString()));
 
                 if(userImageParseFile != null) {
 
@@ -290,6 +302,35 @@ public class registration_activity extends Activity {
             }
         });
     }
+
+
+    public static ParseGeoPoint searchLocationByName(Context context, String locationName){
+        Geocoder geoCoder = new Geocoder(context, Locale.getDefault());
+        ParseGeoPoint gp = null;
+        LatLng latlon = null;
+       // Address ad = null;
+        try {
+            List<Address> addresses = geoCoder.getFromLocationName(locationName, 1);
+            for(Address address : addresses){
+                System.out.println(address);
+                System.out.println(address.getLatitude());
+                System.out.println(address.getLongitude());
+
+                //latlon = new LatLng(address.getLatitude(), address.getLongitude());
+                //ParseGeoPoint gp = new ParseGeoPoint(latlon);
+
+                gp = new ParseGeoPoint(address.getLatitude(), address.getLongitude());
+                //address.getAddressLine(1);
+               // ad = address;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return gp;
+    }
+
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(resultCode == RESULT_OK) {

@@ -1,4 +1,4 @@
-package com.example.daddyz.turtleboys;
+package com.example.daddyz.turtleboys.maps;
 
 import com.google.android.gms.maps.model.LatLng;
 

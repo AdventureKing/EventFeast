@@ -29,12 +29,13 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.eventfeed.EventFeedFragment;
 import com.example.daddyz.turtleboys.newsfeed.newsfeedFragment;
 import com.example.daddyz.turtleboys.newsfeed.newsfeedPostDetail;
 import com.example.daddyz.turtleboys.newsfeed.newsfeedPostForm;
+import com.example.daddyz.turtleboys.friendFeed.userListFragment;
+import com.example.daddyz.turtleboys.maps.MapsActivity;
 import com.example.daddyz.turtleboys.searchevent.searchEvent;
 import com.example.daddyz.turtleboys.settings.SettingsFragment;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
@@ -163,6 +164,10 @@ public class maindrawer extends AppCompatActivity {
                             //Toast.makeText(getApplicationContext(), "Stared Selected", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), experience_activity.class);
                             startActivity(intent);
+                            return true;
+                        case R.id.users:
+                            userListFragment fragment4 = new userListFragment();
+                            fragManager.beginTransaction().replace(R.id.frame, fragment4,"userListFragment").addToBackStack("userListFragment").commit();
                             return true;
                         case R.id.search_event:
                             searchEvent searchFragment = new searchEvent();

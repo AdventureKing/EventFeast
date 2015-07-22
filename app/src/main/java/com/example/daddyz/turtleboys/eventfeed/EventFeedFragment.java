@@ -19,6 +19,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.R;
+import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
+import com.example.daddyz.turtleboys.VolleyRequestQueue;
 import com.example.daddyz.turtleboys.maindrawer;
 
 import org.json.JSONException;
@@ -79,10 +81,10 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
     public void onStart() {
         super.onStart();
 
-        mQueue = CustomVolleyRequestQueue.getInstance(this.getActivity().getApplicationContext())
+        mQueue = VolleyRequestQueue.getInstance(this.getActivity().getApplicationContext())
                 .getRequestQueue();
         String url = "http://45.55.142.106/prod/ws/rest/findEvents/San%20Antonio?city=San%20Antonio";
-        final CustomJSONObjectRequest jsonRequest = new CustomJSONObjectRequest(Request.Method
+        final VolleyJSONObjectRequest jsonRequest = new VolleyJSONObjectRequest(Request.Method
                 .GET, url,
                 new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);
