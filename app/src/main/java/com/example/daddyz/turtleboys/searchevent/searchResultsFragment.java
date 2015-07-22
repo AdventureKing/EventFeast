@@ -142,13 +142,19 @@ public class searchResultsFragment extends Fragment implements Response.Listener
 
         try{
             searchQuery = URLEncoder.encode(this.getSearchQuery(), "utf-8");
-            filter = URLEncoder.encode("?city=" + this.getFilterCity(), "utf-8");
+            filterCity = URLEncoder.encode(this.getFilterCity(), "utf-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
         mQueue = VolleyRequestQueue.getInstance(this.getActivity().getApplicationContext()).getRequestQueue();
-        String url = "http://api.dev.turtleboys.com/v1/events/find/Kendrick";// + searchQuery + filter;
+        String url = "http://api.dev.turtleboys.com/v1/events/find/" + searchQuery;
+        if(null != filterCity && "" != filterCity){
+            url = "http://api.dev.turtleboys.com/v1/events/find/" + searchQuery + "?city=" + filterCity;
+            if(null == searchQuery || "" == searchQuery){
+                url = "http://api.dev.turtleboys.com/v1/events/find/" + filterCity + "?city=" + filterCity;
+            }
+        }
         final VolleyJSONObjectRequest jsonRequest = new VolleyJSONObjectRequest(Request.Method
                 .GET, url,
                 new JSONObject(), this, this);
@@ -182,7 +188,7 @@ public class searchResultsFragment extends Fragment implements Response.Listener
         list.setAdapter(adapter);
         ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
 
-        //rootView.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+        rootView.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
     }
 
     public ArrayList<gEventObject> creategEventObjectsFromResponse(Object response){

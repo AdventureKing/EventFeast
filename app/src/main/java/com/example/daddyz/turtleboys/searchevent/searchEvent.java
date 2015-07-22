@@ -175,6 +175,8 @@ public class searchEvent extends Fragment {
                 searchResultsFragment fragment = new searchResultsFragment();
                 fragment.setSearchQuery(keyword.getText().toString());
                 fragment.setFilterCity(city.getText().toString());
+                Log.i("query",keyword.getText().toString());
+                Log.i("city",city.getText().toString());
 
                 getFragmentManager().beginTransaction().replace(R.id.frame,fragment,"searchResultsFragment").addToBackStack("searchResultsFragment").commit();
                 //Toast.makeText(getActivity().getApplicationContext(), "Search Event", Toast.LENGTH_SHORT).show();
