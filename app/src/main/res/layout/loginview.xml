@@ -40,16 +40,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/userNameImage"
-            android:src="@drawable/portrait"
+            android:src="@drawable/ic_portrait_black_24dp_1x"
             android:layout_alignBottom="@+id/userName"
+            android:layout_marginBottom="5dp"
             android:layout_alignRight="@+id/passwordImage"
             android:layout_alignEnd="@+id/passwordImage" />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/passwordImage"
-            android:src="@drawable/ic_lock_open_black_44x40"
-            android:layout_alignTop="@+id/password"
+            android:src="@drawable/ic_lock_open_black_24dp_1x"
+            android:layout_alignBottom="@+id/password"
+            android:layout_marginBottom="5dp"
             android:layout_toLeftOf="@+id/password"
             android:layout_toStartOf="@+id/password" />
 

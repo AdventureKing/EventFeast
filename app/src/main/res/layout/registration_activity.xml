@@ -244,9 +244,9 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/cancelRegistration"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#ffffff"
                     android:id="@+id/cancel"
-                    android:background="@color/PrimaryDarkColor"
+                    android:background="@color/secondaryButtonColor"
                     android:drawableLeft="@drawable/ic_remove_circle_outline_white_24dp_1x"
                     android:paddingLeft="14dp"
                     android:layout_alignParentBottom="true" />
