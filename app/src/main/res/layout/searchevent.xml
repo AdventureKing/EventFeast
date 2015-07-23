@@ -222,6 +222,7 @@
                 android:id="@+id/searchButton"
                 android:background="@color/PrimaryColor"
                 android:drawableLeft="@drawable/ic_check_circle_white_24dp_1x"
+                android:paddingLeft="14dp"
                 android:layout_alignParentBottom="true" />
 
         </RelativeLayout>
@@ -238,6 +239,7 @@
                 android:id="@+id/resetButton"
                 android:background="@color/PrimaryDarkColor"
                 android:drawableLeft="@drawable/ic_remove_circle_outline_white_24dp_1x"
+                android:paddingLeft="14dp"
                 android:layout_alignParentBottom="true" />
         </RelativeLayout>
     </LinearLayout>

@@ -38,6 +38,7 @@
     <string name="myposts">My Post</string>
     <string name="mylistings">My Listings</string>
     <!-- Registration Strings -->
+    <string name="registration">Registration</string>
     <string name="confirmPassword_text">Confirm Password</string>
     <string name="register">Register</string>
     <string name="newUser">Register</string>

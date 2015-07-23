@@ -15,6 +15,9 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -44,7 +47,7 @@ import java.util.Locale;
 /**
  * Created by Jinbir on 6/15/2015.
  */
-public class registration_activity extends Activity {
+public class registration_activity extends AppCompatActivity {
     private EditText firstName;
     private EditText lastName;
     private EditText userName;
@@ -69,9 +72,13 @@ public class registration_activity extends Activity {
     private Button registerButton;
     private Button cancelButton;
 
+    private Toolbar toolbar;
+    private ActionBar actionBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
 
         context = getApplicationContext();
         super.onCreate(savedInstanceState);
@@ -86,6 +93,13 @@ public class registration_activity extends Activity {
                 return true;
             }
         });
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setTitle(R.string.registration);
+        //toolbar.setTitle(R.string.registration);
+
 
         userImageFile = (ParseImageView) findViewById(R.id.profile_image);
 
@@ -131,7 +145,7 @@ public class registration_activity extends Activity {
         email = (EditText) findViewById(R.id.email);
         email.setHint(R.string.email_text);
 
-        userHome = (EditText) findViewById(R.id.emailVerify);
+        userHome = (EditText) findViewById(R.id.location);
         userHome.setHint("Location");
 
         userPassword = (EditText) findViewById(R.id.userPassword);
