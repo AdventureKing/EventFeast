@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,13 +28,14 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.eventfeed.EventFeedFragment;
+import com.example.daddyz.turtleboys.friendFeed.userListFragment;
+import com.example.daddyz.turtleboys.maps.MapsActivity;
 import com.example.daddyz.turtleboys.newsfeed.newsfeedFragment;
 import com.example.daddyz.turtleboys.newsfeed.newsfeedPostDetail;
 import com.example.daddyz.turtleboys.newsfeed.newsfeedPostForm;
-import com.example.daddyz.turtleboys.friendFeed.userListFragment;
-import com.example.daddyz.turtleboys.maps.MapsActivity;
 import com.example.daddyz.turtleboys.searchevent.searchEvent;
 import com.example.daddyz.turtleboys.settings.SettingsFragment;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
@@ -88,8 +88,13 @@ public class maindrawer extends AppCompatActivity {
            //create eventfeed fragment and launch it to fill the main screen
             //we get the current fragment manager and start a replacement transaction and we add this transaction to a stack
             //so if we need to move through the stack we pop one off
+
+
             EventFeedFragment fragment = new EventFeedFragment();
             fragManager.beginTransaction().replace(R.id.frame, fragment,"EventFeedFragment").addToBackStack("EventFeed").commit();
+
+
+
 
             //set username and email in the header and user image
             userName = (TextView) findViewById(R.id.username);
