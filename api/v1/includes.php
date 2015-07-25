@@ -14,4 +14,6 @@
 
 	// Models
 	require_once($projectDir.'Models/findEventsModel.php');
+	require_once($projectDir.'Models/friendships.php');
+	require_once($projectDir.'Models/follow.php');
 ?>

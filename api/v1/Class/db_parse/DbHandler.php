@@ -104,14 +104,46 @@
 
 			return false;
 		}
+		
+		/**
+		 * Checking for duplicate user by id
+		 * @param String $userId user id to check in db
+		 * @return boolean
+		 */
+		public function isUserIdExists($userId) {
+			$query = ParseUser::query();
+			$query->equalTo('objectId',$userId);
+			$results = $query->find();
+
+			if(count($results) > 0){
+				return true;
+			} 
+			return false;
+		}
 
 		/**
 		 * Fetching user by email
-		 * @param String $email User email id
+		 * @param String $email User email
 		 */
 		public function getUserByEmail($email) {
 			$query = ParseUser::query();
 			$query->equalTo("email",$email);
+			$results = $query->find();
+
+			if(count($results) > 0){
+				return $results[0];
+			} else{
+				return null;
+			}
+		}
+		
+		/**
+		 * Fetching user by id
+		 * @param String $userId User id
+		 */
+		public function getUserById($userId) {
+			$query = ParseUser::query();
+			$query->equalTo("objectId",$userId);
 			$results = $query->find();
 
 			if(count($results) > 0){

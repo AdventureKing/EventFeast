@@ -70,6 +70,14 @@
 	        $stmt->close();
 	        return $num_rows > 0;
 	    }
+		
+		public function setConn($conn){
+			$this->conn = $conn;
+		}
+		
+		public function getConn(){
+			return $this->conn;
+		}
 
 	}
 

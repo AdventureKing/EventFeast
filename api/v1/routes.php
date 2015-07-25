@@ -4,4 +4,6 @@
 	require_once($projectDir.'Routes/calls.php');
 	require_once($projectDir.'Routes/user.php');
 	require_once($projectDir.'Routes/users.php');
+	require_once($projectDir.'Routes/friendships.php');
+	require_once($projectDir.'Routes/follow.php');
 ?>
