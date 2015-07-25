@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.eventfeed.EventFeedFragment;
+import com.example.daddyz.turtleboys.feedTabView.feedtabview;
 import com.example.daddyz.turtleboys.friendFeed.userListFragment;
 import com.example.daddyz.turtleboys.maps.MapsActivity;
 import com.example.daddyz.turtleboys.newsfeed.newsfeedFragment;
@@ -90,7 +91,7 @@ public class maindrawer extends AppCompatActivity {
             //so if we need to move through the stack we pop one off
 
 
-            EventFeedFragment fragment = new EventFeedFragment();
+            feedtabview fragment = new feedtabview();
             fragManager.beginTransaction().replace(R.id.frame, fragment,"EventFeedFragment").addToBackStack("EventFeed").commit();
 
 
