@@ -1,7 +1,6 @@
 package com.example.daddyz.turtleboys.eventfeed;
 
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -32,7 +31,8 @@ import java.util.Iterator;
 /**
  * Created by Admin on 04-06-2015.
  */
-public class EventFeedFragment extends Fragment implements Response.Listener,
+//had to change fragment class to android.support.v4.app.Fragment
+public class EventFeedFragment extends android.support.v4.app.Fragment implements Response.Listener,
         Response.ErrorListener{
 
     public static final String REQUEST_TAG = "MainVolleyActivity";

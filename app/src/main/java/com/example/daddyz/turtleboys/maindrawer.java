@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -30,11 +31,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
-import com.example.daddyz.turtleboys.eventfeed.EventFeedFragment;
 import com.example.daddyz.turtleboys.feedTabView.feedtabview;
 import com.example.daddyz.turtleboys.friendFeed.userListFragment;
 import com.example.daddyz.turtleboys.maps.MapsActivity;
-import com.example.daddyz.turtleboys.newsfeed.newsfeedFragment;
 import com.example.daddyz.turtleboys.newsfeed.newsfeedPostDetail;
 import com.example.daddyz.turtleboys.newsfeed.newsfeedPostForm;
 import com.example.daddyz.turtleboys.searchevent.searchEvent;
@@ -64,6 +63,7 @@ public class maindrawer extends AppCompatActivity {
     private GigUser currentUser;
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,17 +82,25 @@ public class maindrawer extends AppCompatActivity {
             // Initializing Toolbar and setting it as the actionbar
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
+
             //Setup the Fragment Manager
             fragManager = getFragmentManager();
+
             fragManager.addOnBackStackChangedListener(getListener());
 
            //create eventfeed fragment and launch it to fill the main screen
             //we get the current fragment manager and start a replacement transaction and we add this transaction to a stack
             //so if we need to move through the stack we pop one off
 
-
+            //create tab view
             feedtabview fragment = new feedtabview();
-            fragManager.beginTransaction().replace(R.id.frame, fragment,"EventFeedFragment").addToBackStack("EventFeed").commit();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+// Replace the container with the new fragment
+            ft.replace(R.id.frame, fragment,"EventFeedFragment");
+// or ft.add(R.id.your_placeholder, new FooFragment());
+// Execute the changes specified
+            ft.commit();
+
 
 
 
@@ -157,10 +165,6 @@ public class maindrawer extends AppCompatActivity {
 
 
                         //Replacing the main content with ContentFragment Which is our Inbox View;
-                        case R.id.eventfeed:
-                            EventFeedFragment fragment3 = new EventFeedFragment();
-                            fragManager.beginTransaction().replace(R.id.frame, fragment3,"EventFeedFragment").addToBackStack("EventFeedFragment").commit();
-                            return true;
                         case R.id.messaging:
                             Toast.makeText(getApplicationContext(), "Messaging", Toast.LENGTH_SHORT).show();
                             return true;
@@ -180,8 +184,14 @@ public class maindrawer extends AppCompatActivity {
                             fragManager.beginTransaction().replace(R.id.frame, searchFragment,"SearchEventFragment").addToBackStack("SearchEventFragment").commit();
                             return true;
                         case R.id.newsfeed:
-                           newsfeedFragment fragment2 = new newsfeedFragment();
-                            fragManager.beginTransaction().replace(R.id.frame, fragment2,"newsFeedFragment").addToBackStack("newsFeedFragment").commit();
+                            //create tab view
+                            feedtabview fragment = new feedtabview();
+                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                            // Replace the container with the new fragment
+                            ft.replace(R.id.frame, fragment,"EventFeedFragment");
+                            // or ft.add(R.id.your_placeholder, new FooFragment());
+                            // Execute the changes specified
+                            ft.commit();
                             Toast.makeText(getApplicationContext(), "newsfeed Selected", Toast.LENGTH_SHORT).show();
                             return true;
                         case R.id.connect:
@@ -385,5 +395,6 @@ public class maindrawer extends AppCompatActivity {
         };
         return result;
     }
+
 
 }

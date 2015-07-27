@@ -6,12 +6,7 @@
             android:id="@+id/newsfeed"
             android:checked="false"
             android:icon="@drawable/ic_local_library_black_24dp"
-            android:title="@string/newsfeed" />
-        <item
-            android:id="@+id/eventfeed"
-            android:checked="false"
-            android:icon="@drawable/ic_event_seat_black_24dp"
-            android:title="@string/eventfeed" />
+            android:title="@string/feed" />
 
         <item
             android:id="@+id/messaging"
