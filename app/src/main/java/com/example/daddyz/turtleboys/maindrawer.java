@@ -29,7 +29,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.feedTabView.feedtabview;
 import com.example.daddyz.turtleboys.friendFeed.userListFragment;
@@ -177,11 +176,11 @@ public class maindrawer extends AppCompatActivity {
                             return true;
                         case R.id.users:
                             userListFragment fragment4 = new userListFragment();
-                            fragManager.beginTransaction().replace(R.id.frame, fragment4,"userListFragment").addToBackStack("userListFragment").commit();
+                            fragManager.beginTransaction().replace(R.id.tabView, fragment4,"userListFragment").addToBackStack("userListFragment").commit();
                             return true;
                         case R.id.search_event:
                             searchEvent searchFragment = new searchEvent();
-                            fragManager.beginTransaction().replace(R.id.frame, searchFragment,"SearchEventFragment").addToBackStack("SearchEventFragment").commit();
+                            fragManager.beginTransaction().replace(R.id.tabView, searchFragment,"SearchEventFragment").addToBackStack("SearchEventFragment").commit();
                             return true;
                         case R.id.newsfeed:
                             //create tab view
