@@ -68,6 +68,7 @@
 	        $stmt->store_result();
 	        $num_rows = $stmt->num_rows;
 	        $stmt->close();
+
 	        return $num_rows > 0;
 	    }
 		

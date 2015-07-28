@@ -18,13 +18,12 @@
 			$isFriendExist = $db_parse->isUserIdExists($friendUserId);
 			
 			if(!$isFriendExist || empty($userId) || $userId == $friendUserId){
-				echo $isFriendExist;
 				return NULL;
 			}
 			
 			// Verify that not already following
 			$stmt = $this->conn->prepare("SELECT f.follower_user_id, f.followed_user_id, f.status, f.created from follow f WHERE f.follower_user_id = ? AND f.followed_user_id = ?");
-			$stmt->bind_param("ii", $userId, $friendUserId);
+			$stmt->bind_param("ss", $userId, $friendUserId);
 			if ($stmt->execute()) {
 				$ret = $stmt->get_result()->fetch_assoc();
 				$stmt->close();
