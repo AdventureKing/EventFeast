@@ -10,6 +10,8 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -18,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
 import com.example.daddyz.turtleboys.VolleyRequestQueue;
+import com.example.daddyz.turtleboys.eventfeed.eventfeedAdapter;
 import com.example.daddyz.turtleboys.friendFeed.dummy.DummyContent;
 import com.example.daddyz.turtleboys.subclasses.FollowUser;
 
@@ -90,7 +93,7 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
         }
 
         // TODO: Change Adapter to display your content
-        adapter = new userListAdapter(getActivity(),  R.layout.user_list_follow_row, userArray );
+        adapter = new userListAdapter(getActivity(),  R.layout.user_list_follow_row, userArray, this);
     }
 
     @Override
@@ -122,14 +125,23 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
 
     @Override
     public void onResponse(Object response) {
-        Log.i("Response: ", response.toString());
+        JSONObject mainObject = ((JSONObject) response);
+
+        try{
+            Log.i("Response: ", mainObject.getString("result") + ": "  + mainObject.getString("message"));
+        } catch(NullPointerException err){
+            Log.i("ERROR", "No Response Given - userListFragment");
+        } catch(JSONException err){
+            Log.i("ERROR", "No Response Given - userListFragment");
+        }
+
         loadEvents(response);
     }
 
     public void loadEvents(Object response){
         userArray = createFollowUserObjectsFromResponse(response);
 
-        adapter = new userListAdapter(getActivity(), R.layout.user_list_follow_row, userArray);
+        adapter = new userListAdapter(getActivity(), R.layout.user_list_follow_row, userArray, this);
         list.setAdapter(adapter);
         ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
 
@@ -196,5 +208,18 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
 
         return userTmpArray;
     }
+
+    public void updateItemAtPosition(int position, ArrayList<FollowUser> userObjects) {
+        this.userArray = userObjects;
+
+        int visiblePosition = this.list.getFirstVisiblePosition();
+        View view = this.list.getChildAt(position - visiblePosition);
+        this.list.getAdapter().getView(position, view, this.list);
+
+        adapter.notifyDataSetChanged();
+
+        //Toast.makeText(this.getActivity().getApplicationContext(), "Hi! I updated you!", Toast.LENGTH_SHORT).show();
+    }
+
 
 }

@@ -40,14 +40,45 @@ android:padding="8dip" >
     android:layout_toEndOf="@+id/icon" />
 
     <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Follow"
-        android:id="@+id/button3"
+        android:id="@+id/followBtn"
+
+        android:text="+ Follow"
+        android:textColor="#81b71a"
+        android:textSize="13sp"
+
+        android:layout_width="80dp"
+        android:layout_height="30dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/followbtnshape"
+        android:visibility="gone"
+        />
 
+    <Button
+        android:id="@+id/unfollowBtn"
+
+        android:text="- Following"
+        android:textColor="#fff3f3f3"
+        android:textSize="13sp"
+
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/unfollowbtnshape"
+        android:visibility="gone"
+        />
+
+    <ProgressBar
+        android:id="@+id/followProgress"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        />
 
 </RelativeLayout>

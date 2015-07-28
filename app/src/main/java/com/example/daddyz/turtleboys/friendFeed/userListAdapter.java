@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -21,9 +22,11 @@ import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
 import com.example.daddyz.turtleboys.VolleyRequestQueue;
 import com.example.daddyz.turtleboys.subclasses.FollowUser;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by richardryangarcia on 7/17/15.
@@ -34,36 +37,22 @@ public class userListAdapter extends ArrayAdapter<FollowUser> implements Respons
     private Context context;
     private int resource;
     private ArrayList<FollowUser> userObjects;
-    private View row = null;
+    private View row;
     private LayoutInflater inflater = null;
     private ViewGroup parent = null;
     private RequestQueue mQueue;
+    private userListFragment fragment;
+    private int position = 0;
+    public static final String REQUEST_TAG = "User List Adapter";
 
 
-    public userListAdapter(Context context, int resource, ArrayList<FollowUser> userObjects) {
+    public userListAdapter(Context context, int resource, ArrayList<FollowUser> userObjects, userListFragment fragment) {
         super(context, resource, userObjects);
         this.context = context;
         this.resource = resource;
         this.userObjects = userObjects;
-    }
+        this.fragment = fragment;
 
-    public void setRow(int num){
-        switch(num) {
-            case 0:
-                row = inflater.inflate(R.layout.user_list_follow_row, parent, false);
-                //Log.i("Switched", "to follow button");
-                this.notifyDataSetChanged();
-                return;
-            case 1:
-                row = inflater.inflate(R.layout.user_list_unfollow_row, parent, false);
-                //Log.i("Switched", "to unfollow button");
-                this.notifyDataSetChanged();
-                return;
-            case 2:
-                return;
-            default:
-                return;
-        }
     }
 
     @Override
@@ -71,28 +60,32 @@ public class userListAdapter extends ArrayAdapter<FollowUser> implements Respons
         //get inflator so it will strech the view to fill the row data
         this.inflater = ((Activity) context).getLayoutInflater();
         this.parent = parent;
+        this.position = position;
+
+        this.row = inflater.inflate(resource, parent, false);
 
         switch(userObjects.get(position).getFollowing()){
             case 0 :
-                setRow(0);
-                Button followBtn = (Button) row.findViewById(R.id.button3);
+                row.findViewById(R.id.followBtn).setVisibility(View.VISIBLE);
+                Button followBtn = (Button) row.findViewById(R.id.followBtn);
                 followBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Log.i("Follow Button", "Clicked");
-                        //setRow(1);
-                        doFollow(userObjects.get(position).getUserId());
+                        userObjects.get(position).setFollowing(1);
+                        doFollow(userObjects.get(position).getUserId(), view);
                     }
                 });
                 break;
             case 1 :
-                setRow(1);
-                Button unfollowBtn = (Button) this.row.findViewById(R.id.button2);
+                row.findViewById(R.id.unfollowBtn).setVisibility(View.VISIBLE);
+                Button unfollowBtn = (Button) this.row.findViewById(R.id.unfollowBtn);
                 unfollowBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Log.i("Unfollow Buton", "Clicked");
-                        doUnfollow(userObjects.get(position).getUserId());
+                        Log.i("Unfollow Button", "Clicked");
+                        userObjects.get(position).setFollowing(0);
+                        doUnfollow(userObjects.get(position).getUserId(), view);
                     }
                 });
                 break;
@@ -115,37 +108,66 @@ public class userListAdapter extends ArrayAdapter<FollowUser> implements Respons
         return row;
     }
 
-    private void doFollow(String userId){
+    private void doFollow(String userId, View v){
+        v.findViewById(R.id.followBtn).setVisibility(View.GONE);
+
         mQueue = VolleyRequestQueue.getInstance(context)
                 .getRequestQueue();
         String url = "http://api.dev.turtleboys.com/v1/friendships/create/" + userId;
         final VolleyJSONObjectRequest jsonRequest = new VolleyJSONObjectRequest(Request.Method
                 .POST, url,
                 new JSONObject(), this, this);
-        jsonRequest.setTag("Follow");
+        jsonRequest.setTag(REQUEST_TAG);
         mQueue.add(jsonRequest);
     }
 
-    private void doUnfollow(String userId){
+    private void doUnfollow(String userId, View v){
+        v.findViewById(R.id.unfollowBtn).setVisibility(View.GONE);
+
         mQueue = VolleyRequestQueue.getInstance(context)
                 .getRequestQueue();
         String url = "http://api.dev.turtleboys.com/v1/friendships/destroy/" + userId;
         final VolleyJSONObjectRequest jsonRequest = new VolleyJSONObjectRequest(Request.Method
                 .DELETE, url,
                 new JSONObject(), this, this);
-        jsonRequest.setTag("UnFollow");
+        jsonRequest.setTag(REQUEST_TAG);
         mQueue.add(jsonRequest);
     }
 
     @Override
     public void onErrorResponse(VolleyError volleyError) {
-        Log.i("Volley Error", volleyError.toString());
+        try{
+            Log.i("Volley Error", volleyError.toString());
+        }catch(NullPointerException err){
+            Log.i("Volley Error", err.toString());
+            err.printStackTrace();
+        }
     }
 
     @Override
-    public void onResponse(Object o) {
-        //Log.i("Response", o.toString());
-        this.notifyDataSetChanged();
+    public void onResponse(Object response) {
+        String result = null;
+        String message = null;
+
+        try{
+            JSONObject mainObject = ((JSONObject) response);
+            result = mainObject.getString("result");
+            message = mainObject.getString("message");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if(null != result && result.equals("success")){
+            Log.i("Response", "Success: " + message);
+
+            fragment.updateItemAtPosition(position, userObjects);
+
+        } else if(null != result && result.equals("error")){
+            Log.i("Response", "Error: " + message);
+        } else{
+            Log.i("ERROR", "No Response Retrieved from Request");
+        }
     }
 
     @Override
