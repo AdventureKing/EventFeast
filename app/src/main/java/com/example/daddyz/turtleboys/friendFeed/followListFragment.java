@@ -2,6 +2,7 @@ package com.example.daddyz.turtleboys.friendFeed;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +22,13 @@ import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
 import com.example.daddyz.turtleboys.VolleyRequestQueue;
 import com.example.daddyz.turtleboys.friendFeed.dummy.DummyContent;
 import com.example.daddyz.turtleboys.subclasses.FollowUser;
+import com.example.daddyz.turtleboys.subclasses.GigUser;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * A fragment representing a list of Items.
@@ -35,13 +39,15 @@ import java.util.ArrayList;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
+
+
 public class followListFragment extends Fragment implements Response.Listener,AbsListView.OnItemClickListener, Response.ErrorListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    public static final String REQUEST_TAG = "MainVolleyActivity";
+    public static final String REQUEST_TAG = "User List Fragment";
     //private Button mButton;
 
     // TODO: Rename and change types of parameters
@@ -49,26 +55,17 @@ public class followListFragment extends Fragment implements Response.Listener,Ab
     private String mParam2;
     private followListAdapter adapter;
     private RequestQueue mQueue;
-    private ArrayList<FollowUser> followArray;
+    private ArrayList<GigUser> userArray;
     private ListView list;
     private View rootView;
-
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * The fragment's ListView/GridView.
-     */
     private AbsListView mListView;
 
-    /**
-     * The Adapter which will be used to populate the ListView/GridView with
-     * Views.
-     */
-    private ListAdapter mAdapter;
 
     // TODO: Rename and change types of parameters
-    public static followListFragment newInstance(String param1, String param2) {
-        followListFragment fragment = new followListFragment();
+    public static userListFragment newInstance(String param1, String param2) {
+        userListFragment fragment = new userListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -98,10 +95,7 @@ public class followListFragment extends Fragment implements Response.Listener,Ab
         }
 
         // TODO: Change Adapter to display your content
-        adapter = new followListAdapter(getActivity(),  R.layout.user_list_follow_row, followArray );
-
-       /* mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);*/
+        adapter = new followListAdapter(getActivity(),  R.layout.user_list_follow_row, userArray );
     }
 
     @Override
@@ -113,28 +107,7 @@ public class followListFragment extends Fragment implements Response.Listener,Ab
         list = (ListView) rootView.findViewById(R.id.listView);
         list.setClickable(true);
 
-        // Set the adapter
-        // mListView = (AbsListView) view.findViewById(android.R.id.list);
-        // ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
-
-        // Set OnItemClickListener so we can be notified on item clicks
-        // mListView.setOnItemClickListener(this);
-
-
         return rootView;
-    }
-
-    public ArrayList<FollowUser> createFakeArrayList(){
-        FollowUser user = new FollowUser(1, 0, "gh76hg546", "ads4353545h");
-        FollowUser user2 = new FollowUser(2, 0, "lolo8769", "asdfd342222");
-        FollowUser user3 = new FollowUser(3, 1, "876jhgg78", "098698kjhkjh");
-
-        ArrayList<FollowUser> list = new ArrayList();
-        list.add(user);
-        list.add(user2);
-        list.add(user3);
-
-        return list;
     }
 
     @Override
@@ -143,7 +116,7 @@ public class followListFragment extends Fragment implements Response.Listener,Ab
 
         mQueue = VolleyRequestQueue.getInstance(this.getActivity().getApplicationContext())
                 .getRequestQueue();
-        String url = "https://api.turtleboys.com/v1/events/find/kendrick";
+        String url = "http://api.dev.turtleboys.com/v1/users/list";
         final VolleyJSONObjectRequest jsonRequest = new VolleyJSONObjectRequest(Request.Method
                 .GET, url,
                 new JSONObject(), this, this);
@@ -154,29 +127,20 @@ public class followListFragment extends Fragment implements Response.Listener,Ab
 
     @Override
     public void onResponse(Object response) {
+        Log.i("Response: ", response.toString());
         loadEvents(response);
     }
 
     public void loadEvents(Object response){
-        followArray = createFakeArrayList();
+        userArray = createGigUserObjectsFromResponse(response);
 
-        adapter = new followListAdapter(getActivity(), R.layout.user_list_follow_row, followArray);
+        adapter = new followListAdapter(getActivity(), R.layout.user_list_follow_row, userArray);
         list.setAdapter(adapter);
         ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
 
         rootView.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
     }
 
-  /*  @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }*/
 
     @Override
     public void onDetach() {
@@ -190,19 +154,6 @@ public class followListFragment extends Fragment implements Response.Listener,Ab
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
             mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
-        }
-    }
-
-    /**
-     * The default content for this Fragment has a TextView that is shown when
-     * the list is empty. If you would like to change the text, call this method
-     * to supply the text it should use.
-     */
-    public void setEmptyText(CharSequence emptyText) {
-        View emptyView = mListView.getEmptyView();
-
-        if (emptyView instanceof TextView) {
-            ((TextView) emptyView).setText(emptyText);
         }
     }
 
@@ -221,4 +172,34 @@ public class followListFragment extends Fragment implements Response.Listener,Ab
         public void onFragmentInteraction(String id);
     }
 
+    public ArrayList<GigUser> createGigUserObjectsFromResponse(Object response){
+        ArrayList<GigUser> userTmpArray = new ArrayList<>();
+
+        try{
+            JSONObject mainObject = ((JSONObject) response);
+            JSONObject itemsObject = mainObject.getJSONObject("items");
+            Iterator<?> keys = itemsObject.keys();
+
+
+            while( keys.hasNext() ) {
+                String key = (String)keys.next();
+                if ( itemsObject.get(key) instanceof JSONObject ) {
+                    GigUser gUser = new GigUser();
+                    gUser.setUserId(((JSONObject) itemsObject.get(key)).getString("userId"));
+                    gUser.setUsername(((JSONObject) itemsObject.get(key)).getString("username"));
+                    gUser.setFirstName(((JSONObject) itemsObject.get(key)).getString("firstName"));
+                    gUser.setLastName(((JSONObject) itemsObject.get(key)).getString("lastName"));
+                    gUser.setEmail(((JSONObject) itemsObject.get(key)).getString("email"));
+
+                    userTmpArray.add(gUser);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return userTmpArray;
+    }
+
 }
+

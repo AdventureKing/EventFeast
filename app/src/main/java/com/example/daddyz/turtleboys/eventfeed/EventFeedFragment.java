@@ -90,12 +90,12 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
         jsonRequest.setTag(REQUEST_TAG);
         mQueue.add(jsonRequest);
 
-        mButton.setOnClickListener(new View.OnClickListener() {
+       /* mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mQueue.add(jsonRequest);
             }
-        });
+        });*/
     }
 
     @Override

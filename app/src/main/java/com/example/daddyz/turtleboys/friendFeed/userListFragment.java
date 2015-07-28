@@ -55,19 +55,10 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
     private ArrayList<GigUser> userArray;
     private ListView list;
     private View rootView;
-
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * The fragment's ListView/GridView.
-     */
     private AbsListView mListView;
 
-    /**
-     * The Adapter which will be used to populate the ListView/GridView with
-     * Views.
-     */
-    private ListAdapter mAdapter;
 
     // TODO: Rename and change types of parameters
     public static userListFragment newInstance(String param1, String param2) {
@@ -102,9 +93,6 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
 
         // TODO: Change Adapter to display your content
         adapter = new userListAdapter(getActivity(),  R.layout.user_list_follow_row, userArray );
-
-       /* mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);*/
     }
 
     @Override
@@ -116,41 +104,7 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
         list = (ListView) rootView.findViewById(R.id.listView);
         list.setClickable(true);
 
-        // Set the adapter
-        // mListView = (AbsListView) view.findViewById(android.R.id.list);
-        // ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
-
-        // Set OnItemClickListener so we can be notified on item clicks
-        // mListView.setOnItemClickListener(this);
-
-
         return rootView;
-    }
-
-    public ArrayList<GigUser> createArrayListOfUsers(){
-        ArrayList<GigUser> list = new ArrayList();
-        return list;
-    }
-
-    public ArrayList<GigUser> createFakeArrayList(){
-        GigUser user = new GigUser();
-        user.setFirstName("Daffy");
-        user.setLastName("Duck");
-
-        GigUser user2 = new GigUser();
-        user2.setFirstName("Bugs");
-        user2.setLastName("Bunny");
-
-        GigUser user3 = new GigUser();
-        user3.setFirstName("Porky");
-        user3.setLastName("Pig");
-
-        ArrayList<GigUser> list = new ArrayList();
-        list.add(user);
-        list.add(user2);
-        list.add(user3);
-
-        return list;
     }
 
     @Override
@@ -184,16 +138,6 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
         rootView.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
     }
 
-  /*  @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }*/
 
     @Override
     public void onDetach() {
@@ -207,19 +151,6 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
             mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
-        }
-    }
-
-    /**
-     * The default content for this Fragment has a TextView that is shown when
-     * the list is empty. If you would like to change the text, call this method
-     * to supply the text it should use.
-     */
-    public void setEmptyText(CharSequence emptyText) {
-        View emptyView = mListView.getEmptyView();
-
-        if (emptyView instanceof TextView) {
-            ((TextView) emptyView).setText(emptyText);
         }
     }
 
@@ -247,9 +178,6 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
             Iterator<?> keys = itemsObject.keys();
 
 
-            //JSONObject jObject = ((JSONObject) response);
-            //Iterator<?> keys = jObject.keys();
-
             while( keys.hasNext() ) {
                 String key = (String)keys.next();
                 if ( itemsObject.get(key) instanceof JSONObject ) {
@@ -261,7 +189,6 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
                     gUser.setEmail(((JSONObject) itemsObject.get(key)).getString("email"));
 
                     userTmpArray.add(gUser);
-                    //Log.i("Ind Object JSON", ((JSONObject) jObject.get(key)).toString());
                 }
             }
         } catch (JSONException e) {

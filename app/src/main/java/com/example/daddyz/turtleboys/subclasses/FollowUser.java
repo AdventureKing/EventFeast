@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * Created by richardryangarcia on 7/17/15.
  */
-public class FollowUser  {
+public class FollowUser extends GigUser{
 
     private int follow_id, status;
     private String follower_user_id;
