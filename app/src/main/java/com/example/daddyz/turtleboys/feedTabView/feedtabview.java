@@ -1,17 +1,16 @@
 package com.example.daddyz.turtleboys.feedTabView;
 
 import android.app.ActionBar;
-
-
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.app.FragmentManager;
+import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.eventfeed.EventFeedFragment;
 import com.example.daddyz.turtleboys.newsfeed.newsfeedFragment;
@@ -19,7 +18,7 @@ import com.example.daddyz.turtleboys.newsfeed.newsfeedFragment;
 /**
  * Created by snow on 7/23/2015.
  */
-public class feedtabview extends android.support.v4.app.Fragment {
+public class feedtabview extends Fragment {
 
 
     private View view;
@@ -76,7 +75,7 @@ public class feedtabview extends android.support.v4.app.Fragment {
         }
 
         @Override
-        public android.support.v4.app.Fragment getItem(int position) {
+        public Fragment getItem(int position) {
 
             switch (position) {
                 case 0:

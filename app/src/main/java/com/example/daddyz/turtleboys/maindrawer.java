@@ -93,12 +93,13 @@ public class maindrawer extends AppCompatActivity {
 
             //create tab view
             feedtabview fragment = new feedtabview();
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 // Replace the container with the new fragment
-            ft.replace(R.id.frame, fragment,"EventFeedFragment");
+            //ft.replace(R.id.frame, fragment,"EventFeedFragment");
 // or ft.add(R.id.your_placeholder, new FooFragment());
 // Execute the changes specified
-            ft.commit();
+            //ft.commit();
+            fragManager.beginTransaction().replace(R.id.frame, fragment,"EventFeedFragment").addToBackStack("EventFeedFragment").commit();
 
 
 
@@ -176,21 +177,22 @@ public class maindrawer extends AppCompatActivity {
                             return true;
                         case R.id.users:
                             userListFragment fragment4 = new userListFragment();
-                            fragManager.beginTransaction().replace(R.id.tabView, fragment4,"userListFragment").addToBackStack("userListFragment").commit();
+                            fragManager.beginTransaction().replace(R.id.frame, fragment4,"userListFragment").addToBackStack("userListFragment").commit();
                             return true;
                         case R.id.search_event:
                             searchEvent searchFragment = new searchEvent();
-                            fragManager.beginTransaction().replace(R.id.tabView, searchFragment,"SearchEventFragment").addToBackStack("SearchEventFragment").commit();
+                            fragManager.beginTransaction().replace(R.id.frame, searchFragment,"SearchEventFragment").addToBackStack("SearchEventFragment").commit();
                             return true;
                         case R.id.newsfeed:
                             //create tab view
                             feedtabview fragment = new feedtabview();
-                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                            //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                             // Replace the container with the new fragment
-                            ft.replace(R.id.frame, fragment,"EventFeedFragment");
+                            //ft.replace(R.id.frame, fragment,"EventFeedFragment");
                             // or ft.add(R.id.your_placeholder, new FooFragment());
                             // Execute the changes specified
-                            ft.commit();
+                            //ft.commit();
+                            fragManager.beginTransaction().replace(R.id.frame, fragment, "EventFeedFragment").addToBackStack("EventFeedFragment").commit();
                             Toast.makeText(getApplicationContext(), "newsfeed Selected", Toast.LENGTH_SHORT).show();
                             return true;
                         case R.id.connect:
@@ -329,7 +331,7 @@ public class maindrawer extends AppCompatActivity {
 
         }
         //changed this line
-        if(fragManager.getBackStackEntryCount() >= 1 ) {
+        if(fragManager.getBackStackEntryCount() >= 2 ) {
             fragManager.popBackStack();
         } else {
             super.onBackPressed();
@@ -359,6 +361,11 @@ public class maindrawer extends AppCompatActivity {
                 newsfeedPostDetail myFragment3 = (newsfeedPostDetail)fragManager.findFragmentByTag("NewsFeedPostDetail");
                 newsfeedPostForm myFragment4 = (newsfeedPostForm)fragManager.findFragmentByTag("NewsFeedPostForm");
                 searchEvent myFragment5 = (searchEvent) fragManager.findFragmentByTag("SearchEventFragment");
+                feedtabview tabsFragment = (feedtabview) fragManager.findFragmentByTag("EventFeedFragment");
+                if (tabsFragment != null && tabsFragment.isVisible() && !(myFragment2 != null && !myFragment2.isVisible())){  //This needs to change so eventdetail and settings do not reset the view
+                    tabsFragment = new feedtabview();
+                    fragManager.beginTransaction().replace(R.id.frame, tabsFragment, "EventFeedFragment").commit();
+                }
                 if (myFragment5 != null && myFragment5.isVisible()){
                     actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
                     toolbar.setTitle("Search Event");

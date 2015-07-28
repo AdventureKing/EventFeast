@@ -1,5 +1,6 @@
 package com.example.daddyz.turtleboys.newsfeed;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -22,8 +23,8 @@ import java.util.ArrayList;
 /**
  * Created by snow on 7/11/2015.
  */
-//had to change to android.support.v4.app.Fragment
-public class newsfeedFragment extends android.support.v4.app.Fragment{
+//had to change to android.app.Fragment
+public class newsfeedFragment extends Fragment {
 
     public static final String REQUEST_TAG = "MainVolleyActivity";
     private Button mButton;

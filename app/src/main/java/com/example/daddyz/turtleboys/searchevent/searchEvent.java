@@ -19,9 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
 import com.example.daddyz.turtleboys.R;
-
 import java.util.Calendar;
 import java.util.Date;
 
