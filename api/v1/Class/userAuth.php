@@ -115,6 +115,7 @@
 				$userID = $db->getUserId($api_key);
 				if (NULL != $userID){
 					$user_id = $userID;
+					$_SESSION['userId'] = $user_id;
 				}
 			}
 		} else if(!isset($headers['Authorization'])){

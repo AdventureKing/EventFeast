@@ -1,17 +1,18 @@
 <?php
+	
 	/**
-	 * Users List
-	 * url - /list
+	 * Followers
+	 * url - /followers/list
 	 * method - GET
 	 */
-	$app->get('/users/list', 'authenticate', function() use ($app) {
+	$app->get('/followers/list', 'authenticate', function() use ($app) {
+		global $user_id;
+		
 		$response = array();
 
-		$db = new DbHandlerParse();
-		$results = $db->getUserList();
+		$db = new Followers();
+		$results = $db->getFollowers($user_id);
 		$records = array();
-
-		$followers = new Followers();
 
 		//echo "Successfully retrieved " . count($results) . " scores.<br><br>";
 		// Do something with the returned ParseObject values
@@ -24,7 +25,6 @@
 	  		$records[$i]['lastName'] = $object->get('lastName');
 	  		$records[$i]['username'] = $object->get('username');
 	  		$records[$i]['email'] = $object->get('email');
-	  		$records[$i]['following'] = $followers->isFollowing($object->getObjectId());
 
 	  		//echo $object->getObjectId() . ' - ' . $object->get('username') . '<br>';
 		}
@@ -43,4 +43,5 @@
 
 		echoRespnse(200, $response);
 	});
+
 ?>

@@ -5,5 +5,6 @@
 	require_once($projectDir.'Routes/user.php');
 	require_once($projectDir.'Routes/users.php');
 	require_once($projectDir.'Routes/friendships.php');
-	require_once($projectDir.'Routes/follow.php');
+	require_once($projectDir.'Routes/followers.php');
+	require_once($projectDir.'Routes/friends.php');
 ?>

@@ -35,6 +35,9 @@
 				}
 			}
 			
+			$db_mark = new DbHandlerMark();
+			$db_mark->run_sql("INSERT INTO follow(follower_user_id,followed_user_id,status) VALUES('$userId','$friendUserId','1')");
+
 			$stmt = $this->conn->prepare("INSERT INTO follow(follower_user_id,followed_user_id,status) VALUES(?,?,'1')");
 			$stmt->bind_param("ss", $userId, $friendUserId);
 			$result = $stmt->execute();
@@ -89,6 +92,9 @@
 					return NULL;
 				}
 			}
+
+			$db_mark = new DbHandlerMark();
+			$db_mark->run_sql("DELETE from follow WHERE follower_user_id = '$userId' AND followed_user_id = '$friendUserId'");
 			
 			$stmt = $this->conn->prepare("DELETE from follow WHERE follower_user_id = ? AND followed_user_id = ?");
 			$stmt->bind_param("ss", $userId, $friendUserId);
@@ -115,78 +121,6 @@
 				//echo "uh oh, why can't you unfollow friend?";
 				return NULL;
 			}
-		}
-
-		/**
-		 * Fetching single call
-		 * @param String $call_id id of the call
-		 */
-		public function getCall($call_id, $user_id) {
-			$stmt = $this->conn->prepare("SELECT c.id, c.call, c.status, c.created_at from calls c, user_calls uc WHERE c.id = ? AND uc.call_id = c.id AND uc.user_id = ?");
-			$stmt->bind_param("ii", $call_id, $user_id);
-			if ($stmt->execute()) {
-				$call = $stmt->get_result()->fetch_assoc();
-				$stmt->close();
-				return $call;
-			} else {
-				return NULL;
-			}
-		}
-
-		/**
-		 * Fetching all user calls
-		 * @param String $user_id id of the user
-		 */
-		public function getAllUserCalls($user_id) {
-			$stmt = $this->conn->prepare("SELECT c.* FROM calls c, user_calls uc WHERE c.id = uc.call_id AND uc.user_id = ?");
-			$stmt->bind_param("i", $user_id);
-			$stmt->execute();
-			$calls = $stmt->get_result();
-			$stmt->close();
-			return $calls;
-		}
-
-		/**
-		 * Updating call
-		 * @param String $call_id id of the call
-		 * @param String $call call text
-		 * @param String $status call status
-		 */
-		public function updateCall($user_id, $call_id, $call, $status) {
-			$stmt = $this->conn->prepare("UPDATE calls c, user_calls uc set c.call = ?, c.status = ? WHERE c.id = ? AND c.id = uc.call_id AND uc.user_id = ?");
-			$stmt->bind_param("siii", $call, $status, $call_id, $user_id);
-			$stmt->execute();
-			$num_affected_rows = $stmt->affected_rows;
-			$stmt->close();
-			return $num_affected_rows > 0;
-		}
-
-		/**
-		 * Deleting a call
-		 * @param String $call_id id of the call to delete
-		 */
-		public function deleteCall($user_id, $call_id) {
-			$stmt = $this->conn->prepare("DELETE c FROM calls c, user_calls uc WHERE c.id = ? AND uc.call_id = c.id AND uc.user_id = ?");
-			$stmt->bind_param("ii", $call_id, $user_id);
-			$stmt->execute();
-			$num_affected_rows = $stmt->affected_rows;
-			$stmt->close();
-			return $num_affected_rows > 0;
-		}
-
-		/* ------------- `user_calls` table method ------------------ */
-
-		/**
-		 * Function to assign a call to user
-		 * @param String $user_id id of the user
-		 * @param String $call_id id of the call
-		 */
-		public function createUserCall($user_id, $call_id) {
-			$stmt = $this->conn->prepare("INSERT INTO user_calls(user_id, call_id) values(?, ?)");
-			$stmt->bind_param("ii", $user_id, $call_id);
-			$result = $stmt->execute();
-			$stmt->close();
-			return $result;
 		}
 	}
 ?>
