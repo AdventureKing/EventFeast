@@ -61,7 +61,7 @@ public class maindrawer extends AppCompatActivity {
     private FragmentManager fragManager;
     private GigUser currentUser;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-
+    private Boolean refreshTabViewFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,17 +93,8 @@ public class maindrawer extends AppCompatActivity {
 
             //create tab view
             feedtabview fragment = new feedtabview();
-            //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-// Replace the container with the new fragment
-            //ft.replace(R.id.frame, fragment,"EventFeedFragment");
-// or ft.add(R.id.your_placeholder, new FooFragment());
-// Execute the changes specified
-            //ft.commit();
+            refreshTabViewFlag = true;
             fragManager.beginTransaction().replace(R.id.frame, fragment,"EventFeedFragment").addToBackStack("EventFeedFragment").commit();
-
-
-
-
 
             //set username and email in the header and user image
             userName = (TextView) findViewById(R.id.username);
@@ -186,12 +177,6 @@ public class maindrawer extends AppCompatActivity {
                         case R.id.newsfeed:
                             //create tab view
                             feedtabview fragment = new feedtabview();
-                            //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                            // Replace the container with the new fragment
-                            //ft.replace(R.id.frame, fragment,"EventFeedFragment");
-                            // or ft.add(R.id.your_placeholder, new FooFragment());
-                            // Execute the changes specified
-                            //ft.commit();
                             fragManager.beginTransaction().replace(R.id.frame, fragment, "EventFeedFragment").addToBackStack("EventFeedFragment").commit();
                             Toast.makeText(getApplicationContext(), "newsfeed Selected", Toast.LENGTH_SHORT).show();
                             return true;
@@ -330,6 +315,13 @@ public class maindrawer extends AppCompatActivity {
             frame.setVisibility(View.VISIBLE);
 
         }
+
+        //This grabs the current fragment, you can use this to set up actions specific to leaving a certain fragment
+        Fragment currFrag = fragManager.findFragmentById(R.id.drawer);
+        if (currFrag instanceof SettingsFragment || currFrag instanceof eventDetailFragment || currFrag instanceof newsfeedPostDetail){
+            refreshTabViewFlag = false;
+        }
+
         //changed this line
         if(fragManager.getBackStackEntryCount() >= 2 ) {
             fragManager.popBackStack();
@@ -362,10 +354,13 @@ public class maindrawer extends AppCompatActivity {
                 newsfeedPostForm myFragment4 = (newsfeedPostForm)fragManager.findFragmentByTag("NewsFeedPostForm");
                 searchEvent myFragment5 = (searchEvent) fragManager.findFragmentByTag("SearchEventFragment");
                 feedtabview tabsFragment = (feedtabview) fragManager.findFragmentByTag("EventFeedFragment");
-                if (tabsFragment != null && tabsFragment.isVisible() && !(myFragment2 != null && !myFragment2.isVisible())){  //This needs to change so eventdetail and settings do not reset the view
+
+                //This is where the refresh of the tabsview occurs, it should only occur with fragments that replace the frame
+                if (tabsFragment != null && tabsFragment.isVisible() && myFragment2 == null && myFragment == null && myFragment3 == null && refreshTabViewFlag){
                     tabsFragment = new feedtabview();
                     fragManager.beginTransaction().replace(R.id.frame, tabsFragment, "EventFeedFragment").commit();
                 }
+                refreshTabViewFlag = true;
                 if (myFragment5 != null && myFragment5.isVisible()){
                     actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
                     toolbar.setTitle("Search Event");

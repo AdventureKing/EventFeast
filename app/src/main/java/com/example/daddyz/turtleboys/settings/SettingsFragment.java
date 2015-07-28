@@ -63,7 +63,7 @@ public class SettingsFragment extends Fragment {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                getActivity().onBackPressed();
                 container.findViewById(R.id.frame).setVisibility(View.VISIBLE);
             }
         });
