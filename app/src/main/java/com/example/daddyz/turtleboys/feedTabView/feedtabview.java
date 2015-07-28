@@ -2,15 +2,15 @@ package com.example.daddyz.turtleboys.feedTabView;
 
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.app.FragmentManager;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.eventfeed.EventFeedFragment;
 import com.example.daddyz.turtleboys.newsfeed.newsfeedFragment;
@@ -34,8 +34,9 @@ public class feedtabview extends Fragment {
         View inflatedView = inflater.inflate(R.layout.feedtablayout, container, false);
 
         TabLayout tabLayout = (TabLayout) inflatedView.findViewById(R.id.sliding_tabs);
-        tabLayout.addTab(tabLayout.newTab().setText("Newsfeed"));
         tabLayout.addTab(tabLayout.newTab().setText("EventFeed"));
+        tabLayout.addTab(tabLayout.newTab().setText("Newsfeed"));
+
         final ViewPager viewPager = (ViewPager) inflatedView.findViewById(R.id.viewpager);
 
         //the tab bar functionality is layed out here
@@ -80,12 +81,12 @@ public class feedtabview extends Fragment {
             switch (position) {
                 case 0:
                     //if user is on first tab
-                    newsfeedFragment tab1 = new newsfeedFragment();
+                    EventFeedFragment tab1 = new EventFeedFragment();
                     return tab1;
                 case 1:
                     //if user is on second tab
-                    EventFeedFragment tab2 = new EventFeedFragment();
-                    return tab2;
+                newsfeedFragment tab2 = new newsfeedFragment();
+                return tab2;
                 default:
                     return null;
             }
