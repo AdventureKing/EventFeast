@@ -9,9 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,7 +19,7 @@ import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
 import com.example.daddyz.turtleboys.VolleyRequestQueue;
 import com.example.daddyz.turtleboys.friendFeed.dummy.DummyContent;
-import com.example.daddyz.turtleboys.subclasses.GigUser;
+import com.example.daddyz.turtleboys.subclasses.FollowUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,7 +50,7 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
     private String mParam2;
     private userListAdapter adapter;
     private RequestQueue mQueue;
-    private ArrayList<GigUser> userArray;
+    private ArrayList<FollowUser> userArray;
     private ListView list;
     private View rootView;
     private OnFragmentInteractionListener mListener;
@@ -129,7 +127,7 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
     }
 
     public void loadEvents(Object response){
-        userArray = createGigUserObjectsFromResponse(response);
+        userArray = createFollowUserObjectsFromResponse(response);
 
         adapter = new userListAdapter(getActivity(), R.layout.user_list_follow_row, userArray);
         list.setAdapter(adapter);
@@ -169,8 +167,8 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
         public void onFragmentInteraction(String id);
     }
 
-    public ArrayList<GigUser> createGigUserObjectsFromResponse(Object response){
-        ArrayList<GigUser> userTmpArray = new ArrayList<>();
+    public ArrayList<FollowUser> createFollowUserObjectsFromResponse(Object response){
+        ArrayList<FollowUser> userTmpArray = new ArrayList<>();
 
         try{
             JSONObject mainObject = ((JSONObject) response);
@@ -181,14 +179,15 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
             while( keys.hasNext() ) {
                 String key = (String)keys.next();
                 if ( itemsObject.get(key) instanceof JSONObject ) {
-                    GigUser gUser = new GigUser();
-                    gUser.setUserId(((JSONObject) itemsObject.get(key)).getString("userId"));
-                    gUser.setUsername(((JSONObject) itemsObject.get(key)).getString("username"));
-                    gUser.setFirstName(((JSONObject) itemsObject.get(key)).getString("firstName"));
-                    gUser.setLastName(((JSONObject) itemsObject.get(key)).getString("lastName"));
-                    gUser.setEmail(((JSONObject) itemsObject.get(key)).getString("email"));
+                    FollowUser fUser = new FollowUser();
+                    fUser.setUserId(((JSONObject) itemsObject.get(key)).getString("userId"));
+                    fUser.setUsername(((JSONObject) itemsObject.get(key)).getString("username"));
+                    fUser.setFirstName(((JSONObject) itemsObject.get(key)).getString("firstName"));
+                    fUser.setLastName(((JSONObject) itemsObject.get(key)).getString("lastName"));
+                    fUser.setEmail(((JSONObject) itemsObject.get(key)).getString("email"));
+                    fUser.setFollowing(((JSONObject) itemsObject.get(key)).getInt("following"));
 
-                    userTmpArray.add(gUser);
+                    userTmpArray.add(fUser);
                 }
             }
         } catch (JSONException e) {
