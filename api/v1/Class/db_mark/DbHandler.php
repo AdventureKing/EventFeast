@@ -153,7 +153,7 @@
 			}
 
 			//echo 'POST DATA: '.urldecode($postdata).'<br><br>';
-			echo 'RETURN DATA: '.$return_data.'<br>';
+			//echo 'RETURN DATA: '.$return_data.'<br>';
 			//echo 'URL: '.$url."<hr></hr>";
 		}	
 
