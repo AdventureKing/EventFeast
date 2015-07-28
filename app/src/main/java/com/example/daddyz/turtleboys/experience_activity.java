@@ -2,6 +2,8 @@ package com.example.daddyz.turtleboys;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentManager.OnBackStackChangedListener;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,8 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
-import android.app.FragmentManager;
-import android.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,11 +27,12 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.eventfeed.gEventObject;
-import com.example.daddyz.turtleboys.my_experiences.historyAdapter;
 import com.example.daddyz.turtleboys.friendFeed.followListFragment;
 import com.example.daddyz.turtleboys.friendFeed.followerListFragment;
+import com.example.daddyz.turtleboys.my_experiences.historyAdapter;
 import com.example.daddyz.turtleboys.settings.SettingsFragment;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.example.daddyz.turtleboys.subclasses.User_Icon_Animation;
@@ -43,8 +44,6 @@ import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -365,6 +364,9 @@ public class  experience_activity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Log.d("Test","This is being called in my_experiences");
+        if(findViewById(R.id.frame).getVisibility() == View.INVISIBLE)
+            findViewById(R.id.frame).setVisibility(View.VISIBLE);
+
         if(getFragmentManager().getBackStackEntryCount() != 0) {
             getFragmentManager().popBackStack();
         } else {
