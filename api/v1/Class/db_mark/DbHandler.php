@@ -169,6 +169,7 @@
 			curl_setopt($ch1, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch1,CURLOPT_POST,0);
 			curl_setopt($ch1, CURLOPT_FOLLOWLOCATION, 20);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch1);
 
 			if(!curl_errno($ch1)){ 
