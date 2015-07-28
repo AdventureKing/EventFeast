@@ -291,7 +291,7 @@ public class searchEvent extends Fragment {
                     fromDateText.setText(toDateText.getText());
                 }
 
-                //If toDate is less than fromDate, then 
+                //If toDate is less than fromDate, then set fromDate to toDate
                 if ( toDate.before(fromDate) ) {
                     fromDateText.setText(toDateText.getText());
                 }
