@@ -9,9 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,7 +19,7 @@ import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
 import com.example.daddyz.turtleboys.VolleyRequestQueue;
 import com.example.daddyz.turtleboys.friendFeed.dummy.DummyContent;
-import com.example.daddyz.turtleboys.subclasses.GigUser;
+import com.example.daddyz.turtleboys.subclasses.FollowUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,22 +50,13 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
     private String mParam2;
     private userListAdapter adapter;
     private RequestQueue mQueue;
-    private ArrayList<GigUser> userArray;
+    private ArrayList<FollowUser> userArray;
     private ListView list;
     private View rootView;
-
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * The fragment's ListView/GridView.
-     */
     private AbsListView mListView;
 
-    /**
-     * The Adapter which will be used to populate the ListView/GridView with
-     * Views.
-     */
-    private ListAdapter mAdapter;
 
     // TODO: Rename and change types of parameters
     public static userListFragment newInstance(String param1, String param2) {
@@ -101,10 +90,7 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
         }
 
         // TODO: Change Adapter to display your content
-        adapter = new userListAdapter(getActivity(),  R.layout.user_list_follow_row, userArray );
-
-       /* mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);*/
+        adapter = new userListAdapter(getActivity(),  R.layout.user_list_follow_row, userArray, this);
     }
 
     @Override
@@ -116,41 +102,7 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
         list = (ListView) rootView.findViewById(R.id.listView);
         list.setClickable(true);
 
-        // Set the adapter
-        // mListView = (AbsListView) view.findViewById(android.R.id.list);
-        // ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
-
-        // Set OnItemClickListener so we can be notified on item clicks
-        // mListView.setOnItemClickListener(this);
-
-
         return rootView;
-    }
-
-    public ArrayList<GigUser> createArrayListOfUsers(){
-        ArrayList<GigUser> list = new ArrayList();
-        return list;
-    }
-
-    public ArrayList<GigUser> createFakeArrayList(){
-        GigUser user = new GigUser();
-        user.setFirstName("Daffy");
-        user.setLastName("Duck");
-
-        GigUser user2 = new GigUser();
-        user2.setFirstName("Bugs");
-        user2.setLastName("Bunny");
-
-        GigUser user3 = new GigUser();
-        user3.setFirstName("Porky");
-        user3.setLastName("Pig");
-
-        ArrayList<GigUser> list = new ArrayList();
-        list.add(user);
-        list.add(user2);
-        list.add(user3);
-
-        return list;
     }
 
     @Override
@@ -170,30 +122,29 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
 
     @Override
     public void onResponse(Object response) {
-        Log.i("Response: ", response.toString());
+        JSONObject mainObject = ((JSONObject) response);
+
+        try{
+            Log.i("Response: ", mainObject.getString("result") + ": "  + mainObject.getString("message"));
+        } catch(NullPointerException err){
+            Log.i("ERROR", "No Response Given - userListFragment");
+        } catch(JSONException err){
+            Log.i("ERROR", "No Response Given - userListFragment");
+        }
+
         loadEvents(response);
     }
 
     public void loadEvents(Object response){
-        userArray = createGigUserObjectsFromResponse(response);
+        userArray = createFollowUserObjectsFromResponse(response);
 
-        adapter = new userListAdapter(getActivity(), R.layout.user_list_follow_row, userArray);
+        adapter = new userListAdapter(getActivity(), R.layout.user_list_follow_row, userArray, this);
         list.setAdapter(adapter);
         ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
 
         rootView.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
     }
 
-  /*  @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }*/
 
     @Override
     public void onDetach() {
@@ -207,19 +158,6 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
             mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
-        }
-    }
-
-    /**
-     * The default content for this Fragment has a TextView that is shown when
-     * the list is empty. If you would like to change the text, call this method
-     * to supply the text it should use.
-     */
-    public void setEmptyText(CharSequence emptyText) {
-        View emptyView = mListView.getEmptyView();
-
-        if (emptyView instanceof TextView) {
-            ((TextView) emptyView).setText(emptyText);
         }
     }
 
@@ -238,8 +176,8 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
         public void onFragmentInteraction(String id);
     }
 
-    public ArrayList<GigUser> createGigUserObjectsFromResponse(Object response){
-        ArrayList<GigUser> userTmpArray = new ArrayList<>();
+    public ArrayList<FollowUser> createFollowUserObjectsFromResponse(Object response){
+        ArrayList<FollowUser> userTmpArray = new ArrayList<>();
 
         try{
             JSONObject mainObject = ((JSONObject) response);
@@ -247,21 +185,18 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
             Iterator<?> keys = itemsObject.keys();
 
 
-            //JSONObject jObject = ((JSONObject) response);
-            //Iterator<?> keys = jObject.keys();
-
             while( keys.hasNext() ) {
                 String key = (String)keys.next();
                 if ( itemsObject.get(key) instanceof JSONObject ) {
-                    GigUser gUser = new GigUser();
-                    gUser.setUserId(((JSONObject) itemsObject.get(key)).getString("userId"));
-                    gUser.setUsername(((JSONObject) itemsObject.get(key)).getString("username"));
-                    gUser.setFirstName(((JSONObject) itemsObject.get(key)).getString("firstName"));
-                    gUser.setLastName(((JSONObject) itemsObject.get(key)).getString("lastName"));
-                    gUser.setEmail(((JSONObject) itemsObject.get(key)).getString("email"));
+                    FollowUser fUser = new FollowUser();
+                    fUser.setUserId(((JSONObject) itemsObject.get(key)).getString("userId"));
+                    fUser.setUsername(((JSONObject) itemsObject.get(key)).getString("username"));
+                    fUser.setFirstName(firstLetterCaps(((JSONObject) itemsObject.get(key)).getString("firstName")));
+                    fUser.setLastName(firstLetterCaps(((JSONObject) itemsObject.get(key)).getString("lastName")));
+                    fUser.setEmail(((JSONObject) itemsObject.get(key)).getString("email"));
+                    fUser.setFollowing(((JSONObject) itemsObject.get(key)).getInt("following"));
 
-                    userTmpArray.add(gUser);
-                    //Log.i("Ind Object JSON", ((JSONObject) jObject.get(key)).toString());
+                    userTmpArray.add(fUser);
                 }
             }
         } catch (JSONException e) {
@@ -270,5 +205,32 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
 
         return userTmpArray;
     }
+
+    public void updateItemAtPosition(int position, ArrayList<FollowUser> userObjects) {
+        this.userArray = userObjects;
+
+        int visiblePosition = this.list.getFirstVisiblePosition();
+        View view = this.list.getChildAt(position - visiblePosition);
+        this.list.getAdapter().getView(position, view, this.list);
+
+        adapter.notifyDataSetChanged();
+
+        //Toast.makeText(this.getActivity().getApplicationContext(), "Hi! I updated you!", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Function to capitalize first letter in string and
+     * lower case the remaining characters.
+     *
+     * @param data
+     * @return
+     */
+    static public String firstLetterCaps ( String data )
+    {
+        String firstLetter = data.substring(0,1).toUpperCase();
+        String restLetters = data.substring(1).toLowerCase();
+        return firstLetter + restLetters;
+    }
+
 
 }

@@ -31,6 +31,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.feedTabView.feedtabview;
+import com.example.daddyz.turtleboys.eventfeed.EventFeedFragment;
+import com.example.daddyz.turtleboys.friendFeed.followListFragment;
+import com.example.daddyz.turtleboys.friendFeed.followerListFragment;
+import com.example.daddyz.turtleboys.newsfeed.newsfeedFragment;
+import com.example.daddyz.turtleboys.newsfeed.newsfeedPostDetail;
+import com.example.daddyz.turtleboys.newsfeed.newsfeedPostForm;
 import com.example.daddyz.turtleboys.friendFeed.userListFragment;
 import com.example.daddyz.turtleboys.maps.MapsActivity;
 import com.example.daddyz.turtleboys.newsfeed.newsfeedPostDetail;
@@ -161,7 +167,14 @@ public class maindrawer extends AppCompatActivity {
                         case R.id.messaging:
                             Toast.makeText(getApplicationContext(), "Messaging", Toast.LENGTH_SHORT).show();
                             return true;
-                        // For rest of the options we just show a toast on click
+                        case R.id.myFriends:
+                            followListFragment followingfragment = new followListFragment();
+                            fragManager.beginTransaction().replace(R.id.frame, followingfragment,"followListFragment").addToBackStack("followListFragment").commit();
+                            return true;
+                        case R.id.myFollowers:
+                            followerListFragment followerfragment = new followerListFragment();
+                            fragManager.beginTransaction().replace(R.id.frame, followerfragment,"followerListFragment").addToBackStack("followerListFragment").commit();
+                            return true;
 
                         case R.id.my_experiences:
                             //Toast.makeText(getApplicationContext(), "Stared Selected", Toast.LENGTH_SHORT).show();
@@ -296,11 +309,11 @@ public class maindrawer extends AppCompatActivity {
             return true;
         }
 
-        if (id == R.id.action_gallery) {
+        /*if (id == R.id.action_gallery) {
             Intent intent = new Intent(getApplicationContext(), gallery1.class);
             startActivity(intent);
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }

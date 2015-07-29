@@ -27,14 +27,23 @@ public class VolleyJSONObjectRequest extends JsonObjectRequest {
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
         ParseUser currentUser = ParseUser.getCurrentUser();
+        String apiKey = null;
+        String sessionToken = null;
 
-        Log.i("API key: ", currentUser.getString("firstName"));
-        Log.i("Token: ", currentUser.getSessionToken());
+        try{
+            apiKey = currentUser.getString("apiKey");
+            sessionToken = currentUser.getSessionToken();
+        } catch(NullPointerException err){
+            throw new AuthFailureError();
+        }
+
+        Log.i("API key: ", apiKey);
+        Log.i("Token: ", sessionToken);
 
         HashMap<String, String> headers = new HashMap<String, String>();
         headers.put("Content-Type", "application/json; charset=utf-8");
-        headers.put("Authorization", currentUser.getString("apiKey"));
-        headers.put("Token", currentUser.getSessionToken());
+        headers.put("Authorization", apiKey);
+        headers.put("Token", sessionToken);
         return headers;
     }
 

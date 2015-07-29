@@ -2,98 +2,180 @@ package com.example.daddyz.turtleboys.friendFeed;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.example.daddyz.turtleboys.R;
+import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
+import com.example.daddyz.turtleboys.VolleyRequestQueue;
 import com.example.daddyz.turtleboys.subclasses.FollowUser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 /**
  * Created by richardryangarcia on 7/17/15.
  */
-public class followListAdapter extends ArrayAdapter<FollowUser> {
+
+public class followListAdapter extends ArrayAdapter<FollowUser> implements Response.Listener,AbsListView.OnItemClickListener, Response.ErrorListener{
 
 
     private Context context;
     private int resource;
-    private ArrayList<FollowUser> followUserObjects;
+    private ArrayList<FollowUser> followObjects;
+    private View row;
+    private LayoutInflater inflater = null;
+    private ViewGroup parent = null;
+    private RequestQueue mQueue;
+    private followListFragment fragment;
+    private int position = 0;
+    public static final String REQUEST_TAG = "Follow List Adapter";
 
 
-    public followListAdapter(Context context, int resource, ArrayList<FollowUser> followUserObjects) {
-        super(context, resource, followUserObjects);
+    public followListAdapter(Context context, int resource, ArrayList<FollowUser> followObjects, followListFragment fragment) {
+        super(context, resource, followObjects);
         this.context = context;
         this.resource = resource;
-        this.followUserObjects = followUserObjects;
+        this.followObjects = followObjects;
+        this.fragment = fragment;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        //get inflator so it will strech the view to fill the row data
-        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        this.inflater = ((Activity) context).getLayoutInflater();
+        this.parent = parent;
+        this.position = position;
 
-        //change row layout depending on row number
-        // int rowType = getItemViewType(position);
+        this.row = inflater.inflate(resource, parent, false);
 
-        int layoutResource = 0; // determined by view type
-  /*      int viewType = getItemViewType(position);
-        Log.d("test", viewType + "");
-        switch(viewType) {
-            case 0:
-                layoutResource = R.layout.eventfeedroweven; break;
-            case 1:
-                layoutResource = R.layout.eventfeedrowodd; break;
-        }*/
-        //set the view to the odd or even row view
-        View row=inflater.inflate(R.layout.user_list_follow_row,parent,false);
+        switch(followObjects.get(position).getFollowing()){
+            case 0 :
+                row.findViewById(R.id.followBtn).setVisibility(View.VISIBLE);
+                Button followBtn = (Button) row.findViewById(R.id.followBtn);
+                followBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.i("Follow Button", "Clicked");
+                        followObjects.get(position).setFollowing(1);
+                        doFollow(followObjects.get(position).getUserId(), view);
+                    }
+                });
+                break;
+            case 1 :
+                row.findViewById(R.id.unfollowBtn).setVisibility(View.VISIBLE);
+                Button unfollowBtn = (Button) this.row.findViewById(R.id.unfollowBtn);
+                unfollowBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.i("Unfollow Button", "Clicked");
+                        followObjects.get(position).setFollowing(0);
+                        doUnfollow(followObjects.get(position).getUserId(), view);
+                    }
+                });
+                break;
+            case 2 :
+                break;
+            default :
+                break;
+        }
 
-        //TextView source = (TextView) row.findViewById(R.id.sourceLine);
-        // ImageView eventImage = (ImageView) row.findViewById(R.id.icon);
-        TextView description = (TextView) row.findViewById(R.id.descLine);
-        TextView citystate = (TextView) row.findViewById(R.id.citystateLine);
-        //TextView date = (TextView)row.findViewById(R.id.dateLine);
-        //TextView time = (TextView) row.findViewById(R.id.timeLine);
-        // TextView venue = (TextView) row.findViewById(R.id.venueLine);
-        //TextView urlpath = (TextView) row.findViewById(R.id.urlpathLine);
+        TextView description = (TextView) row.findViewById(R.id.userName);
+        TextView venue = (TextView) row.findViewById(R.id.firstLastName);
 
         String placeholderImageUrl = "http://www.grommr.com/Content/Images/placeholder-event-p.png";
         String imageUrl = placeholderImageUrl;
         String imageVenueUrl = placeholderImageUrl;
 
-        //Loop through available image objects to populate image url
-     /*   for(gEventImageObject image : followUserObjects.get(position).getImages()){
-            if(null != image.getImage_external_url() && image.getImage_category().equals("attraction")){
-                imageUrl = image.getImage_external_url();
-                break;
-            }
-            if(null != image.getImage_external_url() && image.getImage_category().equals("venue")){
-                imageVenueUrl = image.getImage_external_url();
-                break;
-            }
-        }*/
-
-        //If no attraction image url was picked up, set to venue URL.
-        //Else it uses default placeholder image I placed above.
-      /*  if(imageUrl.equals(placeholderImageUrl) && !imageVenueUrl.equals(placeholderImageUrl)){
-            imageUrl = imageVenueUrl;
-        }
-        Picasso.with(context).load(imageUrl).resize(200, 150).into(eventImage);
-*/
-
-        //source.setText(objects.get(position).getEventSource());
-        description.setText(followUserObjects.get(position).getFollowerUserId());
-        citystate.setText(followUserObjects.get(position).getFollowedUserId());
-      /*  date.setText(followUserObjects.get(position).getStart_date_month().get(2) + " " + eventObjects.get(position).getStart_date_day().get(0) + ", " + eventObjects.get(position).getStart_date_year().get(0));
-        time.setText(followUserObjects.get(position).getStart_date_time().get(2));
-        venue.setText(followUserObjects.get(position).getVenue_name());*/
-        //urlpath.setText(objects.get(position).getEventURL());
-
+        venue.setText(followObjects.get(position).getFirstName() + " " + followObjects.get(position).getLastName());
+        description.setText(followObjects.get(position).getUsername());
 
         return row;
     }
+
+    private void doFollow(String userId, View v){
+        v.findViewById(R.id.followBtn).setVisibility(View.GONE);
+
+        mQueue = VolleyRequestQueue.getInstance(context)
+                .getRequestQueue();
+        String url = "http://api.dev.turtleboys.com/v1/friendships/create/" + userId;
+        final VolleyJSONObjectRequest jsonRequest = new VolleyJSONObjectRequest(Request.Method
+                .POST, url,
+                new JSONObject(), this, this);
+        jsonRequest.setTag(REQUEST_TAG);
+        mQueue.add(jsonRequest);
+    }
+
+    private void doUnfollow(String userId, View v){
+        v.findViewById(R.id.unfollowBtn).setVisibility(View.GONE);
+
+        mQueue = VolleyRequestQueue.getInstance(context)
+                .getRequestQueue();
+        String url = "http://api.dev.turtleboys.com/v1/friendships/destroy/" + userId;
+        final VolleyJSONObjectRequest jsonRequest = new VolleyJSONObjectRequest(Request.Method
+                .DELETE, url,
+                new JSONObject(), this, this);
+        jsonRequest.setTag(REQUEST_TAG);
+        mQueue.add(jsonRequest);
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError volleyError) {
+        try{
+            Log.i("Volley Error", volleyError.toString());
+        }catch(NullPointerException err){
+            Log.i("Volley Error", err.toString());
+            err.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onResponse(Object response) {
+        String result = null;
+        String message = null;
+
+        try{
+            JSONObject mainObject = ((JSONObject) response);
+            result = mainObject.getString("result");
+            message = mainObject.getString("message");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if(null != result && result.equals("success")){
+            Log.i("Response", "Success: " + message);
+
+            fragment.updateItemAtPosition(position, followObjects);
+
+        } else if(null != result && result.equals("error")){
+            Log.i("Response", "Error: " + message);
+        } else{
+            Log.i("ERROR", "No Response Retrieved from Request");
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+    }
+
 }
+
+
+
+
+
 

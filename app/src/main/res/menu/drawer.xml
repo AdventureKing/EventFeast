@@ -19,6 +19,16 @@
             android:checked="false"
             android:icon="@drawable/ic_star_black"
             android:title="@string/My_experiences" />
+        <item
+            android:id="@+id/myFriends"
+            android:checked="false"
+            android:icon="@drawable/ic_tag_faces_black_24dp"
+            android:title="@string/myfriends" />
+        <item
+            android:id="@+id/myFollowers"
+            android:checked="false"
+            android:icon="@drawable/ic_tag_faces_black_24dp"
+            android:title="@string/myfollowers" />
 
         <item
             android:id="@+id/users"

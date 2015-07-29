@@ -1,64 +1,65 @@
 package com.example.daddyz.turtleboys.subclasses;
 
-import com.parse.ParseClassName;
-import com.parse.ParseFile;
-import com.parse.ParseUser;
-import com.parse.ParseGeoPoint;
-
-import java.util.Date;
-
 /**
- * Created by richardryangarcia on 7/17/15.
+ * Created by snow on 6/14/2015.
  */
-public class FollowUser  {
-
-    private int follow_id, status;
-    private String follower_user_id;
-    private String followed_user_id;
-
-    public FollowUser(int follow_id, int status, String follower_user_id, String followed_user_id){
-        this.follow_id = follow_id;
-        this.status = status;
-        this.follower_user_id = follower_user_id;
-        this.followed_user_id = followed_user_id;
-    }
+public class FollowUser {
+    private String userId;
+    private String firstName;
+    private String lastName;
+    private String username;
+    private String email;
+    private int following;
 
     public FollowUser(){
-        this.follow_id = 0;
-        this.status = 0;
-        this.follower_user_id=null;
-        this.followed_user_id=null;
+
     }
 
-    //setters
-    private void setFollowId(int follow_id){
-        this.follow_id = follow_id;
+    public String getUserId() {
+        return userId;
     }
 
-    private void setStatus(int status){
-        this.status = status;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    private void setFollowerUserId(String follower_user_id){
-        this.follower_user_id = follower_user_id;
+    public String getFirstName() {
+        return firstName;
     }
 
-    private void setFollowedUserId(String followed_user_id){
-        this.followed_user_id = followed_user_id;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    //getters
-    public int getFollowId(){
-        return follow_id;
-    }
-    public int getStatus(){
-        return status;
-    }
-    public String getFollowerUserId(){
-        return follower_user_id;
-    }
-    public String getFollowedUserId(){
-        return followed_user_id;
+    public String getLastName() {
+        return lastName;
     }
 
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(int following) {
+        this.following = following;
+    }
 }
