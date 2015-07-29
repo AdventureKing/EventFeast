@@ -43,24 +43,26 @@ public class feedtabview extends Fragment {
         //create tab for newsfeed
         tabLayout.addTab(tabLayout.newTab().setText("Newsfeed"));
 
-
+        //thing that moves between the tabs helps do all the hard stuff
         final ViewPager viewPager = (ViewPager) inflatedView.findViewById(R.id.viewpager);
 
         //the tab bar functionality is layed out here
         viewPager.setAdapter(new PagerAdapter
                 (getFragmentManager(), tabLayout.getTabCount()));
+        //set the on page listener so it will change position
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        //what happens when a tab is selected
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
             }
-
+            //dont need to mess with but needs to be overrided
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
 
             }
-
+            //Possibaly a call for high end load logic here
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
@@ -76,7 +78,7 @@ public class feedtabview extends Fragment {
         int mNumOfTabs;
 
 
-
+        //sets up what should happen when a tab is sleected
         public PagerAdapter(FragmentManager fm, int mNumOfTabs) {
             super(fm);
             this.mNumOfTabs = mNumOfTabs;
@@ -84,7 +86,8 @@ public class feedtabview extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-
+            //what ever tab they are on it will load that fragment or switch back to it up to user
+            //to pull down to update
             switch (position) {
                 case 0:
                     //if user is on first tab
