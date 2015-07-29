@@ -10,8 +10,6 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,7 +18,6 @@ import com.android.volley.VolleyError;
 import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
 import com.example.daddyz.turtleboys.VolleyRequestQueue;
-import com.example.daddyz.turtleboys.eventfeed.eventfeedAdapter;
 import com.example.daddyz.turtleboys.friendFeed.dummy.DummyContent;
 import com.example.daddyz.turtleboys.subclasses.FollowUser;
 
@@ -194,8 +191,8 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
                     FollowUser fUser = new FollowUser();
                     fUser.setUserId(((JSONObject) itemsObject.get(key)).getString("userId"));
                     fUser.setUsername(((JSONObject) itemsObject.get(key)).getString("username"));
-                    fUser.setFirstName(((JSONObject) itemsObject.get(key)).getString("firstName"));
-                    fUser.setLastName(((JSONObject) itemsObject.get(key)).getString("lastName"));
+                    fUser.setFirstName(firstLetterCaps(((JSONObject) itemsObject.get(key)).getString("firstName")));
+                    fUser.setLastName(firstLetterCaps(((JSONObject) itemsObject.get(key)).getString("lastName")));
                     fUser.setEmail(((JSONObject) itemsObject.get(key)).getString("email"));
                     fUser.setFollowing(((JSONObject) itemsObject.get(key)).getInt("following"));
 
@@ -219,6 +216,20 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
         adapter.notifyDataSetChanged();
 
         //Toast.makeText(this.getActivity().getApplicationContext(), "Hi! I updated you!", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Function to capitalize first letter in string and
+     * lower case the remaining characters.
+     *
+     * @param data
+     * @return
+     */
+    static public String firstLetterCaps ( String data )
+    {
+        String firstLetter = data.substring(0,1).toUpperCase();
+        String restLetters = data.substring(1).toLowerCase();
+        return firstLetter + restLetters;
     }
 
 

@@ -1,7 +1,7 @@
 package com.example.daddyz.turtleboys.friendFeed;
 
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,7 +20,6 @@ import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
 import com.example.daddyz.turtleboys.VolleyRequestQueue;
 import com.example.daddyz.turtleboys.friendFeed.dummy.DummyContent;
 import com.example.daddyz.turtleboys.subclasses.FollowUser;
-import com.example.daddyz.turtleboys.subclasses.GigUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -116,7 +113,7 @@ public class followListFragment extends Fragment implements Response.Listener,Ab
 
         mQueue = VolleyRequestQueue.getInstance(this.getActivity().getApplicationContext())
                 .getRequestQueue();
-        String url = "http://api.dev.turtleboys.com/v1/users/list";
+        String url = "http://api.dev.turtleboys.com/v1/friends/list";
         final VolleyJSONObjectRequest jsonRequest = new VolleyJSONObjectRequest(Request.Method
                 .GET, url,
                 new JSONObject(), this, this);
@@ -196,8 +193,8 @@ public class followListFragment extends Fragment implements Response.Listener,Ab
                     FollowUser fUser = new FollowUser();
                     fUser.setUserId(((JSONObject) itemsObject.get(key)).getString("userId"));
                     fUser.setUsername(((JSONObject) itemsObject.get(key)).getString("username"));
-                    fUser.setFirstName(((JSONObject) itemsObject.get(key)).getString("firstName"));
-                    fUser.setLastName(((JSONObject) itemsObject.get(key)).getString("lastName"));
+                    fUser.setFirstName(firstLetterCaps(((JSONObject) itemsObject.get(key)).getString("firstName")));
+                    fUser.setLastName(firstLetterCaps(((JSONObject) itemsObject.get(key)).getString("lastName")));
                     fUser.setEmail(((JSONObject) itemsObject.get(key)).getString("email"));
                     fUser.setFollowing(((JSONObject) itemsObject.get(key)).getInt("following"));
 
@@ -221,6 +218,20 @@ public class followListFragment extends Fragment implements Response.Listener,Ab
         adapter.notifyDataSetChanged();
 
         //Toast.makeText(this.getActivity().getApplicationContext(), "Hi! I updated you!", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Function to capitalize first letter in string and
+     * lower case the remaining characters.
+     *
+     * @param data
+     * @return
+     */
+    static public String firstLetterCaps ( String data )
+    {
+        String firstLetter = data.substring(0,1).toUpperCase();
+        String restLetters = data.substring(1).toLowerCase();
+        return firstLetter + restLetters;
     }
 }
 

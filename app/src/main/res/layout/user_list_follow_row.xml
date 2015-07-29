@@ -3,41 +3,54 @@ android:layout_width="fill_parent"
 android:layout_height="?android:attr/listPreferredItemHeight"
 android:padding="8dip" >
 
-<ImageView
-    android:id="@+id/icon"
-    android:layout_width="wrap_content"
+<com.parse.ParseImageView
+    android:id="@+id/profileImage"
+    android:layout_width="60dp"
     android:layout_height="fill_parent"
     android:layout_alignParentBottom="true"
     android:layout_alignParentTop="true"
-    android:layout_marginRight="6dip"
-    android:contentDescription="TODO"
-    android:src="@mipmap/ic_launcher" />
+    android:longClickable="true"
+    android:minWidth="90dp" />
+
+<ImageView
+    android:id="@+id/icon"
+    android:layout_width="60dp"
+    android:layout_height="fill_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentTop="true"
+    android:longClickable="true"
+    android:minWidth="90dp"
+    android:src="@drawable/profile" />
 
 <TextView
-    android:id="@+id/descLine"
+    android:id="@+id/userName"
     android:layout_width="fill_parent"
-    android:layout_height="26dip"
+    android:layout_height="28dip"
     android:ellipsize="marquee"
     android:singleLine="true"
-    android:text="Description"
-    android:textSize="16sp"
+    android:text="Username"
+    android:textSize="16dp"
     android:layout_alignTop="@+id/icon"
     android:layout_toRightOf="@+id/icon"
-    android:layout_toEndOf="@+id/icon" />
+    android:layout_toEndOf="@+id/icon"
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="5dp"
+    android:textStyle="bold"/>
 
 
 
 <TextView
-    android:id="@+id/venueLine"
+    android:id="@+id/firstLastName"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_alignWithParentIfMissing="true"
     android:gravity="center_vertical"
-    android:text="Venue"
-    android:textSize="9sp"
+    android:text="FirstName LastName"
+    android:textSize="12dp"
     android:layout_alignBottom="@+id/icon"
     android:layout_toRightOf="@+id/icon"
-    android:layout_toEndOf="@+id/icon" />
+    android:layout_toEndOf="@+id/icon"
+    android:layout_marginLeft="5dp" />
 
     <Button
         android:id="@+id/followBtn"
@@ -46,39 +59,40 @@ android:padding="8dip" >
         android:textColor="#81b71a"
         android:textSize="13sp"
 
-        android:layout_width="80dp"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
         android:background="@drawable/followbtnshape"
         android:visibility="gone"
-        />
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" />
 
     <Button
         android:id="@+id/unfollowBtn"
 
-        android:text="- Following"
+        android:text="&#10003; Following"
         android:textColor="#fff3f3f3"
         android:textSize="13sp"
 
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
         android:background="@drawable/unfollowbtnshape"
         android:visibility="gone"
-        />
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" />
 
     <ProgressBar
         android:id="@+id/followProgress"
         style="?android:attr/progressBarStyleSmall"
         android:layout_width="80dp"
         android:layout_height="30dp"
+        android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        />
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

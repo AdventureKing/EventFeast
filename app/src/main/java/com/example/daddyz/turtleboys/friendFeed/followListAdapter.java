@@ -20,7 +20,6 @@ import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
 import com.example.daddyz.turtleboys.VolleyRequestQueue;
 import com.example.daddyz.turtleboys.subclasses.FollowUser;
-import com.example.daddyz.turtleboys.subclasses.GigUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -93,8 +92,8 @@ public class followListAdapter extends ArrayAdapter<FollowUser> implements Respo
                 break;
         }
 
-        TextView description = (TextView) row.findViewById(R.id.descLine);
-        TextView venue = (TextView) row.findViewById(R.id.venueLine);
+        TextView description = (TextView) row.findViewById(R.id.userName);
+        TextView venue = (TextView) row.findViewById(R.id.firstLastName);
 
         String placeholderImageUrl = "http://www.grommr.com/Content/Images/placeholder-event-p.png";
         String imageUrl = placeholderImageUrl;

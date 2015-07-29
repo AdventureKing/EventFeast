@@ -2,9 +2,7 @@ package com.example.daddyz.turtleboys.friendFeed;
 
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -24,13 +20,11 @@ import com.android.volley.VolleyError;
 import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
 import com.example.daddyz.turtleboys.VolleyRequestQueue;
-import com.example.daddyz.turtleboys.friendFeed.dummy.DummyContent;
 import com.example.daddyz.turtleboys.subclasses.FollowUser;
-import com.example.daddyz.turtleboys.subclasses.GigUser;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Created by richardryangarcia on 7/17/15.
@@ -97,8 +91,8 @@ public class followerListAdapter extends ArrayAdapter<FollowUser> implements Res
                 break;
         }
 
-        TextView description = (TextView) row.findViewById(R.id.descLine);
-        TextView venue = (TextView) row.findViewById(R.id.venueLine);
+        TextView description = (TextView) row.findViewById(R.id.userName);
+        TextView venue = (TextView) row.findViewById(R.id.firstLastName);
 
         String placeholderImageUrl = "http://www.grommr.com/Content/Images/placeholder-event-p.png";
         String imageUrl = placeholderImageUrl;

@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -21,12 +20,12 @@ import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
 import com.example.daddyz.turtleboys.VolleyRequestQueue;
 import com.example.daddyz.turtleboys.subclasses.FollowUser;
+import com.parse.ParseImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Created by richardryangarcia on 7/17/15.
@@ -44,6 +43,7 @@ public class userListAdapter extends ArrayAdapter<FollowUser> implements Respons
     private userListFragment fragment;
     private int position = 0;
     public static final String REQUEST_TAG = "User List Adapter";
+    private ParseImageView imageView;
 
 
     public userListAdapter(Context context, int resource, ArrayList<FollowUser> userObjects, userListFragment fragment) {
@@ -95,15 +95,45 @@ public class userListAdapter extends ArrayAdapter<FollowUser> implements Respons
                 break;
         }
 
-        TextView description = (TextView) row.findViewById(R.id.descLine);
-        TextView venue = (TextView) row.findViewById(R.id.venueLine);
+        TextView description = (TextView) row.findViewById(R.id.userName);
+        TextView venue = (TextView) row.findViewById(R.id.firstLastName);
 
-        String placeholderImageUrl = "http://www.grommr.com/Content/Images/placeholder-event-p.png";
-        String imageUrl = placeholderImageUrl;
-        String imageVenueUrl = placeholderImageUrl;
+        //String placeholderImageUrl = "http://www.grommr.com/Content/Images/placeholder-event-p.png";
+        //String imageUrl = placeholderImageUrl;
+        //String imageVenueUrl = placeholderImageUrl;
 
         venue.setText(userObjects.get(position).getFirstName() + " " + userObjects.get(position).getLastName());
         description.setText(userObjects.get(position).getUsername());
+
+        /*
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereEqualTo("objectId", userObjects.get(position).getUserId());
+        query.getFirstInBackground(new GetCallback<ParseUser>() {
+            public void done(ParseUser object, ParseException e) {
+                if (e == null) {
+                    // The query was successful.
+
+                    ParseFile image = object.getParseFile("userImage");
+                    imageView = (ParseImageView) row.findViewById(R.id.profileImage);
+                    imageView.setParseFile(image);
+
+                    //load the image from the parse database
+                    imageView.loadInBackground(new GetDataCallback() {
+                        @Override
+                        public void done(byte[] bytes, com.parse.ParseException e) {
+                            // The image is loaded and displayed!
+                            int oldHeight = imageView.getHeight();
+                            int oldWidth = imageView.getWidth();
+                        }
+                    });
+
+
+                } else {
+                    // Something went wrong.
+                }
+            }
+        });
+        */
 
         return row;
     }
