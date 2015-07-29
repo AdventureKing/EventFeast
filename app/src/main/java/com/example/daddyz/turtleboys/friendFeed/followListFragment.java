@@ -55,7 +55,7 @@ public class followListFragment extends Fragment implements Response.Listener,Ab
     private String mParam2;
     private followListAdapter adapter;
     private RequestQueue mQueue;
-    private ArrayList<GigUser> userArray;
+    private ArrayList<FollowUser> userArray;
     private ListView list;
     private View rootView;
     private OnFragmentInteractionListener mListener;
@@ -95,7 +95,7 @@ public class followListFragment extends Fragment implements Response.Listener,Ab
         }
 
         // TODO: Change Adapter to display your content
-        adapter = new followListAdapter(getActivity(),  R.layout.user_list_follow_row, userArray );
+        adapter = new followListAdapter(getActivity(),  R.layout.user_list_follow_row, userArray,this);
     }
 
     @Override
@@ -127,14 +127,23 @@ public class followListFragment extends Fragment implements Response.Listener,Ab
 
     @Override
     public void onResponse(Object response) {
-        Log.i("Response: ", response.toString());
+        JSONObject mainObject = ((JSONObject) response);
+
+        try{
+            Log.i("Response: ", mainObject.getString("result") + ": "  + mainObject.getString("message"));
+        } catch(NullPointerException err){
+            Log.i("ERROR", "No Response Given - userListFragment");
+        } catch(JSONException err){
+            Log.i("ERROR", "No Response Given - userListFragment");
+        }
+
         loadEvents(response);
     }
 
     public void loadEvents(Object response){
-        userArray = createGigUserObjectsFromResponse(response);
+        userArray = createFollowUserObjectsFromResponse(response);
 
-        adapter = new followListAdapter(getActivity(), R.layout.user_list_follow_row, userArray);
+        adapter = new followListAdapter(getActivity(), R.layout.user_list_follow_row, userArray, this);
         list.setAdapter(adapter);
         ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
 
@@ -172,8 +181,8 @@ public class followListFragment extends Fragment implements Response.Listener,Ab
         public void onFragmentInteraction(String id);
     }
 
-    public ArrayList<GigUser> createGigUserObjectsFromResponse(Object response){
-        ArrayList<GigUser> userTmpArray = new ArrayList<>();
+    public ArrayList<FollowUser> createFollowUserObjectsFromResponse(Object response){
+        ArrayList<FollowUser> userTmpArray = new ArrayList<>();
 
         try{
             JSONObject mainObject = ((JSONObject) response);
@@ -184,14 +193,15 @@ public class followListFragment extends Fragment implements Response.Listener,Ab
             while( keys.hasNext() ) {
                 String key = (String)keys.next();
                 if ( itemsObject.get(key) instanceof JSONObject ) {
-                    GigUser gUser = new GigUser();
-                    gUser.setUserId(((JSONObject) itemsObject.get(key)).getString("userId"));
-                    gUser.setUsername(((JSONObject) itemsObject.get(key)).getString("username"));
-                    gUser.setFirstName(((JSONObject) itemsObject.get(key)).getString("firstName"));
-                    gUser.setLastName(((JSONObject) itemsObject.get(key)).getString("lastName"));
-                    gUser.setEmail(((JSONObject) itemsObject.get(key)).getString("email"));
+                    FollowUser fUser = new FollowUser();
+                    fUser.setUserId(((JSONObject) itemsObject.get(key)).getString("userId"));
+                    fUser.setUsername(((JSONObject) itemsObject.get(key)).getString("username"));
+                    fUser.setFirstName(((JSONObject) itemsObject.get(key)).getString("firstName"));
+                    fUser.setLastName(((JSONObject) itemsObject.get(key)).getString("lastName"));
+                    fUser.setEmail(((JSONObject) itemsObject.get(key)).getString("email"));
+                    fUser.setFollowing(((JSONObject) itemsObject.get(key)).getInt("following"));
 
-                    userTmpArray.add(gUser);
+                    userTmpArray.add(fUser);
                 }
             }
         } catch (JSONException e) {
@@ -201,5 +211,16 @@ public class followListFragment extends Fragment implements Response.Listener,Ab
         return userTmpArray;
     }
 
+    public void updateItemAtPosition(int position, ArrayList<FollowUser> userObjects) {
+        this.userArray = userObjects;
+
+        int visiblePosition = this.list.getFirstVisiblePosition();
+        View view = this.list.getChildAt(position - visiblePosition);
+        this.list.getAdapter().getView(position, view, this.list);
+
+        adapter.notifyDataSetChanged();
+
+        //Toast.makeText(this.getActivity().getApplicationContext(), "Hi! I updated you!", Toast.LENGTH_SHORT).show();
+    }
 }
 
