@@ -345,7 +345,7 @@ public class maindrawer extends AppCompatActivity {
                 newsfeedPostForm myFragment4 = (newsfeedPostForm)fragManager.findFragmentByTag("NewsFeedPostForm");
                 searchEvent myFragment5 = (searchEvent) fragManager.findFragmentByTag("SearchEventFragment");
                 if (myFragment5 != null && myFragment5.isVisible()){
-                    actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+                    //actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
                     toolbar.setTitle("Search Event");
                     /*
                     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -364,7 +364,7 @@ public class maindrawer extends AppCompatActivity {
                     actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
                     toolbar.setTitle(R.string.app_name);
                 }
-                if ((myFragment != null && myFragment.isVisible()) || (myFragment2 != null && myFragment2.isVisible()) || (myFragment3 != null && myFragment3.isVisible())|| (myFragment4 != null && myFragment4.isVisible()) || (myFragment5 != null && myFragment5.isVisible())) {
+                if ((myFragment != null && myFragment.isVisible()) || (myFragment2 != null && myFragment2.isVisible()) || (myFragment3 != null && myFragment3.isVisible())|| (myFragment4 != null && myFragment4.isVisible()) ) {
                     // add your code here
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 }else{
