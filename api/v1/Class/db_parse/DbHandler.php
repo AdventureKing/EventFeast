@@ -275,6 +275,7 @@
 		public function getUserList(){
 			$query = ParseUser::query();
 			$query->exists("username");
+			$query->notEqualTo("objectId",$_SESSION['userId']);
 			$results = $query->find();
 
 			return $results;
