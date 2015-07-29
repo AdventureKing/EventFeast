@@ -25,6 +25,7 @@
 	  		$records[$i]['lastName'] = $object->get('lastName');
 	  		$records[$i]['username'] = $object->get('username');
 	  		$records[$i]['email'] = $object->get('email');
+	  		$records[$i]['following'] = $db->isFollowing($object->getObjectId());
 
 	  		//echo $object->getObjectId() . ' - ' . $object->get('username') . '<br>';
 		}

@@ -13,6 +13,8 @@
 		$results = $db->getFriends($user_id);
 		$records = array();
 
+		$followers = new Followers();
+
 		//echo "Successfully retrieved " . count($results) . " scores.<br><br>";
 		// Do something with the returned ParseObject values
 		for ($i = 0; $i < count($results); $i++) {
@@ -24,6 +26,7 @@
 	  		$records[$i]['lastName'] = $object->get('lastName');
 	  		$records[$i]['username'] = $object->get('username');
 	  		$records[$i]['email'] = $object->get('email');
+	  		$records[$i]['following'] = $followers->isFollowing($object->getObjectId());
 
 	  		//echo $object->getObjectId() . ' - ' . $object->get('username') . '<br>';
 		}
