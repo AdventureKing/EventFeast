@@ -3,6 +3,8 @@ package com.example.daddyz.turtleboys.feedTabView;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentStatePagerAdapter;
@@ -34,8 +36,13 @@ public class feedtabview extends Fragment {
         View inflatedView = inflater.inflate(R.layout.feedtablayout, container, false);
 
         TabLayout tabLayout = (TabLayout) inflatedView.findViewById(R.id.sliding_tabs);
+        //change tab text to white
+        tabLayout.setTabTextColors(ColorStateList.valueOf(Color.WHITE));
+        //create tab for event feed
         tabLayout.addTab(tabLayout.newTab().setText("EventFeed"));
+        //create tab for newsfeed
         tabLayout.addTab(tabLayout.newTab().setText("Newsfeed"));
+
 
         final ViewPager viewPager = (ViewPager) inflatedView.findViewById(R.id.viewpager);
 
