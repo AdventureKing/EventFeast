@@ -1,6 +1,5 @@
 package com.example.daddyz.turtleboys.feedTabView;
 
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.res.ColorStateList;
@@ -22,18 +21,18 @@ import com.example.daddyz.turtleboys.newsfeed.newsfeedFragment;
  */
 public class feedtabview extends Fragment {
 
-
-    private View view;
-
+    //the whole view
+    private View inflatedView;
+    //the over all pager that moves between the tabs
     private ViewPager viewPager;
-    private ActionBar actionBar;
+
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //lock the drawer because we are inception in this bitch
         //main_activity->fragment->fragment
 
-        View inflatedView = inflater.inflate(R.layout.feedtablayout, container, false);
+       inflatedView = inflater.inflate(R.layout.feedtablayout, container, false);
 
         TabLayout tabLayout = (TabLayout) inflatedView.findViewById(R.id.sliding_tabs);
         //change tab text to white
@@ -44,7 +43,7 @@ public class feedtabview extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("Newsfeed"));
 
         //thing that moves between the tabs helps do all the hard stuff
-        final ViewPager viewPager = (ViewPager) inflatedView.findViewById(R.id.viewpager);
+         viewPager = (ViewPager) inflatedView.findViewById(R.id.viewpager);
 
         //the tab bar functionality is layed out here
         viewPager.setAdapter(new PagerAdapter
