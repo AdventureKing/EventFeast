@@ -62,6 +62,7 @@ public class maindrawer extends AppCompatActivity {
     private GigUser currentUser;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private Boolean refreshTabViewFlag;
+    private Boolean refreshTabViewSettingsFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +95,7 @@ public class maindrawer extends AppCompatActivity {
             //create tab view
             feedtabview fragment = new feedtabview();
             refreshTabViewFlag = true;
+            refreshTabViewSettingsFlag = false;
             fragManager.beginTransaction().replace(R.id.frame, fragment,"EventFeedFragment").addToBackStack("EventFeedFragment").commit();
 
             //set username and email in the header and user image
@@ -309,13 +311,6 @@ public class maindrawer extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-
-        FrameLayout frame =(FrameLayout) findViewById(R.id.frame);
-        if(frame.getVisibility() == View.INVISIBLE){
-            frame.setVisibility(View.VISIBLE);
-
-        }
-
         //This grabs the current fragment, you can use this to set up actions specific to leaving a certain fragment
         Fragment currFrag = fragManager.findFragmentById(R.id.drawer);
         if (currFrag instanceof SettingsFragment || currFrag instanceof eventDetailFragment || currFrag instanceof newsfeedPostDetail){
@@ -329,6 +324,12 @@ public class maindrawer extends AppCompatActivity {
             super.onBackPressed();
         }
 
+        FrameLayout frame =(FrameLayout) findViewById(R.id.frame);
+        if(frame.getVisibility() == View.INVISIBLE){
+            frame.setVisibility(View.VISIBLE);
+
+        }
+
     }
 
     private FragmentManager.OnBackStackChangedListener getListener(){
@@ -338,6 +339,9 @@ public class maindrawer extends AppCompatActivity {
             @Override
             public void onBackStackChanged() {
 
+                //Save old animation flag
+                Boolean oldAnimationFlag = AnimationFlag;
+
                 //Update Views based on preferences
                 AnimationFlag = preferences.getBoolean("animation_preference", false);
                 if(AnimationFlag){
@@ -345,6 +349,10 @@ public class maindrawer extends AppCompatActivity {
                 }else{
                     imageView.setVisibility(View.VISIBLE);
                 }
+
+                //Check if flag changed in case tab view needs to be updated
+                if (AnimationFlag != oldAnimationFlag)
+                    refreshTabViewSettingsFlag= true;
 
                 //if its a subview with a arrow check if thats visible if its visible lock the drawer cause they have
                 //a back button to segway back to the parent view
@@ -356,9 +364,10 @@ public class maindrawer extends AppCompatActivity {
                 feedtabview tabsFragment = (feedtabview) fragManager.findFragmentByTag("EventFeedFragment");
 
                 //This is where the refresh of the tabsview occurs, it should only occur with fragments that replace the frame
-                if (tabsFragment != null && tabsFragment.isVisible() && myFragment2 == null && myFragment == null && myFragment3 == null && refreshTabViewFlag){
+                if (refreshTabViewSettingsFlag || (tabsFragment != null && tabsFragment.isVisible() && myFragment2 == null && myFragment == null && myFragment3 == null && refreshTabViewFlag)){
                     tabsFragment = new feedtabview();
                     fragManager.beginTransaction().replace(R.id.frame, tabsFragment, "EventFeedFragment").commit();
+                    refreshTabViewSettingsFlag = false;
                 }
                 refreshTabViewFlag = true;
                 if (myFragment5 != null && myFragment5.isVisible()){

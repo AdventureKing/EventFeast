@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.example.daddyz.turtleboys.R;
 import com.parse.ParseClassName;
@@ -59,12 +60,13 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 getActivity().onBackPressed();
-                container.findViewById(R.id.frame).setVisibility(View.VISIBLE);
             }
         });
 
         //Clear Previous Activity's Frame
-        container.findViewById(R.id.frame).setVisibility(View.INVISIBLE);
+        //container.findViewById(R.id.frame).setVisibility(View.INVISIBLE);
+        final FrameLayout frame = (FrameLayout) container.findViewById(R.id.frame);
+        frame.setVisibility(View.INVISIBLE);
 
         //Setup Preferences Fragment to display settings
         FragmentManager mFragmentManager = getFragmentManager();

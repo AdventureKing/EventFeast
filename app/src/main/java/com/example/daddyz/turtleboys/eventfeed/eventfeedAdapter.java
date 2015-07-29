@@ -2,10 +2,13 @@ package com.example.daddyz.turtleboys.eventfeed;
 
 import android.app.Activity;
 import android.content.Context;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +24,8 @@ public class eventfeedAdapter extends ArrayAdapter<gEventObject> {
     private Context context;
     private int resource;
     private ArrayList<gEventObject> eventObjects;
+    private Boolean AnimationFlag;
+    private int lastPosition = -1;
 
 
     public eventfeedAdapter(Context context, int resource, ArrayList<gEventObject> eventObjects) {
@@ -28,6 +33,7 @@ public class eventfeedAdapter extends ArrayAdapter<gEventObject> {
         this.context = context;
         this.resource = resource;
         this.eventObjects = eventObjects;
+        this.AnimationFlag = PreferenceManager.getDefaultSharedPreferences(context).getBoolean("animation_preference", false);
     }
     //return even or odd row
     public int getItemViewType(int position) {
@@ -100,6 +106,12 @@ public class eventfeedAdapter extends ArrayAdapter<gEventObject> {
         time.setText(eventObjects.get(position).getStart_date_time().get(2));
         venue.setText(eventObjects.get(position).getVenue_name());
         //urlpath.setText(objects.get(position).getEventURL());
+
+        if (AnimationFlag) {
+            Animation animation = AnimationUtils.loadAnimation(getContext(), (position > lastPosition) ? R.anim.up_from_bottom : R.anim.bottom_from_up);
+            row.startAnimation(animation);
+            lastPosition = position;
+        }
 
 
         return row;

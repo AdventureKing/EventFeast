@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -364,13 +365,17 @@ public class  experience_activity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Log.d("Test","This is being called in my_experiences");
-        if(findViewById(R.id.frame).getVisibility() == View.INVISIBLE)
-            findViewById(R.id.frame).setVisibility(View.VISIBLE);
 
         if(getFragmentManager().getBackStackEntryCount() != 0) {
             getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
+        }
+
+        FrameLayout frame =(FrameLayout) findViewById(R.id.frame);
+        if(frame.getVisibility() == View.INVISIBLE){
+            frame.setVisibility(View.VISIBLE);
+
         }
     }
 
