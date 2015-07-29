@@ -187,15 +187,6 @@ public class  experience_activity extends AppCompatActivity {
                         followerListFragment fragment3 = new followerListFragment();
                         fragManager.beginTransaction().replace(R.id.frame, fragment3,"followerListFragment").addToBackStack("followerListFragment").commit();
                         return true;
-                    case R.id.myPosts:
-                        Toast.makeText(getApplicationContext(), "Post Selected", Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.messaging:
-                        Toast.makeText(getApplicationContext(), "User wants to message", Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.myListings:
-                        Toast.makeText(getApplicationContext(), "User wants to look at their listings", Toast.LENGTH_SHORT).show();
-                        return true;
                     case R.id.logoutDrawer:
                         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(experience_activity.this);
                         alertDialog.setTitle("Logout");

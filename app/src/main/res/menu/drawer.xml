@@ -3,16 +3,10 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/newsfeed"
+            android:id="@+id/feedsTab"
             android:checked="false"
             android:icon="@drawable/ic_local_library_black_24dp"
             android:title="@string/feed" />
-
-        <item
-            android:id="@+id/messaging"
-            android:checked="false"
-            android:icon="@drawable/ic_inbox_black"
-            android:title="@string/messaging" />
 
         <item
             android:id="@+id/my_experiences"
@@ -50,11 +44,6 @@
             android:title="Search Location" />
 
 
-        <item
-            android:id="@+id/connect"
-            android:checked="false"
-            android:icon="@drawable/ic_share_black_24dp"
-            android:title="@string/connect" />
         <item
             android:id="@+id/logoutDrawer"
             android:checked="false"

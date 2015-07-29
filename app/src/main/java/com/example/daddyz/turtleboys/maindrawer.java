@@ -164,9 +164,6 @@ public class maindrawer extends AppCompatActivity {
 
 
                         //Replacing the main content with ContentFragment Which is our Inbox View;
-                        case R.id.messaging:
-                            Toast.makeText(getApplicationContext(), "Messaging", Toast.LENGTH_SHORT).show();
-                            return true;
                         case R.id.myFriends:
                             followListFragment followingfragment = new followListFragment();
                             fragManager.beginTransaction().replace(R.id.frame, followingfragment,"followListFragment").addToBackStack("followListFragment").commit();
@@ -189,14 +186,10 @@ public class maindrawer extends AppCompatActivity {
                             searchEvent searchFragment = new searchEvent();
                             fragManager.beginTransaction().replace(R.id.frame, searchFragment,"SearchEventFragment").addToBackStack("SearchEventFragment").commit();
                             return true;
-                        case R.id.newsfeed:
+                        case R.id.feedsTab:
                             //create tab view
                             feedtabview fragment = new feedtabview();
                             fragManager.beginTransaction().replace(R.id.frame, fragment, "EventFeedFragment").addToBackStack("EventFeedFragment").commit();
-                            Toast.makeText(getApplicationContext(), "newsfeed Selected", Toast.LENGTH_SHORT).show();
-                            return true;
-                        case R.id.connect:
-                            Toast.makeText(getApplicationContext(), "User wants to connect to other Users", Toast.LENGTH_SHORT).show();
                             return true;
                         case R.id.logoutDrawer:
                             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(maindrawer.this);
