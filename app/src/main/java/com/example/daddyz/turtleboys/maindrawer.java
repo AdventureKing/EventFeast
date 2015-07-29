@@ -309,11 +309,11 @@ public class maindrawer extends AppCompatActivity {
             return true;
         }
 
-        /*if (id == R.id.action_gallery) {
+        if (id == R.id.action_gallery) {
             Intent intent = new Intent(getApplicationContext(), gallery1.class);
             startActivity(intent);
             return true;
-        }*/
+        }
 
         return super.onOptionsItemSelected(item);
     }
