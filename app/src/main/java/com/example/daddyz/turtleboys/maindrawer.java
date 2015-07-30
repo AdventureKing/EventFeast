@@ -13,8 +13,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -30,12 +30,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
+import com.example.daddyz.turtleboys.feedTabView.feedtabview;
 import com.example.daddyz.turtleboys.eventfeed.EventFeedFragment;
+import com.example.daddyz.turtleboys.friendFeed.followListFragment;
+import com.example.daddyz.turtleboys.friendFeed.followerListFragment;
 import com.example.daddyz.turtleboys.newsfeed.newsfeedFragment;
 import com.example.daddyz.turtleboys.newsfeed.newsfeedPostDetail;
 import com.example.daddyz.turtleboys.newsfeed.newsfeedPostForm;
 import com.example.daddyz.turtleboys.friendFeed.userListFragment;
 import com.example.daddyz.turtleboys.maps.MapsActivity;
+import com.example.daddyz.turtleboys.newsfeed.newsfeedPostDetail;
+import com.example.daddyz.turtleboys.newsfeed.newsfeedPostForm;
 import com.example.daddyz.turtleboys.searchevent.searchEvent;
 import com.example.daddyz.turtleboys.settings.SettingsFragment;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
@@ -62,6 +67,8 @@ public class maindrawer extends AppCompatActivity {
     private FragmentManager fragManager;
     private GigUser currentUser;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private Boolean refreshTabViewFlag;
+    private Boolean refreshTabViewSettingsFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,15 +88,21 @@ public class maindrawer extends AppCompatActivity {
             // Initializing Toolbar and setting it as the actionbar
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
+
             //Setup the Fragment Manager
             fragManager = getFragmentManager();
+
             fragManager.addOnBackStackChangedListener(getListener());
 
            //create eventfeed fragment and launch it to fill the main screen
             //we get the current fragment manager and start a replacement transaction and we add this transaction to a stack
             //so if we need to move through the stack we pop one off
-            EventFeedFragment fragment = new EventFeedFragment();
-            fragManager.beginTransaction().replace(R.id.frame, fragment,"EventFeedFragment").addToBackStack("EventFeed").commit();
+
+            //create tab view
+            feedtabview fragment = new feedtabview();
+            refreshTabViewFlag = true;
+            refreshTabViewSettingsFlag = false;
+            fragManager.beginTransaction().replace(R.id.frame, fragment,"EventFeedFragment").addToBackStack("EventFeedFragment").commit();
 
             //set username and email in the header and user image
             userName = (TextView) findViewById(R.id.username);
@@ -151,14 +164,14 @@ public class maindrawer extends AppCompatActivity {
 
 
                         //Replacing the main content with ContentFragment Which is our Inbox View;
-                        case R.id.eventfeed:
-                            EventFeedFragment fragment3 = new EventFeedFragment();
-                            fragManager.beginTransaction().replace(R.id.frame, fragment3,"EventFeedFragment").addToBackStack("EventFeedFragment").commit();
+                        case R.id.myFriends:
+                            followListFragment followingfragment = new followListFragment();
+                            fragManager.beginTransaction().replace(R.id.frame, followingfragment,"followListFragment").addToBackStack("followListFragment").commit();
                             return true;
-                        case R.id.messaging:
-                            Toast.makeText(getApplicationContext(), "Messaging", Toast.LENGTH_SHORT).show();
+                        case R.id.myFollowers:
+                            followerListFragment followerfragment = new followerListFragment();
+                            fragManager.beginTransaction().replace(R.id.frame, followerfragment,"followerListFragment").addToBackStack("followerListFragment").commit();
                             return true;
-                        // For rest of the options we just show a toast on click
 
                         case R.id.my_experiences:
                             //Toast.makeText(getApplicationContext(), "Stared Selected", Toast.LENGTH_SHORT).show();
@@ -173,13 +186,10 @@ public class maindrawer extends AppCompatActivity {
                             searchEvent searchFragment = new searchEvent();
                             fragManager.beginTransaction().replace(R.id.frame, searchFragment,"SearchEventFragment").addToBackStack("SearchEventFragment").commit();
                             return true;
-                        case R.id.newsfeed:
-                           newsfeedFragment fragment2 = new newsfeedFragment();
-                            fragManager.beginTransaction().replace(R.id.frame, fragment2,"newsFeedFragment").addToBackStack("newsFeedFragment").commit();
-                            Toast.makeText(getApplicationContext(), "newsfeed Selected", Toast.LENGTH_SHORT).show();
-                            return true;
-                        case R.id.connect:
-                            Toast.makeText(getApplicationContext(), "User wants to connect to other Users", Toast.LENGTH_SHORT).show();
+                        case R.id.feedsTab:
+                            //create tab view
+                            feedtabview fragment = new feedtabview();
+                            fragManager.beginTransaction().replace(R.id.frame, fragment, "EventFeedFragment").addToBackStack("EventFeedFragment").commit();
                             return true;
                         case R.id.logoutDrawer:
                             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(maindrawer.this);
@@ -307,17 +317,23 @@ public class maindrawer extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
+        //This grabs the current fragment, you can use this to set up actions specific to leaving a certain fragment
+        Fragment currFrag = fragManager.findFragmentById(R.id.drawer);
+        if (currFrag instanceof SettingsFragment || currFrag instanceof eventDetailFragment || currFrag instanceof newsfeedPostDetail){
+            refreshTabViewFlag = false;
+        }
+
+        //changed this line
+        if(fragManager.getBackStackEntryCount() >= 2 ) {
+            fragManager.popBackStack();
+        } else {
+            super.onBackPressed();
+        }
 
         FrameLayout frame =(FrameLayout) findViewById(R.id.frame);
         if(frame.getVisibility() == View.INVISIBLE){
             frame.setVisibility(View.VISIBLE);
 
-        }
-
-        if(fragManager.getBackStackEntryCount() > 1 ) {
-            fragManager.popBackStack();
-        } else {
-            super.onBackPressed();
         }
 
     }
@@ -329,6 +345,9 @@ public class maindrawer extends AppCompatActivity {
             @Override
             public void onBackStackChanged() {
 
+                //Save old animation flag
+                Boolean oldAnimationFlag = AnimationFlag;
+
                 //Update Views based on preferences
                 AnimationFlag = preferences.getBoolean("animation_preference", false);
                 if(AnimationFlag){
@@ -337,6 +356,10 @@ public class maindrawer extends AppCompatActivity {
                     imageView.setVisibility(View.VISIBLE);
                 }
 
+                //Check if flag changed in case tab view needs to be updated
+                if (AnimationFlag != oldAnimationFlag)
+                    refreshTabViewSettingsFlag= true;
+
                 //if its a subview with a arrow check if thats visible if its visible lock the drawer cause they have
                 //a back button to segway back to the parent view
                 eventDetailFragment myFragment = (eventDetailFragment)fragManager.findFragmentByTag("EventDetailFragment");
@@ -344,6 +367,15 @@ public class maindrawer extends AppCompatActivity {
                 newsfeedPostDetail myFragment3 = (newsfeedPostDetail)fragManager.findFragmentByTag("NewsFeedPostDetail");
                 newsfeedPostForm myFragment4 = (newsfeedPostForm)fragManager.findFragmentByTag("NewsFeedPostForm");
                 searchEvent myFragment5 = (searchEvent) fragManager.findFragmentByTag("SearchEventFragment");
+                feedtabview tabsFragment = (feedtabview) fragManager.findFragmentByTag("EventFeedFragment");
+
+                //This is where the refresh of the tabsview occurs, it should only occur with fragments that replace the frame
+                if (refreshTabViewSettingsFlag || (tabsFragment != null && tabsFragment.isVisible() && myFragment2 == null && myFragment == null && myFragment3 == null && refreshTabViewFlag)){
+                    tabsFragment = new feedtabview();
+                    fragManager.beginTransaction().replace(R.id.frame, tabsFragment, "EventFeedFragment").commit();
+                    refreshTabViewSettingsFlag = false;
+                }
+                refreshTabViewFlag = true;
                 if (myFragment5 != null && myFragment5.isVisible()){
                     //actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
                     toolbar.setTitle("Search Event");
@@ -392,5 +424,6 @@ public class maindrawer extends AppCompatActivity {
         };
         return result;
     }
+
 
 }

@@ -23,7 +23,8 @@ import java.util.ArrayList;
 /**
  * Created by snow on 7/11/2015.
  */
-public class newsfeedFragment extends Fragment{
+//had to change to android.app.Fragment
+public class newsfeedFragment extends Fragment {
 
     public static final String REQUEST_TAG = "MainVolleyActivity";
     private Button mButton;

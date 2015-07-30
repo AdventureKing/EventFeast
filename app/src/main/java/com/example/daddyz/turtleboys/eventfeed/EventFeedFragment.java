@@ -3,6 +3,7 @@ package com.example.daddyz.turtleboys.eventfeed;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -20,16 +21,15 @@ import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
 import com.example.daddyz.turtleboys.VolleyRequestQueue;
 import com.example.daddyz.turtleboys.maindrawer;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
  * Created by Admin on 04-06-2015.
  */
+//had to change fragment class to android.app.Fragment
 public class EventFeedFragment extends Fragment implements Response.Listener,
         Response.ErrorListener{
 
@@ -41,6 +41,7 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
     private ListView list;
     private eventfeedAdapter adapter;
     private ArrayList<gEventObject> eventfeedList;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +51,17 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
         rootView = inflater.inflate(R.layout.eventfeedlistfragment, container, false);
         list = (ListView) rootView.findViewById(R.id.listView);
 
+        //swipe down to refresh
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.activity_main_swipe_refresh_layout);
+        //pull down to refresh the list and set the colors of the loading icon
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.loadingorange, R.color.loadinggreen, R.color.loadingblue);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
+
+            }
+        });
         mTextView = (TextView) rootView.findViewById(R.id.textView);
         list.setClickable(true);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -71,6 +83,14 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
         return rootView;
     }
 
+    private void refreshContent() {
+        //wtf do i put here to have it refresh???
+
+        Toast.makeText(getActivity(), "User wants new list of events for feed", Toast.LENGTH_SHORT).show();
+        mSwipeRefreshLayout.setRefreshing(false);
+
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -83,6 +103,14 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
                 new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);
         mQueue.add(jsonRequest);
+
+       /* mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mQueue.add(jsonRequest);
+            }
+        });*/
+
     }
 
     @Override

@@ -14,12 +14,22 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.example.daddyz.turtleboys.R;
+import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
+import com.example.daddyz.turtleboys.VolleyRequestQueue;
+import com.example.daddyz.turtleboys.eventfeed.eventfeedAdapter;
+import com.example.daddyz.turtleboys.eventfeed.gEventImageObject;
 import com.example.daddyz.turtleboys.eventfeed.gEventObject;
+import com.example.daddyz.turtleboys.eventfeed.gEventPerformerObject;
 import com.example.daddyz.turtleboys.login_activity;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.google.android.gms.common.api.ResultCallback;
@@ -38,10 +48,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -58,6 +70,8 @@ public class MapsActivity extends FragmentActivity implements
     // Buttons for kicking off the process of adding or removing geofences.
     private Button mAddGeofencesButton;
     private Button mRemoveGeofencesButton;
+    private RequestQueue mQueue;
+    private ArrayList<gEventObject> eventfeedList;
 
     /**
      * Used to keep track of whether geofences were added.
@@ -69,6 +83,7 @@ public class MapsActivity extends FragmentActivity implements
     private long time = 2000;
     private LatLng  mapCenter = null;
     private float distance = (float) 10.00;
+    public static final String REQUEST_TAG = "User List Fragment";
     /**
      * Used to persist application state about whether geofences were added.
      */
@@ -143,6 +158,25 @@ public class MapsActivity extends FragmentActivity implements
         super.onStart();
         // Connect the client.
         mGoogleApiClient.connect();
+
+        //event object stuff
+       /* mQueue = VolleyRequestQueue.getInstance(null)
+                .getRequestQueue();
+        String url = "http://45.55.142.106/prod/ws/rest/findEvents/San%20Antonio?city=San%20Antonio";
+        final VolleyJSONObjectRequest jsonRequest = new VolleyJSONObjectRequest(Request.Method
+                .GET, url,
+                new JSONObject(), this, this);
+        jsonRequest.setTag(REQUEST_TAG);
+        mQueue.add(jsonRequest);
+
+       /* mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mQueue.add(jsonRequest);
+            }
+        });*/
+
+
     }
 
     @Override
@@ -305,6 +339,7 @@ public class MapsActivity extends FragmentActivity implements
             venueLng = myIntent.getDoubleExtra("lon", 0.0);
 
             mMap.addMarker(new MarkerOptions().position(new LatLng(venueLat, venueLng)).title(desc).snippet(addr));
+
 
             //Get Markers For Map
             /* gEventObject object = new gEventObject();
@@ -554,12 +589,7 @@ public class MapsActivity extends FragmentActivity implements
 
 
 
-
-
-
-
-
-
+    /*
 
 
 

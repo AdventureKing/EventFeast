@@ -2,6 +2,8 @@ package com.example.daddyz.turtleboys;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentManager.OnBackStackChangedListener;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,8 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
-import android.app.FragmentManager;
-import android.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,16 +22,18 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.eventfeed.gEventObject;
-import com.example.daddyz.turtleboys.my_experiences.historyAdapter;
 import com.example.daddyz.turtleboys.friendFeed.followListFragment;
 import com.example.daddyz.turtleboys.friendFeed.followerListFragment;
+import com.example.daddyz.turtleboys.my_experiences.historyAdapter;
 import com.example.daddyz.turtleboys.settings.SettingsFragment;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.example.daddyz.turtleboys.subclasses.User_Icon_Animation;
@@ -43,8 +45,6 @@ import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -186,15 +186,6 @@ public class  experience_activity extends AppCompatActivity {
                     case R.id.myFollowers:
                         followerListFragment fragment3 = new followerListFragment();
                         fragManager.beginTransaction().replace(R.id.frame, fragment3,"followerListFragment").addToBackStack("followerListFragment").commit();
-                        return true;
-                    case R.id.myPosts:
-                        Toast.makeText(getApplicationContext(), "Post Selected", Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.messaging:
-                        Toast.makeText(getApplicationContext(), "User wants to message", Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.myListings:
-                        Toast.makeText(getApplicationContext(), "User wants to look at their listings", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.logoutDrawer:
                         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(experience_activity.this);
@@ -365,10 +356,17 @@ public class  experience_activity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Log.d("Test","This is being called in my_experiences");
+
         if(getFragmentManager().getBackStackEntryCount() != 0) {
             getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
+        }
+
+        FrameLayout frame =(FrameLayout) findViewById(R.id.frame);
+        if(frame.getVisibility() == View.INVISIBLE){
+            frame.setVisibility(View.VISIBLE);
+
         }
     }
 

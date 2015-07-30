@@ -10,12 +10,6 @@
         android:title="Main Page" />
 
         <item
-            android:id="@+id/messaging"
-            android:checked="false"
-            android:icon="@drawable/ic_inbox_black"
-            android:title="@string/messaging" />
-
-        <item
             android:id="@+id/myEvents"
             android:checked="false"
             android:icon="@drawable/ic_local_movies_black_24dp"
@@ -24,22 +18,14 @@
             android:id="@+id/myFriends"
             android:checked="false"
             android:icon="@drawable/ic_tag_faces_black_24dp"
+            android:visible="false"
             android:title="@string/myfriends" />
         <item
             android:id="@+id/myFollowers"
             android:checked="false"
             android:icon="@drawable/ic_tag_faces_black_24dp"
+            android:visible="false"
             android:title="@string/myfollowers" />
-        <item
-            android:id="@+id/myPosts"
-            android:checked="false"
-            android:icon="@drawable/ic_assistant_black_24dp"
-            android:title="@string/myposts" />
-        <item
-            android:id="@+id/myListings"
-            android:checked="false"
-            android:icon="@drawable/ic_beenhere_black_24dp"
-            android:title="@string/mylistings" />
         <item
             android:id="@+id/logoutDrawer"
             android:checked="false"

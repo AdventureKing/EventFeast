@@ -23,13 +23,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.eventfeed.gEventImageObject;
 import com.example.daddyz.turtleboys.eventfeed.gEventObject;
 import com.example.daddyz.turtleboys.maps.MapsActivity;
 import com.squareup.picasso.Picasso;
-
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
@@ -79,7 +77,7 @@ public class eventDetailFragment extends Fragment {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed(frame);
+                getActivity().onBackPressed();
             }
         });
 

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.Point;
 import android.media.ExifInterface;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -52,11 +53,14 @@ public class gallery1 extends AppCompatActivity {
     private String title;
     private String userName;
     private FloatingActionButton fab;
-
+    private Point point = new Point();
+    private int pictureResolution;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindowManager().getDefaultDisplay().getSize(point);  //Get Screen Resolution
+        pictureResolution = (point.x / 2) - 24;  //Calculate gallery item sizes
         setContentView(R.layout.gallery);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -87,6 +91,7 @@ public class gallery1 extends AppCompatActivity {
 
         //Prepare Gallery View
         gridview = (GridView) findViewById(R.id.gridview);
+        //gridview.setHorizontalSpacing(point.x / 108);  //Set horizontal spacing between columns
         myImageAdapter = new ImageAdapter(this);
         gridview.setAdapter(myImageAdapter);
         finishedPictures = new HashMap<>();
@@ -381,7 +386,7 @@ public class gallery1 extends AppCompatActivity {
             if (convertView == null) { // if it's not recycled, initialize some
                 // attributes
                 imageView = new ImageView(mContext);
-                imageView.setLayoutParams(new GridView.LayoutParams(512, 512));
+                imageView.setLayoutParams(new GridView.LayoutParams(pictureResolution, pictureResolution));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setPadding(8, 8, 8, 8);
 

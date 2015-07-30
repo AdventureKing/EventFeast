@@ -16,9 +16,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.Time;
 import android.util.Log;
-import android.view.ContextMenu;
+
 import android.view.LayoutInflater;
-import android.view.Menu;
+
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,20 +26,18 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.FrameLayout;
+
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
+
 import com.example.daddyz.turtleboys.R;
-import com.example.daddyz.turtleboys.newsfeed.newsfeedPostDetail;
-import com.example.daddyz.turtleboys.newsfeed.newsfeedPostForm;
-import com.example.daddyz.turtleboys.settings.SettingsFragment;
-import com.parse.GetDataCallback;
+
+
+
 
 import java.util.Calendar;
 import java.util.Date;

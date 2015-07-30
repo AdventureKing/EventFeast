@@ -15,7 +15,7 @@
     <string name="My_experiences">My Experiences</string>
     <string name="searchEvent">Search Event</string>
     <string name="accountSettings">Account Settings</string>
-    <string name="newsfeed">Newsfeed</string>
+    <string name="feed">Feast on your Feeds</string>
     <string name="connect">Connect</string>
 
     <!-- pre built options that need to phased out -->
@@ -138,7 +138,8 @@
     <string name="meals_text">Meals Enjoyed</string>
     <string name="user_level_text">Level</string>
     <string name="user_level_outline_image">User\'s Level</string>
-    <string name="myfollowers">Folllowers</string>
+    <string name="myfollowers">Followers</string>
+    <string name="title_activity_main">FriendsActivity</string>
 
 
 </resources>

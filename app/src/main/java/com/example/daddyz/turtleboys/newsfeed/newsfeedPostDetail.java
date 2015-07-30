@@ -66,7 +66,7 @@ public class newsfeedPostDetail extends Fragment {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed(frame);
+                getActivity().onBackPressed();
             }
         });
         eventImage = (ImageView) view.findViewById(R.id.eventImage);

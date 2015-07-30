@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -19,16 +18,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.FrameLayout;
 
 import com.example.daddyz.turtleboys.R;
 import com.parse.ParseClassName;
 import com.parse.ParsePushBroadcastReceiver;
-import com.parse.PushService;
 
 /**
  * Created by Gregory Hooks Jr on 6/28/2015.
@@ -63,13 +59,14 @@ public class SettingsFragment extends Fragment {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
-                container.findViewById(R.id.frame).setVisibility(View.VISIBLE);
+                getActivity().onBackPressed();
             }
         });
 
         //Clear Previous Activity's Frame
-        container.findViewById(R.id.frame).setVisibility(View.INVISIBLE);
+        //container.findViewById(R.id.frame).setVisibility(View.INVISIBLE);
+        final FrameLayout frame = (FrameLayout) container.findViewById(R.id.frame);
+        frame.setVisibility(View.INVISIBLE);
 
         //Setup Preferences Fragment to display settings
         FragmentManager mFragmentManager = getFragmentManager();
@@ -95,12 +92,7 @@ public class SettingsFragment extends Fragment {
         }
     }
 
-    public void onBackPressed() {
-        Log.d("Test","This is being called in maindrawer");
-        if(getFragmentManager().getBackStackEntryCount() != 0) {
-            getFragmentManager().popBackStack();
-        }
-    }
+
 
 
     public static class PrefsFragment extends PreferenceFragment {

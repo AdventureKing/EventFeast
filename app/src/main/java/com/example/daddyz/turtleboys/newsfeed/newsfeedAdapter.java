@@ -1,9 +1,12 @@
 package com.example.daddyz.turtleboys.newsfeed;
 
 import android.content.Context;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,12 +24,15 @@ public class newsfeedAdapter extends ArrayAdapter<newsfeedObject> {
     private Context context;
     private int resource;
     private ArrayList<newsfeedObject> newsfeedObjects;
+    private Boolean AnimationFlag;
+    private int lastPosition = -1;
 
     public newsfeedAdapter(Context context, int resource, ArrayList<newsfeedObject> newsfeedObjects) {
         super(context, resource,newsfeedObjects);
         this.context = context;
         this.resource = resource;
         this.newsfeedObjects = newsfeedObjects;
+        this.AnimationFlag = PreferenceManager.getDefaultSharedPreferences(context).getBoolean("animation_preference", false);
     }
 
     @Override
@@ -59,8 +65,12 @@ public class newsfeedAdapter extends ArrayAdapter<newsfeedObject> {
 
         messageBox1.setText("This is the Test example message");
         description.setText("The description of the post will go here");
-
-
+        //slide up animation
+        if (AnimationFlag) {
+            Animation animation = AnimationUtils.loadAnimation(getContext(), (position > lastPosition) ? R.anim.up_from_bottom : R.anim.bottom_from_up);
+            rowView.startAnimation(animation);
+            lastPosition = position;
+        }
         return rowView;
     }
 }

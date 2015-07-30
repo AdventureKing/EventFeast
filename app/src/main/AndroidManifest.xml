@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.daddyz.turtleboys" >
+
     <uses-sdk android:minSdkVersion="14" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -10,11 +12,9 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
-    <!-- Calendar permissions Integration-->
-    <uses-permission
-        android:name="android.permission.READ_CALENDAR"/>
-    <uses-permission
-        android:name="android.permission.WRITE_CALENDAR"/>
+    <!-- Calendar permissions Integration -->
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <!-- Camera Integration -->
     <uses-feature
         android:name="android.hardware.camera"
@@ -41,6 +41,8 @@
          Google Maps Android API v2, but are recommended.
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".App_Application"
@@ -77,8 +79,9 @@
                 <action android:name="MediaStore.ACTION_IMAGE_CAPTURE" />
             </intent-filter>
         </activity>
-        <activity android:name=".maindrawer"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".maindrawer"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -95,7 +98,8 @@
             </intent-filter>
         </receiver>
 
-        <!--   //This is the default Parse Push Notification Receiver
+        <!--
+        //This is the default Parse Push Notification Receiver
         <receiver
             android:name="com.parse.ParsePushBroadcastReceiver"
             android:exported="false" >
@@ -104,10 +108,11 @@
                 <action android:name="com.parse.push.intent.DELETE" />
                 <action android:name="com.parse.push.intent.OPEN" />
             </intent-filter>
-        </receiver> -->
+        </receiver>
+        -->
 
         <receiver
-            android:name="com.example.daddyz.turtleboys.settings.SettingsFragment$Receiver"
+            android:name=".settings.SettingsFragment$Receiver"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.example.UPDATE_STATUS" />
@@ -116,7 +121,6 @@
                 <action android:name="com.parse.push.intent.OPEN" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name="com.parse.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
@@ -124,7 +128,7 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-<!--                   IMPORTANT: Change "com.parse.starter" to match your app's package name. -->
+                <!-- IMPORTANT: Change "com.parse.starter" to match your app's package name. -->
                 <category android:name="com.example.daddyz.turtleboys" />
             </intent-filter>
         </receiver>
@@ -139,6 +143,10 @@
         <activity
             android:name=".maps.MapsActivity"
             android:label="@string/title_activity_maps" >
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main" >
         </activity>
     </application>
 
