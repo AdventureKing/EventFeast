@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,7 +32,6 @@ public class statspagefragment extends Fragment {
 
     private View view;
     private boolean AnimationFlag;
-    private boolean onceAnimateFlag;
     private SharedPreferences preferences;
     private GigUser currentUser;
     private TextView userFirstName;
@@ -47,8 +47,6 @@ public class statspagefragment extends Fragment {
     private ArrayList<gEventObject> historyList;
     private ParseImageView userAvatar;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //lock the drawer because we are inception in this bitch
-        //main_activity->fragment->fragment
         currentUser = ParseUser.createWithoutData(GigUser.class, ParseUser.getCurrentUser().getObjectId());
         view = inflater.inflate(R.layout.statspage, container, false);
 // Initializing Toolbar and setting it as the actionbar
@@ -57,8 +55,7 @@ public class statspagefragment extends Fragment {
         //Retrieve preferences and prepare fragment listener to allow dynamic changes to preferences while in fragments
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         AnimationFlag = preferences.getBoolean("animation_preference", false);
-        //build out screen profile
-        //TODO need to set up animation check
+
         ParseFile image = (ParseFile) currentUser.getUserImage();
         userAvatar = (ParseImageView) view.findViewById(R.id.userImage);
         userAvatar.setParseFile(image);
@@ -118,15 +115,10 @@ public class statspagefragment extends Fragment {
         historyadapter = new historyAdapter(getActivity(), R.layout.eventfeedroweven, historyList);
         list.setAdapter(historyadapter);
 
-        //TODO what is this shit for and why does it not work
-        //this isnt working
-        /*
-        if (!AnimationFlag) {
-            list.setAdapter(historyadapter);
-            ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
-        } else
-            onceAnimateFlag = true;
-            */
+        if (AnimationFlag){
+            userStatistics.startAnimation(user_statistics_animation);
+        }
+
 
         return view;
     }

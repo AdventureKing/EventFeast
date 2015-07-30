@@ -1,11 +1,7 @@
 package com.example.daddyz.turtleboys;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -18,41 +14,27 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import com.example.daddyz.turtleboys.R;
-import com.example.daddyz.turtleboys.maindrawer;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
-import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-import com.parse.SignUpCallback;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-
-//import java.text.ParseException;
 
 /**
  * Created by Jinbir on 6/15/2015.
@@ -278,6 +260,7 @@ public class change_account_info_activity extends Activity {
                         if (e == null) {
 
                             Toast.makeText(getApplicationContext(), "Your new account information has been saved!", Toast.LENGTH_LONG).show();
+                            ((App_Application) getApplication()).setUserInfoUpdateFlag(true);
 
                             if (updateGallery) {  //The following code is dangerous if it is renaming a directory to itself
                                 //Update Gallery Directory if it exists

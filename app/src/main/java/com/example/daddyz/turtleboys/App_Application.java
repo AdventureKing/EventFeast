@@ -12,6 +12,8 @@ import com.parse.ParseUser;
  */
 public class App_Application extends Application {
 
+    private Boolean userInfoUpdateFlag = false;
+
     @Override public void onCreate() {
 
 
@@ -24,5 +26,13 @@ public class App_Application extends Application {
 
         Parse.initialize(this, "3YwirBYrXg3tZ9nLiCR5F75FyWR2shvOIVHixtjX", "ERFTgdWUdDO2vjuwwNVasuG8rybwagtUfxWhe4dJ");
         ParseInstallation.getCurrentInstallation().saveInBackground();
+    }
+
+    public Boolean getUserInfoUpdateFlag(){
+        return userInfoUpdateFlag;
+    }
+
+    public void setUserInfoUpdateFlag(Boolean newFlagValue){
+        this.userInfoUpdateFlag = newFlagValue;
     }
 }

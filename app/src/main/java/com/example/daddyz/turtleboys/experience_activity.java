@@ -27,7 +27,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.eventfeed.gEventObject;
 import com.example.daddyz.turtleboys.friendFeed.followListFragment;
@@ -42,7 +41,6 @@ import com.parse.LogOutCallback;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseUser;
-
 import java.util.ArrayList;
 
 
@@ -63,18 +61,7 @@ public class  experience_activity extends AppCompatActivity {
     private FragmentManager fragManager;
     private ParseImageView imageView;
     private final GigUser currentUser = ParseUser.createWithoutData(GigUser.class, ParseUser.getCurrentUser().getObjectId());
-    private ParseImageView userAvatar;
-    private TextView userFirstName;
-    private TextView userLastName;
-    private TextView userPosts;
-    private TextView userNumberAttended;
-    private TextView userLevel;
-    private RelativeLayout userStatistics;
     private final Animation User_Icon = new User_Icon_Animation(com.example.daddyz.turtleboys.subclasses.User_Icon_Animation.Rotate.RIGHT, User_Icon_Animation.Angle.TO_DEGREES_0, 500, false);
-    private final Animation user_statistics_animation = new User_Icon_Animation(com.example.daddyz.turtleboys.subclasses.User_Icon_Animation.Rotate.DOWN, User_Icon_Animation.Angle.TO_DEGREES_0, 500, false);
-    private ListView list;
-    private historyAdapter historyadapter;
-    private ArrayList<gEventObject> historyList;
     private Handler mHandler = new Handler();
 
     @Override
@@ -102,11 +89,6 @@ public class  experience_activity extends AppCompatActivity {
         fragManager = getFragmentManager();
         fragManager.addOnBackStackChangedListener(getListener());
 
-
-        //launch statspage
-        statspagefragment fragment = new statspagefragment();
-        fragManager.beginTransaction().replace(R.id.frame, fragment,"statspageFragment").addToBackStack("statspageFragment").commit();
-
         //set username and email in the header and user image
         userName = (TextView) findViewById(R.id.username);
         userName.setText(currentUser.getUsername().toString());
@@ -131,15 +113,17 @@ public class  experience_activity extends AppCompatActivity {
             }
         });
 
-        //get FrameLayout of grey area of screen for animation purposes
-        userStatistics = (RelativeLayout) findViewById(R.id.userStatistics);
-
         //Animate the imageview if preferences permit
         if(AnimationFlag) {
             //hide user image until drawer is fully open if animations are enabled
             imageView.setVisibility(View.INVISIBLE);
         }
 
+        if (!AnimationFlag) {
+            statspagefragment fragment = new statspagefragment();
+            fragManager.beginTransaction().replace(R.id.frame, fragment,"statspageFragment").addToBackStack("statspageFragment").commit();
+        } else
+            onceAnimateFlag = true;
 
         //this is the drawer
 
@@ -166,10 +150,10 @@ public class  experience_activity extends AppCompatActivity {
 
 
                     //Replacing the main content with ContentFragment Which is our Inbox View;
-                case R.id.userStats:
-                    statspagefragment fragment = new statspagefragment();
-                    fragManager.beginTransaction().replace(R.id.frame, fragment,"statspageFragment").addToBackStack("statspageFragment").commit();
-                    return true;
+                    case R.id.userStats:
+                        statspagefragment fragment = new statspagefragment();
+                        fragManager.beginTransaction().replace(R.id.frame, fragment,"statspageFragment").addToBackStack("statspageFragment").commit();
+                        return true;
                     // For rest of the options we just show a toast on click
                     case R.id.main_page:
                         Intent intent = new Intent(getApplicationContext(), maindrawer.class);
@@ -301,7 +285,7 @@ public class  experience_activity extends AppCompatActivity {
     public void onBackPressed() {
         Log.d("Test","This is being called in my_experiences");
 
-        if(getFragmentManager().getBackStackEntryCount() != 0) {
+        if(getFragmentManager().getBackStackEntryCount() != 1) {
             getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
@@ -320,51 +304,21 @@ public class  experience_activity extends AppCompatActivity {
         OnBackStackChangedListener result = new FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
+                //Save old animation flag
+                Boolean oldAnimationFlag = AnimationFlag;
+                Boolean userInfoUpdateFlag = ((App_Application) getApplication()).getUserInfoUpdateFlag();
+
                 AnimationFlag = preferences.getBoolean("animation_preference", false);
                 if(AnimationFlag){
                     imageView.setVisibility(View.INVISIBLE);
                 }else{
                     imageView.setVisibility(View.VISIBLE);
                 }
-                eventDetailFragment myFragment = (eventDetailFragment)fragManager.findFragmentByTag("EventDetailFragment");
-                SettingsFragment myFragment2 = (SettingsFragment) fragManager.findFragmentByTag("SettingsFragment");
-                if ((myFragment != null && myFragment.isVisible()) || (myFragment2 != null && myFragment2.isVisible())) {
-                    // add your code here
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                }else{
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                    //TODO what the fuck do we do here
-                    //Fetch latest Parse Information
-                  /*  currentUser.fetchInBackground(new GetCallback<ParseObject>() {
-                        @Override
-                        public void done(ParseObject parseObject, ParseException e) {
-                            if (e == null){
-                                if (currentUser.getUserTotalPost() != null)
-                                    userPosts.setText(currentUser.getUserTotalPost().toString());
-                                else {
-                                    userPosts.setText("0");
-                                    currentUser.setUserTotalPost(0);
-                                }
-                                if (currentUser.getUserEventsAttended() != null)
-                                    userNumberAttended.setText(currentUser.getUserEventsAttended().toString());
-                                else {
-                                    userNumberAttended.setText("0");
-                                    currentUser.setUserEventsAttended(0);
-                                }
-                                if (currentUser.getUserLevel() != null)
-                                    userLevel.setText(currentUser.getUserLevel().toString());
-                                else {
-                                    userLevel.setText("0");
-                                    currentUser.setUserLevel(0);
-                                }
-                            }else{
-                                userLevel.setText("0");
-                                userPosts.setText("0");
-                                userNumberAttended.setText("0");
-                            }
-                        }
-                    });
 
+                //Check if flag changed in case tab view needs to be updated
+                if(userInfoUpdateFlag){
+                    Fragment frag = fragManager.findFragmentByTag("statspageFragment");
+                    fragManager.beginTransaction().hide(frag).commit();
                     //Update User Information
                     imageView.setParseFile(currentUser.getUserImage());
                     //load the image from the parse database
@@ -377,34 +331,30 @@ public class  experience_activity extends AppCompatActivity {
                             Log.v("LOG!!!!!!", "imageView height = " + oldHeight);      // DISPLAYS 90 px
                             Log.v("LOG!!!!!!", "imageView width = " + oldWidth);        // DISPLAYS 90 px
 
-                            userAvatar.setParseFile(currentUser.getUserImage());
-                            //load the image from the parse database
-                            userAvatar.loadInBackground(new GetDataCallback() {
-                                @Override
-                                public void done(byte[] bytes, com.parse.ParseException e) {
-                                    // The image is loaded and displayed!
-                                    int oldHeight = userAvatar.getHeight();
-                                    int oldWidth = userAvatar.getWidth();
-                                    Log.v("LOG!!!!!!", "userAvatar height = " + oldHeight);      // DISPLAYS 90 px
-                                    Log.v("LOG!!!!!!", "userAvatar width = " + oldWidth);        // DISPLAYS 90 px
-
-                                }
-                            });
-
+                            statspagefragment fragment = new statspagefragment();
+                            fragManager.beginTransaction().replace(R.id.frame, fragment,"statspageFragment").addToBackStack("statspageFragment").commit();
+                            ((App_Application) getApplication()).setUserInfoUpdateFlag(false);
                         }
                     });
 
-                    userName.setText(currentUser.getUsername().toString());
-                    userEmail.setText(currentUser.getEmail().toString());
-                    userFirstName.setText(currentUser.getFirstName());
-                    userLastName.setText(currentUser.getLastName());
-                    if (AnimationFlag){
-                        userStatistics.startAnimation(user_statistics_animation);
-                    }
-                    historyList = getTimeCapsule();
-                    historyadapter = new historyAdapter(experience_activity.this, R.layout.eventfeedroweven, historyList);
-                    list.setAdapter(historyadapter);
-                    ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();*/
+                    userName.setText(currentUser.getUsername());
+                    userEmail.setText(currentUser.getEmail());
+
+                }else if (AnimationFlag != oldAnimationFlag){
+                    Fragment frag = fragManager.findFragmentByTag("statspageFragment");
+                    fragManager.beginTransaction().hide(frag).commit();
+                    statspagefragment fragment = new statspagefragment();
+                    fragManager.beginTransaction().replace(R.id.frame, fragment,"statspageFragment").addToBackStack("statspageFragment").commit();
+                    ((App_Application) getApplication()).setUserInfoUpdateFlag(false);
+                }
+
+                eventDetailFragment myFragment = (eventDetailFragment)fragManager.findFragmentByTag("EventDetailFragment");
+                SettingsFragment myFragment2 = (SettingsFragment) fragManager.findFragmentByTag("SettingsFragment");
+                if ((myFragment != null && myFragment.isVisible()) || (myFragment2 != null && myFragment2.isVisible())) {
+                    // add your code here
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                }else{
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 }
             }
         };
@@ -414,97 +364,21 @@ public class  experience_activity extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus){
 
-        //TODO wtf do we do here
-        /*if (hasFocus){
-            //Fetch latest Parse Information
-            currentUser.fetchInBackground(new GetCallback<ParseObject>() {
-                @Override
-                public void done(ParseObject parseObject, ParseException e) {
-                    if (e == null) {
-                        if (currentUser.getUserTotalPost() != null)
-                            userPosts.setText(currentUser.getUserTotalPost().toString());
-                        else {
-                            userPosts.setText("0");
-                            currentUser.setUserTotalPost(0);
-                        }
-                        if (currentUser.getUserEventsAttended() != null)
-                            userNumberAttended.setText(currentUser.getUserEventsAttended().toString());
-                        else {
-                            userNumberAttended.setText("0");
-                            currentUser.setUserEventsAttended(0);
-                        }
-                        if (currentUser.getUserLevel() != null)
-                            userLevel.setText(currentUser.getUserLevel().toString());
-                        else {
-                            userLevel.setText("0");
-                            currentUser.setUserLevel(0);
-                        }
-                    }else{
-                        userLevel.setText("0");
-                        userPosts.setText("0");
-                        userNumberAttended.setText("0");
-                    }
-                }
-            });
+        if (hasFocus){
             if (AnimationFlag) {
                 if (onceAnimateFlag) {
-                    userStatistics.setVisibility(View.INVISIBLE);
                     mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            userStatistics.setVisibility(View.VISIBLE);
-                            userStatistics.startAnimation(user_statistics_animation);
-                            list.setAdapter(historyadapter);
-                            ((BaseAdapter) list.getAdapter()).notifyDataSetChanged();
+                            //launch statspage
+                            statspagefragment fragment = new statspagefragment();
+                            fragManager.beginTransaction().replace(R.id.frame, fragment,"statspageFragment").addToBackStack("statspageFragment").commit();
                         }
                     }, 500);
                     onceAnimateFlag = false;
                 }
             }
-        }*/
-    }
-
-    public ArrayList<gEventObject> getTimeCapsule(){
-        historyList = new ArrayList<>();
-
-        //The following is to hard code some history items.  This will be replaced when the backend is ready
-        gEventObject obj = new gEventObject();
-        obj.setTitle("You posted \"Dude!  I just saw this cool wumpa tree at Brackenridge!\"");
-        ArrayList<String> month = new ArrayList<>();
-        month.add("0");
-        month.add("1");
-        month.add("Jul");
-        obj.setStart_date_month(new ArrayList(month));
-        ArrayList<String> day = new ArrayList<>();
-        day.add("18");
-        obj.setStart_date_day(new ArrayList(day));
-        ArrayList<String> year = new ArrayList<>();
-        year.add("2015");
-        obj.setStart_date_year(new ArrayList(year));
-        ArrayList<String> time = new ArrayList<>();
-        time.add("0");
-        time.add("1");
-        time.add("2:45PM");
-        obj.setStart_date_time(new ArrayList(time));
-        obj.setState_name("TX");
-        obj.setCity_name("San Antonio");
-        historyList.add(obj);
-
-        for(int i = 0; i < 16; i++) {
-            obj = new gEventObject();
-            obj.setTitle("You joined GigIT!");
-            obj.setStart_date_month(new ArrayList(month));
-            day.set(0, "16");
-            obj.setStart_date_day(new ArrayList(day));
-            obj.setStart_date_year(new ArrayList(year));
-            time.set(2, "1:16AM");
-            obj.setStart_date_time(new ArrayList(time));
-            obj.setState_name("TX");
-            obj.setCity_name("San Antonio");
-            historyList.add(obj);
         }
-
-        return historyList;
     }
 
 }
