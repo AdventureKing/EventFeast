@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GigIT</string>
+    <string name="app_name">EventFeast</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -126,6 +126,8 @@
     <!-- Search Event Strings -->
     <string name="searchKeyword">Please enter a Keyword to search</string>
     <string name="searchLocation">Location\n Tap to change Location</string>
+    <string name="searchCity">City</string>
+    <string name="searchState">State</string>
     <string name="setSearchRadius">Set Search Radius\t f kms / d miles</string>
     <string name="anyDay">Any Day</string>
     <string name="anyTime">Any Time</string>

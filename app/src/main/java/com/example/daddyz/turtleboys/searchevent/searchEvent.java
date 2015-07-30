@@ -4,22 +4,41 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.Time;
 import android.util.Log;
+
 import android.view.LayoutInflater;
+
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+
 import com.example.daddyz.turtleboys.R;
+
+
+
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -29,6 +48,7 @@ import java.util.Date;
 public class searchEvent extends Fragment {
 
     private EditText city;
+    private EditText state;
     private EditText keyword;
     private TextView searchRadiusText;
     private long searchRadius_miles;
@@ -60,6 +80,12 @@ public class searchEvent extends Fragment {
 
     private double MILESINAKILOMETER = 0.621;
 
+    private Toolbar toolbar;
+    private ActionBar actionBar;
+
+    private FragmentManager fragManager;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,6 +93,44 @@ public class searchEvent extends Fragment {
         super.onCreate(savedInstanceState);
 
         rootView = inflater.inflate(R.layout.searchevent, container, false);
+        //Set up a touch listener so when user taps the screen, the keyboard will hide.
+        //View view = rootView.findViewById(R.id.registrationPage);
+        rootView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.
+                        INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                return true;
+            }
+        });
+
+
+        /*
+        //Setup toolbar
+        toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        //actionBar.setTitle("Event Detail");
+        //final FrameLayout frame = (FrameLayout) container.findViewById(R.id.frame);
+        //frame.setVisibility(View.INVISIBLE);
+
+
+        //Set up back arrow icon on toolbar
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+        */
+
+
+
 
         return rootView;
     }
@@ -75,10 +139,14 @@ public class searchEvent extends Fragment {
     public void onStart() {
         super.onStart();
 
-        //Might use Google geolocation api to autocomplete
+        //City
         //TODO Add Google's city autocomplete
-        city = (EditText) rootView.findViewById(R.id.location);
-        city.setHint(R.string.searchLocation);
+        city = (EditText) rootView.findViewById(R.id.city);
+        city.setHint(R.string.searchCity);
+
+        //state
+        state = (EditText) rootView.findViewById(R.id.state);
+        state.setHint(R.string.searchState);
 
         //Search keyword for events
         keyword = (EditText) rootView.findViewById(R.id.keyword);
@@ -119,6 +187,7 @@ public class searchEvent extends Fragment {
                 };
         searchRadiusSeekBar.setOnSeekBarChangeListener(searchRadiusSeekbarListener);
 
+
         //fromDate date picker
         fromDateSelector = new DatePickerFragment();
         fromDateText = (EditText) rootView.findViewById(R.id.fromDate);
@@ -126,9 +195,10 @@ public class searchEvent extends Fragment {
             @Override
             public void onClick(View view) {
                 fromDateSelector.registerForContextMenu(fromDateText);
-                fromDateSelector.show(getFragmentManager(), "Date Picker");
+                fromDateSelector.show(getFragmentManager(), "fromDatePicker");
             }
         });
+        fromDateText.setText(R.string.anyDay);
 
         //toDate date picker
         toDateSelector = new DatePickerFragment();
@@ -137,10 +207,96 @@ public class searchEvent extends Fragment {
             @Override
             public void onClick(View view) {
                 toDateSelector.registerForContextMenu(toDateText);
-                toDateSelector.show(getFragmentManager(), "Date Picker");
+                toDateSelector.show(getFragmentManager(), "toDatePicker");
+
+            }
+        });
+        toDateText.setText(R.string.anyDay);
+
+        fromDateText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Reset button causes a call to this
+                // Checks if toDateText is a date. If it is, then convert to date object.
+                if ( !(fromDateText.getText().toString().matches("Any Day")) ) {
+
+                    String[] dates = fromDateText.getText().toString().split("/");
+
+                    int tempMonth=Integer.parseInt(dates[0]);
+                    tempMonth -= 1;
+                    int tempYear =Integer.parseInt(dates[2]);
+                    tempYear -= 1900;
+                    int tempDay = Integer.parseInt(dates[1]);
+
+                    fromDate = new Date(tempYear,tempMonth,tempDay);
+
+                } else {
+                    return;
+                }
+
+                //If toDate is set and fromDate is greater than toDate then set toDate to match fromDate
+                if ( !(toDateText.getText().toString().matches("Any Day")) && fromDate.after(toDate) ) {
+                    toDateText.setText(fromDateText.getText());
+                }
+
             }
         });
 
+        toDateText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+               // Reset button causes a call to this
+                // Checks if toDateText is a date. If it is, then convert to date object.
+                if ( !(toDateText.getText().toString().matches("Any Day")) ) {
+
+                    String[] dates = toDateText.getText().toString().split("/");
+
+                    int tempMonth=Integer.parseInt(dates[0]);
+                    tempMonth -= 1;
+                    int tempYear =Integer.parseInt(dates[2]);
+                    tempYear -= 1900;
+                    int tempDay = Integer.parseInt(dates[1]);
+
+                    toDate = new Date(tempYear,tempMonth,tempDay);
+
+                    //Toast.makeText(getActivity().getApplicationContext(), "SHOULDNT TRIGGER WHEN RESET IS HIT", Toast.LENGTH_SHORT).show();
+                } else {
+                    return;
+                }
+
+                // If fromDate is not set, then set it to toDate
+                if ( fromDateText.getText().toString().matches("Any Day")) {
+                    fromDateText.setText(toDateText.getText());
+                }
+
+                //If toDate is less than fromDate, then set fromDate to toDate
+                if ( toDate.before(fromDate) ) {
+                    fromDateText.setText(toDateText.getText());
+                }
+            }
+        });
+
+        /*
         //fromTime time picker
         fromTimeSelector = new TimePickerFragment();
         fromTimeText = (EditText) rootView.findViewById(R.id.fromTime);
@@ -162,6 +318,7 @@ public class searchEvent extends Fragment {
                 toTimeSelector.show(getFragmentManager(), "Time Picker");
             }
         });
+        */
 
         //Search Button
         search = (Button) rootView.findViewById(R.id.searchButton);
@@ -188,11 +345,12 @@ public class searchEvent extends Fragment {
             public void onClick(View view) {
 
                 city.setText("");
+                state.setText("");
                 keyword.setText("");
                 radioSortbyGroup.clearCheck();
                 defaultButton.toggle();
-                fromTimeText.setText(R.string.anyTime);
-                toTimeText.setText(R.string.anyTime);
+                //fromTimeText.setText(R.string.anyTime);
+                //toTimeText.setText(R.string.anyTime);
                 fromDateText.setText(R.string.anyDay);
                 toDateText.setText(R.string.anyDay);
                 searchRadiusSeekBar.setProgress(9);
@@ -203,12 +361,11 @@ public class searchEvent extends Fragment {
 
     }
 
+
     @Override
     public void onStop() {
         super.onStop();
     }
-
-
 
 
 
@@ -298,6 +455,7 @@ public class searchEvent extends Fragment {
         }
 
     }
+
     public void onBackPressed() {
         Log.d("Test", "This is being called in maindrawer");
         if(getFragmentManager().getBackStackEntryCount() != 0) {

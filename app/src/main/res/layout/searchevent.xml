@@ -14,25 +14,40 @@
         android:layout_height="wrap_content"
         android:id="@+id/top">
         <EditText
-            android:id="@+id/location"
+            android:id="@+id/city"
             android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:imeOptions="actionDone"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/ic_location_on_black_24dp_1x"/>
+
+        <EditText
+            android:id="@+id/state"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/city"
+            android:layout_centerHorizontal="true"
+            android:imeOptions="actionDone"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
             android:drawableLeft="@drawable/ic_location_on_black_24dp_1x"/>
 
         <EditText
             android:id="@+id/keyword"
             android:inputType="text"
             android:layout_width="match_parent"
-            android:background="#FFDDDDDD"
+            android:background="@drawable/searcheventborder"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/location"
+            android:layout_below="@+id/state"
             android:layout_marginTop="25dp"
             android:imeOptions="actionDone"
-            android:drawableLeft="@drawable/ic_search_black_24dp_1x"/>
+            android:padding="5dp"
+            android:drawableLeft="@drawable/ic_search_black_24dp_1x" />
 
 
     </RelativeLayout>
@@ -49,7 +64,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:id="@+id/sortGroup">
+            android:id="@+id/sortGroup"
+            android:layout_marginLeft="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -118,14 +134,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Set Date Range"
-        android:id="@+id/setDateText" />
+        android:id="@+id/setDateText"
+        android:layout_marginLeft="10dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="From"
         android:id="@+id/fromDateText"
         android:layout_below="@+id/setDateText"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"/>
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -134,6 +152,7 @@
         android:editable="false"
         android:focusableInTouchMode="false"
         android:layout_below="@+id/fromDateText"
+        android:layout_marginLeft="10dp"
         android:drawableLeft="@drawable/ic_today_black_24dp_1x"/>
     <TextView
         android:layout_width="wrap_content"
@@ -143,7 +162,8 @@
         android:layout_below="@+id/setDateText"
         android:layout_alignParentRight="true"
         android:layout_alignLeft="@+id/toDate"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"/>
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -153,9 +173,11 @@
         android:layout_alignParentRight="true"
         android:editable="false"
         android:focusableInTouchMode="false"
+        android:layout_marginRight="10dp"
         android:drawableLeft="@drawable/ic_event_black_24dp_1x"/>
 </RelativeLayout>
 
+    <!--
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -203,6 +225,7 @@
             android:focusableInTouchMode="false"
             android:drawableLeft="@drawable/ic_access_time_black_24dp_1x"/>
     </RelativeLayout>
+    -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -237,7 +260,7 @@
                 android:text="Reset"
                 android:textColor="#FFFFFF"
                 android:id="@+id/resetButton"
-                android:background="@color/PrimaryDarkColor"
+                android:background="@color/secondaryButtonColor"
                 android:drawableLeft="@drawable/ic_remove_circle_outline_white_24dp_1x"
                 android:paddingLeft="14dp"
                 android:layout_alignParentBottom="true" />

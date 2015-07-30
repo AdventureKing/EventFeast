@@ -370,13 +370,26 @@ public class maindrawer extends AppCompatActivity {
                 }
                 refreshTabViewFlag = true;
                 if (myFragment5 != null && myFragment5.isVisible()){
-                    actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+                    //actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
                     toolbar.setTitle("Search Event");
+                    /*
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                    getSupportActionBar().setHomeButtonEnabled(true);
+                    getSupportActionBar().setDisplayShowHomeEnabled(true);
+                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+                    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            onBackPressed();
+                            findViewById(R.id.frame).setVisibility(View.VISIBLE);
+                        }
+                    });
+                    */
                 } else {
                     actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
-                    toolbar.setTitle("GigIT");
+                    toolbar.setTitle(R.string.app_name);
                 }
-                if ((myFragment != null && myFragment.isVisible()) || (myFragment2 != null && myFragment2.isVisible()) || (myFragment3 != null && myFragment3.isVisible())|| (myFragment4 != null && myFragment4.isVisible()) || (myFragment5 != null && myFragment5.isVisible())) {
+                if ((myFragment != null && myFragment.isVisible()) || (myFragment2 != null && myFragment2.isVisible()) || (myFragment3 != null && myFragment3.isVisible())|| (myFragment4 != null && myFragment4.isVisible()) ) {
                     // add your code here
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 }else{
