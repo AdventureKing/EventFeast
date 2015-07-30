@@ -70,13 +70,14 @@
             android:background="@drawable/btnbluee_360" />
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/LOGO"
-            android:src="@drawable/loginticketconcept"
+            android:src="@drawable/ef_logo"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:layout_above="@+id/userName" />
 
         <Button
