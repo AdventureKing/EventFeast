@@ -21,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -34,16 +33,14 @@ import com.example.daddyz.turtleboys.eventfeed.gEventObject;
 import com.example.daddyz.turtleboys.friendFeed.followListFragment;
 import com.example.daddyz.turtleboys.friendFeed.followerListFragment;
 import com.example.daddyz.turtleboys.my_experiences.historyAdapter;
+import com.example.daddyz.turtleboys.my_experiences.statspagefragment;
 import com.example.daddyz.turtleboys.settings.SettingsFragment;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.example.daddyz.turtleboys.subclasses.User_Icon_Animation;
-import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.LogOutCallback;
-import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -95,6 +92,8 @@ public class  experience_activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("My Experiences");
 
+
+
         //Retrieve preferences and prepare fragment listener to allow dynamic changes to preferences while in fragments
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         AnimationFlag = preferences.getBoolean("animation_preference", false);
@@ -102,6 +101,11 @@ public class  experience_activity extends AppCompatActivity {
         //Setup the Fragment Manager
         fragManager = getFragmentManager();
         fragManager.addOnBackStackChangedListener(getListener());
+
+
+        //launch statspage
+        statspagefragment fragment = new statspagefragment();
+        fragManager.beginTransaction().replace(R.id.frame, fragment,"statspageFragment").addToBackStack("statspageFragment").commit();
 
         //set username and email in the header and user image
         userName = (TextView) findViewById(R.id.username);
@@ -162,16 +166,11 @@ public class  experience_activity extends AppCompatActivity {
 
 
                     //Replacing the main content with ContentFragment Which is our Inbox View;
-                /*case R.id.inbox:
-                    Toast.makeText(getApplicationContext(), "Inbox Selected", Toast.LENGTH_SHORT).show();
-                    ContentFragment fragment = new ContentFragment();
-                    android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.frame, fragment);
-                    fragmentTransaction.commit();
-                    return true;*/
-
+                case R.id.userStats:
+                    statspagefragment fragment = new statspagefragment();
+                    fragManager.beginTransaction().replace(R.id.frame, fragment,"statspageFragment").addToBackStack("statspageFragment").commit();
+                    return true;
                     // For rest of the options we just show a toast on click
-
                     case R.id.main_page:
                         Intent intent = new Intent(getApplicationContext(), maindrawer.class);
                         startActivity(intent);
@@ -261,62 +260,7 @@ public class  experience_activity extends AppCompatActivity {
         mProgressBar = (ProgressBar)findViewById(R.id.login_progress_bar);
         mProgressBar.setVisibility(View.GONE);
 
-        //Setup User Avatar
-        userAvatar = (ParseImageView) findViewById(R.id.userImage);
-        userAvatar.setParseFile(image);
-        userAvatar.loadInBackground(new GetDataCallback() {
-            @Override
-            public void done(byte[] bytes, com.parse.ParseException e) {
-                // The image is loaded and displayed!
-                int oldHeight = userAvatar.getHeight();
-                int oldWidth = userAvatar.getWidth();
-                Log.v("LOG!!!!!!", "imageView height = " + oldHeight);      // DISPLAYS 90 px
-                Log.v("LOG!!!!!!", "imageView width = " + oldWidth);        // DISPLAYS 90 px
 
-            }
-        });
-
-        userFirstName = (TextView) findViewById(R.id.userFirstName);
-        userFirstName.setText(currentUser.getFirstName());
-
-        userLastName = (TextView) findViewById(R.id.userLastName);
-        userLastName.setText(currentUser.getLastName());
-
-        userPosts = (TextView) findViewById(R.id.numberOfPosts);
-        if (currentUser.getUserTotalPost() != null)
-            userPosts.setText(currentUser.getUserTotalPost().toString());
-        else {
-            userPosts.setText("0");
-            currentUser.setUserTotalPost(0);
-        }
-
-        userNumberAttended = (TextView) findViewById(R.id.numberOfMeals);
-        if (currentUser.getUserEventsAttended() != null)
-            userNumberAttended.setText(currentUser.getUserEventsAttended().toString());
-        else {
-            userNumberAttended.setText("0");
-            currentUser.setUserEventsAttended(0);
-        }
-
-        userLevel = (TextView) findViewById(R.id.userRank);
-        if (currentUser.getUserLevel() != null)
-            userLevel.setText(currentUser.getUserLevel().toString());
-        else {
-            userLevel.setText("0");
-            currentUser.setUserLevel(0);
-        }
-
-        list = (ListView) findViewById(R.id.historyListView);
-        list.setClickable(false);
-
-        //Get History and load up the listview
-        historyList = getTimeCapsule();
-        historyadapter = new historyAdapter(experience_activity.this, R.layout.eventfeedroweven, historyList);
-        if (!AnimationFlag) {
-            list.setAdapter(historyadapter);
-            ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
-        } else
-            onceAnimateFlag = true;
 
     }
 
@@ -389,9 +333,9 @@ public class  experience_activity extends AppCompatActivity {
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 }else{
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-
+                    //TODO what the fuck do we do here
                     //Fetch latest Parse Information
-                    currentUser.fetchInBackground(new GetCallback<ParseObject>() {
+                  /*  currentUser.fetchInBackground(new GetCallback<ParseObject>() {
                         @Override
                         public void done(ParseObject parseObject, ParseException e) {
                             if (e == null){
@@ -449,6 +393,7 @@ public class  experience_activity extends AppCompatActivity {
 
                         }
                     });
+
                     userName.setText(currentUser.getUsername().toString());
                     userEmail.setText(currentUser.getEmail().toString());
                     userFirstName.setText(currentUser.getFirstName());
@@ -459,7 +404,7 @@ public class  experience_activity extends AppCompatActivity {
                     historyList = getTimeCapsule();
                     historyadapter = new historyAdapter(experience_activity.this, R.layout.eventfeedroweven, historyList);
                     list.setAdapter(historyadapter);
-                    ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
+                    ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();*/
                 }
             }
         };
@@ -468,7 +413,9 @@ public class  experience_activity extends AppCompatActivity {
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus){
-        if (hasFocus){
+
+        //TODO wtf do we do here
+        /*if (hasFocus){
             //Fetch latest Parse Information
             currentUser.fetchInBackground(new GetCallback<ParseObject>() {
                 @Override
@@ -514,7 +461,7 @@ public class  experience_activity extends AppCompatActivity {
                     onceAnimateFlag = false;
                 }
             }
-        }
+        }*/
     }
 
     public ArrayList<gEventObject> getTimeCapsule(){
