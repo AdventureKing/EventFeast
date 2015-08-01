@@ -14,23 +14,10 @@
             android:icon="@drawable/ic_star_black"
             android:title="@string/My_experiences" />
         <item
-            android:id="@+id/myFriends"
-            android:checked="false"
-            android:icon="@drawable/ic_tag_faces_black_24dp"
-            android:title="@string/myfriends" />
-        <item
-            android:id="@+id/myFollowers"
-            android:checked="false"
-            android:icon="@drawable/ic_tag_faces_black_24dp"
-            android:title="@string/myfollowers" />
-
-        <item
             android:id="@+id/users"
             android:checked="false"
             android:icon="@drawable/ic_tag_faces_black_24dp"
             android:title="@string/users" />
-
-
         <item
             android:id="@+id/search_event"
             android:checked="false"
@@ -40,10 +27,8 @@
         <item
             android:id="@+id/activity_map"
             android:checked="false"
-            android:icon="@drawable/ic_event_black_24dp"
+            android:icon="@drawable/ic_location_black_44x40"
             android:title="Search Location" />
-
-
         <item
             android:id="@+id/logoutDrawer"
             android:checked="false"

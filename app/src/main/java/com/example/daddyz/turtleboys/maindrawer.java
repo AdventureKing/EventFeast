@@ -27,14 +27,13 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.feedTabView.feedtabview;
-import com.example.daddyz.turtleboys.friendFeed.followListFragment;
-import com.example.daddyz.turtleboys.friendFeed.followerListFragment;
-import com.example.daddyz.turtleboys.newsfeed.newsfeedPostDetail;
-import com.example.daddyz.turtleboys.newsfeed.newsfeedPostForm;
 import com.example.daddyz.turtleboys.friendFeed.userListFragment;
 import com.example.daddyz.turtleboys.maps.MapsActivity;
+import com.example.daddyz.turtleboys.newsfeed.newsfeedPostDetail;
+import com.example.daddyz.turtleboys.newsfeed.newsfeedPostForm;
 import com.example.daddyz.turtleboys.searchevent.searchEvent;
 import com.example.daddyz.turtleboys.settings.SettingsFragment;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
@@ -144,7 +143,6 @@ public class maindrawer extends AppCompatActivity {
                 @Override
                 public boolean onNavigationItemSelected(MenuItem menuItem) {
 
-
                     //Checking if the item is in checked state or not, if not make it in checked state
                     if (menuItem.isChecked()) menuItem.setChecked(false);
                     else menuItem.setChecked(true);
@@ -157,15 +155,6 @@ public class maindrawer extends AppCompatActivity {
 
 
                         //Replacing the main content with ContentFragment Which is our Inbox View;
-                        case R.id.myFriends:
-                            followListFragment followingfragment = new followListFragment();
-                            fragManager.beginTransaction().replace(R.id.frame, followingfragment,"followListFragment").addToBackStack("followListFragment").commit();
-                            return true;
-                        case R.id.myFollowers:
-                            followerListFragment followerfragment = new followerListFragment();
-                            fragManager.beginTransaction().replace(R.id.frame, followerfragment,"followerListFragment").addToBackStack("followerListFragment").commit();
-                            return true;
-
                         case R.id.my_experiences:
                             //Toast.makeText(getApplicationContext(), "Stared Selected", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), experience_activity.class);
