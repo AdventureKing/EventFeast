@@ -137,10 +137,11 @@ public class followerListFragment extends Fragment implements Response.Listener,
 
     public void loadEvents(Object response){
         userArray = createFollowUserObjectsFromResponse(response);
-
-        adapter = new followerListAdapter(getActivity(), R.layout.user_list_follow_row, userArray, this);
-        list.setAdapter(adapter);
-        ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
+        if(null != this.getActivity()) {
+            adapter = new followerListAdapter(this.getActivity(), R.layout.user_list_follow_row, userArray, this);
+            list.setAdapter(adapter);
+            ((BaseAdapter) list.getAdapter()).notifyDataSetChanged();
+        }
 
         rootView.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
     }
