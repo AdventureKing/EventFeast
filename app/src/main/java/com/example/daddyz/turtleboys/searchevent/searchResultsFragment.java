@@ -143,6 +143,7 @@ public class searchResultsFragment extends Fragment implements Response.Listener
         try{
             searchQuery = URLEncoder.encode(this.getSearchQuery(), "utf-8");
             filterCity = URLEncoder.encode(this.getFilterCity(), "utf-8");
+            filterState = URLEncoder.encode(this.getFilterState(), "utf-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -153,6 +154,11 @@ public class searchResultsFragment extends Fragment implements Response.Listener
             url = "http://api.dev.turtleboys.com/v1/events/find/" + searchQuery + "?city=" + filterCity;
             if(null == searchQuery || "" == searchQuery){
                 url = "http://api.dev.turtleboys.com/v1/events/find/" + filterCity + "?city=" + filterCity;
+            }
+        } else if(null != filterState && "" != filterState){
+            url = "http://api.dev.turtleboys.com/v1/events/find/" + searchQuery + "?state=" + filterState;
+            if(null == searchQuery || "" == searchQuery) {
+                url = "http://api.dev.turtleboys.com/v1/events/find/" + filterState + "?state=" + filterState;
             }
         }
         final VolleyJSONObjectRequest jsonRequest = new VolleyJSONObjectRequest(Request.Method

@@ -8,17 +8,13 @@ import android.app.FragmentManager;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.Time;
 import android.util.Log;
-
 import android.view.LayoutInflater;
-
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,18 +22,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-
 import com.example.daddyz.turtleboys.R;
-
-
-
 
 import java.util.Calendar;
 import java.util.Date;
@@ -330,8 +321,10 @@ public class searchEvent extends Fragment {
                 searchResultsFragment fragment = new searchResultsFragment();
                 fragment.setSearchQuery(keyword.getText().toString());
                 fragment.setFilterCity(city.getText().toString());
-                Log.i("query",keyword.getText().toString());
+                fragment.setFilterState(state.getText().toString());
+                Log.i("query", keyword.getText().toString());
                 Log.i("city",city.getText().toString());
+                Log.i("state",state.getText().toString());
 
                 getFragmentManager().beginTransaction().replace(R.id.frame,fragment,"searchResultsFragment").addToBackStack("searchResultsFragment").commit();
                 //Toast.makeText(getActivity().getApplicationContext(), "Search Event", Toast.LENGTH_SHORT).show();
