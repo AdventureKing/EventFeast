@@ -119,6 +119,11 @@ public class newsfeedFragment extends Fragment implements Response.Listener,
 
     //refresh the list
     private void refreshContent() {
+
+
+        //load list
+
+        //set new list to the main view
         adapter = new newsfeedAdapter(getActivity(), R.layout.eventfeedroweven, newsfeedList);
         list.setAdapter(adapter);
 
@@ -132,7 +137,7 @@ public class newsfeedFragment extends Fragment implements Response.Listener,
 
     @Override
     public void onErrorResponse(VolleyError volleyError) {
-        
+
     }
 
     @Override
