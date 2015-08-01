@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.maindrawer;
 
@@ -24,7 +26,8 @@ import java.util.ArrayList;
  * Created by snow on 7/11/2015.
  */
 //had to change to android.app.Fragment
-public class newsfeedFragment extends Fragment {
+public class newsfeedFragment extends Fragment implements Response.Listener,
+        Response.ErrorListener {
 
     public static final String REQUEST_TAG = "MainVolleyActivity";
     private Button mButton;
@@ -127,4 +130,13 @@ public class newsfeedFragment extends Fragment {
     }
 
 
+    @Override
+    public void onErrorResponse(VolleyError volleyError) {
+        
+    }
+
+    @Override
+    public void onResponse(Object o) {
+
+    }
 }
