@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -96,11 +95,7 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
     }
 
     private void refreshContent() {
-        //wtf do i put here to have it refresh???
-
-        Toast.makeText(getActivity(), "User wants new list of events for feed", Toast.LENGTH_SHORT).show();
-        mSwipeRefreshLayout.setRefreshing(false);
-
+        onStart();
     }
 
     @Override
@@ -183,6 +178,7 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
             ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
 
             rootView.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+            mSwipeRefreshLayout.setRefreshing(false);
     }
 
     public ArrayList<gEventObject> creategEventObjectsFromResponse(Object response){
