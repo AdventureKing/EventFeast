@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:text="Date"
                 android:id="@+id/sortDate"
-                android:checked="false"
+                android:checked="true"
                 android:layout_toRightOf="@+id/sort"/>
 
             <RadioButton
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:text="Relevance"
                 android:id="@+id/sortRelevance"
-                android:checked="true"
+                android:checked="false"
                 android:layout_toRightOf="@+id/sortDistance"/>
         </RadioGroup>
     </RelativeLayout>

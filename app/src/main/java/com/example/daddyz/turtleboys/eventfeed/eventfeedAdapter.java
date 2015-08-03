@@ -104,7 +104,7 @@ public class eventfeedAdapter extends ArrayAdapter<gEventObject> {
         citystate.setText(eventObjects.get(position).getCity_name() + "," + eventObjects.get(position).getState_name());
         date.setText(eventObjects.get(position).getStart_date_month().get(2) + " " + eventObjects.get(position).getStart_date_day().get(0) + ", " + eventObjects.get(position).getStart_date_year().get(0));
         time.setText(eventObjects.get(position).getStart_date_time().get(2));
-        venue.setText(eventObjects.get(position).getVenue_name());
+        venue.setText(eventObjects.get(position).getVenue_name() + " (" + eventObjects.get(position).getDistance() + " mi)");
         //urlpath.setText(objects.get(position).getEventURL());
 
         if (AnimationFlag) {

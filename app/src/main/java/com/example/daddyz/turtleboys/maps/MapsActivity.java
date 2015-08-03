@@ -24,13 +24,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.example.daddyz.turtleboys.R;
-import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
-import com.example.daddyz.turtleboys.VolleyRequestQueue;
-import com.example.daddyz.turtleboys.eventfeed.eventfeedAdapter;
-import com.example.daddyz.turtleboys.eventfeed.gEventImageObject;
 import com.example.daddyz.turtleboys.eventfeed.gEventObject;
-import com.example.daddyz.turtleboys.eventfeed.gEventPerformerObject;
-import com.example.daddyz.turtleboys.login_activity;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.ConnectionResult;
@@ -57,6 +51,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 
 
 

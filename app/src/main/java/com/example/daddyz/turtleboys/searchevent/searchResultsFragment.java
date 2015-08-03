@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -49,11 +50,13 @@ public class searchResultsFragment extends Fragment implements Response.Listener
     private ArrayList<gEventObject> searchResultsList;
     private ActionBar actionBar;
 
-    private String searchQuery;
+    private String searchQuery = "";
+    private String userAddress = "";
     private String filterDate;
-    private String filterCity;
-    private String filterState;
+    private String filterCity = "";
+    private String filterState = "";
     private String filterSources;
+    private Long filterRadius;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -137,26 +140,36 @@ public class searchResultsFragment extends Fragment implements Response.Listener
     @Override
     public void onStart() {
         super.onStart();
-        String searchQuery = null;
-        String filter = null;
 
         try{
+            userAddress = URLEncoder.encode(this.getUserAddress(), "utf-8");
             searchQuery = URLEncoder.encode(this.getSearchQuery(), "utf-8");
             filterCity = URLEncoder.encode(this.getFilterCity(), "utf-8");
+            filterState = URLEncoder.encode(this.getFilterState(), "utf-8");
+            filterRadius = this.getFilterRadius();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        searchQuery = (searchQuery.length() == 0 && filterCity.length() > 0) ? filterCity : searchQuery;
+        searchQuery = (searchQuery.length() == 0 && filterState.length() > 0) ? filterState : searchQuery;
 
         mQueue = VolleyRequestQueue.getInstance(this.getActivity().getApplicationContext()).getRequestQueue();
-        String url = "http://api.dev.turtleboys.com/v1/events/find/" + searchQuery;
-        if(null != filterCity && "" != filterCity){
-            url = "http://api.dev.turtleboys.com/v1/events/find/" + searchQuery + "?city=" + filterCity;
-            if(null == searchQuery || "" == searchQuery){
-                url = "http://api.dev.turtleboys.com/v1/events/find/" + filterCity + "?city=" + filterCity;
-            }
+        StringBuilder url = new StringBuilder(2048);
+        url.append("http://api.dev.turtleboys.com/v1/events/find/");
+        url.append(searchQuery);
+        url.append("?address="+userAddress);
+        if(filterCity.length() > 0){
+            url.append("&city="+filterCity);
         }
+        if(filterState.length() > 0){
+            url.append("&state="+filterState);
+        }
+        if(filterRadius != 0){
+            url.append("&radius="+filterRadius);
+        }
+
         final VolleyJSONObjectRequest jsonRequest = new VolleyJSONObjectRequest(Request.Method
-                .GET, url,
+                .GET, url.toString(),
                 new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);
         mQueue.add(jsonRequest);
@@ -199,6 +212,8 @@ public class searchResultsFragment extends Fragment implements Response.Listener
             JSONObject itemsObject = mainObject.getJSONObject("items");
             Iterator<?> keys = itemsObject.keys();
 
+            String numFound = mainObject.getString("numFound");
+
             while( keys.hasNext() ) {
                 String key = (String)keys.next();
                 if ( itemsObject.get(key) instanceof JSONObject ) {
@@ -240,12 +255,16 @@ public class searchResultsFragment extends Fragment implements Response.Listener
                     obj.setMinor_genre(convertJsonStringArrayToArrayList(((JSONObject) itemsObject.get(key)).getJSONObject("minor_genre")));
                     obj.setLatitude(((JSONObject) itemsObject.get(key)).getDouble("latitude"));
                     obj.setLongitude(((JSONObject) itemsObject.get(key)).getDouble("longitude"));
+                    obj.setDistance(((JSONObject) itemsObject.get(key)).getDouble("distance"));
                     obj.setPerformers(convertJsonPerformerArrayToArrayList(((JSONObject) itemsObject.get(key)).getJSONObject("performers")));
                     obj.setImages(convertJsonImageArrayToArrayList(((JSONObject) itemsObject.get(key)).getJSONObject("images")));
 
                     searchResultsList.add(obj);
                 }
             }
+
+            Toast.makeText(getActivity().getApplicationContext(), numFound + " Events Found", Toast.LENGTH_LONG).show();
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -335,6 +354,10 @@ public class searchResultsFragment extends Fragment implements Response.Listener
         return searchQuery;
     }
 
+    public Long getFilterRadius(){ return filterRadius;}
+
+    public void setFilterRadius(Long filterRadius ){ this.filterRadius = filterRadius;}
+
     public void setSearchQuery(String searchQuery) {
         this.searchQuery = searchQuery;
     }
@@ -361,5 +384,13 @@ public class searchResultsFragment extends Fragment implements Response.Listener
 
     public void setFilterState(String filterState) {
         this.filterState = filterState;
+    }
+
+    public String getUserAddress() {
+        return userAddress;
+    }
+
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
     }
 }

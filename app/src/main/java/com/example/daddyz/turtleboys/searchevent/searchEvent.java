@@ -7,18 +7,17 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.Time;
 import android.util.Log;
-
 import android.view.LayoutInflater;
-
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,21 +25,25 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-
+import com.example.daddyz.turtleboys.App_Application;
 import com.example.daddyz.turtleboys.R;
+import com.example.daddyz.turtleboys.subclasses.GigUser;
+import com.example.daddyz.turtleboys.subclasses.LocationFinder;
+import com.google.android.gms.maps.model.LatLng;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
 
-
-
-
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Jinbir on 6/26/2015.
@@ -49,7 +52,9 @@ public class searchEvent extends Fragment {
 
     private EditText city;
     private EditText state;
+    private LatLng selectedLatLng;
     private EditText keyword;
+    private Context context;
     private TextView searchRadiusText;
     private long searchRadius_miles;
     private double searchRadius_kilometers;
@@ -70,6 +75,9 @@ public class searchEvent extends Fragment {
     private RadioGroup radioSortbyGroup;
     private RadioButton sortbyButton;
     private RadioButton defaultButton;
+    private String home;
+    private final GigUser currentUser = ParseUser.createWithoutData(GigUser.class, ParseUser.getCurrentUser().getObjectId());
+    private String userAddress;
 
     private EditText toTimeText;
     private EditText fromTimeText;
@@ -85,11 +93,10 @@ public class searchEvent extends Fragment {
 
     private FragmentManager fragManager;
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        this.context = getActivity().getApplicationContext();
         super.onCreate(savedInstanceState);
 
         rootView = inflater.inflate(R.layout.searchevent, container, false);
@@ -105,39 +112,31 @@ public class searchEvent extends Fragment {
             }
         });
 
-
-        /*
-        //Setup toolbar
-        toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        //actionBar.setTitle("Event Detail");
-        //final FrameLayout frame = (FrameLayout) container.findViewById(R.id.frame);
-        //frame.setVisibility(View.INVISIBLE);
-
-
-        //Set up back arrow icon on toolbar
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-        */
-
-
-
-
         return rootView;
     }
 
     @Override
     public void onStart() {
+
         super.onStart();
+
+        // Get the users current address from global value
+        App_Application mApp = ((App_Application)getActivity().getApplicationContext());
+        userAddress = mApp.getCurrentAddress();
+
+        // If the user has location services turned off, grab their last location from parse db
+        if(null == userAddress){
+            double userParseLat = currentUser.getUserHome().getLatitude();
+            double userParseLong = currentUser.getUserHome().getLongitude();
+
+            LocationFinder locFinder = new LocationFinder();
+            Location loc = new Location("");
+            loc.setLatitude(userParseLat);
+            loc.setLongitude(userParseLong);
+
+            userAddress = locFinder.getAddressFromLocation(getActivity().getApplicationContext(), loc);
+            Log.i("Location: ", "Getting from Parse!");
+        }
 
         //City
         //TODO Add Google's city autocomplete
@@ -157,12 +156,12 @@ public class searchEvent extends Fragment {
         //Sortby RadioGroup
         radioSortbyGroup = (RadioGroup) rootView.findViewById(R.id.sortGroup);
         sortbyButton = (RadioButton) rootView.findViewById(radioSortbyGroup.getCheckedRadioButtonId());
-        defaultButton = (RadioButton) rootView.findViewById(R.id.sortRelevance);
+        defaultButton = (RadioButton) rootView.findViewById(R.id.sortDate);
 
         //SearchRadius Seekbar
         searchRadiusSeekBar = (SeekBar) rootView.findViewById(R.id.searchRadius);
         //Inital Seekbar values
-        searchRadius_miles = searchRadiusSeekBar.getProgress()+1;
+        searchRadius_miles = 0;
         searchRadius_kilometers = searchRadius_miles / MILESINAKILOMETER;
         searchRadiusText.setText(String.format("Set Search Radius\t %d miles / %.02f km"
                 , searchRadius_miles, searchRadius_kilometers));
@@ -296,42 +295,24 @@ public class searchEvent extends Fragment {
             }
         });
 
-        /*
-        //fromTime time picker
-        fromTimeSelector = new TimePickerFragment();
-        fromTimeText = (EditText) rootView.findViewById(R.id.fromTime);
-        fromTimeText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fromTimeSelector.registerForContextMenu(fromTimeText);
-                fromTimeSelector.show(getFragmentManager(), "Time Picker");
-            }
-        });
-
-        //toTime time picker
-        toTimeSelector = new TimePickerFragment();
-        toTimeText = (EditText) rootView.findViewById(R.id.toTime);
-        toTimeText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toTimeSelector.registerForContextMenu(toTimeText);
-                toTimeSelector.show(getFragmentManager(), "Time Picker");
-            }
-        });
-        */
-
         //Search Button
         search = (Button) rootView.findViewById(R.id.searchButton);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 //Do a search
                 searchResultsFragment fragment = new searchResultsFragment();
+
+                fragment.setUserAddress(userAddress);
                 fragment.setSearchQuery(keyword.getText().toString());
+                fragment.setFilterRadius(searchRadius_miles);
                 fragment.setFilterCity(city.getText().toString());
-                Log.i("query",keyword.getText().toString());
-                Log.i("city",city.getText().toString());
+                fragment.setFilterState(state.getText().toString());
+
+                Log.i("query", keyword.getText().toString());
+                Log.i("city", city.getText().toString());
+                Log.i("state",state.getText().toString());
+                Log.i("radius",Double.toString(searchRadius_miles));
 
                 getFragmentManager().beginTransaction().replace(R.id.frame,fragment,"searchResultsFragment").addToBackStack("searchResultsFragment").commit();
                 //Toast.makeText(getActivity().getApplicationContext(), "Search Event", Toast.LENGTH_SHORT).show();
@@ -357,8 +338,30 @@ public class searchEvent extends Fragment {
                 //Toast.makeText(getActivity().getApplicationContext(), "Reset fields", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void userHomeToAddress(){
+        //Get Address From Location
+        Geocoder geoCoder = new Geocoder(this.context, Locale.getDefault());
+        StringBuilder builder = new StringBuilder();
+        try {
+            ParseGeoPoint userHome = ParseUser.getCurrentUser().getParseGeoPoint("userHome");
+            List<Address> address = geoCoder.getFromLocation(userHome.getLatitude(), userHome.getLongitude(), 1);
+            int maxLines = address.get(0).getMaxAddressLineIndex();
+            for (int i = 0; i < maxLines; i++) {
+                String addressStr = address.get(0).getAddressLine(i);
+                builder.append(addressStr);
+                builder.append(" ");
+            }
+
+            String finalAddress = builder.toString(); //This is the complete address.
+
+            setuserHomeAddress(finalAddress);
+            //Toast.makeText(getApplicationContext(), finalAddress, Toast.LENGTH_SHORT).show();
 
 
+        } catch (IOException e) {}
+        catch (NullPointerException e) {}
     }
 
 
@@ -462,5 +465,14 @@ public class searchEvent extends Fragment {
             getFragmentManager().popBackStack();
         }
     }
+
+    public void setuserHomeAddress(String userHome){
+        home = userHome;
+    }
+
+    public String getUserHome(){
+        return home;
+    }
+
 
 }

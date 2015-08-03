@@ -158,13 +158,6 @@ public class registration_activity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(getApplicationContext(),"BUTTON CLICKED", Toast.LENGTH_SHORT).show();
-
-                //Check to see if email and verify email fields are the same
-              /*  if ( !(email.getText().toString().equals(userHome.getText().toString())) ) {
-                    Toast.makeText(getApplicationContext(), R.string.emailNoMatch, Toast.LENGTH_SHORT).show();
-                    return;
-                }*/
 
                 //Check to see if passwords match
                 if ( !(userPassword.getText().toString().equals(userPasswordVerify.getText().toString())) ) {

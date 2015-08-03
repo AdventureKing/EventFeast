@@ -44,6 +44,7 @@ public class gEventObject {
     private ArrayList<String> minor_genre = new ArrayList<>();
     private double latitude = 0;
     private double longitude = 0;
+    private double distance = 0;
     private ArrayList<gEventPerformerObject> performers = new ArrayList<>();
     private ArrayList<gEventImageObject> images = new ArrayList<>();
 
@@ -325,6 +326,14 @@ public class gEventObject {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 
     public ArrayList<gEventPerformerObject> getPerformers() {

@@ -2,8 +2,10 @@ package com.example.daddyz.turtleboys.eventfeed;
 
 
 import android.app.Fragment;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,18 +13,26 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.example.daddyz.turtleboys.App_Application;
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
 import com.example.daddyz.turtleboys.VolleyRequestQueue;
 import com.example.daddyz.turtleboys.maindrawer;
+import com.example.daddyz.turtleboys.subclasses.GigUser;
+import com.example.daddyz.turtleboys.subclasses.LocationFinder;
+import com.parse.ParseUser;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -42,6 +52,7 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
     private eventfeedAdapter adapter;
     private ArrayList<gEventObject> eventfeedList;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private final GigUser currentUser = ParseUser.createWithoutData(GigUser.class, ParseUser.getCurrentUser().getObjectId());
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,22 +95,50 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
     }
 
     private void refreshContent() {
-        //wtf do i put here to have it refresh???
-
-        Toast.makeText(getActivity(), "User wants new list of events for feed", Toast.LENGTH_SHORT).show();
-        mSwipeRefreshLayout.setRefreshing(false);
-
+        onStart();
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
+        App_Application mApp = (App_Application)getActivity().getApplicationContext();
+        String userAddress;
+
+        // Get current users address via network or gps
+        userAddress = mApp.getCurrentAddress();
+
+        // If the user has location services turned off, grab their last location from parse db
+        if(null == userAddress){
+            double userParseLat = currentUser.getUserHome().getLatitude();
+            double userParseLong = currentUser.getUserHome().getLongitude();
+
+            LocationFinder locFinder = new LocationFinder();
+            Location loc = new Location("");
+            loc.setLatitude(userParseLat);
+            loc.setLongitude(userParseLong);
+
+            userAddress = locFinder.getAddressFromLocation(getActivity().getApplicationContext(), loc);
+            Log.i("Location: ", "Getting from Parse!");
+        }
+
+        try{
+            userAddress = URLEncoder.encode(userAddress, "utf-8");
+        } catch(UnsupportedEncodingException e){
+            e.printStackTrace();
+        }
+
         mQueue = VolleyRequestQueue.getInstance(this.getActivity().getApplicationContext())
                 .getRequestQueue();
-        String url = "http://45.55.142.106/prod/ws/rest/findEvents/San%20Antonio?city=San%20Antonio";
+
+        StringBuilder url = new StringBuilder(2048);
+        url.append("http://api.dev.turtleboys.com/v1/events/find/");
+        url.append("San%20Antonio");
+        url.append("?address="+userAddress);
+        url.append("&city=San%20Antonio");
+
         final VolleyJSONObjectRequest jsonRequest = new VolleyJSONObjectRequest(Request.Method
-                .GET, url,
+                .GET, url.toString(),
                 new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);
         mQueue.add(jsonRequest);
@@ -139,57 +178,60 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
             ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
 
             rootView.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+            mSwipeRefreshLayout.setRefreshing(false);
     }
 
     public ArrayList<gEventObject> creategEventObjectsFromResponse(Object response){
         try{
             eventfeedList = new ArrayList<>();
-            JSONObject jObject = ((JSONObject) response);
-            Iterator<?> keys = jObject.keys();
+            JSONObject mainObject = ((JSONObject) response);
+            JSONObject itemsObject = mainObject.getJSONObject("items");
+            Iterator<?> keys = itemsObject.keys();
 
             while( keys.hasNext() ) {
                 String key = (String)keys.next();
-                if ( jObject.get(key) instanceof JSONObject ) {
-                    //Log.i("Ind Object JSON", ((JSONObject) jObject.get(key)).toString());
+                if ( itemsObject.get(key) instanceof JSONObject ) {
+                    //Log.i("Ind Object JSON", ((JSONObject) itemsObject.get(key)).toString());
                     gEventObject obj = new gEventObject();
 
-                    obj.setInternal_id(((JSONObject) jObject.get(key)).getString("internal_id"));
-                    obj.setExternal_id(((JSONObject) jObject.get(key)).getString("external_id"));
-                    obj.setDatasource(((JSONObject) jObject.get(key)).getString("datasource"));
-                    obj.setEvent_external_url(((JSONObject) jObject.get(key)).getString("event_external_url").replaceAll("\\\\", ""));
-                    obj.setTitle(((JSONObject) jObject.get(key)).getString("title"));
-                    obj.setDescription(((JSONObject) jObject.get(key)).getString("description"));
-                    obj.setNotes(((JSONObject) jObject.get(key)).getString("notes"));
-                    obj.setTimezone(((JSONObject) jObject.get(key)).getString("timezone"));
-                    obj.setTimezone_abbr(((JSONObject) jObject.get(key)).getString("timezone_abbr"));
-                    obj.setStart_time(((JSONObject) jObject.get(key)).getString("start_time"));
-                    obj.setEnd_time(((JSONObject) jObject.get(key)).getString("end_time"));
-                    obj.setStart_date_month(convertJsonStringArrayToArrayList(((JSONObject) jObject.get(key)).getJSONObject("start_date_month")));
-                    obj.setStart_date_day(convertJsonStringArrayToArrayList(((JSONObject) jObject.get(key)).getJSONObject("start_date_day")));
-                    obj.setStart_date_year(convertJsonStringArrayToArrayList(((JSONObject) jObject.get(key)).getJSONObject("start_date_year")));
-                    obj.setStart_date_time(convertJsonStringArrayToArrayList(((JSONObject) jObject.get(key)).getJSONObject("start_date_time")));
-                    obj.setEnd_date_month(convertJsonStringArrayToArrayList(((JSONObject) jObject.get(key)).getJSONObject("end_date_month")));
-                    obj.setEnd_date_day(convertJsonStringArrayToArrayList(((JSONObject) jObject.get(key)).getJSONObject("end_date_day")));
-                    obj.setEnd_date_year(convertJsonStringArrayToArrayList(((JSONObject) jObject.get(key)).getJSONObject("end_date_year")));
-                    obj.setEnd_date_time(convertJsonStringArrayToArrayList(((JSONObject) jObject.get(key)).getJSONObject("end_date_time")));
-                    obj.setVenue_external_id(((JSONObject) jObject.get(key)).getString("venue_external_id"));
-                    obj.setVenue_external_url(((JSONObject) jObject.get(key)).getString("venue_external_url").replaceAll("\\\\", ""));
-                    obj.setVenue_name(((JSONObject) jObject.get(key)).getString("venue_name"));
-                    obj.setVenue_display(((JSONObject) jObject.get(key)).getString("venue_display"));
-                    obj.setVenue_address(((JSONObject) jObject.get(key)).getString("venue_address"));
-                    obj.setState_name(((JSONObject) jObject.get(key)).getString("state_name"));
-                    obj.setCity_name(((JSONObject) jObject.get(key)).getString("city_name"));
-                    obj.setPostal_code(((JSONObject) jObject.get(key)).getString("postal_code"));
-                    obj.setCountry_name(((JSONObject) jObject.get(key)).getString("country_name"));
-                    obj.setAll_day(((JSONObject) jObject.get(key)).getBoolean("all_day"));
-                    obj.setPrice_range(((JSONObject) jObject.get(key)).getString("price_range"));
-                    obj.setIs_free(((JSONObject) jObject.get(key)).getString("is_free"));
-                    obj.setMajor_genre(convertJsonStringArrayToArrayList(((JSONObject) jObject.get(key)).getJSONObject("major_genre")));
-                    obj.setMinor_genre(convertJsonStringArrayToArrayList(((JSONObject) jObject.get(key)).getJSONObject("minor_genre")));
-                    obj.setLatitude(((JSONObject) jObject.get(key)).getDouble("latitude"));
-                    obj.setLongitude(((JSONObject) jObject.get(key)).getDouble("longitude"));
-                    obj.setPerformers(convertJsonPerformerArrayToArrayList(((JSONObject) jObject.get(key)).getJSONObject("performers")));
-                    obj.setImages(convertJsonImageArrayToArrayList(((JSONObject) jObject.get(key)).getJSONObject("images")));
+                    obj.setInternal_id(((JSONObject) itemsObject.get(key)).getString("internal_id"));
+                    obj.setExternal_id(((JSONObject) itemsObject.get(key)).getString("external_id"));
+                    obj.setDatasource(((JSONObject) itemsObject.get(key)).getString("datasource"));
+                    obj.setEvent_external_url(((JSONObject) itemsObject.get(key)).getString("event_external_url").replaceAll("\\\\", ""));
+                    obj.setTitle(((JSONObject) itemsObject.get(key)).getString("title"));
+                    obj.setDescription(((JSONObject) itemsObject.get(key)).getString("description"));
+                    obj.setNotes(((JSONObject) itemsObject.get(key)).getString("notes"));
+                    obj.setTimezone(((JSONObject) itemsObject.get(key)).getString("timezone"));
+                    obj.setTimezone_abbr(((JSONObject) itemsObject.get(key)).getString("timezone_abbr"));
+                    obj.setStart_time(((JSONObject) itemsObject.get(key)).getString("start_time"));
+                    obj.setEnd_time(((JSONObject) itemsObject.get(key)).getString("end_time"));
+                    obj.setStart_date_month(convertJsonStringArrayToArrayList(((JSONObject) itemsObject.get(key)).getJSONObject("start_date_month")));
+                    obj.setStart_date_day(convertJsonStringArrayToArrayList(((JSONObject) itemsObject.get(key)).getJSONObject("start_date_day")));
+                    obj.setStart_date_year(convertJsonStringArrayToArrayList(((JSONObject) itemsObject.get(key)).getJSONObject("start_date_year")));
+                    obj.setStart_date_time(convertJsonStringArrayToArrayList(((JSONObject) itemsObject.get(key)).getJSONObject("start_date_time")));
+                    obj.setEnd_date_month(convertJsonStringArrayToArrayList(((JSONObject) itemsObject.get(key)).getJSONObject("end_date_month")));
+                    obj.setEnd_date_day(convertJsonStringArrayToArrayList(((JSONObject) itemsObject.get(key)).getJSONObject("end_date_day")));
+                    obj.setEnd_date_year(convertJsonStringArrayToArrayList(((JSONObject) itemsObject.get(key)).getJSONObject("end_date_year")));
+                    obj.setEnd_date_time(convertJsonStringArrayToArrayList(((JSONObject) itemsObject.get(key)).getJSONObject("end_date_time")));
+                    obj.setVenue_external_id(((JSONObject) itemsObject.get(key)).getString("venue_external_id"));
+                    obj.setVenue_external_url(((JSONObject) itemsObject.get(key)).getString("venue_external_url").replaceAll("\\\\", ""));
+                    obj.setVenue_name(((JSONObject) itemsObject.get(key)).getString("venue_name"));
+                    obj.setVenue_display(((JSONObject) itemsObject.get(key)).getString("venue_display"));
+                    obj.setVenue_address(((JSONObject) itemsObject.get(key)).getString("venue_address"));
+                    obj.setState_name(((JSONObject) itemsObject.get(key)).getString("state_name"));
+                    obj.setCity_name(((JSONObject) itemsObject.get(key)).getString("city_name"));
+                    obj.setPostal_code(((JSONObject) itemsObject.get(key)).getString("postal_code"));
+                    obj.setCountry_name(((JSONObject) itemsObject.get(key)).getString("country_name"));
+                    obj.setAll_day(((JSONObject) itemsObject.get(key)).getBoolean("all_day"));
+                    obj.setPrice_range(((JSONObject) itemsObject.get(key)).getString("price_range"));
+                    obj.setIs_free(((JSONObject) itemsObject.get(key)).getString("is_free"));
+                    obj.setMajor_genre(convertJsonStringArrayToArrayList(((JSONObject) itemsObject.get(key)).getJSONObject("major_genre")));
+                    obj.setMinor_genre(convertJsonStringArrayToArrayList(((JSONObject) itemsObject.get(key)).getJSONObject("minor_genre")));
+                    obj.setLatitude(((JSONObject) itemsObject.get(key)).getDouble("latitude"));
+                    obj.setLongitude(((JSONObject) itemsObject.get(key)).getDouble("longitude"));
+                    obj.setDistance(((JSONObject) itemsObject.get(key)).getDouble("distance"));
+                    obj.setPerformers(convertJsonPerformerArrayToArrayList(((JSONObject) itemsObject.get(key)).getJSONObject("performers")));
+                    obj.setImages(convertJsonImageArrayToArrayList(((JSONObject) itemsObject.get(key)).getJSONObject("images")));
 
                     eventfeedList.add(obj);
                 }
