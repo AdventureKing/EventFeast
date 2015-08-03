@@ -54,6 +54,7 @@ public class searchResultsFragment extends Fragment implements Response.Listener
     private String filterCity;
     private String filterState;
     private String filterSources;
+    private Long filterRadius;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -334,6 +335,10 @@ public class searchResultsFragment extends Fragment implements Response.Listener
     public String getSearchQuery() {
         return searchQuery;
     }
+
+    public Long getFilterRadius(){ return filterRadius;}
+
+    public void setFilterRadius(Long filterRadius ){ this.filterRadius = filterRadius;}
 
     public void setSearchQuery(String searchQuery) {
         this.searchQuery = searchQuery;

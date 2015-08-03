@@ -35,6 +35,9 @@
     <string name="messaging">Messaging</string>
     <string name="myfriends">Following</string>
     <string name="users">Users</string>
+    <string name="geofence_transition_notification_title"> Notification Title</string>
+    <string name="geofence_transition_dwell"> Transition Dwell</string>
+    <string name="geofence_transition_unknown"> Transition Unknown</string>
     <string name="myposts">My Post</string>
     <string name="mylistings">My Listings</string>
     <!-- Registration Strings -->
