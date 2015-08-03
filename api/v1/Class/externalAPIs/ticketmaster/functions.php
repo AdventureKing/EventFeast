@@ -63,16 +63,15 @@
 			$eventExternalAttractionUrl = empty($json->response->docs[$i]->AttractionSEOLink[0]) ? null : "http://ticketmaster.com".$json->response->docs[$i]->AttractionSEOLink[0];
 			
 			$currentEvent = true;
-
+			$distance = null;
+			
 			if(!empty($venueLatLongString)){
 				$venueLatLong = explode(",", $venueLatLongString);
 				if(null != $venueLatLong[0] && null != $venueLatLong[1] && null != $userLat && null != $userLong){
 						$distance = distanceInMiles($userLat, $userLong, $venueLatLong[0], $venueLatLong[1]);
 				} 
-			} else{
-				$distance = null;
 			}
-			
+
 			if(!empty($startTime)){
 				date_default_timezone_set($timezone);
 				$currentUnixTime = strtotime("now");
@@ -111,7 +110,9 @@
 					$gEvent->setLatitude((float)$venueLatLong[0]);
 					$gEvent->setLongitude((float)$venueLatLong[1]);
 					
-					$gEvent->setDistance(number_format((float)$distance, 2, '.', ''));
+					if(null != $distance){
+						$gEvent->setDistance(number_format((float)$distance, 2, '.', ''));
+					}
 				}
 	            
 				$gEvent->setTimezone($timezone);
