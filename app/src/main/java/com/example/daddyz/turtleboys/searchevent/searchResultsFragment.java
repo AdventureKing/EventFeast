@@ -51,7 +51,8 @@ public class searchResultsFragment extends Fragment implements Response.Listener
     private ActionBar actionBar;
 
     private String searchQuery = "";
-    private String userAddress = "";
+    private double userLat = 0.00;
+    private double userLong = 0.00;
     private String filterDate;
     private String filterCity = "";
     private String filterState = "";
@@ -142,7 +143,6 @@ public class searchResultsFragment extends Fragment implements Response.Listener
         super.onStart();
 
         try{
-            userAddress = URLEncoder.encode(this.getUserAddress(), "utf-8");
             searchQuery = URLEncoder.encode(this.getSearchQuery(), "utf-8");
             filterCity = URLEncoder.encode(this.getFilterCity(), "utf-8");
             filterState = URLEncoder.encode(this.getFilterState(), "utf-8");
@@ -157,7 +157,8 @@ public class searchResultsFragment extends Fragment implements Response.Listener
         StringBuilder url = new StringBuilder(2048);
         url.append("http://api.dev.turtleboys.com/v1/events/find/");
         url.append(searchQuery);
-        url.append("?address="+userAddress);
+        url.append("?userLat="+userLat);
+        url.append("&userLng="+userLong);
         if(filterCity.length() > 0){
             url.append("&city="+filterCity);
         }
@@ -386,11 +387,19 @@ public class searchResultsFragment extends Fragment implements Response.Listener
         this.filterState = filterState;
     }
 
-    public String getUserAddress() {
-        return userAddress;
+    public double getUserLong() {
+        return userLong;
     }
 
-    public void setUserAddress(String userAddress) {
-        this.userAddress = userAddress;
+    public void setUserLong(double userLong) {
+        this.userLong = userLong;
+    }
+
+    public double getUserLat() {
+        return userLat;
+    }
+
+    public void setUserLat(double userLat) {
+        this.userLat = userLat;
     }
 }

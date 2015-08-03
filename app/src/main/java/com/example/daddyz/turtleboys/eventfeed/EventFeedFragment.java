@@ -102,14 +102,17 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
     public void onStart() {
         super.onStart();
 
-        App_Application mApp = (App_Application)getActivity().getApplicationContext();
-        String userAddress;
+        double userParseLat = currentUser.getUserHome().getLatitude();
+        double userParseLong = currentUser.getUserHome().getLongitude();
+
+        //App_Application mApp = (App_Application)getActivity().getApplicationContext();
+        //String userAddress;
 
         // Get current users address via network or gps
-        userAddress = mApp.getCurrentAddress();
+        //userAddress = mApp.getCurrentAddress();
 
         // If the user has location services turned off, grab their last location from parse db
-        if(null == userAddress){
+        /*if(null == userAddress){
             double userParseLat = currentUser.getUserHome().getLatitude();
             double userParseLong = currentUser.getUserHome().getLongitude();
 
@@ -127,14 +130,15 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
         } catch(UnsupportedEncodingException e){
             e.printStackTrace();
         }
-
+    */
         mQueue = VolleyRequestQueue.getInstance(this.getActivity().getApplicationContext())
                 .getRequestQueue();
 
         StringBuilder url = new StringBuilder(2048);
         url.append("http://api.dev.turtleboys.com/v1/events/find/");
         url.append("San%20Antonio");
-        url.append("?address="+userAddress);
+        url.append("?userLat="+userParseLat);
+        url.append("&userLng="+userParseLong);
         url.append("&city=San%20Antonio");
 
         final VolleyJSONObjectRequest jsonRequest = new VolleyJSONObjectRequest(Request.Method

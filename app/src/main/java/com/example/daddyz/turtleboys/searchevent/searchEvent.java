@@ -77,7 +77,8 @@ public class searchEvent extends Fragment {
     private RadioButton defaultButton;
     private String home;
     private final GigUser currentUser = ParseUser.createWithoutData(GigUser.class, ParseUser.getCurrentUser().getObjectId());
-    private String userAddress;
+    private double userParseLat;
+    private double userParseLong;
 
     private EditText toTimeText;
     private EditText fromTimeText;
@@ -120,23 +121,8 @@ public class searchEvent extends Fragment {
 
         super.onStart();
 
-        // Get the users current address from global value
-        App_Application mApp = ((App_Application)getActivity().getApplicationContext());
-        userAddress = mApp.getCurrentAddress();
-
-        // If the user has location services turned off, grab their last location from parse db
-        if(null == userAddress){
-            double userParseLat = currentUser.getUserHome().getLatitude();
-            double userParseLong = currentUser.getUserHome().getLongitude();
-
-            LocationFinder locFinder = new LocationFinder();
-            Location loc = new Location("");
-            loc.setLatitude(userParseLat);
-            loc.setLongitude(userParseLong);
-
-            userAddress = locFinder.getAddressFromLocation(getActivity().getApplicationContext(), loc);
-            Log.i("Location: ", "Getting from Parse!");
-        }
+        userParseLat = currentUser.getUserHome().getLatitude();
+        userParseLong = currentUser.getUserHome().getLongitude();
 
         //City
         //TODO Add Google's city autocomplete
@@ -303,7 +289,8 @@ public class searchEvent extends Fragment {
                 //Do a search
                 searchResultsFragment fragment = new searchResultsFragment();
 
-                fragment.setUserAddress(userAddress);
+                fragment.setUserLat(userParseLat);
+                fragment.setUserLong(userParseLong);
                 fragment.setSearchQuery(keyword.getText().toString());
                 fragment.setFilterRadius(searchRadius_miles);
                 fragment.setFilterCity(city.getText().toString());
