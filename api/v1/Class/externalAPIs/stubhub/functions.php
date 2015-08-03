@@ -6,10 +6,21 @@
 		
 		// Filter Parameters
 		$q = urlencode(strtolower($queryString));
+		$userAddress = $optionsArray['address'];
 		$filterCity = $optionsArray['city'];
 		$filterState = $optionsArray['state'];
 		$filterDate = $optionsArray['date'];
 		$filterDesc = $optionsArray['desc'];
+		$filterRadius = $optionsArray['radius'];
+
+		if(null != $userAddress){
+			$location = getLatLongFromAddress($userAddress);
+			$userLat = $location['latitude'];
+			$userLong = $location['longitude'];
+		} else{
+			$userLat = null;
+			$userLong = null;
+		}
 
 		$endpoint_stubhub = "http://publicfeed.stubhub.com/listingCatalog/select/";
 		$url = "$endpoint_stubhub?q=$q&wt=json&stubhubDocumentType=event&rows=50&city=$filterCity";
@@ -48,6 +59,12 @@
 			$imageExternalUrl = empty($json->response->docs[$i]->image_url) ? null : $json->response->docs[$i]->image_url;
 			$geoParent = empty($json->response->docs[$i]->geography_parent) ? null : $json->response->docs[$i]->geography_parent;
 			$imageExternalUrlLong = empty($json->response->docs[$i]->image_url) ? null : "http://cache1.stubhubstatic.com/data/venue_maps/".$geoParent."/".$json->response->docs[$i]->image_url;
+
+			if(null != $latitude && null != $longitude && null != $userLat && null != $userLong){
+				$distance = distanceInMiles($userLat, $userLong, $latitude, $longitude);
+			} else{
+				$distance = null;
+			}
 			
 			$currentEvent = true;
 			
@@ -66,6 +83,7 @@
 			if(empty($filterState) || strtolower($filterState) == strtolower($state)){
 		    if(empty($filterDate)  || $filterDate == $date){
 			if(empty($filterDesc)  || (strpos(strtolower($desc), strtolower($filterDesc)) !== FALSE)){
+			if(empty($filterRadius) || $distance <= $filterRadius){
 	            $gEvent = new gEvent;
 	            $gEvent->setExternal_id($externalId);
 	            $gEvent->setDatasource("stubhub");
@@ -85,6 +103,7 @@
 
 	            $gEvent->setLatitude($latitude);
 	            $gEvent->setLongitude($longitude);
+	            $gEvent->setDistance(number_format((float)$distance, 2, '.', ''));
 	            
 				$gEvent->setTimezone($timezone);
 				$gEvent->setTimezone_abbr(convertTimezoneToAbbr($timezone));
@@ -140,6 +159,7 @@
 				
 	            // Push gEvent object onto arraylist of gEvent objects
 	            array_push($gEvents, $gEvent);
+	        }
 			}
 			}
 			}

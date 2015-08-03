@@ -74,7 +74,9 @@
 		// setting response content type to json
 		$app->contentType('application/json');
 
-		echo json_encode($response, JSON_FORCE_OBJECT | JSON_UNESCAPED_SLASHES);
+
+		$response = trim(json_encode($response, JSON_FORCE_OBJECT | JSON_UNESCAPED_SLASHES));
+		echo $response;
 	}
 	
 	/**
@@ -133,4 +135,3 @@
 		}
 	}
 ?>
-	

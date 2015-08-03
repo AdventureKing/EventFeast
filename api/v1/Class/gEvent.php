@@ -38,6 +38,7 @@
 		private $minor_genre = array();
 		private $latitude = 0;
 		private $longitude = 0;
+		private $distance = 0;
 		private $performers = array();
 		private $images = array();
 	
@@ -882,6 +883,30 @@
 	    }
 
 	    /**
+	     * Gets the value of distance.
+	     *
+	     * @return mixed
+	     */
+	    public function getDistance()
+	    {
+	        return $this->distance;
+	    }
+
+	    /**
+	     * Sets the value of distance.
+	     *
+	     * @param mixed $distance the distance
+	     *
+	     * @return self
+	     */
+	    public function setDistance($distance)
+	    {
+	        $this->distance = $distance;
+
+	        return $this;
+	    }
+
+	    /**
 	     * Gets the value of performers.
 	     *
 	     * @return mixed
@@ -1177,6 +1202,5 @@
 	    {
 	        return get_object_vars($this);
 	    }
-
-    }
+}
 ?>

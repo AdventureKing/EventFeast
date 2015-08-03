@@ -35,11 +35,13 @@
 	   	}
 
 		public function generateItems(){
+			$filters['address'] = $this->app->request->params('address');
 			$filters['city'] = $this->app->request()->params('city');
 			$filters['state'] = $this->app->request()->params('state');
 			$filters['date'] = $this->app->request()->params('date');
 			$filters['desc'] = $this->app->request()->params('desc');
 			$filters['sources'] = $this->app->request()->params('sources');
+			$filters['radius'] = $this->app->request()->params('radius');
 
 			if(!empty($filters['sources'])){
 				$sourceArr = explode(",",$filters['sources']);

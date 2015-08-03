@@ -35,7 +35,7 @@
 		if ($res == 'USER_CREATED_SUCCESSFULLY') {
 			$response["result"] = 'success';
 			$response["message"] = "You are successfully registered";
-			echoRespnse(201, $response);
+			echoRespnse(200, $response);
 		} else if ($res == 'USER_CREATE_FAILED') {
 			$response["result"] = 'error';
 			$response["message"] = "Oops! An error occurred while registereing";
@@ -95,47 +95,94 @@
 		echoRespnse(200, $response);
 	});
 
-	/**
-	 * User Followers
-	 * url - /login
-	 * method - GET
-	 * params - userId
-	 */
-	$app->post('/user/:userId/followers', function() use ($app) {
-		$response = array();
+	$app->post('/user/neo/create/user', function() use ($app) {
+		// check for required params
+		verifyRequiredParams(array('userId', 'email', 'username'));
 
-		$db = new DbHandlerMySql();
-		$results = $db->getUserList();
-		$records = array();
+		// reading post params
+		$userId = $app->request()->post('userId');
+		$email = $app->request()->post('email');
+		$username = $app->request()->post('username');
 
-		//echo "Successfully retrieved " . count($results) . " scores.<br><br>";
-		// Do something with the returned ParseObject values
-		for ($i = 0; $i < count($results); $i++) {
-	  		$object = $results[$i];
+		$db = new DbHandlerNeo();
+		$result = $db->createUser($userId, $email, $username);
 
-	  		$record = array();
-	  		$records[$i]['userId'] = $object->getObjectId();
-	  		$records[$i]['firstName'] = $object->get('firstName');
-	  		$records[$i]['lastName'] = $object->get('lastName');
-	  		$records[$i]['username'] = $object->get('username');
-	  		$records[$i]['email'] = $object->get('email');
-
-	  		//echo $object->getObjectId() . ' - ' . $object->get('username') . '<br>';
-		}
-
-		// check for records returned
-		if ($records) {
-			$response["result"] = "success";
-			$response['message'] = count($records)." users found.";
-			$response['items'] = $records;
-			
-		} else {
-			// no records found
-			$response['result'] = 'success';
-			$response['message'] = 'No Users Found';
+		switch($result){
+			case 'USER_CREATED_SUCCESSFULLY':
+				$response['result'] = 'success';
+				$response['message'] = 'User Created Successfully.';
+				break;
+			case 'USER_ALREADY_EXISTED':
+				$response['result'] = 'error';
+				$response['message'] = 'User already exists.';
+				break;
+			case 'USER_CREATE_FAILED':
+				$response['result'] = 'error';
+				$response['message'] = 'User creation failed.';
+				break;
+			default : 
+				$response['result'] = 'error';
+				$response['message'] = 'Unknown issue.';
+				break;
 		}
 
 		echoRespnse(200, $response);
 	});
+
+	$app->post('/user/neo/create/relationship', function() use ($app) {
+		// check for required params
+		verifyRequiredParams(array('userId1', 'relType', 'userId2'));
+
+		// reading post params
+		$userId1 = $app->request()->post('userId1');
+		$relType = $app->request()->post('relType');
+		$userId2 = $app->request()->post('userId2');
+
+		$db = new DbHandlerNeo();
+		if($db->isUserExistsByUserId($userId1) && $db->isUserExistsByUserId($userId2)){
+			$result = $db->createRelationship($userId1, $relType, $userId2);
+		} else{
+			$result = false;
+		}
+		
+		if($result){
+			$response['result'] = 'success';
+			$response['message'] = "User ID: $userId1 now $relType User ID: $userId2.";
+		} else{
+			$response['result'] = 'error';
+			$response['message'] = 'Relationship creation failed.';
+		}
+
+		echoRespnse(200, $response);
+	});
+
+	$app->post('/user/neo/destroy/relationship', function() use ($app) {
+		// check for required params
+		verifyRequiredParams(array('userId1', 'relType', 'userId2'));
+
+		// reading post params
+		$userId1 = $app->request()->post('userId1');
+		$relType = $app->request()->post('relType');
+		$userId2 = $app->request()->post('userId2');
+
+		$db = new DbHandlerNeo();
+		if($db->isUserExistsByUserId($userId1) && $db->isUserExistsByUserId($userId2)){
+			$result = $db->destroyRelationship($userId1, $relType, $userId2);
+		} else{
+			$result = false;
+		}
+		
+		if($result){
+			$response['result'] = 'success';
+			$response['message'] = "User ID: $userId1 no longer $relType User ID: $userId2.";
+		} else{
+			$response['result'] = 'error';
+			$response['message'] = 'Relationship removal failed.';
+		}
+
+		echoRespnse(200, $response);
+	});
+
+
 
 ?>

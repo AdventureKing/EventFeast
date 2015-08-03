@@ -6,10 +6,21 @@
 		
 		// Filter Parameters
 		$q = urlencode(strtolower($queryString));
+		$userAddress = $optionsArray['address'];
 		$filterCity = $optionsArray['city'];
 		$filterState = $optionsArray['state'];
 		$filterDate = $optionsArray['date'];
 		$filterDesc = $optionsArray['desc'];
+		$filterRadius = $optionsArray['radius'];
+
+		if(null != $userAddress){
+			$location = getLatLongFromAddress($userAddress);
+			$userLat = $location['latitude'];
+			$userLong = $location['longitude'];
+		} else{
+			$userLat = null;
+			$userLong = null;
+		}
 		
 		$endpoint_ticketmaster = "http://www.ticketmaster.com/json/search/event";
 		$url = "$endpoint_ticketmaster?q=$queryString&rows=50&VenueCity=$filterCity&VenueState=$filterState";
@@ -52,6 +63,15 @@
 			$eventExternalAttractionUrl = empty($json->response->docs[$i]->AttractionSEOLink[0]) ? null : "http://ticketmaster.com".$json->response->docs[$i]->AttractionSEOLink[0];
 			
 			$currentEvent = true;
+
+			if(!empty($venueLatLongString)){
+				$venueLatLong = explode(",", $venueLatLongString);
+				if(null != $venueLatLong[0] && null != $venueLatLong[1] && null != $userLat && null != $userLong){
+						$distance = distanceInMiles($userLat, $userLong, $venueLatLong[0], $venueLatLong[1]);
+				} 
+			} else{
+				$distance = null;
+			}
 			
 			if(!empty($startTime)){
 				date_default_timezone_set($timezone);
@@ -68,6 +88,7 @@
 			if(empty($filterState) || strtolower($filterState) == strtolower($state)){
 		    if(empty($filterDate)  || $filterDate == $date){
 			if(empty($filterDesc)  || (strpos(strtolower($desc), strtolower($filterDesc)) !== FALSE)){
+			if(empty($filterRadius) || $distance <= $filterRadius){
 	            $gEvent = new gEvent;
 	            $gEvent->setExternal_id($externalId);
 	            $gEvent->setDatasource("ticketmaster");
@@ -89,6 +110,8 @@
 					$venueLatLong = explode(",", $venueLatLongString);
 					$gEvent->setLatitude((float)$venueLatLong[0]);
 					$gEvent->setLongitude((float)$venueLatLong[1]);
+					
+					$gEvent->setDistance(number_format((float)$distance, 2, '.', ''));
 				}
 	            
 				$gEvent->setTimezone($timezone);
@@ -154,6 +177,7 @@
 				
 	            // Push gEvent object onto arraylist of gEvent objects
 	            array_push($gEvents, $gEvent);
+	        }
 			}
 			}
 			}
