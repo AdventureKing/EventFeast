@@ -34,6 +34,7 @@ import com.example.daddyz.turtleboys.eventfeed.gEventObject;
 import com.example.daddyz.turtleboys.friendFeed.followListFragment;
 import com.example.daddyz.turtleboys.friendFeed.followerListFragment;
 import com.example.daddyz.turtleboys.my_experiences.historyAdapter;
+import com.example.daddyz.turtleboys.my_experiences.myEvents;
 import com.example.daddyz.turtleboys.settings.SettingsFragment;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.example.daddyz.turtleboys.subclasses.User_Icon_Animation;
@@ -177,6 +178,8 @@ public class  experience_activity extends AppCompatActivity {
                         startActivity(intent);
                         return true;
                     case R.id.myEvents:
+                        myEvents eventHist = new myEvents();
+                        fragManager.beginTransaction().replace(R.id.frame, eventHist,"myEventsFragment").addToBackStack("myEventsFragment").commit();
                         Toast.makeText(getApplicationContext(), "Events Selected", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.myFriends:

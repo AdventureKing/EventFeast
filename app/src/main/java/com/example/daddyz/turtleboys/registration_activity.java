@@ -83,8 +83,8 @@ public class registration_activity extends AppCompatActivity {
         context = getApplicationContext();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_activity);
-        View view = findViewById(R.id.registrationPage);
-        view.setOnTouchListener(new View.OnTouchListener() {
+        View rootView = findViewById(R.id.registrationPage);
+        rootView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.
@@ -160,6 +160,8 @@ public class registration_activity extends AppCompatActivity {
             public void onClick(View view) {
                 //Toast.makeText(getApplicationContext(),"BUTTON CLICKED", Toast.LENGTH_SHORT).show();
 
+
+
                 //Check to see if email and verify email fields are the same
               /*  if ( !(email.getText().toString().equals(userHome.getText().toString())) ) {
                     Toast.makeText(getApplicationContext(), R.string.emailNoMatch, Toast.LENGTH_SHORT).show();
@@ -220,7 +222,7 @@ public class registration_activity extends AppCompatActivity {
                 //creating date for database
                 String[] dates = birthdayText.getText().toString().split("/");
                 if ( dates.length < 3 ) {
-                    Toast.makeText(getApplicationContext(), R.string.birthdaySelect , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.birthdaySelect, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -234,6 +236,8 @@ public class registration_activity extends AppCompatActivity {
 
                 birthday = new Date(tempYear,tempMonth,tempDay);
 
+                //Make the loading icon visible TODO
+                //startLoading();
 
                 //Verify info
                 //Create new account
@@ -262,6 +266,7 @@ public class registration_activity extends AppCompatActivity {
                 }
 
                 //Toast.makeText(getApplicationContext(),"Gonna make user", Toast.LENGTH_SHORT).show();
+
 
                newUser.signUpInBackground(new SignUpCallback() {
 
@@ -299,6 +304,9 @@ public class registration_activity extends AppCompatActivity {
 
                });
 
+                //Make the loading icon invisible TODO
+                stopLoading();
+
 
             }
         });
@@ -315,6 +323,14 @@ public class registration_activity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void startLoading() {
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+    }
+
+    public void stopLoading() {
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
     }
 
 
