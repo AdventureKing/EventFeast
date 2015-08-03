@@ -83,7 +83,7 @@
 			if(empty($filterState) || strtolower($filterState) == strtolower($state)){
 		    if(empty($filterDate)  || $filterDate == $date){
 			if(empty($filterDesc)  || (strpos(strtolower($desc), strtolower($filterDesc)) !== FALSE)){
-			if(empty($filterRadius) || $distance <= $filterRadius){
+			if(empty($filterRadius) || ($distance <= $filterRadius && $distance > 0)){
 	            $gEvent = new gEvent;
 	            $gEvent->setExternal_id($externalId);
 	            $gEvent->setDatasource("stubhub");
