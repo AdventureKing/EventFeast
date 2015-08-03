@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -144,11 +145,13 @@ public class searchResultsFragment extends Fragment implements Response.Listener
             userAddress = URLEncoder.encode(this.getUserAddress(), "utf-8");
             searchQuery = URLEncoder.encode(this.getSearchQuery(), "utf-8");
             filterCity = URLEncoder.encode(this.getFilterCity(), "utf-8");
+            filterState = URLEncoder.encode(this.getFilterState(), "utf-8");
             filterRadius = this.getFilterRadius();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        searchQuery = (searchQuery.length() == 0) ? filterCity : searchQuery;
+        searchQuery = (searchQuery.length() == 0 && filterCity.length() > 0) ? filterCity : searchQuery;
+        searchQuery = (searchQuery.length() == 0 && filterState.length() > 0) ? filterState : searchQuery;
 
         mQueue = VolleyRequestQueue.getInstance(this.getActivity().getApplicationContext()).getRequestQueue();
         StringBuilder url = new StringBuilder(2048);
@@ -209,6 +212,8 @@ public class searchResultsFragment extends Fragment implements Response.Listener
             JSONObject itemsObject = mainObject.getJSONObject("items");
             Iterator<?> keys = itemsObject.keys();
 
+            String numFound = mainObject.getString("numFound");
+
             while( keys.hasNext() ) {
                 String key = (String)keys.next();
                 if ( itemsObject.get(key) instanceof JSONObject ) {
@@ -257,6 +262,9 @@ public class searchResultsFragment extends Fragment implements Response.Listener
                     searchResultsList.add(obj);
                 }
             }
+
+            Toast.makeText(getActivity().getApplicationContext(), numFound + " Events Found", Toast.LENGTH_LONG).show();
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

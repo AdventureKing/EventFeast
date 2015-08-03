@@ -31,15 +31,15 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.example.daddyz.turtleboys.App_Application;
 import com.example.daddyz.turtleboys.R;
+import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.example.daddyz.turtleboys.subclasses.LocationFinder;
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -76,7 +76,8 @@ public class searchEvent extends Fragment {
     private RadioButton sortbyButton;
     private RadioButton defaultButton;
     private String home;
-    private String userAddress = "";
+    private final GigUser currentUser = ParseUser.createWithoutData(GigUser.class, ParseUser.getCurrentUser().getObjectId());
+    private String userAddress;
 
     private EditText toTimeText;
     private EditText fromTimeText;
@@ -119,27 +120,23 @@ public class searchEvent extends Fragment {
 
         super.onStart();
 
-        // Set the address
-        // Get the users best location
-        LocationFinder.LocationResult locationResult = new LocationFinder.LocationResult(){
-            @Override
-            public void gotLocation(Location location){
-                LocationFinder myLocation = new LocationFinder();
-                try{
-                    userAddress = URLEncoder.encode(myLocation.getAddressFromLocation(getActivity().getApplicationContext(), location), "utf-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                Log.i("Location Address:", userAddress);
+        // Get the users current address from global value
+        App_Application mApp = ((App_Application)getActivity().getApplicationContext());
+        userAddress = mApp.getCurrentAddress();
 
-                //Got the location!
-                Log.i("Location Provider:", location.getProvider());
-                Log.i("Location Latitude:", Double.toString(location.getLatitude()));
-                Log.i("Location Longitude:", Double.toString(location.getLongitude()));
-            }
-        };
-        LocationFinder myLocation = new LocationFinder();
-        myLocation.getLocation(this.getActivity().getApplicationContext(), locationResult);
+        // If the user has location services turned off, grab their last location from parse db
+        if(null == userAddress){
+            double userParseLat = currentUser.getUserHome().getLatitude();
+            double userParseLong = currentUser.getUserHome().getLongitude();
+
+            LocationFinder locFinder = new LocationFinder();
+            Location loc = new Location("");
+            loc.setLatitude(userParseLat);
+            loc.setLongitude(userParseLong);
+
+            userAddress = locFinder.getAddressFromLocation(getActivity().getApplicationContext(), loc);
+            Log.i("Location: ", "Getting from Parse!");
+        }
 
         //City
         //TODO Add Google's city autocomplete
@@ -159,7 +156,7 @@ public class searchEvent extends Fragment {
         //Sortby RadioGroup
         radioSortbyGroup = (RadioGroup) rootView.findViewById(R.id.sortGroup);
         sortbyButton = (RadioButton) rootView.findViewById(radioSortbyGroup.getCheckedRadioButtonId());
-        defaultButton = (RadioButton) rootView.findViewById(R.id.sortRelevance);
+        defaultButton = (RadioButton) rootView.findViewById(R.id.sortDate);
 
         //SearchRadius Seekbar
         searchRadiusSeekBar = (SeekBar) rootView.findViewById(R.id.searchRadius);
@@ -305,16 +302,16 @@ public class searchEvent extends Fragment {
             public void onClick(View view) {
                 //Do a search
                 searchResultsFragment fragment = new searchResultsFragment();
-                while(userAddress == null){
-                    // Waiting for address to be set
-                }
+
                 fragment.setUserAddress(userAddress);
                 fragment.setSearchQuery(keyword.getText().toString());
                 fragment.setFilterRadius(searchRadius_miles);
                 fragment.setFilterCity(city.getText().toString());
+                fragment.setFilterState(state.getText().toString());
 
                 Log.i("query", keyword.getText().toString());
-                Log.i("city",city.getText().toString());
+                Log.i("city", city.getText().toString());
+                Log.i("state",state.getText().toString());
                 Log.i("radius",Double.toString(searchRadius_miles));
 
                 getFragmentManager().beginTransaction().replace(R.id.frame,fragment,"searchResultsFragment").addToBackStack("searchResultsFragment").commit();

@@ -130,7 +130,7 @@
     <string name="searchKeyword">Please enter a Keyword to search</string>
     <string name="searchLocation">Location\n Tap to change Location</string>
     <string name="searchCity">City</string>
-    <string name="searchState">State</string>
+    <string name="searchState">State (Ex. TX)</string>
     <string name="setSearchRadius">Set Search Radius\t f kms / d miles</string>
     <string name="anyDay">Any Day</string>
     <string name="anyTime">Any Time</string>
