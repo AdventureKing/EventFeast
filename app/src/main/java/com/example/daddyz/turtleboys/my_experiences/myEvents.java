@@ -71,6 +71,7 @@ public class myEvents extends Fragment implements Response.Listener,
         rootView = inflater.inflate(R.layout.myevents, container, false);
         list = (ListView) rootView.findViewById(R.id.listView);
 
+        rootView.findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
         mTextView = (TextView) rootView.findViewById(R.id.textView);
         list.setClickable(true);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -103,7 +104,7 @@ public class myEvents extends Fragment implements Response.Listener,
                 fragment.setObj(obj);
 
                 //start the fragment
-                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer, fragment, "EventDetailFragment").addToBackStack("EventDetailFragment").commit();
+                getFragmentManager().beginTransaction().replace(R.id.drawer, fragment, "EventDetailFragment").addToBackStack("EventDetailFragment").commit();
             }
         });
         //test values
@@ -136,7 +137,7 @@ public class myEvents extends Fragment implements Response.Listener,
         ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
         /////////////////////////////////////////////////////////////////////////
 
-
+        rootView.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
         return rootView;
     }
 
