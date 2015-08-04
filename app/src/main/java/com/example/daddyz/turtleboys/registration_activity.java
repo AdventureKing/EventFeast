@@ -115,9 +115,6 @@ public class registration_activity extends AppCompatActivity {
         });
 
 
-
-
-
         userImageFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,6 +155,7 @@ public class registration_activity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startLoading();
                 //Toast.makeText(getApplicationContext(),"BUTTON CLICKED", Toast.LENGTH_SHORT).show();
 
                 //Check to see if email and verify email fields are the same
@@ -169,36 +167,42 @@ public class registration_activity extends AppCompatActivity {
                 //Check to see if passwords match
                 if ( !(userPassword.getText().toString().equals(userPasswordVerify.getText().toString())) ) {
                     Toast.makeText(getApplicationContext(), R.string.passwordNoMatch, Toast.LENGTH_SHORT).show();
+                    stopLoading();
                     return;
                 }
 
                 //Check if firstName is empty
                 if ( firstName.getText().toString().isEmpty() ) {
                     Toast.makeText(getApplicationContext(), R.string.firstNameEmpty, Toast.LENGTH_SHORT).show();
+                    stopLoading();
                     return;
                 }
 
                 //Check if lastName is empty
                 if ( lastName.getText().toString().isEmpty() ) {
                     Toast.makeText(getApplicationContext(), R.string.lastNameEmpty, Toast.LENGTH_SHORT).show();
+                    stopLoading();
                     return;
                 }
 
                 //Check if userName is empty
                 if ( userName.getText().toString().isEmpty() ) {
                     Toast.makeText(getApplicationContext(), R.string.userNameEmpty, Toast.LENGTH_SHORT).show();
+                    stopLoading();
                     return;
                 }
 
                 //Check if email is empty
                 if ( email.getText().toString().isEmpty() ) {
                     Toast.makeText(getApplicationContext(), R.string.emailEmpty, Toast.LENGTH_SHORT).show();
+                    stopLoading();
                     return;
                 }
 
                 //Check if password is empty
                 if ( userPassword.getText().toString().isEmpty() ) {
                     Toast.makeText(getApplicationContext(), R.string.passwordEmpty, Toast.LENGTH_SHORT).show();
+                    stopLoading();
                     return;
                 }
 
@@ -206,6 +210,7 @@ public class registration_activity extends AppCompatActivity {
                 /*
                 if ( birthdayText.getText().toString().equals(R.string.birthdaySelect) ) {
                     Toast.makeText(getApplicationContext(), "Birthday is empty", Toast.LENGTH_SHORT).show();
+                    stopLoading();
                     return;
                 }
                 */
@@ -221,6 +226,7 @@ public class registration_activity extends AppCompatActivity {
                 String[] dates = birthdayText.getText().toString().split("/");
                 if ( dates.length < 3 ) {
                     Toast.makeText(getApplicationContext(), R.string.birthdaySelect, Toast.LENGTH_SHORT).show();
+                    stopLoading();
                     return;
                 }
 
@@ -233,9 +239,6 @@ public class registration_activity extends AppCompatActivity {
 
 
                 birthday = new Date(tempYear,tempMonth,tempDay);
-
-                //Make the loading icon visible TODO
-                //startLoading();
 
                 //Verify info
                 //Create new account
@@ -271,8 +274,7 @@ public class registration_activity extends AppCompatActivity {
                    @Override
                    public void done(com.parse.ParseException e) {
                        if (e == null) {
-
-
+                           stopLoading();
                            Intent intent = new Intent(getApplicationContext(), maindrawer.class);
                            finish();
                            startActivity(intent);
@@ -296,16 +298,12 @@ public class registration_activity extends AppCompatActivity {
                                case ParseException.PASSWORD_MISSING:
                                    Toast.makeText(getApplicationContext(), "Missing Password", Toast.LENGTH_SHORT).show();
                            }
+                           stopLoading();
                        }
                    }
 
 
                });
-
-                //Make the loading icon invisible TODO
-                stopLoading();
-
-
             }
         });
 
@@ -328,7 +326,7 @@ public class registration_activity extends AppCompatActivity {
     }
 
     public void stopLoading() {
-        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+        findViewById(R.id.loadingPanel).setVisibility(View.INVISIBLE);
     }
 
 
