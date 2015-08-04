@@ -96,11 +96,17 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
             public void onClick(View v) {
                 Intent mapIntent = new Intent(getActivity().getApplicationContext(), MapsActivity.class);
                 // Create a Bundle and Put Bundle in to it
-                Bundle bundleObject = new Bundle();
-                bundleObject.putSerializable("eventfeedList", eventfeedList);
+                //for(int i = 0; i < eventfeedList.size(); i++){
+                    mapIntent.putExtra("event1", eventfeedList.get(0));
+                //}
+               // Bundle bundleObject = new Bundle();
+                System.out.println("im here \n\n\n\n\n\n");
+                System.out.println(eventfeedList.get(0).getCity_name());
+                //bundleObject.putSerializable("eventfeedList", eventfeedList);
+
 
                 // Put Bundle in to Intent and call start Activity
-                mapIntent.putExtras(bundleObject);
+                //mapIntent.putExtras(bundleObject);
                 startActivity(mapIntent);
             }
 

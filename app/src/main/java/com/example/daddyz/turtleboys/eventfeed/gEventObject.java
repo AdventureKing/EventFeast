@@ -1,5 +1,7 @@
 package com.example.daddyz.turtleboys.eventfeed;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.Html;
 
 import java.io.Serializable;
@@ -8,8 +10,9 @@ import java.util.ArrayList;
 /**
  * Created by zachary.rodriguez on 7/6/2015.
  */
-public class gEventObject implements Serializable {
+public class gEventObject implements Parcelable {
 
+    private int mData;
     private String internal_id = "";
     private String external_id = "";
     private String datasource = "";
@@ -352,4 +355,40 @@ public class gEventObject implements Serializable {
     public void setImages(ArrayList<gEventImageObject> images) {
         this.images = images;
     }
+
+
+    /*
+    For implements parcelable
+     */
+
+    // 99.9% of the time you can just ignore this
+    public int describeContents() {
+        return 0;
+    }
+
+    // write your object's data to the passed-in Parcel
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(mData);
+    }
+
+    // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
+    public static final Parcelable.Creator<gEventObject> CREATOR = new Parcelable.Creator<gEventObject>() {
+        public gEventObject createFromParcel(Parcel in) {
+            return new gEventObject(in);
+        }
+
+        public gEventObject[] newArray(int size) {
+            return new gEventObject[size];
+        }
+    };
+
+    // example constructor that takes a Parcel and gives you an object populated with it's values
+    private gEventObject(Parcel in) {
+        mData = in.readInt();
+    }
+
+    public gEventObject() {
+
+    }
+
 }

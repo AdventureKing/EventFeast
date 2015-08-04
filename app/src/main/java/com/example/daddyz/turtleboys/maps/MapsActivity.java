@@ -214,8 +214,8 @@ public class MapsActivity extends FragmentActivity implements
 
         System.out.println(venueLat);
         System.out.println(venueLng);
-
-        if(mapCenter == null && venueLat == 0.0 && venueLng != 0.0){
+        System.out.println(mapCenter);
+        if(mapCenter == null && (venueLat == 0.0 || venueLat == null) && (venueLng == null || venueLng == 0.0)){
             myLat = lat;
             myLng = lng;
             System.out.println(myLat);
@@ -331,34 +331,14 @@ public class MapsActivity extends FragmentActivity implements
             Intent myIntent = getIntent();
             String desc = myIntent.getStringExtra("desc");
             String addr = myIntent.getStringExtra("addr");
+            gEventObject eObject = (gEventObject) myIntent.getParcelableExtra("event1");
+            venueLat = myIntent.getDoubleExtra("lat", 0.0);
+            venueLng = myIntent.getDoubleExtra("lon", 0.0);
+       //     System.out.println("Im in the map Activity");
+//            System.out.println(eObject.getCity_name());
 
-            if(null == desc){
 
-                try{
-                    // Get the Bundle Object
-                    Bundle bundleObject = getIntent().getExtras();
-
-                    // Get ArrayList Bundle
-                    ArrayList<gEventObject> classObject = (ArrayList<gEventObject>) bundleObject.getSerializable("eventfeedList");
-
-                    for(int index = 0; index < classObject.size(); index++){
-
-                        gEventObject Object = classObject.get(index);
-                        Toast.makeText(getApplicationContext(), "Id is :"+Object.getTitle(), Toast.LENGTH_SHORT).show();
-                    }
-                } catch(Exception e){
-                    e.printStackTrace();
-                }
-
-            } else if(null != desc && null != addr){
-                venueLat = myIntent.getDoubleExtra("lat", 0.0);
-                venueLng = myIntent.getDoubleExtra("lon", 0.0);
-
-                mMap.addMarker(new MarkerOptions().position(new LatLng(venueLat, venueLng)).title(desc).snippet(addr));
-            } else{
-                venueLat = 0.0;
-                venueLng = 0.0;
-            }
+            mMap.addMarker(new MarkerOptions().position(new LatLng(venueLat, venueLng)).title(desc).snippet(addr));
 
             //for(int i = 0; i < eventfeedList.size(); i++){
             // gEventObject event = new gEventObject();
