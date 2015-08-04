@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -173,6 +174,7 @@ public class searchResultsFragment extends Fragment implements Response.Listener
                 .GET, url.toString(),
                 new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);
+        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         mQueue.add(jsonRequest);
 
     }

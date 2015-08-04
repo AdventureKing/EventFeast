@@ -2,10 +2,8 @@ package com.example.daddyz.turtleboys.eventfeed;
 
 
 import android.app.Fragment;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,25 +12,22 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.example.daddyz.turtleboys.App_Application;
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
 import com.example.daddyz.turtleboys.VolleyRequestQueue;
 import com.example.daddyz.turtleboys.maindrawer;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
-import com.example.daddyz.turtleboys.subclasses.LocationFinder;
 import com.parse.ParseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -145,6 +140,7 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
                 .GET, url.toString(),
                 new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);
+        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 5, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         mQueue.add(jsonRequest);
 
        /* mButton.setOnClickListener(new View.OnClickListener() {
