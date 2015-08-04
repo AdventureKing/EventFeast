@@ -50,18 +50,25 @@ public class login_activity extends Activity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //Start loading icon for login
+                findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
                 GigUser.logInInBackground(userName.getText().toString().trim(), userPassword.getText().toString(), new LogInCallback() {
                     @Override
                     public void done(ParseUser GigUser, com.parse.ParseException e) {
                         if (GigUser != null) {
                             // Hooray! The user is logged in.
 
+                            //Stop loading icon
+                            findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                             Intent intent = new Intent(getApplicationContext(), maindrawer.class);
                             finish();
                             startActivity(intent);
 
                         } else {
                             // Signup failed. Look at the ParseException to see what happened.
+                            //Stop loading icon
+                            findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                             Toast.makeText(getApplicationContext(), "Failed to login, please try again.", Toast.LENGTH_LONG).show();
 
                         }
