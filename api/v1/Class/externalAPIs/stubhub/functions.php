@@ -115,7 +115,6 @@
 	            // Populate image links found
 	            $gEventImages = array();    
 				
-				/*
 				$gImage = new gEventImage;
 				$searchImageQuery = explode("[", $desc);
 				$searchImageQuery = explode("-",$searchImageQuery[0]);
@@ -126,7 +125,6 @@
 				//$gImage->setImage_external_url("https://cdn4.iconfinder.com/data/icons/small-n-flat/24/calendar-128.png");
 				$gImage->setImage_category("attraction");
 				array_push($gEventImages, $gImage);
-				*/
 				
 	            if(isset($imageExternalUrl)){
 	            	$gImage = new gEventImage;
