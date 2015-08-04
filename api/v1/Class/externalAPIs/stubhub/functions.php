@@ -1,39 +1,28 @@
 <?php 
 	require_once($projectDir.'Class/gEvent.php');
 	require_once($projectDir.'Class/curlUtil.php');
-
 	function stubhubAPI_findEvents($queryString, $optionsArray){
 		
 		// Filter Parameters
 		$q = urlencode(strtolower($queryString));
-		$userAddress = $optionsArray['address'];
+		$userLat = $optionsArray['userLat'];
+		$userLong = $optionsArray['userLng'];
 		$filterCity = $optionsArray['city'];
 		$filterState = $optionsArray['state'];
 		$filterDate = $optionsArray['date'];
 		$filterDesc = $optionsArray['desc'];
 		$filterRadius = $optionsArray['radius'];
 
-		if(null != $userAddress){
-			$location = getLatLongFromAddress($userAddress);
-			$userLat = $location['latitude'];
-			$userLong = $location['longitude'];
-		} else{
-			$userLat = null;
-			$userLong = null;
-		}
-
 		$endpoint_stubhub = "http://publicfeed.stubhub.com/listingCatalog/select/";
 		$url = "$endpoint_stubhub?q=$q&wt=json&stubhubDocumentType=event&rows=50&city=$filterCity";
-		$data = get_data($url);
+		$data = $data = getCachedContent($url, get_data($url));//get_data($url);
 		$json = json_decode($data);
 		$num = $json->response->numFound;
-
 		$gEvents = array();
 		$i = 0;
 		
 		// Loop through Json Results from CURL resuest
 		while ($i < $num) {
-
             $externalId = empty($json->response->docs[$i]->event_id) ? null : $json->response->docs[$i]->event_id;
 			$city = empty($json->response->docs[$i]->city) ? null : $json->response->docs[$i]->city;
 			$state = empty($json->response->docs[$i]->state) ? null : $json->response->docs[$i]->state;
@@ -59,7 +48,6 @@
 			$imageExternalUrl = empty($json->response->docs[$i]->image_url) ? null : $json->response->docs[$i]->image_url;
 			$geoParent = empty($json->response->docs[$i]->geography_parent) ? null : $json->response->docs[$i]->geography_parent;
 			$imageExternalUrlLong = empty($json->response->docs[$i]->image_url) ? null : "http://cache1.stubhubstatic.com/data/venue_maps/".$geoParent."/".$json->response->docs[$i]->image_url;
-
 			if(null != $latitude && null != $longitude && null != $userLat && null != $userLong){
 				$distance = distanceInMiles($userLat, $userLong, $latitude, $longitude);
 			} else{
@@ -90,17 +78,14 @@
 	            $gEvent->setTitle($title);
 	            $gEvent->setDescription($desc);
 	            $gEvent->setNotes("");
-
 	            $gEvent->setVenue_external_id($venueExternalId);
 	            $gEvent->setVenue_name($venueName);
 	            $gEvent->setVenue_address($venueAddress);
-
 	            $gEvent->setCountry_name($country);
 	            $gEvent->setState_name($state);
 	            $gEvent->setCity_name($city);
 	            $gEvent->setPostal_code($postalCode);
 	            $gEvent->setVenue_external_url($venueExternalUrl);
-
 	            $gEvent->setLatitude($latitude);
 	            $gEvent->setLongitude($longitude);
 	            $gEvent->setDistance(number_format((float)$distance, 2, '.', ''));
@@ -113,14 +98,12 @@
 	            $gEvent->setStart_date_day(convertDateToDayOptions($startTime, $timezone));
 	            $gEvent->setStart_date_year(convertDateToYearOptions($startTime));
 	            $gEvent->setStart_date_time(convertDateToTimeOptions($startTime));
-
 	            $gEvent->setPrice_range($minPrice." - ".$maxPrice);
 	            if(substr($gEvent->getPrice_range(), 0, 2 ) === "0 ") {
 	            	$gEvent->setIs_free(true);
 	            } else if($gEvent->getPrice_range() !== null){
 	            	$gEvent->setIs_free(false);
 	            }
-
 	            $minorGenre = trim(str_replace("tickets", " ", $channel));
 	            $majorGenre = trim(str_replace("tickets", " ", $channel));
 	            $gEvent->setMinor_genre(array($minorGenre));
@@ -131,6 +114,20 @@
 				
 	            // Populate image links found
 	            $gEventImages = array();    
+				
+				/*
+				$gImage = new gEventImage;
+				$searchImageQuery = explode("[", $desc);
+				$searchImageQuery = explode("-",$searchImageQuery[0]);
+				$searchImageQuery = urlencode($searchImageQuery[0]);
+				$searchImageUrl = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=$searchImageQuery";
+				$googleImageUrl = googleImageSearch($searchImageUrl);
+				$gImage->setImage_external_url($googleImageUrl);
+				//$gImage->setImage_external_url("https://cdn4.iconfinder.com/data/icons/small-n-flat/24/calendar-128.png");
+				$gImage->setImage_category("attraction");
+				array_push($gEventImages, $gImage);
+				*/
+				
 	            if(isset($imageExternalUrl)){
 	            	$gImage = new gEventImage;
 	            	$gImage->setImage_external_url($imageExternalUrlLong);

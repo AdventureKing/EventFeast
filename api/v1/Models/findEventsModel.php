@@ -35,7 +35,8 @@
 	   	}
 
 		public function generateItems(){
-			$filters['address'] = $this->app->request->params('address');
+			$filters['userLat'] = $this->app->request->params('userLat');
+			$filters['userLng'] = $this->app->request->params('userLng');
 			$filters['city'] = $this->app->request()->params('city');
 			$filters['state'] = $this->app->request()->params('state');
 			$filters['date'] = $this->app->request()->params('date');
@@ -50,10 +51,12 @@
 					$ticketmaster_results = array();
 					
 					if(strcasecmp($source, "stubhub") == 0){ 
-						$stubhub_results = stubhubAPI_findEvents($this->eventDesc, $filters);			
+						$saveString = "stubhub".$this->eventDesc.implode(".",$filters);
+						$stubhub_results = getCachedContent($saveString, ticketmasterAPI_findEvents($this->eventDesc, $filters));			
 					}
 					if(strcasecmp($source, "ticketMaster") == 0){
-						$ticketmaster_results = ticketmasterAPI_findEvents($this->eventDesc, $filters);
+						$saveString = "ticketmaster".$this->eventDesc.implode(".",$filters);
+						$ticketmaster_results = getCachedContent($saveString, ticketmasterAPI_findEvents($this->eventDesc, $filters));
 					}
 
 					$this->items = array_merge($stubhub_results, $ticketmaster_results);

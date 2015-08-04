@@ -2,7 +2,7 @@
 	// Get the longitude and latitude given an address, city, state etc.
 	function getLatLongFromAddress($address){
 		$address = urlencode($address);
-		$details_url = "http://maps.googleapis.com/maps/api/geocode/json?address=".$address;
+		$details_url = "http://maps.googleapis.com/maps/api/geocode/json?address=".$address."&key=AIzaSyAehpaOE86x5u7jBMa3TlhjzDwZ4_6rU68";
 		$data = json_decode(get_data($details_url), true);
 
 		// If Status Code is ZERO_RESULTS, OVER_QUERY_LIMIT, REQUEST_DENIED or INVALID_REQUEST
@@ -18,6 +18,40 @@
 		$response['latitude'] = $lat;
 		$response['longitude'] = $lng;
 
+		return $response;
+	}
+	
+	function getLatLongFromAddressGeoCoder($address){
+		$addressExp = explode(",", $address);
+		if(count($addressExp) == 3){
+			$addr = urlencode($addressExp[0]);
+			$city = urlencode($addressExp[1]);
+			$stateZip = explode(" ",$addressExp[2]);
+			$state = urlencode($stateZip[0]);
+			$zip = urlencode($stateZip[1]);
+
+			//$address = urlencode($address);
+			$url = "http://geocoder.maplarge.com/geocoder/json?address=$addr&city=$city&state=$state&zip=$zip&country=USA";
+			
+			
+			//$details_url = "http://maps.googleapis.com/maps/api/geocode/json?address=".$address."&key=AIzaSyAehpaOE86x5u7jBMa3TlhjzDwZ4_6rU68";
+			$data = getCachedContent($url, get_data($url));
+			$data = json_decode($data, true);
+
+			// If Status Code is ZERO_RESULTS, OVER_QUERY_LIMIT, REQUEST_DENIED or INVALID_REQUEST
+			if (!$data['lat']) {
+				return null;
+			}
+
+			$lat = $data['lat'];
+			$lng = $data['lng'];
+			$response = array();
+			$response['latitude'] = $lat;
+			$response['longitude'] = $lng;
+		} else{
+			$response['latitude'] = 0.00;
+		    $response['longitude'] = 0.00;
+		}
 		return $response;
 	}
 

@@ -6,25 +6,17 @@
 		
 		// Filter Parameters
 		$q = urlencode(strtolower($queryString));
-		$userAddress = $optionsArray['address'];
+		$userLat = $optionsArray['userLat'];
+		$userLong = $optionsArray['userLng'];
 		$filterCity = $optionsArray['city'];
 		$filterState = $optionsArray['state'];
 		$filterDate = $optionsArray['date'];
 		$filterDesc = $optionsArray['desc'];
 		$filterRadius = $optionsArray['radius'];
-
-		if(null != $userAddress){
-			$location = getLatLongFromAddress($userAddress);
-			$userLat = $location['latitude'];
-			$userLong = $location['longitude'];
-		} else{
-			$userLat = null;
-			$userLong = null;
-		}
 		
 		$endpoint_ticketmaster = "http://www.ticketmaster.com/json/search/event";
 		$url = "$endpoint_ticketmaster?q=$queryString&rows=50&VenueCity=$filterCity&VenueState=$filterState";
-		$data = get_data($url);
+		$data = getCachedContent($url, get_data($url));//get_data($url);
 		$json = json_decode($data);
 		$num = $json->response->numFound;
 		
@@ -63,14 +55,13 @@
 			$eventExternalAttractionUrl = empty($json->response->docs[$i]->AttractionSEOLink[0]) ? null : "http://ticketmaster.com".$json->response->docs[$i]->AttractionSEOLink[0];
 			
 			$currentEvent = true;
-
+			
+			$distance = 0.00;
 			if(!empty($venueLatLongString)){
 				$venueLatLong = explode(",", $venueLatLongString);
 				if(null != $venueLatLong[0] && null != $venueLatLong[1] && null != $userLat && null != $userLong){
 						$distance = distanceInMiles($userLat, $userLong, $venueLatLong[0], $venueLatLong[1]);
 				} 
-			} else{
-				$distance = null;
 			}
 			
 			if(!empty($startTime)){
