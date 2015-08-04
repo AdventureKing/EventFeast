@@ -5,30 +5,25 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Address;
-import android.location.Criteria;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.eventfeed.gEventObject;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingRequest;
@@ -41,15 +36,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 
@@ -58,7 +45,8 @@ import java.util.Map;
 public class MapsActivity extends FragmentActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener,Response.Listener,
+        Response.ErrorListener {
 
     private final String TAG = "MyAwesomeMapApp";
     private TextView mLocationView;
@@ -98,6 +86,14 @@ public class MapsActivity extends FragmentActivity implements
      * Used when requesting to add or remove geofences.
      */
     private PendingIntent mGeofencePendingIntent;
+
+    public MapsActivity(){
+
+    }
+
+    public MapsActivity(ArrayList<gEventObject> eventFeedList){
+        this.eventfeedList = eventFeedList;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,6 +175,10 @@ public class MapsActivity extends FragmentActivity implements
         // Disconnecting the client invalidates it.
         mGoogleApiClient.disconnect();
         super.onStop();
+
+        if (mQueue != null) {
+            mQueue.cancelAll(REQUEST_TAG);
+        }
     }
 
     @Override
@@ -326,14 +326,44 @@ public class MapsActivity extends FragmentActivity implements
             // Zoom in the Google Map
             mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
 
+
             //Add Marker For event
             Intent myIntent = getIntent();
             String desc = myIntent.getStringExtra("desc");
             String addr = myIntent.getStringExtra("addr");
-            venueLat = myIntent.getDoubleExtra("lat", 0.0);
-            venueLng = myIntent.getDoubleExtra("lon", 0.0);
 
-            mMap.addMarker(new MarkerOptions().position(new LatLng(venueLat, venueLng)).title(desc).snippet(addr));
+            if(null == desc){
+
+                try{
+                    // Get the Bundle Object
+                    Bundle bundleObject = getIntent().getExtras();
+
+                    // Get ArrayList Bundle
+                    ArrayList<gEventObject> classObject = (ArrayList<gEventObject>) bundleObject.getSerializable("eventfeedList");
+
+                    for(int index = 0; index < classObject.size(); index++){
+
+                        gEventObject Object = classObject.get(index);
+                        Toast.makeText(getApplicationContext(), "Id is :"+Object.getTitle(), Toast.LENGTH_SHORT).show();
+                    }
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+
+            } else if(null != desc && null != addr){
+                venueLat = myIntent.getDoubleExtra("lat", 0.0);
+                venueLng = myIntent.getDoubleExtra("lon", 0.0);
+
+                mMap.addMarker(new MarkerOptions().position(new LatLng(venueLat, venueLng)).title(desc).snippet(addr));
+            } else{
+                venueLat = 0.0;
+                venueLng = 0.0;
+            }
+
+            //for(int i = 0; i < eventfeedList.size(); i++){
+            // gEventObject event = new gEventObject();
+            //    mMap.addMarker(new MarkerOptions().position(new LatLng(event.getLatitude(), event.getLongitude())).title(event.getTitle()).snippet(event.getVenue_address()));
+            //}
 
 
             //Get Markers For Map
@@ -587,7 +617,17 @@ public class MapsActivity extends FragmentActivity implements
     /*
 
 
+    /* Volley Stuff */
 
+    @Override
+    public void onResponse(Object response) {
+        //loadEvents(response);
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        //  mTextView.setText(error.getMessage());
+    }
 
 /*
 *
@@ -644,7 +684,12 @@ public class MapsActivity extends FragmentActivity implements
         return currentAddress;
     }
 
+    public ArrayList<gEventObject> getEventfeedList() {
+        return eventfeedList;
+    }
 
-
+    public void setEventfeedList(ArrayList<gEventObject> eventfeedList) {
+        this.eventfeedList = eventfeedList;
+    }
 }
 

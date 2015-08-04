@@ -2,12 +2,13 @@ package com.example.daddyz.turtleboys.eventfeed;
 
 import android.text.Html;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by zachary.rodriguez on 7/6/2015.
  */
-public class gEventObject {
+public class gEventObject implements Serializable {
 
     private String internal_id = "";
     private String external_id = "";

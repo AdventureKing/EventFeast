@@ -2,6 +2,7 @@ package com.example.daddyz.turtleboys.eventfeed;
 
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,6 +24,7 @@ import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
 import com.example.daddyz.turtleboys.VolleyRequestQueue;
 import com.example.daddyz.turtleboys.maindrawer;
+import com.example.daddyz.turtleboys.maps.MapsActivity;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.parse.ParseUser;
 
@@ -80,10 +83,27 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
                 fragment.setObj(obj);
 
                 //start the fragment
-                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer,fragment,"EventDetailFragment").addToBackStack("EventDetailFragment").commit();
+                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer, fragment, "EventDetailFragment").addToBackStack("EventDetailFragment").commit();
                 //this is where we are gonna
 
             }
+        });
+
+        Button mapBtn = (Button) rootView.findViewById((R.id.viewInMap));
+        mapBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent mapIntent = new Intent(getActivity().getApplicationContext(), MapsActivity.class);
+                // Create a Bundle and Put Bundle in to it
+                Bundle bundleObject = new Bundle();
+                bundleObject.putSerializable("eventfeedList", eventfeedList);
+
+                // Put Bundle in to Intent and call start Activity
+                mapIntent.putExtras(bundleObject);
+                startActivity(mapIntent);
+            }
+
         });
 
         return rootView;
