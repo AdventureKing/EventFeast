@@ -104,7 +104,7 @@ public class myEvents extends Fragment implements Response.Listener,
                 fragment.setObj(obj);
 
                 //start the fragment
-                getFragmentManager().beginTransaction().replace(R.id.drawer, fragment, "EventDetailFragment").addToBackStack("EventDetailFragment").commit();
+                getFragmentManager().beginTransaction().replace(R.id.myexperiencesdrawer, fragment, "EventDetailFragment").addToBackStack("EventDetailFragment").commit();
             }
         });
         //test values
