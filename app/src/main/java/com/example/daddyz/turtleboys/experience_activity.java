@@ -158,7 +158,7 @@ public class  experience_activity extends AppCompatActivity {
                     case R.id.myEvents:
                         myEvents eventHist = new myEvents();
                         fragManager.beginTransaction().replace(R.id.frame, eventHist,"myEventsFragment").addToBackStack("myEventsFragment").commit();
-                        Toast.makeText(getApplicationContext(), "Events Selected", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Events Selected", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.myFriends:
                         followListFragment fragment2 = new followListFragment();
