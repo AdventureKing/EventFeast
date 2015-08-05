@@ -218,11 +218,11 @@ public class maindrawer extends AppCompatActivity {
                             alert.show();
                             return true;
 
-                        case R.id.activity_map:
+                      /*  case R.id.activity_map:
                             //Toast.makeText(getApplicationContext(), "Stared Selected", Toast.LENGTH_SHORT).show();
                             Intent mapIntent = new Intent(getApplicationContext(), MapsActivity.class);
                             startActivity(mapIntent);
-                            return true;
+                            return true;*/
 
 
 

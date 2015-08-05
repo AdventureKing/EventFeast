@@ -43,6 +43,7 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
 
     public static final String REQUEST_TAG = "MainVolleyActivity";
 
+    private ArrayList<String> jsonStringArray;
     private TextView mTextView;
     private RequestQueue mQueue;
     private View rootView;
@@ -95,9 +96,12 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
             @Override
             public void onClick(View v) {
                 Intent mapIntent = new Intent(getActivity().getApplicationContext(), MapsActivity.class);
+                System.out.println("list size before intent is " + getJsonStringArray().size());
+
+                mapIntent.putStringArrayListExtra("eventArrayOfStrings", getJsonStringArray());
                 // Create a Bundle and Put Bundle in to it
                 //for(int i = 0; i < eventfeedList.size(); i++){
-                    mapIntent.putExtra("event1", eventfeedList.get(0));
+                    //mapIntent.putExtra("event1", eventfeedList.get(0));
                 //}
                // Bundle bundleObject = new Bundle();
                 System.out.println("im here \n\n\n\n\n\n");
@@ -198,6 +202,8 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
 
     public void loadEvents(Object response){
             eventfeedList = creategEventObjectsFromResponse(response);
+            setEventListInfo();
+
 
             adapter = new eventfeedAdapter(getActivity(), R.layout.eventfeedroweven, eventfeedList);
             list.setAdapter(adapter);
@@ -330,5 +336,32 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
             }
         }
         return retValue;
+    }
+
+    /*
+    get marker info
+     */
+
+    public void setEventListInfo(){
+        //System.out.println(" The Length of the event list is " + eventfeedList.size());
+        jsonStringArray = new ArrayList<>();
+        for(int i=0; i<eventfeedList.size();i++){
+           // System.out.println(eventfeedList.get(i).getTitle());
+           // System.out.println(eventfeedList.get(i).getLatitude());
+           // System.out.println(eventfeedList.get(i).getLongitude());
+
+
+            jsonStringArray.add(listToString(eventfeedList.get(i).getTitle(),
+                    eventfeedList.get(i).getLatitude(),
+                    eventfeedList.get(i).getLongitude()));
+        }
+    }
+
+    public String listToString(String title, Double lat, Double lng){
+        return title + " / " + Double.toString(lat) + " / " + Double.toString(lng);
+    }
+
+    public ArrayList<String> getJsonStringArray(){
+        return jsonStringArray;
     }
 }

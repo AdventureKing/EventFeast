@@ -55,11 +55,13 @@ public class MapsActivity extends FragmentActivity implements
     private Button mRemoveGeofencesButton;
     private RequestQueue mQueue;
     private ArrayList<gEventObject> eventfeedList;
+    private ArrayList<String> eventStringArray;
 
     /**
      * Used to keep track of whether geofences were added.
      */
     private boolean mGeofencesAdded;
+    private String tempString;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private LocationManager locationManager ;
@@ -138,10 +140,6 @@ public class MapsActivity extends FragmentActivity implements
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
-
-        //locationManager.requestLocationUpdates(2000, 10, LocationManager.GPS_PROVIDER, locationListener);
-        //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, time, distance,  locationListener);
-
     }
 
     @Override
@@ -149,24 +147,6 @@ public class MapsActivity extends FragmentActivity implements
         super.onStart();
         // Connect the client.
         mGoogleApiClient.connect();
-
-        //event object stuff
-       /* mQueue = VolleyRequestQueue.getInstance(null)
-                .getRequestQueue();
-        String url = "http://45.55.142.106/prod/ws/rest/findEvents/San%20Antonio?city=San%20Antonio";
-        final VolleyJSONObjectRequest jsonRequest = new VolleyJSONObjectRequest(Request.Method
-                .GET, url,
-                new JSONObject(), this, this);
-        jsonRequest.setTag(REQUEST_TAG);
-        mQueue.add(jsonRequest);
-
-       /* mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mQueue.add(jsonRequest);
-            }
-        });*/
-
 
     }
 
@@ -212,16 +192,15 @@ public class MapsActivity extends FragmentActivity implements
         double lat = location.getLatitude();
         double lng = location.getLongitude();
 
-        System.out.println(venueLat);
-        System.out.println(venueLng);
-        System.out.println(mapCenter);
+
         if(mapCenter == null && (venueLat == 0.0 || venueLat == null) && (venueLng == null || venueLng == 0.0)){
             myLat = lat;
             myLng = lng;
-            System.out.println(myLat);
-            System.out.println(myLng);
+            //System.out.println(myLat);
+            //System.out.println(myLng);
             mapCenter = new LatLng(myLat, myLng);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(mapCenter));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
         }
         if(mapCenter == null && venueLat != 0.0 && venueLng != 0.0){
             myLat = lat;
@@ -334,8 +313,21 @@ public class MapsActivity extends FragmentActivity implements
             gEventObject eObject = (gEventObject) myIntent.getParcelableExtra("event1");
             venueLat = myIntent.getDoubleExtra("lat", 0.0);
             venueLng = myIntent.getDoubleExtra("lon", 0.0);
-       //     System.out.println("Im in the map Activity");
-//            System.out.println(eObject.getCity_name());
+            eventStringArray = myIntent.getStringArrayListExtra("eventArrayOfStrings");
+//            System.out.println(" The Length of the event list is " + eventStringArray.size());
+            if(eventStringArray != null && eventStringArray.size() > 0) {
+                for (int i = 0; i < eventStringArray.size(); i++) {
+                    split = eventStringArray.get(i).split(" / ");
+                    System.out.println(" value of i is " + i);
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(split[1]), Double.parseDouble(split[2]))).title(split[0]).snippet(""));
+                    System.out.println(split[0]);
+                    System.out.println(split[1]);
+                    System.out.println(split[2]);
+                }
+            }
+
+
+
 
 
             mMap.addMarker(new MarkerOptions().position(new LatLng(venueLat, venueLng)).title(desc).snippet(addr));

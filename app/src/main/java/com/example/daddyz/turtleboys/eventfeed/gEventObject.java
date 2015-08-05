@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by zachary.rodriguez on 7/6/2015.
  */
-public class gEventObject implements Parcelable {
+public class gEventObject implements Serializable {
 
     private int mData;
     private String internal_id = "";
@@ -361,7 +361,7 @@ public class gEventObject implements Parcelable {
     For implements parcelable
      */
 
-    // 99.9% of the time you can just ignore this
+ /*   // 99.9% of the time you can just ignore this
     public int describeContents() {
         return 0;
     }
@@ -389,6 +389,6 @@ public class gEventObject implements Parcelable {
 
     public gEventObject() {
 
-    }
+    }*/
 
 }
