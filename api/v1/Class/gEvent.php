@@ -3,44 +3,44 @@
 
 	class gEvent implements JsonSerializable{
 		/* Member Variables */
-		private $internal_id = "";
-		private $external_id = "";
-		private $datasource = "";
-		private $event_external_url = "";
-		private $title = "";
-		private $description = "";
-		private $notes = "";
-		private $timezone = "";
-		private $timezone_abbr = "";
-		private $start_time = "";
-		private $end_time = "";
-		private $start_date_month = array();
-		private $start_date_day = array();
-		private $start_date_year = array();
-		private $start_date_time = array();
-		private $end_date_month = array();
-		private $end_date_day = array();
-		private $end_date_year = array();
-		private $end_date_time = array();
-		private $venue_external_id = "";
-		private $venue_external_url = "";
-		private $venue_name = "";
-		private $venue_display = "";
-		private $venue_address = "";
-		private $state_name = "";
-		private $city_name = "";
-		private $postal_code = "";
-		private $country_name = "";
-		private $all_day = false;
-		private $price_range = "";
-		private $is_free = null;
-		private $major_genre = array();
-		private $minor_genre = array();
-		private $latitude = 0;
-		private $longitude = 0;
-		private $distance = 0;
-		private $performers = array();
-		private $images = array();
+		public $internal_id = "";
+		public $external_id = "";
+		public $datasource = "";
+		public $event_external_url = "";
+		public $title = "";
+		public $description = "";
+		public $notes = "";
+		public $timezone = "";
+		public $timezone_abbr = "";
+		public $start_time = "";
+		public $end_time = "";
+		public $start_date_month = array();
+		public $start_date_day = array();
+		public $start_date_year = array();
+		public $start_date_time = array();
+		public $end_date_month = array();
+		public $end_date_day = array();
+		public $end_date_year = array();
+		public $end_date_time = array();
+		public $venue_external_id = "";
+		public $venue_external_url = "";
+		public $venue_name = "";
+		public $venue_display = "";
+		public $venue_address = "";
+		public $state_name = "";
+		public $city_name = "";
+		public $postal_code = "";
+		public $country_name = "";
+		public $all_day = false;
+		public $price_range = "";
+		public $is_free = null;
+		public $major_genre = array();
+		public $minor_genre = array();
+		public $latitude = 0;
+		public $longitude = 0;
+		public $distance = 0;
+		public $performers = array();
+		public $images = array();
 	
 	    /**
 	     * Gets the value of internal_id.
@@ -962,11 +962,11 @@
 	}
 
 	class gEventPerformer implements JsonSerializable{
-		private $performer_external_id;
-		private $performer_external_url;
-		private $performer_external_image_url;
-		private $performer_name;
-		private $performer_short_bio;
+		public $performer_external_id;
+		public $performer_external_url;
+		public $performer_external_image_url;
+		public $performer_name;
+		public $performer_short_bio;
 	
 	    /**
 	     * Gets the value of performer_external_id.
@@ -1096,10 +1096,10 @@
 	}
 
 	class gEventImage implements JsonSerializable{
-		private $image_external_url;
-		private $image_category;
-		private $image_height;
-		private $image_width;
+		public $image_external_url;
+		public $image_category;
+		public $image_height;
+		public $image_width;
 	
 	    /**
 	     * Gets the value of image_external_url.

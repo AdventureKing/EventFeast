@@ -1,9 +1,11 @@
 <?php
 
-	class findEventsModel{
+	class findEventModel{
 		private $app;
-		private $eventDesc;
 
+		private $eventExtId;
+		private $eventExtSource;
+		
 		private $href;
 		private $result;
 		private $message;
@@ -18,14 +20,15 @@
 		private $jsonWithoutChecksum;
 		private $jsonWithChecksum;
 
-		function __construct($eventDesc, $app) {
-	       $this->runEvents($eventDesc, $app);
+	   	function __construct($eventId, $source, $app) {
+	       $this->runEvent($eventId, $source, $app);
 	   	}
 
-	   	public function runEvents($eventDesc, $app){
+	   	public function runEvent($eventId, $source, $app){
 	   		$this->app = $app;
-	   		$this->eventDesc = $eventDesc;
-	   		$this->generateItems();
+	   		$this->eventExtId = $eventId;
+	   		$this->eventExtSource = $source;
+	   		$this->generateItem();
 			$this->determineHref();
 	   		$this->determineResult();
 	   		$this->determineMessage();
@@ -34,39 +37,25 @@
 	   		$this->generateJson();
 	   	}
 
-		public function generateItems(){
-			$filters['userLat'] = $this->app->request->params('userLat');
-			$filters['userLng'] = $this->app->request->params('userLng');
-			$filters['city'] = $this->app->request()->params('city');
-			$filters['state'] = $this->app->request()->params('state');
-			$filters['date'] = $this->app->request()->params('date');
-			$filters['desc'] = $this->app->request()->params('desc');
-			$filters['sources'] = $this->app->request()->params('sources');
-			$filters['radius'] = $this->app->request()->params('radius');
-
-			if(!empty($filters['sources'])){
-				$sourceArr = explode(",",$filters['sources']);
-				foreach($sourceArr as $source){
-					$stubhub_results = array();
-					$ticketmaster_results = array();
-					
-					if(strcasecmp($source, "stubhub") == 0){ 
-						$saveString = "stubhub".$this->eventDesc.implode(".",$filters);
-						$stubhub_results = getCachedContent($saveString, stubhubAPI_findEvents($this->eventDesc, $filters));			
-					}
-					if(strcasecmp($source, "ticketMaster") == 0){
-						$saveString = "ticketmaster".$this->eventDesc.implode(".",$filters);
-						$ticketmaster_results = getCachedContent($saveString, ticketmasterAPI_findEvents($this->eventDesc, $filters));
-					}
-
-					$this->items = array_merge($stubhub_results, $ticketmaster_results);
+		public function generateItem(){
+			$venueId = $this->app->request()->params('venueId');
+			$filters['userLat'] = $this->app->request()->params('userLat');
+			$filters['userLng'] = $this->app->request()->params('userLng');
+			
+			if(isset($this->eventExtSource)){
+				switch($this->eventExtSource){
+					case "stubhub":
+						$results = stubhubAPI_findEvent($this->eventExtId, $filters);
+						break;
+					case "ticketmaster":
+						$results = ticketmasterAPI_findEvent($this->eventExtId, $venueId, $filters);
+						break;
+					default:
+						break;
 				}
-			} else { 
-				$stubhub_results = stubhubAPI_findEvents($this->eventDesc, $filters);
-				$ticketmaster_results = ticketmasterAPI_findEvents($this->eventDesc, $filters);
-				$this->items = array_merge($stubhub_results, $ticketmaster_results);			
-				usort($this->items, 'sortgEventsByDate');
 			}
+
+			$this->items = $results;
 		}
 		
 		public function determineResult(){
