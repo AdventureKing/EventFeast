@@ -1,5 +1,5 @@
 <?php
-    ini_set('include_path', '/usr/share/pear');
+    //ini_set('include_path', '/usr/share/pear');
 	require_once('Cache/Lite.php');
 	error_reporting(E_ALL ^ E_STRICT); 
 	
