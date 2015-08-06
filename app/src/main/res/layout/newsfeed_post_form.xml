@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/UploadAImageMessage"
-            android:text="Upload A Image to Newsfeed"
+            android:text="Upload an Image to Newsfeed"
             android:layout_below="@+id/userImageToUpload"
             android:layout_centerHorizontal="true"
             />

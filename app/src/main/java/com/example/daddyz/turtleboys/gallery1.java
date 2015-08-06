@@ -1,6 +1,7 @@
 package com.example.daddyz.turtleboys;
 
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,10 +24,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
+import com.example.daddyz.turtleboys.newsfeed.newsfeedPostForm;
 import com.example.daddyz.turtleboys.subclasses.Camera;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.example.daddyz.turtleboys.subclasses.ThumbnailGetter;
@@ -55,6 +57,7 @@ public class gallery1 extends AppCompatActivity {
     private FloatingActionButton fab;
     private Point point = new Point();
     private int pictureResolution;
+    private FragmentManager fragManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +91,11 @@ public class gallery1 extends AppCompatActivity {
             fileUri = camera.startCamera();
             }
         });
+
+        //Setup the Fragment Manager
+        fragManager = getFragmentManager();
+
+        //fragManager.addOnBackStackChangedListener(getListener());
 
         //Prepare Gallery View
         gridview = (GridView) findViewById(R.id.gridview);
@@ -209,8 +217,12 @@ public class gallery1 extends AppCompatActivity {
             });
             alertDialog.setNegativeButton("Share", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                    Toast.makeText(getApplicationContext(), "Picture share feature not yet implemented", Toast.LENGTH_LONG).show();
+                    newsfeedPostForm fragment = new newsfeedPostForm();
+                    Bundle args = new Bundle();
+                    args.putString("GalleryPic", title);
+                    fragment.setArguments(args);
+                    fragManager.beginTransaction().replace(R.id.gallery, fragment, "NewsFeedPostForm").addToBackStack("NewsFeedPostForm").commit();
+                    return;
                 }
             });
 
@@ -546,5 +558,19 @@ public class gallery1 extends AppCompatActivity {
                 //menu.findItem(R.id.action_settings).setVisible(false);
             }
             return true;
+        }
+
+        @Override
+        public void onBackPressed() {
+            if(fragManager.getBackStackEntryCount() > 0 ) {
+                fragManager.popBackStack();
+            } else {
+                super.onBackPressed();
+            }
+
+            FrameLayout frame =(FrameLayout) findViewById(R.id.frame);
+            if(frame.getVisibility() == View.INVISIBLE){
+                frame.setVisibility(View.VISIBLE);
+            }
         }
     }

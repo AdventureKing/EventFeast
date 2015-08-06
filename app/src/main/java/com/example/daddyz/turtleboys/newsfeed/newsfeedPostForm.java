@@ -1,12 +1,20 @@
 package com.example.daddyz.turtleboys.newsfeed;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +24,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.daddyz.turtleboys.R;
+
+import java.io.IOException;
 
 /**
  * Created by snow on 7/13/2015.
@@ -31,7 +40,7 @@ public class newsfeedPostForm extends Fragment {
     private EditText userMessage;
     private TextView userLocation;
     private ImageView upload;
-
+    private Bundle arguments;
     private Button postButton;
 
 
@@ -42,6 +51,9 @@ public class newsfeedPostForm extends Fragment {
         //main_activity->fragment->fragment
 
         view = inflater.inflate(R.layout.newsfeed_post_form, container, false);
+
+        //Get arguments
+        arguments = getArguments();
 
         //toolbar setup
 
@@ -76,6 +88,39 @@ public class newsfeedPostForm extends Fragment {
 
         //get user image to upload
         upload = (ImageView) view.findViewById(R.id.userImageToUpload);
+
+        //Apply picture passed in via argument if applicable
+        if (arguments != null) {
+            String galleryPicture = arguments.getString("GalleryPic");
+            if (galleryPicture != null) {
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 4;
+                Bitmap picture = BitmapFactory.decodeFile(galleryPicture, options);
+
+                try {
+                    ExifInterface exif = new ExifInterface(galleryPicture);
+                    int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+                    Log.d("EXIF", "Exif: " + orientation);
+                    Matrix matrix = new Matrix();
+                    if (orientation == 6) {
+                        matrix.postRotate(90);
+                    }
+                    else if (orientation == 3) {
+                        matrix.postRotate(180);
+                    }
+                    else if (orientation == 8) {
+                        matrix.postRotate(270);
+                    }
+                    picture = Bitmap.createBitmap(picture, 0, 0, picture.getWidth(), picture.getHeight(), matrix, true); // rotating bitmap
+                }
+                catch (Exception e) {
+
+                }
+
+                upload.setImageBitmap(picture);
+            }
+        }
+
         upload.setClickable(true);
         //click on image to upload to view
         upload.setOnClickListener(new View.OnClickListener() {
@@ -119,8 +164,49 @@ public class newsfeedPostForm extends Fragment {
 
         if (imageReturnedIntent != null) {
             Uri imageUri = imageReturnedIntent.getData();
-            upload.setImageURI(imageUri);
+            String realPath = getRealPathFromURI(imageUri);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 4;
+            Bitmap picture = BitmapFactory.decodeFile(realPath, options);
+
+            try {
+                ExifInterface exif = new ExifInterface(realPath);
+                int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+                Log.d("EXIF", "Exif: " + orientation);
+                Matrix matrix = new Matrix();
+                if (orientation == 6) {
+                    matrix.postRotate(90);
+                }
+                else if (orientation == 3) {
+                    matrix.postRotate(180);
+                }
+                else if (orientation == 8) {
+                    matrix.postRotate(270);
+                }
+                picture = Bitmap.createBitmap(picture, 0, 0, picture.getWidth(), picture.getHeight(), matrix, true); // rotating bitmap
+            }
+            catch (Exception e) {
+
+            }
+
+            upload.setImageBitmap(picture);
+            //upload.setImageURI(imageUri);
         }
 
+    }
+
+    private String getRealPathFromURI(Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = getActivity().getApplicationContext().getContentResolver().query(contentUri,  proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 }
