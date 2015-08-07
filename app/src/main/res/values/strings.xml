@@ -143,6 +143,11 @@
     <string name="user_level_outline_image">User\'s Level</string>
     <string name="myfollowers">Followers</string>
     <string name="title_activity_main">FriendsActivity</string>
+    <string name="title_activity_main2">CreateEventActivity</string>
+    <string name="title_activity_create_event">CreateEventActivity</string>
+    <string name="eventname_text">Event Name</string>
+    <string name="eventDescription_text">Description</string>
+    <string name="eventAddress_text">Event Address</string>
 
 
 </resources>

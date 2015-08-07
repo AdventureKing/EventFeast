@@ -1,6 +1,8 @@
 
 package com.example.daddyz.turtleboys.maps;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +14,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +40,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Map;
 
 
@@ -56,6 +60,15 @@ public class MapsActivity extends FragmentActivity implements
     private RequestQueue mQueue;
     private ArrayList<gEventObject> eventfeedList;
     private ArrayList<String> eventStringArray;
+    private TextView tvDisplayDate;
+    private DatePicker dpResult;
+    private Button btnChangeDate;
+
+    private int year;
+    private int month;
+    private int day;
+
+    static final int DATE_DIALOG_ID = 999;
 
     /**
      * Used to keep track of whether geofences were added.
@@ -114,6 +127,8 @@ public class MapsActivity extends FragmentActivity implements
             // Kick off the request to build GoogleApiClient.
             buildGoogleApiClient();
 
+           // setCurrentDateOnView();
+           addListenerOnButton();
             //mGeofencePendingIntent = null;
 
             // Get the value of mGeofencesAdded from SharedPreferences. Set to false as a default.
@@ -184,10 +199,6 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void onLocationChanged(Location location) {
 
-        /*if(isBetterLocation(myLocation, location)){
-            myLocation = location;
-        }*/
-
         //You had this as int. It is advised to have Lat/Long as double.
         double lat = location.getLatitude();
         double lng = location.getLongitude();
@@ -196,8 +207,6 @@ public class MapsActivity extends FragmentActivity implements
         if(mapCenter == null && (venueLat == 0.0 || venueLat == null) && (venueLng == null || venueLng == 0.0)){
             myLat = lat;
             myLng = lng;
-            //System.out.println(myLat);
-            //System.out.println(myLng);
             mapCenter = new LatLng(myLat, myLng);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(mapCenter));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
@@ -213,30 +222,6 @@ public class MapsActivity extends FragmentActivity implements
     }
 
 
-    //Get Address From Location
-     /*   Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
-        StringBuilder builder = new StringBuilder();
-        try {
-            List<Address> address = geoCoder.getFromLocation(lat, lng, 1);
-            int maxLines = address.get(0).getMaxAddressLineIndex();
-            for (int i = 0; i < maxLines; i++) {
-                String addressStr = address.get(0).getAddressLine(i);
-                builder.append(addressStr);
-                builder.append(" ");
-            }
-
-            String finalAddress = builder.toString(); //This is the complete address.
-
-            //latituteField.setText(String.valueOf(lat));
-            //longitudeField.setText(String.valueOf(lng));
-            setCurrentAddress(finalAddress);
-            //Toast.makeText(getApplicationContext(), finalAddress, Toast.LENGTH_SHORT).show();
-
-
-        } catch (IOException e) {}
-        catch (NullPointerException e) {}
-
-    }*/
 
 
 
@@ -318,31 +303,18 @@ public class MapsActivity extends FragmentActivity implements
             if(eventStringArray != null && eventStringArray.size() > 0) {
                 for (int i = 0; i < eventStringArray.size(); i++) {
                     split = eventStringArray.get(i).split(" / ");
-                    System.out.println(" value of i is " + i);
+                    //System.out.println(" value of i is " + i);
                     mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(split[1]), Double.parseDouble(split[2]))).title(split[0]).snippet(""));
-                    System.out.println(split[0]);
-                    System.out.println(split[1]);
-                    System.out.println(split[2]);
+                    //System.out.println(split[0]);
+                    //System.out.println(split[1]);
+                    //System.out.println(split[2]);
                 }
             }
 
 
 
-
-
             mMap.addMarker(new MarkerOptions().position(new LatLng(venueLat, venueLng)).title(desc).snippet(addr));
 
-            //for(int i = 0; i < eventfeedList.size(); i++){
-            // gEventObject event = new gEventObject();
-            //    mMap.addMarker(new MarkerOptions().position(new LatLng(event.getLatitude(), event.getLongitude())).title(event.getTitle()).snippet(event.getVenue_address()));
-            //}
-
-
-            //Get Markers For Map
-            /* gEventObject object = new gEventObject();
-            if(eventFeedList.get(0) != null) {
-                object = eventFeedList.get(0);
-            }*/
         }
 
     }
@@ -424,6 +396,79 @@ public class MapsActivity extends FragmentActivity implements
         }
         return provider1.equals(provider2);
     }
+
+    // display current date
+    public void setCurrentDateOnView() {
+
+        tvDisplayDate = (TextView) findViewById(R.id.tvDate);
+        dpResult = (DatePicker) findViewById(R.id.dpResult);
+
+        final Calendar c = Calendar.getInstance();
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH);
+
+        // set current date into textview
+        tvDisplayDate = new TextView(getApplicationContext());
+        tvDisplayDate.setText(new StringBuilder()
+                // Month is 0 based, just add 1
+              .append(month + 1).append("-").append(day).append("-").append(year).append(" "));
+
+        // set current date into datepicker
+//        dpResult.init(year, month, day, null);
+
+    }
+
+    public void addListenerOnButton() {
+
+        btnChangeDate = (Button) findViewById(R.id.datePicker);
+
+        btnChangeDate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Button Pressed", Toast.LENGTH_SHORT).show();
+                showDialog(DATE_DIALOG_ID);
+
+            }
+
+        });
+
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DATE_DIALOG_ID:
+                // set date picker as current date
+                return new DatePickerDialog(this, datePickerListener,
+                        year, month,day);
+        }
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener datePickerListener
+            = new DatePickerDialog.OnDateSetListener() {
+
+        // when dialog box is closed, below method will be called.
+        public void onDateSet(DatePicker view, int selectedYear,
+                              int selectedMonth, int selectedDay) {
+            year = selectedYear;
+            month = selectedMonth;
+            day = selectedDay;
+            tvDisplayDate = new TextView(getApplicationContext());
+            dpResult = new DatePicker(getApplicationContext());
+
+            // set selected date into textview
+            tvDisplayDate.setText(new StringBuilder().append(month + 1)
+                    .append("-").append(day).append("-").append(year)
+                    .append(" "));
+
+            // set selected date into datepicker also
+            dpResult.init(year, month, day, null);
+
+        }
+    };
 
 
 
