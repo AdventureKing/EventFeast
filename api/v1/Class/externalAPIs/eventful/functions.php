@@ -62,13 +62,23 @@
 			$imageExternalUrl = empty($data['events']['event'][$i]['image']) ? null : $data['events']['event'][$i]['image'];
 			$geoParent = empty($data['events']['event'][$i]['geocode_type']) ? null : $data['events']['event'][$i]['geocode_type'];
 
+			$currentEvent = true;
+
+			if(!empty($startTime)){
+				date_default_timezone_set($timezone);
+				$currentUnixTime = strtotime("now");
+				$eventUnixTime = strtotime($startTime);
+				
+				$currentEvent = ($currentUnixTime > $eventUnixTime) ? false : true;
+			}
+
 			if(null != $latitude && null != $longitude && null != $userLat && null != $userLong){
 				$distance = distanceInMiles($userLat, $userLong, $latitude, $longitude);
 			} else{
 				$distance = null;
 			}
 				
-            if(!empty($externalId)){
+            if(!empty($externalId) && $currentEvent){
 			if(empty($filterRadius) || ($distance <= $filterRadius && $distance > 0)){
 				
 	            $gEvent = new gEvent;
