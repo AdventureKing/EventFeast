@@ -14,7 +14,7 @@
 		$app->contentType('application/json');
 		echo $json_response;
 		
-		
+		/*
 		$options = array(
 		'lifeTime' => 86400, //24 hours
 		'pearErrorMode' => CACHE_LITE_ERROR_DIE
@@ -23,6 +23,7 @@
 
 		$cache->clean();
 		echo "cache cleaned!";
+		*/
 		
 	});	
 	
