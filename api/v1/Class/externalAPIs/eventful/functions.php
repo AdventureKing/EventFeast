@@ -124,17 +124,27 @@
 	            $gEventImages = array();    
 				
 	            if(isset($imageExternalUrl)){
-			$image = $data['events']['event'][$i]['image']['medium'];
-			//var_dump($image);
-			//if(!empty($image['medium'])){
-			$gImage = new gEventImage;
-			$gImage->setImage_external_url($image['url']);
-			$gImage->setImage_height($image['height']);
-			$gImage->setImage_width($image['width']);
-			$gImage->setImage_category("attraction");
-			array_push($gEventImages, $gImage);
-			//}
-					
+					$image = $data['events']['event'][$i]['image']['medium'];
+					//var_dump($image);
+					//if(!empty($image['medium'])){
+					$gImage = new gEventImage;
+					$gImage->setImage_external_url($image['url']);
+					$gImage->setImage_height($image['height']);
+					$gImage->setImage_width($image['width']);
+					$gImage->setImage_category("attraction");
+					array_push($gEventImages, $gImage);
+					//}
+	            } else{
+	            	$gImage = new gEventImage;
+					$searchImageQuery = explode("[", $desc);
+					$searchImageQuery = explode("-",$searchImageQuery[0]);
+					$searchImageQuery = urlencode($searchImageQuery[0]);
+					$searchImageUrl = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=$searchImageQuery";
+					$googleImageUrl = googleImageSearch($searchImageUrl);
+					$gImage->setImage_external_url($googleImageUrl);
+					//$gImage->setImage_external_url("https://cdn4.iconfinder.com/data/icons/small-n-flat/24/calendar-128.png");
+					$gImage->setImage_category("attraction");
+					array_push($gEventImages, $gImage);
 	            }
 	            $gEvent->setImages($gEventImages);
 				
