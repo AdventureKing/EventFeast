@@ -1,6 +1,6 @@
 <?php
 	$app->get('/events/find/:eventDesc', function ($eventDesc) use ($app){
-		
+
 		$model = new findEventsModel($eventDesc, $app);
 		$saveString = $eventDesc.
 					$app->request()->params('userLat').

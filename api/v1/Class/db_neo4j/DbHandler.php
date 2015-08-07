@@ -128,6 +128,37 @@
 			return "$successCount of $totalEvents were successfully created. $errorCount errors and $alreadyExistCount already existing events.";
 		}
 
+		public function createExternalEventsWithRel($events, $relId){
+			$successCount = 0;
+			$alreadyExistCount = 0;
+			$errorCount = 0;
+			$totalEvents = count($events);
+
+			foreach($events as $event){
+				$eventExtId = $event->external_id;
+				$eventSource = $event->datasource;
+
+				// Check if event already exists
+				if($this->isEventExistsBySourceAndSourceId($eventSource, $eventExtId)){
+					
+					$alreadyExistCount++;
+				
+				} else{
+					$query = $jsonToNeo->generateInsertCypher($event);
+					$query['query'] = $query['query']." MATCH (esr:Event_Search_Results) WHERE id(esr) = $relId CREATE (esr)-[r:CREATED]->(e)";
+					$result = $this->neoClient->sendCypherQuery($query['query'], $query['params'])->getResult();
+
+					if(isset($result)){
+						$successCount++;
+					}
+
+					$errorCount;
+				}
+			}
+
+			return "$successCount of $totalEvents were successfully created. $errorCount errors and $alreadyExistCount already existing events.";
+		}
+
 		public function createInternalEvent($userId, $eventInfoArr){
 			$eventTitle = $eventInfoArr['title'];
 			$eventDesc = $eventInfoArr['desc'];
@@ -200,6 +231,23 @@
 	        }
 	 
 	        return false;
+		}
+
+		public function getEventsByEsrId($esrId){
+			$query = "MATCH (esr:Event_Search_Request) WHERE id(esr) = {esrid}
+				MATCH (esr)-[:CREATED]->(e:Event) RETURN e";
+			$params = [
+	            'esrid' => $esrid
+	            ];
+
+	        $result = $this->neoClient->sendCypherQuery($query, $params)->getRows();
+
+	        if (null !== $result) {
+	        	var_dump($result);
+	            return $result;
+	        }
+	 
+	        return null;
 		}
 
 		/**************************** USER/FOLLOW ************************************/
@@ -419,6 +467,40 @@
 				return true;
 			} else{
 				return false;
+			}
+		}
+
+		public function isEventSearchRequestExist($url){
+			if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
+			    return false;
+			}
+
+			$query = 'MATCH (esr:Event_Search_Request) WHERE esr.url = {url} RETURN id(esr)';
+			$parameters = array('url' => $url);
+			$result = $this->neoClient->sendCypherQuery($query, $params)->getResult();
+
+			if(null !== $result){
+				return $result;
+			} else{
+				return null;
+			}
+		}
+
+		public function insertEventSearchRequest($url, $resultCount){
+			if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
+			    return false;
+			}
+
+			$timestamp = date("Y-m-d H:i:s"); 
+
+			$query = 'CREATE (esr:Event_Search_Request {url: {url}, timestamp: {ts}}) RETURN id(esr)';
+			$parameters = array('url' => $url, 'ts' => $timestamp);
+			$result = $this->neoClient->sendCypherQuery($query, $params)->getResult();
+
+			if(null !== $result){
+				return $result;
+			} else{
+				return null;
 			}
 		}
 
