@@ -129,6 +129,8 @@
 		}
 
 		public function createExternalEventsWithRel($events, $relId){
+			$jsonToNeo = new JsonToNeo();
+
 			$successCount = 0;
 			$alreadyExistCount = 0;
 			$errorCount = 0;
@@ -145,7 +147,7 @@
 				
 				} else{
 					$query = $jsonToNeo->generateInsertCypher($event);
-					$query['query'] = $query['query']." MATCH (esr:Event_Search_Results) WHERE id(esr) = $relId CREATE (esr)-[r:CREATED]->(e)";
+					$query['query'] = "MATCH (esr) WHERE id(esr) = $relId ".$query['query']."CREATE (esr)-[:CREATED]->(e)";
 					$result = $this->neoClient->sendCypherQuery($query['query'], $query['params'])->getResult();
 
 					if(isset($result)){
@@ -237,14 +239,126 @@
 			$query = "MATCH (esr:Event_Search_Request) WHERE id(esr) = {esrid}
 				MATCH (esr)-[:CREATED]->(e:Event) RETURN e";
 			$params = [
-	            'esrid' => $esrid
+	            'esrid' => $esrId
 	            ];
 
 	        $result = $this->neoClient->sendCypherQuery($query, $params)->getRows();
 
-	        if (null !== $result) {
-	        	var_dump($result);
-	            return $result;
+	        if (null !== $result['e']) {
+	            return $result['e'];
+	        }
+	 
+	        return null;
+		}
+
+		public function findEventsBySearch($query, $filters){
+			$q = $query;
+			$userLat = $filters['userLat'];
+			$userLong = $filters['userLng'];
+			$filterCity = $filters['city'];
+			$filterState = $filters['state'];
+			$filterDate = $filters['date'];
+
+			$currTime = date("Y-m-d H:i:s"); 
+
+			// Only the query parameter exists
+			if($q != $filterCity && isset($q) && !isset($filterState) && !isset($filterDate)){
+				$query = "MATCH (e:Event) WHERE e.description =~ {desc} AND e.start_time >= {startdate} RETURN e ORDER BY e.start_time LIMIT 100";
+				$params = [
+				'startdate' => $currTime,
+	            'desc' => '(?i).*'.$q.'.*',
+	            'startdate' => $currTime
+	            ];
+			} 
+			// Only the city parameter exists
+			else if($q == $filterCity && isset($filterCity) && !isset($filterState) && !isset($filterDate)){
+				$query = "MATCH (e:Event) WHERE e.city_name =~ {city} AND e.start_time >= {startdate} RETURN e ORDER BY e.start_time LIMIT 100";
+				$params = [
+	            'startdate' => $currTime,
+	            'city' => '(?i)'.$filterCity,
+	            'startdate' => $currTime
+	            ];
+	            //echo $query."<br><br>";
+	            //echo implode(",",$params);
+			} 
+			// Only the query and city parameter exist
+			else if($q != $filterCity && isset($q) && isset($filterCity) && !isset($filterState) && !isset($filterDate)){
+				$query = "MATCH (e:Event) WHERE e.city_name =~ {city} AND e.description =~ {desc} AND e.start_time >= {startdate} RETURN e ORDER BY e.start_time LIMIT 100";
+				$params = [
+				'startdate' => $currTime,
+				'desc' => '(?i).*'.$q.'.*',
+	            'city' => '(?i)'.$filterCity,
+	            'startdate' => $currTime
+	            ];
+			} 
+			// Only the query, city and state parameter exist
+			else if($q != $filterCity && isset($q) && isset($filterCity) && isset($filterState) && !isset($filterDate)){
+				$query = "MATCH (e:Event) WHERE e.city_name =~ {city} AND e.description =~ {desc} AND e.state_name =~ {state} AND e.start_time >= {startdate} RETURN e ORDER BY e.start_time LIMIT 100";
+				$params = [
+	            'startdate' => $currTime,
+	            'desc' => '(?i).*'.$q.'.*',
+	            'city' => '(?i)'.$filterCity,
+	            'state' => '(?i)'.$filterState,
+	            'startdate' => $currTime
+	            ];
+			} 
+			// Only the query, city, state and date parameter exist
+			else if($q != $filterCity && isset($q) && isset($filterCity) && isset($filterState) && isset($filterDate)){
+				$query = "MATCH (e:Event) WHERE e.city_name =~ {city} AND e.description =~ {desc} AND e.state_name =~ {state} AND e.start_time >= {startdate} RETURN e ORDER BY e.start_time LIMIT 100";
+				$params = [
+	            'startdate' => $currTime,
+	            'desc' => '(?i).*'.$q.'.*',
+	            'city' => '(?i)'.$filterCity,
+	            'state' => '(?i)'.$filterState,
+	            'startdate' => $filterDate
+	            ];
+			} 
+			// Only the state parameter exists
+			else if(!isset($q) && !isset($filterCity) && isset($filterState) && !isset($filterDate)){
+				$query = "MATCH (e:Event) WHERE e.state_name =~ {state} AND e.start_time > {startdate} RETURN e ORDER BY e.start_time LIMIT 100";
+				$params = [
+	            'startdate' => $currTime,
+	            'state' => '(?i)'.$filterState
+	            ];
+			} 
+			// Only the state and city parameter exists
+			else if($q == $filterCity && isset($filterCity) && isset($filterState) && !isset($filterDate)){
+				$query = "MATCH (e:Event) WHERE e.state_name =~ {state} AND e.city_name =~ {city} AND e.start_time > {startdate} RETURN e ORDER BY e.start_time LIMIT 100";
+				$params = [
+	            'startdate' => $currTime,
+	            'state' => '(?i)'.$filterState,
+	            'city' => '(?i)'.$filterCity
+	            ];
+			} 
+			// Only the date exists
+			else if(!isset($q) && !isset($filterCity) && !isset($filterState) && isset($filterDate)){
+				$query = "MATCH (e:Event) WHERE e.start_time > {startdate} RETURN e ORDER BY e.start_time LIMIT 100";
+				$params = [
+	            'startdate' => $filterState
+	            ];
+	        }
+			// Only the state and date parameter exists
+			else if(!isset($q) && !isset($filterCity) && isset($filterState) && isset($filterDate)){
+				$query = "MATCH (e:Event) WHERE e.start_time > {startdate} AND e.state_name =~ {state} RETURN e ORDER BY e.start_time LIMIT 100";
+				$params = [
+	            'startdate' => $filterDate,
+	            'state' => '(?i)'.$filterState
+	            ];
+	        }
+	        // Query the last 100 event entries by date
+	        else {
+	        	$query = "MATCH (e:Event) WHERE e.start_time > {startdate} RETURN e ORDER BY e.start_time LIMIT 100";
+				$params = [
+	            'startdate' => $currTime
+	            ];
+	        }
+
+	        $result = $this->neoClient->sendCypherQuery($query, $params)->getRows();
+
+	        if (null != $result && null != $result['e']) {
+	            return $result['e'];
+	        } else{
+	        	return null;
 	        }
 	 
 	        return null;
@@ -471,34 +585,34 @@
 		}
 
 		public function isEventSearchRequestExist($url){
-			if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
-			    return false;
+			if(!isset($url)){
+				return null;
 			}
 
 			$query = 'MATCH (esr:Event_Search_Request) WHERE esr.url = {url} RETURN id(esr)';
-			$parameters = array('url' => $url);
-			$result = $this->neoClient->sendCypherQuery($query, $params)->getResult();
+			$params = array('url' => $url);
+			$result = $this->neoClient->sendCypherQuery($query, $params)->getRows();
 
-			if(null !== $result){
-				return $result;
+			if(null != $result && null !== $result['id(esr)'][0]){
+				return $result['id(esr)'][0];
 			} else{
 				return null;
 			}
 		}
 
 		public function insertEventSearchRequest($url, $resultCount){
-			if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
-			    return false;
+			if(!isset($url)){
+				return null;
 			}
 
 			$timestamp = date("Y-m-d H:i:s"); 
 
 			$query = 'CREATE (esr:Event_Search_Request {url: {url}, timestamp: {ts}}) RETURN id(esr)';
-			$parameters = array('url' => $url, 'ts' => $timestamp);
-			$result = $this->neoClient->sendCypherQuery($query, $params)->getResult();
+			$params = array('url' => $url, 'ts' => $timestamp);
+			$result = $this->neoClient->sendCypherQuery($query, $params)->getRows();
 
-			if(null !== $result){
-				return $result;
+			if(null !== $result['id(esr)'][0]){
+				return $result['id(esr)'][0];
 			} else{
 				return null;
 			}

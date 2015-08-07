@@ -10,7 +10,7 @@
 			$eventParams = [
 			'eid' => $event->external_id, 
 			'ds' => $event->datasource,
-			'eeu' => $event->external_url,
+			'eeu' => $event->event_external_url,
 			'tit' => $event->title,
 			'des' => $event->description,
 			'not' => $event->notes,

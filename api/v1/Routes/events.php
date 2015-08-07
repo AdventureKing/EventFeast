@@ -12,8 +12,9 @@
 					$app->request()->params('radius');
 		$json_response = getCachedContent($saveString, $model->getJsonWithChecksum());
 		$app->contentType('application/json');
+		//echo $json_response;
+		$json_response = preg_replace('/\\\"/',"\"", $json_response);
 		echo $json_response;
-		
 		/*
 		$options = array(
 		'lifeTime' => 86400, //24 hours

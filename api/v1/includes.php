@@ -14,6 +14,7 @@
 	require_once($projectDir.'Class/db_mark/DbHandler.php');
 	require_once($projectDir.'Class/db_neo4j/DbHandler.php');
 	require_once($projectDir.'Class/db_neo4j/jsonToNeo.php');
+	require_once($projectDir.'Class/db_neo4j/functions.php');
 	require_once($projectDir.'Class/userAuth.php');
 	require_once($projectDir.'/Class/externalAPIs/eventful/Services_Eventful-0.9.3/Eventful.php');
 	require_once($projectDir.'Class/externalAPIs/eventful/functions.php');

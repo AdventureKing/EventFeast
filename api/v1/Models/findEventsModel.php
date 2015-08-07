@@ -48,24 +48,23 @@
 				'city' => $filters['city'],
 				'state' => $filters['state'],
 				'date' => $filters['date'],
-				'desc' => $filters['desc'],
-				'sources' => $filters['sources'],
-				'radius' => $filters['radius']
+				'desc' => $this->eventDesc,
+				'sources' => $filters['sources']
 				);
 			$searchJson = json_encode($searchArray, JSON_FORCE_OBJECT);
 			$dbNeo = new DBHandlerNeo();
 			$eventSearchRequestId = $dbNeo->isEventSearchRequestExist($searchJson);
 
-			if($eventSearchRequestId !== null){
-				$events = $dbNeo->getEventsByEsrId($eventSearchRequestId);
+			if($eventSearchRequestId != null){
+				//$events = $dbNeo->getEventsByEsrId($eventSearchRequestId);
+				$data = $dbNeo->findEventsBySearch($this->eventDesc, $filters);
+				$events = neo4j_findEvents($this->eventDesc, $filters, $data);
 				if($events != null){
-					echo "we have saved events!";
-					var_dump($events);
+					$this->items = $events;
 				}
-				return;
 			}
 
-			if(!empty($filters['sources'])){
+			if(!empty($filters['sources']) && $eventSearchRequestId == null){
 				$sourceArr = explode(",",$filters['sources']);
 				$stubhub_results = array();
 				$ticketmaster_results = array();
@@ -88,7 +87,7 @@
 				
 				$this->items = array_merge($stubhub_results, $ticketmaster_results, $eventful_results);
 				usort($this->items, 'sortgEventsByDate');
-			} else { 
+			} else if($eventSearchRequestId == null){ 
 				$saveString = $this->eventDesc.implode(".",$filters);
 				
 				$stubhub_results = getCachedContent($saveString, stubhubAPI_findEvents($this->eventDesc, $filters));
@@ -101,7 +100,6 @@
 			if($eventSearchRequestId == null){
 				$eventSearchRequestId = $dbNeo->insertEventSearchRequest($searchJson, count($this->items));
 				$dbNeo->createExternalEventsWithRel($this->items, $eventSearchRequestId);
-	            echo "I created the external events in neo!";
 			}
 		}
 		
