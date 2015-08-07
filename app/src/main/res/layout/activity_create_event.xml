@@ -21,8 +21,9 @@
                 android:ems="10"
 
                 android:id="@+id/eventName"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true" />
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="83dp" />
 
             <EditText
                 android:layout_width="wrap_content"
@@ -55,29 +56,35 @@
                 android:editable="false"
                 android:padding="5dp"
                 android:focusableInTouchMode="false"
-                android:layout_above="@+id/saveButton"
+                android:layout_below="@+id/eventAddress"
+                android:layout_alignRight="@+id/eventAddress"
+                android:layout_alignLeft="@+id/eventAddress"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@+id/eventAddress" />
+                android:layout_marginTop="45dp" />
 
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/LOGO"
-                android:src="@drawable/ef_logo"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_above="@+id/eventName"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Choose Event Time"
+                android:id="@+id/timeButton"
+                android:background="@drawable/btnorange_360"
+                android:layout_above="@+id/sButton"
+                android:layout_alignEnd="@+id/eventDescription"
+                android:layout_alignRight="@+id/eventDescription"
+                android:layout_alignLeft="@+id/eventDescription"
+                android:layout_alignStart="@+id/eventDescription" />
+
+
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="doSaveFunction"
                 android:text="Save"
-                android:id="@+id/saveButton"
+                android:id="@+id/sButton"
                 android:background="@drawable/btnorange_360"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
@@ -85,6 +92,19 @@
                 android:layout_alignRight="@+id/eventDescription"
                 android:layout_alignLeft="@+id/eventDescription"
                 android:layout_alignStart="@+id/eventDescription" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Create New Event"
+                android:id="@+id/textView2"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="25dp"
+                android:layout_alignLeft="@+id/eventDate"
+                android:layout_alignStart="@+id/eventDate"
+                android:layout_alignRight="@+id/eventName"
+                android:layout_alignEnd="@+id/eventName" />
 
         </RelativeLayout>
     </LinearLayout>

@@ -3,6 +3,7 @@ package com.example.daddyz.turtleboys.maps;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.eventfeed.gEventObject;
+import com.example.daddyz.turtleboys.registration_activity;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -37,10 +40,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 
@@ -63,10 +68,14 @@ public class MapsActivity extends FragmentActivity implements
     private TextView tvDisplayDate;
     private DatePicker dpResult;
     private Button btnChangeDate;
+    private DialogFragment eventDateSelector;
+    private Date eventDate;
+    private EditText eventDateText;
 
     private int year;
     private int month;
     private int day;
+
 
     static final int DATE_DIALOG_ID = 999;
 
@@ -96,6 +105,12 @@ public class MapsActivity extends FragmentActivity implements
     private Location myLocation, newLocation = null;
     protected ArrayList<Geofence> mGeofenceList = new ArrayList<Geofence>();
     private ArrayList<gEventObject> eventFeedList = new ArrayList<gEventObject>();
+    private LatLng mGeofenceLatLng = new LatLng(29.382798, -98.529470);
+    /**
+     * Radius of the Geofence in meters.
+     */
+    private int mRadius = 80;
+
     private double l,g;
     /**
      * Used when requesting to add or remove geofences.
@@ -127,26 +142,8 @@ public class MapsActivity extends FragmentActivity implements
             // Kick off the request to build GoogleApiClient.
             buildGoogleApiClient();
 
-           // setCurrentDateOnView();
-           addListenerOnButton();
-            //mGeofencePendingIntent = null;
-
-            // Get the value of mGeofencesAdded from SharedPreferences. Set to false as a default.
-            //mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
-
-            // Get the geofences used. Geofence data is hard coded in this sample.
-            // populateGeofenceList();
-            // getGeofencePendingIntent();
-            // getGeofencingRequest();
-
-            //addGeofencesButtonHandler(this);
-
-            //Get the UI widgets.
-            //mAddGeofencesButton = (Button) findViewById(R.id.add_geofences_button);
-            //mRemoveGeofencesButton = (Button) findViewById(R.id.remove_geofences_button);
-
-            //mSharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME,
-            //MODE_PRIVATE);
+            //setCurrentDateOnView();
+            //addListenerOnButton();
         }
 
     }
@@ -221,10 +218,6 @@ public class MapsActivity extends FragmentActivity implements
 
     }
 
-
-
-
-
     /**
      * Builds a GoogleApiClient. Uses the {@code #addApi} method to request the LocationServices API.
      */
@@ -298,25 +291,18 @@ public class MapsActivity extends FragmentActivity implements
             gEventObject eObject = (gEventObject) myIntent.getParcelableExtra("event1");
             venueLat = myIntent.getDoubleExtra("lat", 0.0);
             venueLng = myIntent.getDoubleExtra("lon", 0.0);
-            eventStringArray = myIntent.getStringArrayListExtra("eventArrayOfStrings");
-//            System.out.println(" The Length of the event list is " + eventStringArray.size());
-            if(eventStringArray != null && eventStringArray.size() > 0) {
-                for (int i = 0; i < eventStringArray.size(); i++) {
-                    split = eventStringArray.get(i).split(" / ");
-                    //System.out.println(" value of i is " + i);
-                    mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(split[1]), Double.parseDouble(split[2]))).title(split[0]).snippet(""));
-                    //System.out.println(split[0]);
-                    //System.out.println(split[1]);
-                    //System.out.println(split[2]);
-                }
-            }
-
-
-
             mMap.addMarker(new MarkerOptions().position(new LatLng(venueLat, venueLng)).title(desc).snippet(addr));
 
-        }
 
+            eventStringArray = myIntent.getStringArrayListExtra("eventArrayOfStrings");
+            if(eventStringArray != null && eventStringArray.size() > 0) {
+                for (int i = 0; i < eventStringArray.size(); i++) {
+                    split = eventStringArray.get(i).split(" /// ");
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(split[1]), Double.parseDouble(split[2]))).title(split[0]).snippet(split[3]));
+
+                }
+            }
+        }
     }
 
 
@@ -336,7 +322,6 @@ public class MapsActivity extends FragmentActivity implements
         double lon3 = lon1 + Math.atan2(By, Math.cos(lat1) + Bx);
 
         //print out in degrees
-        System.out.println(Math.toDegrees(lat3) + " " + Math.toDegrees(lon3));
         newCenter = new LatLng(Math.toDegrees(lat3), Math.toDegrees(lon3));
         return newCenter;
     }
@@ -415,13 +400,13 @@ public class MapsActivity extends FragmentActivity implements
               .append(month + 1).append("-").append(day).append("-").append(year).append(" "));
 
         // set current date into datepicker
-//        dpResult.init(year, month, day, null);
+        dpResult.init(year, month, day, null);
 
     }
 
     public void addListenerOnButton() {
 
-        btnChangeDate = (Button) findViewById(R.id.datePicker);
+       /* btnChangeDate = (Button) findViewById(R.id.datePicker);
 
         btnChangeDate.setOnClickListener(new View.OnClickListener() {
 
@@ -432,7 +417,39 @@ public class MapsActivity extends FragmentActivity implements
 
             }
 
+        });*/
+
+        final Calendar c = Calendar.getInstance();
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH);
+        eventDate = new Date(year,month,day);
+
+        eventDateSelector = new registration_activity.DatePickerFragment();
+        eventDateText = (EditText) findViewById(R.id.eventDate);
+        eventDateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eventDateSelector.registerForContextMenu(eventDateText);
+                eventDateSelector.show(getFragmentManager(), "Date Picker");
+            }
         });
+
+        String[] dates = eventDateText.getText().toString().split("/");
+        if ( dates.length < 3 ) {
+            Toast.makeText(getApplicationContext(), "Select Event Date" , Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int tempMonth=Integer.parseInt(dates[0]);
+        tempMonth -= 1;
+        int tempYear =Integer.parseInt(dates[2]);
+        tempYear -= 1900;
+        int tempDay = Integer.parseInt(dates[1]);
+
+
+
+        eventDate = new Date(tempYear,tempMonth,tempDay);
 
     }
 
@@ -450,6 +467,7 @@ public class MapsActivity extends FragmentActivity implements
     private DatePickerDialog.OnDateSetListener datePickerListener
             = new DatePickerDialog.OnDateSetListener() {
 
+
         // when dialog box is closed, below method will be called.
         public void onDateSet(DatePicker view, int selectedYear,
                               int selectedMonth, int selectedDay) {
@@ -458,6 +476,8 @@ public class MapsActivity extends FragmentActivity implements
             day = selectedDay;
             tvDisplayDate = new TextView(getApplicationContext());
             dpResult = new DatePicker(getApplicationContext());
+            Toast.makeText(getApplicationContext(), "Event Works" , Toast.LENGTH_SHORT).show();
+
 
             // set selected date into textview
             tvDisplayDate.setText(new StringBuilder().append(month + 1)
@@ -467,171 +487,10 @@ public class MapsActivity extends FragmentActivity implements
             // set selected date into datepicker also
             dpResult.init(year, month, day, null);
 
+
+
         }
     };
-
-
-
-
-    /*
-    *
-    *
-    *
-    *
-    *
-    *
-    *
-    *
-    * Geofence Stuff
-    *
-    *
-    *
-    *
-    *
-    *
-    *
-     */
-
-
-    private PendingIntent getGeofencePendingIntent() {
-        // Reuse the PendingIntent if we already have it.
-        if (mGeofencePendingIntent != null) {
-            return mGeofencePendingIntent;
-        }
-        Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
-        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when
-        // calling addGeofences() and removeGeofences().
-        return PendingIntent.getService(this, 0, intent, PendingIntent.
-                FLAG_UPDATE_CURRENT);
-    }
-
-    private GeofencingRequest getGeofencingRequest() {
-        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-        builder.addGeofences(mGeofenceList);
-        return builder.build();
-    }
-
-
-    /**
-     * This sample hard codes geofence data. A real app might dynamically create geofences based on
-     * the user's location.
-     */
-    public void populateGeofenceList() {
-        for (Map.Entry<String, LatLng> entry : Constants.BAY_AREA_LANDMARKS.entrySet()) {
-
-            mGeofenceList.add(new Geofence.Builder()
-                    // Set the request ID of the geofence. This is a string to identify this
-                    // geofence.
-                    .setRequestId(entry.getKey())
-
-                            // Set the circular region of this geofence.
-                    .setCircularRegion(
-                            entry.getValue().latitude,
-                            entry.getValue().longitude,
-                            Constants.GEOFENCE_RADIUS_IN_METERS
-                    )
-
-                            // Set the expiration duration of the geofence. This geofence gets automatically
-                            // removed after this period of time.
-                    .setExpirationDuration(Constants.GEOFENCE_EXPIRATION_IN_MILLISECONDS)
-
-                            // Set the transition types of interest. Alerts are only generated for these
-                            // transition. We track entry and exit transitions in this sample.
-                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                            Geofence.GEOFENCE_TRANSITION_EXIT)
-
-                            // Create the geofence.
-                    .build());
-        }
-    }
-
-
-
-
-    public void addGeofencesButtonHandler(View view) {
-        if (!mGoogleApiClient.isConnected()) {
-            Toast.makeText(this, getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        try {
-            LocationServices.GeofencingApi.addGeofences(
-                    mGoogleApiClient,
-                    // The GeofenceRequest object.
-                    getGeofencingRequest(),
-                    // A pending intent that that is reused when calling removeGeofences(). This
-                    // pending intent is used to generate an intent when a matched geofence
-                    // transition is observed.
-                    getGeofencePendingIntent()
-            ).setResultCallback((ResultCallback<Status>) this); // Result processed in onResult().
-        } catch (SecurityException securityException) {
-            // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
-            // logSecurityException(securityException);
-        }
-    }
-
-
-
-    /**
-     * Runs when the result of calling addGeofences() and removeGeofences() becomes available.
-     * Either method can complete successfully or with an error.
-     *
-     * Since this activity implements the {@link ResultCallback} interface, we are required to
-     * define this method.
-     *
-     * @param status The Status returned through a PendingIntent when addGeofences() or
-     *               removeGeofences() get called.
-     */
-    public void onResult(Status status) {
-        if (status.isSuccess()) {
-            // Update state and save in shared preferences.
-            mGeofencesAdded = !mGeofencesAdded;
-            SharedPreferences.Editor editor = mSharedPreferences.edit();
-            editor.putBoolean(Constants.GEOFENCES_ADDED_KEY, mGeofencesAdded);
-            editor.commit();
-
-            // Update the UI. Adding geofences enables the Remove Geofences button, and removing
-            // geofences enables the Add Geofences button.
-            setButtonsEnabledState();
-
-            Toast.makeText(
-                    this,
-                    getString(mGeofencesAdded ? R.string.geofences_added :
-                            R.string.geofences_removed),
-                    Toast.LENGTH_SHORT
-            ).show();
-        } else {
-            // Get the status code for the error and log it using a user-friendly message.
-            String errorMessage = GeofenceErrorMessages.getErrorString(this,
-                    status.getStatusCode());
-            Log.e(TAG, errorMessage);
-        }
-    }
-
-
-
-
-
-
-    /**
-     * Ensures that only one button is enabled at any time. The Add Geofences button is enabled
-     * if the user hasn't yet added geofences. The Remove Geofences button is enabled if the
-     * user has added geofences.
-     */
-    private void setButtonsEnabledState() {
-        if (mGeofencesAdded) {
-            mAddGeofencesButton.setEnabled(false);
-            mRemoveGeofencesButton.setEnabled(true);
-        } else {
-            mAddGeofencesButton.setEnabled(true);
-            mRemoveGeofencesButton.setEnabled(false);
-        }
-    }
-
-
-
-    /*
 
 
     /* Volley Stuff */
@@ -673,9 +532,6 @@ public class MapsActivity extends FragmentActivity implements
         obj.setState_name("state");
         obj.setLatitude(29.421264);
         obj.setLongitude(-98.478011);
-        // obj.setStart_date_day(8);
-        //obj.setStart_date_month("9");
-        // obj.setStart_date_year("2015");
         obj.setStart_time("7:00 PM");
         obj.setVenue_name("Sunset Station");
         obj.setVenue_address("1427 Gladstone");
@@ -685,28 +541,5 @@ public class MapsActivity extends FragmentActivity implements
 
     }
 
-    public void setCurrentLocation(Location location){
-        currentLocation = location;
-    }
-
-    public Location getCurrentLocation(){
-        return currentLocation;
-    }
-
-    public void setCurrentAddress(String address){
-        currentAddress = address;
-    }
-
-    public String getCurrentAddress(){
-        return currentAddress;
-    }
-
-    public ArrayList<gEventObject> getEventfeedList() {
-        return eventfeedList;
-    }
-
-    public void setEventfeedList(ArrayList<gEventObject> eventfeedList) {
-        this.eventfeedList = eventfeedList;
-    }
 }
 

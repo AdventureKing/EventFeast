@@ -346,19 +346,18 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
         //System.out.println(" The Length of the event list is " + eventfeedList.size());
         jsonStringArray = new ArrayList<>();
         for(int i=0; i<eventfeedList.size();i++){
-           // System.out.println(eventfeedList.get(i).getTitle());
-           // System.out.println(eventfeedList.get(i).getLatitude());
-           // System.out.println(eventfeedList.get(i).getLongitude());
+
 
 
             jsonStringArray.add(listToString(eventfeedList.get(i).getTitle(),
                     eventfeedList.get(i).getLatitude(),
-                    eventfeedList.get(i).getLongitude()));
+                    eventfeedList.get(i).getLongitude(),
+                    eventfeedList.get(i).getVenue_name()));
         }
     }
 
-    public String listToString(String title, Double lat, Double lng){
-        return title + " / " + Double.toString(lat) + " / " + Double.toString(lng);
+    public String listToString(String title, Double lat, Double lng, String venue){
+        return title + " /// " + Double.toString(lat) + " /// " + Double.toString(lng) + " /// " + venue;
     }
 
     public ArrayList<String> getJsonStringArray(){

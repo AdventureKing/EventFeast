@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * Created by richardryangarcia on 7/29/15.
-
+*/
 public class ReceiveTransitionsIntentService extends IntentService{
     private final static String TAG = ReceiveTransitionsIntentService.class.getPackage() + "." + ReceiveTransitionsIntentService.class.getSimpleName();
     private GeofencingEvent LocationClient;
@@ -36,12 +36,12 @@ public class ReceiveTransitionsIntentService extends IntentService{
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        if(!LocationClient.hasError(intent)) {
-            int transition = LocationClient.getGeofenceTransition(intent);
+        if(!LocationClient.hasError()) {
+            int transition = LocationClient.getGeofenceTransition();
             Log.v(TAG, "Transition: " + transition);
 
             // Post a notification
-            List<Geofence> geofences = LocationClient.getTriggeringGeofences(intent);
+            List<Geofence> geofences = LocationClient.getTriggeringGeofences();
             String[] geofenceIds = new String[geofences.size()];
             for (int index = 0; index < geofences.size() ; index++) {
                 geofenceIds[index] = geofences.get(index).getRequestId();
@@ -51,7 +51,7 @@ public class ReceiveTransitionsIntentService extends IntentService{
 
             sendNotification(transitionType, ids);
         } else {
-            Log.e(TAG, String.valueOf(LocationClient.getErrorCode(intent)));
+            Log.e(TAG, String.valueOf(LocationClient.getErrorCode()));
         }
     }
 
@@ -59,7 +59,7 @@ public class ReceiveTransitionsIntentService extends IntentService{
      * Posts a notification in the notification bar when a transition is detected.
      * If the user clicks the notification, control goes to the main Activity.
      * @param transitionType The type of transition that occurred.
-     *
+     **/
 
     private void sendNotification(String transitionType, String ids) {
 
@@ -118,4 +118,4 @@ public class ReceiveTransitionsIntentService extends IntentService{
 
 
 
-}*/
+}

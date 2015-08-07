@@ -41,7 +41,7 @@
             android:id="@+id/activity_map"
             android:checked="false"
             android:icon="@drawable/ic_event_black_24dp"
-            android:title="Search Location" />
+            android:title="Create New Event" />
 
 
         <item
