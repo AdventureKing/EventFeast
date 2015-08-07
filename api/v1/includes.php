@@ -15,9 +15,11 @@
 	require_once($projectDir.'Class/db_neo4j/DbHandler.php');
 	require_once($projectDir.'Class/db_neo4j/jsonToNeo.php');
 	require_once($projectDir.'Class/userAuth.php');
-	require_once($projectDir.'Class/externalAPIs/yelp/simple_html_dom.php');
+	require_once($projectDir.'/Class/externalAPIs/eventful/Services_Eventful-0.9.3/Eventful.php');
+	require_once($projectDir.'Class/externalAPIs/eventful/functions.php');
 	require_once($projectDir.'Class/externalAPIs/stubhub/functions.php');
 	require_once($projectDir.'Class/externalAPIs/ticketmaster/functions.php');
+	
 
 	// Models
 	require_once($projectDir.'Models/findEventsModel.php');

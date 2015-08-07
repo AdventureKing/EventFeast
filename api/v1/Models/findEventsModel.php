@@ -46,10 +46,11 @@
 
 			if(!empty($filters['sources'])){
 				$sourceArr = explode(",",$filters['sources']);
+				$stubhub_results = array();
+				$ticketmaster_results = array();
+				$eventful_results = array();
+				
 				foreach($sourceArr as $source){
-					$stubhub_results = array();
-					$ticketmaster_results = array();
-					
 					if(strcasecmp($source, "stubhub") == 0){ 
 						$saveString = "stubhub".$this->eventDesc.implode(".",$filters);
 						$stubhub_results = getCachedContent($saveString, stubhubAPI_findEvents($this->eventDesc, $filters));			
@@ -58,13 +59,21 @@
 						$saveString = "ticketmaster".$this->eventDesc.implode(".",$filters);
 						$ticketmaster_results = getCachedContent($saveString, ticketmasterAPI_findEvents($this->eventDesc, $filters));
 					}
-
-					$this->items = array_merge($stubhub_results, $ticketmaster_results);
+					if(strcasecmp($source, "eventful") == 0){
+						$saveString = "eventful".$this->eventDesc.implode(".",$filters);
+						$eventful_results = getCachedContent($saveString, eventfulAPI_findEvents($this->eventDesc, $filters));
+					}
 				}
+				
+				$this->items = array_merge($stubhub_results, $ticketmaster_results, $eventful_results);
+				usort($this->items, 'sortgEventsByDate');
 			} else { 
-				$stubhub_results = stubhubAPI_findEvents($this->eventDesc, $filters);
-				$ticketmaster_results = ticketmasterAPI_findEvents($this->eventDesc, $filters);
-				$this->items = array_merge($stubhub_results, $ticketmaster_results);			
+				$saveString = $this->eventDesc.implode(".",$filters);
+				
+				$stubhub_results = getCachedContent($saveString, stubhubAPI_findEvents($this->eventDesc, $filters));
+				$ticketmaster_results = getCachedContent($saveString, ticketmasterAPI_findEvents($this->eventDesc, $filters));
+				$eventful_results = getCachedContent($saveString, eventfulAPI_findEvents($this->eventDesc, $filters));
+				$this->items = array_merge($stubhub_results, $ticketmaster_results, $eventful_results);			
 				usort($this->items, 'sortgEventsByDate');
 			}
 		}

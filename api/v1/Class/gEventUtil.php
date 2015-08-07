@@ -177,4 +177,22 @@
 		$bStartTime = strtotime($b->getStart_time());
 		return $aStartTime - $bStartTime;
 	}
+	
+	function mergeSources($a, $b, $c){
+		$gEvents = array();
+		
+		foreach($a as $event){
+			array_push($gEvents, $event);
+		}
+		
+		foreach($b as $event){
+			array_push($gEvents, $event);
+		}
+		
+		foreach($c as $event){
+			array_push($gEvents, $event);
+		}
+		
+		return $gEvents;
+	}
 ?>

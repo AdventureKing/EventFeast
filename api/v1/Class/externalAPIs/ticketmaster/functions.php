@@ -180,37 +180,43 @@
 		return $gEvents;
 	}
 
-	function ticketmasterAPI_findEvent($eventId, $venueId, $optionsArray){
-		/*
-		foreach($eventResults->find('div[class=media-story]') as $record ){
-			$name = $record->find('span[itemprop=name]')[0]->plaintext;
-			$desc = trim($record->find('p[class=event_desc]')[0]->plaintext, " ");
-			
-			$datetime = explode('T', trim($record->find('meta[itemprop=startDate]')[0]->content, " "));
-			$date = $datetime[0];
-			$time = (isset($datetime[1]) == true) ? explode('-', $datetime[1]) : null;
-			$startTime = (isset($time[0]) == true) ? $time[0] : null;
-			
-			$venueBiz =  trim($record->find('a[href^=/biz/]')[0]->plaintext, " ,");
-			$venueBizURL = trim($record->find('a[href^=/biz/]')[0]->href);
-			
-			echo "Name: ".$name."</br>";
-			echo 'Desc: '.$desc.'</br>';
-			echo 'Date: '.$date.'</br>';
-			echo 'Start Time: '.$startTime.'</br>';
-			echo 'Venue: '.$venueBiz.'</br>';
-			echo "URL: <a href='http://yelp.com".$venueBizURL."'>Venue Business URL</a></br>";
-			echo "</br>";
-		}*/
+	function ticketmasterAPI_findEvent($eventId, $optionsArray){
+		// There is currently do way to search the ticketmaster API by event id
+		// so we're going to scrape the vendor and artist id from the site 
+		// to be able to use it in the json search request
+		
+		$html = file_get_html("http://www.ticketmaster.com/event/$eventId");
+		$patternAID = '/"artistID":"(.*?)"/';
+		preg_match ($patternAID, $html, $AIDmatches);
+		if(isset($AIDmatches[0])){
+			$aid = explode(":", $AIDmatches[0]);
+			$aid = $aid[1];
+			$aid = str_replace('"', '', $aid);
+		}
+		
+		$patternVID = '/"venueID":"(.*?)"/';
+		preg_match ($patternVID, $html, $VIDmatches);
+		if(isset($VIDmatches[0])){
+			$vid = explode(":", $VIDmatches[0]);
+			$vid = $vid[1];
+			$vid = str_replace('"', '', $vid);
+		}
+		
+		// no match, return empty array
+		if(!isset($aid) && !isset($vid)){
+			$gEvents = array();
+			return $gEvents;
+		}
 
 		// Filter Parameters
 		$eid = $eventId;
-		$vid = $venueId;
+		$vid = $vid;
+		$aid = $aid;
 		$userLat = $optionsArray['userLat'];
 		$userLong = $optionsArray['userLng'];
 		
 		$endpoint_ticketmaster = "http://www.ticketmaster.com/json/search/event";
-		$url = "$endpoint_ticketmaster?vid=$vid";
+		$url = (isset($vid)) ? "$endpoint_ticketmaster?vid=$vid" : "$endpoint_ticketmaster?aid=$aid";
 		$data = get_data($url);
 		$json = json_decode($data);
 		$num = $json->response->numFound;

@@ -381,6 +381,21 @@
 
 		echoRespnse(200, $response);
 	});
+	
+	$app->get('/user/yelp/parse', function() use ($app) {
+
+		$result = doYelpParsing();
+		
+		if($result){
+			$response['result'] = 'success';
+			$response['message'] = "Yelp was parsed!";
+		} else{
+			$response['result'] = 'error';
+			$response['message'] = 'Unknown Error. Yelp parsing failed!';
+		}
+
+		echoRespnse(200, $response);
+	});
 
 
 

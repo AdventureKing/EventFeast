@@ -38,7 +38,6 @@
 	   	}
 
 		public function generateItem(){
-			$venueId = $this->app->request()->params('venueId');
 			$filters['userLat'] = $this->app->request()->params('userLat');
 			$filters['userLng'] = $this->app->request()->params('userLng');
 			
@@ -48,7 +47,7 @@
 						$results = stubhubAPI_findEvent($this->eventExtId, $filters);
 						break;
 					case "ticketmaster":
-						$results = ticketmasterAPI_findEvent($this->eventExtId, $venueId, $filters);
+						$results = ticketmasterAPI_findEvent($this->eventExtId, $filters);
 						break;
 					default:
 						break;
