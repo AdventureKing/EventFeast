@@ -1,6 +1,7 @@
 package com.example.daddyz.turtleboys.searchevent;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
@@ -13,10 +14,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.R;
@@ -174,7 +181,7 @@ public class searchResultsFragment extends Fragment implements Response.Listener
                 .GET, url.toString(),
                 new JSONObject(), this, this);
         jsonRequest.setTag(REQUEST_TAG);
-        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 10, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         mQueue.add(jsonRequest);
 
     }
@@ -189,7 +196,19 @@ public class searchResultsFragment extends Fragment implements Response.Listener
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        //  mTextView.setText(error.getMessage());
+        Context context = getActivity().getApplicationContext();
+
+        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+            Toast.makeText(context, "Timeout Error: " + error.toString(), Toast.LENGTH_LONG).show();
+        } else if (error instanceof AuthFailureError) {
+            Toast.makeText(context, "AuthFailure Error: " + error.toString(), Toast.LENGTH_LONG).show();
+        } else if (error instanceof ServerError) {
+            Toast.makeText(context, "ServerError Error: " + error.toString(), Toast.LENGTH_LONG).show();
+        } else if (error instanceof NetworkError) {
+            Toast.makeText(context, "Network Error: " + error.toString(), Toast.LENGTH_LONG).show();
+        } else if (error instanceof ParseError) {
+            Toast.makeText(context, "Parse Error: " + error.toString(), Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
