@@ -29,12 +29,14 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import com.example.daddyz.turtleboys.App_Application;
+import android.widget.Toast;
+
 import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
+
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
@@ -286,23 +288,29 @@ public class searchEvent extends Fragment {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Do a search
-                searchResultsFragment fragment = new searchResultsFragment();
+                if(keyword.getText().toString().trim().length() == 0 &&
+                        city.getText().toString().trim().length() == 0 &&
+                        state.getText().toString().trim().length() == 0){
+                    Toast.makeText(getActivity().getApplicationContext(), "Please Enter Something to Search.", Toast.LENGTH_SHORT).show();
+                } else {
+                    //Do a search
+                    searchResultsFragment fragment = new searchResultsFragment();
 
-                fragment.setUserLat(userParseLat);
-                fragment.setUserLong(userParseLong);
-                fragment.setSearchQuery(keyword.getText().toString());
-                fragment.setFilterRadius(searchRadius_miles);
-                fragment.setFilterCity(city.getText().toString());
-                fragment.setFilterState(state.getText().toString());
+                    fragment.setUserLat(userParseLat);
+                    fragment.setUserLong(userParseLong);
+                    fragment.setSearchQuery(keyword.getText().toString());
+                    fragment.setFilterRadius(searchRadius_miles);
+                    fragment.setFilterCity(city.getText().toString());
+                    fragment.setFilterState(state.getText().toString());
 
-                Log.i("query", keyword.getText().toString());
-                Log.i("city", city.getText().toString());
-                Log.i("state",state.getText().toString());
-                Log.i("radius",Double.toString(searchRadius_miles));
+                    Log.i("query", keyword.getText().toString());
+                    Log.i("city", city.getText().toString());
+                    Log.i("state", state.getText().toString());
+                    Log.i("radius", Double.toString(searchRadius_miles));
 
-                getFragmentManager().beginTransaction().replace(R.id.frame,fragment,"searchResultsFragment").addToBackStack("searchResultsFragment").commit();
-                //Toast.makeText(getActivity().getApplicationContext(), "Search Event", Toast.LENGTH_SHORT).show();
+                    getFragmentManager().beginTransaction().replace(R.id.frame, fragment, "searchResultsFragment").addToBackStack("searchResultsFragment").commit();
+                    //Toast.makeText(getActivity().getApplicationContext(), "Search Event", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
