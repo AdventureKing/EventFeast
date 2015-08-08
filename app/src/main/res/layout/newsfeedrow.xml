@@ -55,20 +55,13 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/dislikeimage"
-        android:layout_below="@id/description"
-        android:src="@drawable/thumbsdown"
-        android:layout_toLeftOf="@+id/dislikeCount"
-        />
-    <TextView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:text="1"
-        android:id="@+id/dislikeCount"
-        android:layout_below="@id/description"
-        android:layout_alignRight="@id/description"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
+        android:id="@+id/report"
+        android:src="@drawable/ic_report_problem_black_24dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_toEndOf="@+id/icon"
+        android:layout_marginLeft="49dp"
+        android:layout_marginStart="49dp" />
 
 
 </RelativeLayout>

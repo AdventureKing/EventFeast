@@ -34,7 +34,7 @@ public class newsfeedPostDetail extends Fragment {
     private ImageView eventImage;
 
     private FloatingActionButton likeButton;
-    private FloatingActionButton dislikeButton;
+
     private ListView userCommentsList;
 
     private newsfeedCommentAdapter adapter1;
@@ -84,15 +84,6 @@ public class newsfeedPostDetail extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "User LIKES THIS POST", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        //dislike fab button
-        dislikeButton = (FloatingActionButton) view.findViewById(R.id.fabDISLIKE);
-        dislikeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "User DISLIKES THIS POST", Toast.LENGTH_SHORT).show();
             }
         });
 
