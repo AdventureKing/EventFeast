@@ -23,8 +23,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical" >
                 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
@@ -59,65 +58,6 @@
                         android:layout_gravity="center_horizontal|bottom" />
 
                 </FrameLayout>
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:id="@+id/eventStockImage"
-                    android:src="@drawable/ic_room_black_24dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_alignTop="@+id/lineabovelocanddate"
-                    android:layout_marginTop="15dp" />
-                <TextView
-                    android:id="@+id/EventLocationTag"
-                    android:layout_width="80dp"
-                    android:layout_height="match_parent"
-                    android:text="Location"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_alignTop="@+id/lineabovelocanddate"
-                    android:layout_toRightOf="@+id/eventStockImage"
-                    android:layout_marginTop="15dp"
-                    android:textSize="16dp" />
-                <TextView
-                    android:id="@+id/EventLocation"
-                    android:layout_width="90dp"
-                    android:layout_height="wrap_content"
-                    android:text="City"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_below="@+id/EventLocationTag"
-                    android:layout_toRightOf="@+id/eventStockImage"
-                    android:layout_toEndOf="@+id/eventStockImage"
-                    android:textSize="15dp" />
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:id="@+id/dateImage"
-                    android:layout_alignTop="@+id/lineabovelocanddate"
-                    android:layout_toEndOf="@+id/EventLocationTag"
-                    android:layout_toRightOf="@+id/EventLocationTag"
-                    android:layout_marginLeft="40dp"
-                    android:src="@drawable/ic_alarm_on_black_24dp"
-                    android:layout_marginTop="15dp" />
-                <TextView
-                    android:id="@+id/EventDateTag"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Date"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_alignTop="@+id/lineabovelocanddate"
-                    android:layout_toRightOf="@+id/dateImage"
-                    android:layout_toEndOf="@+id/dateImage"
-                    android:layout_marginTop="15dp"
-                    android:textSize="16dp" />
-                <TextView
-                    android:id="@+id/EventDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="ACTUAL_DATE"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_below="@+id/EventDateTag"
-                    android:layout_alignLeft="@+id/EventDateTag"
-                    android:layout_alignStart="@+id/EventDateTag"
-                    android:textSize="15dp" />
 
 
                 <TextView
@@ -126,13 +66,13 @@
                     android:layout_height="wrap_content"
                     android:text="EVENT_DESCRIPTION"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_below="@id/EventLocation"
-                    android:layout_marginTop="50dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp" />
+                    android:layout_marginRight="15dp"
+                    android:layout_alignTop="@+id/eventdesctopline"
+                    android:layout_marginTop="20dp" />
 
                 <Button
                     android:layout_width="fill_parent"
@@ -190,21 +130,15 @@
                     android:visibility="gone"/>
 
                 <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:background="@android:color/darker_gray"
-                    android:id="@+id/lineabovelocanddate"
-                    android:layout_below="@+id/venuetag"
-                    android:layout_marginTop="35dp" />
-
-                <View
                     android:layout_width="fill_parent"
                     android:layout_height="1dp"
                     android:background="@android:color/darker_gray"
-                    android:layout_below="@+id/starttime"
-                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/frameLayout"
+                    android:layout_alignParentLeft="false"
                     android:layout_alignParentStart="true"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="15dp"
+                    android:id="@+id/eventdesctopline"
+                    android:layout_alignParentTop="true" />
 
                 <View
                     android:layout_width="fill_parent"
@@ -216,39 +150,16 @@
                     android:layout_marginBottom="-10dp" />
 
                 <TextView
-                    android:id="@+id/starttime"
+                    android:id="@+id/datetime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="START_TIME"
+                    android:text="DATETIME"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_toRightOf="@+id/dateImage"
-                    android:layout_toEndOf="@+id/dateImage"
-                    android:layout_alignTop="@+id/EventDate"
-                    android:layout_marginTop="20dp"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Venue"
-                    android:id="@+id/venuetag"
-                    android:layout_below="@+id/datasource"
+                    android:layout_below="@+id/frameLayout"
                     android:layout_alignLeft="@+id/EventDesc"
                     android:layout_alignStart="@+id/EventDesc"
-                    android:layout_marginTop="5dp"
-                    android:textSize="13dp" />
+                    android:layout_alignBottom="@+id/eventdesctopline" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Address Line"
-                    android:id="@+id/addresstag"
-                    android:textSize="13dp"
-                    android:layout_below="@+id/venuetag"
-                    android:layout_alignLeft="@+id/venuetag"
-                    android:layout_alignStart="@+id/venuetag" />
             </RelativeLayout>
         </ScrollView>
     </LinearLayout>

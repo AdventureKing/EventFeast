@@ -76,9 +76,7 @@ public class eventfeedAdapter extends ArrayAdapter<gEventObject> {
         TextView venue = (TextView) row.findViewById(R.id.venueLine);
         //TextView urlpath = (TextView) row.findViewById(R.id.urlpathLine);
 
-        String placeholderImageUrl = "http://www.grommr.com/Content/Images/placeholder-event-p.png";
-        String imageUrl = placeholderImageUrl;
-        String imageVenueUrl = placeholderImageUrl;
+        String imageUrl = null;
 
         //Loop through available image objects to populate image url
         for(gEventImageObject image : eventObjects.get(position).getImages()){
@@ -87,17 +85,16 @@ public class eventfeedAdapter extends ArrayAdapter<gEventObject> {
                 break;
             }
             if(null != image.getImage_external_url() && image.getImage_category().equals("venue")){
-                imageVenueUrl = image.getImage_external_url();
+                imageUrl = image.getImage_external_url();
                 break;
             }
         }
 
-        //If no attraction image url was picked up, set to venue URL.
-        //Else it uses default placeholder image I placed above.
-        if(imageUrl.equals(placeholderImageUrl) && !imageVenueUrl.equals(placeholderImageUrl)){
-            imageUrl = imageVenueUrl;
+        if(null != imageUrl){
+            Picasso.with(context).load(imageUrl).placeholder(R.drawable.events_calendar_icon).resize(200, 150).into(eventImage);
+        } else{
+            Picasso.with(context).load(R.drawable.events_calendar_icon).resize(80, 150).into(eventImage);
         }
-        Picasso.with(context).load(imageUrl).resize(200, 150).into(eventImage);
 
         //source.setText(objects.get(position).getEventSource());
         description.setText(eventObjects.get(position).getTitle());

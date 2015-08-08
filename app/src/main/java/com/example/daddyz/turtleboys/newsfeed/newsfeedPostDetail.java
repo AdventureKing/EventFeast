@@ -13,9 +13,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -32,6 +34,10 @@ public class newsfeedPostDetail extends Fragment {
     private Toolbar toolbar;
     private ActionBar actionbar;
     private ImageView eventImage;
+    private TextView eventDesc;
+    private TextView eventTitle;
+    private TextView likeCount;
+    private TextView username;
 
     private FloatingActionButton likeButton;
 
@@ -69,7 +75,28 @@ public class newsfeedPostDetail extends Fragment {
                 getActivity().onBackPressed();
             }
         });
+
+        eventDesc = (TextView) view.findViewById(R.id.EventDesc);
+        eventDesc.setText(obj.getTitle() + "\r\\\r\\nn " + obj.getDescription());
+
+        username = (TextView) view.findViewById(R.id.userNameTag);
+        username.setText(obj.getUsername());
+
+        likeCount = (TextView) view.findViewById(R.id.numberOfLikes);
+        likeCount.setText(Integer.toString(obj.getLikeCount()) + " likes");
+
+        eventTitle = (TextView) view.findViewById(R.id.example);
+
         eventImage = (ImageView) view.findViewById(R.id.eventImage);
+
+        eventImage = (ImageView) view.findViewById(R.id.eventImage);
+
+        if(null != obj.getPostImageUrl()){
+            Picasso.with(this.getActivity().getApplicationContext()).load(obj.getPostImageUrl()).placeholder(R.drawable.events_calendar_icon).into(eventImage);
+        } else{
+            Picasso.with(this.getActivity().getApplicationContext()).load(R.drawable.events_calendar_icon).into(eventImage);
+        }
+
         eventImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,4 +174,35 @@ public class newsfeedPostDetail extends Fragment {
         this.obj = obj;
     }
 
+    public TextView getEventDesc() {
+        return eventDesc;
+    }
+
+    public void setEventDesc(TextView eventDesc) {
+        this.eventDesc = eventDesc;
+    }
+
+    public TextView getEventTitle() {
+        return eventTitle;
+    }
+
+    public void setEventTitle(TextView eventTitle) {
+        this.eventTitle = eventTitle;
+    }
+
+    public TextView getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(TextView likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public TextView getUsername() {
+        return username;
+    }
+
+    public void setUsername(TextView username) {
+        this.username = username;
+    }
 }

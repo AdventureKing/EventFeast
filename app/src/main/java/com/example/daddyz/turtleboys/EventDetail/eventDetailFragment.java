@@ -23,11 +23,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.eventfeed.gEventImageObject;
 import com.example.daddyz.turtleboys.eventfeed.gEventObject;
 import com.example.daddyz.turtleboys.maps.MapsActivity;
 import com.squareup.picasso.Picasso;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
@@ -47,10 +49,14 @@ public class eventDetailFragment extends Fragment {
     private Button buyButton;
 
     private TextView eventSource;
+    private TextView eventPriceRange;
     private TextView eventName;
     private TextView eventDate;
-    private TextView eventLocation;
+    private TextView eventCity;
+    private TextView eventAddress;
+    private TextView eventVenue;
     private TextView eventDesc;
+    private TextView eventStartTime;
     private ImageView eventImage;
     private DrawerLayout mDrawer;
     private boolean AutoAddFlag;
@@ -89,6 +95,28 @@ public class eventDetailFragment extends Fragment {
         //set the stuff on the page
         eventImage = (ImageView) view.findViewById(R.id.eventImage);
         eventSource = (TextView) view.findViewById(R.id.datasource);
+        eventPriceRange = (TextView) view.findViewById(R.id.price_range);
+        if(!obj.getPrice_range().equals(" - ")){
+            String[] prices = obj.getPrice_range().split(" - ");
+            try {
+                if (null != prices[0] && null != prices[1] && prices[0].equals(prices[1])) {
+                    eventPriceRange.setText(("$" + prices[0]));
+                } else if (null != prices[0]) {
+                    eventPriceRange.setText(("$" + prices[0]));
+                } else if (null != prices[1]) {
+                    eventPriceRange.setText(("$" + prices[1]));
+                } else {
+                    eventPriceRange.setText(("$" + prices[0] + " - $" + prices[1]));
+                }
+                eventPriceRange.setVisibility(View.VISIBLE);
+            }catch(ArrayIndexOutOfBoundsException e){
+                //no price was set
+            }
+        }
+        eventStartTime = (TextView) view.findViewById(R.id.starttime);
+        if(obj.getStart_date_time().size() > 0){
+            eventStartTime.setText(obj.getStart_date_time().get(2));
+        }
         eventSource.setText(obj.getDatasource());
         eventName = (TextView) view.findViewById(R.id.EventTitle);
         eventName.setText(obj.getTitle());
@@ -110,9 +138,12 @@ public class eventDetailFragment extends Fragment {
             }
 
         });
-
-        eventLocation = (TextView) view.findViewById(R.id.EventLocation);
-        eventLocation.setText(obj.getVenue_address());
+        eventVenue = (TextView) view.findViewById(R.id.venuetag);
+        eventVenue.setText(obj.getVenue_name() + " (" + obj.getDistance() + "mi)");
+        eventAddress = (TextView) view.findViewById(R.id.addresstag);
+        eventAddress.setText(obj.getVenue_address());
+        eventCity = (TextView) view.findViewById(R.id.EventLocation);
+        eventCity.setText(obj.getCity_name());
         eventDesc = (TextView) view.findViewById(R.id.EventDesc);
         eventDesc.setText(obj.getNotes());
 

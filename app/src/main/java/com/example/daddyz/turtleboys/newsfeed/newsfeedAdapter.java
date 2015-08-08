@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -40,12 +41,25 @@ public class newsfeedAdapter extends ArrayAdapter<newsfeedObject> {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.newsfeedrow, parent, false);
+
+        ImageView postImage = (ImageView) rowView.findViewById(R.id.icon);
+
         TextView messageBox1 = (TextView) rowView.findViewById(R.id.example);
+        messageBox1.setText(newsfeedObjects.get(position).getUsername() + " " + newsfeedObjects.get(position).getTitle());
         TextView description = (TextView) rowView.findViewById(R.id.description);
+        description.setText(newsfeedObjects.get(position).getDescription());
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+
+        if(null != newsfeedObjects.get(position).getPostImageUrl()){
+            Picasso.with(context).load(newsfeedObjects.get(position).getPostImageUrl()).placeholder(R.drawable.events_calendar_icon).resize(300, 150).into(imageView);
+        } else{
+            Picasso.with(context).load(R.drawable.events_calendar_icon).into(imageView);
+        }
+
         ImageView likeButton;
         ImageView reportButton;
-
+        TextView likeCount = (TextView) rowView.findViewById(R.id.likeCount);
+        likeCount.setText(Integer.toString(newsfeedObjects.get(position).getLikeCount()));
         likeButton = (ImageView) rowView.findViewById(R.id.likeimage);
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,14 +71,10 @@ public class newsfeedAdapter extends ArrayAdapter<newsfeedObject> {
         reportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
                 Toast.makeText(getContext(), "User REPORTS THIS POST", Toast.LENGTH_SHORT).show();
             }
         });
 
-        messageBox1.setText("This is the Test example message");
-        description.setText("The description of the post will go here");
         //slide up animation
         if (AnimationFlag) {
             Animation animation = AnimationUtils.loadAnimation(getContext(), (position > lastPosition) ? R.anim.up_from_bottom : R.anim.bottom_from_up);
