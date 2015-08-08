@@ -148,18 +148,22 @@ public class searchEvent extends Fragment {
         searchRadiusSeekBar = (SeekBar) rootView.findViewById(R.id.searchRadius);
         //Inital Seekbar values
         searchRadius_miles = 0;
-        searchRadius_kilometers = searchRadius_miles / MILESINAKILOMETER;
+        //searchRadius_kilometers = searchRadius_miles / MILESINAKILOMETER;
+        searchRadiusText.setText(String.format("Set Search Radius\t %d miles"
+                , searchRadius_miles));
+        /*
         searchRadiusText.setText(String.format("Set Search Radius\t %d miles / %.02f km"
                 , searchRadius_miles, searchRadius_kilometers));
+         */
 
         searchRadiusSeekbarListener =
                 new SeekBar.OnSeekBarChangeListener() {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        searchRadius_miles = progress+1;
-                        searchRadius_kilometers = searchRadius_miles / MILESINAKILOMETER;
-                        searchRadiusText.setText(String.format("Set Search Radius\t %d miles / %.02f km"
-                                , searchRadius_miles, searchRadius_kilometers));
+                        searchRadius_miles = progress;
+                        //searchRadius_kilometers = searchRadius_miles / MILESINAKILOMETER;
+                        searchRadiusText.setText(String.format("Set Search Radius\t %d miles"
+                                , searchRadius_miles));
                     }
 
                     @Override
@@ -321,7 +325,7 @@ public class searchEvent extends Fragment {
                 //toTimeText.setText(R.string.anyTime);
                 fromDateText.setText(R.string.anyDay);
                 toDateText.setText(R.string.anyDay);
-                searchRadiusSeekBar.setProgress(9);
+                searchRadiusSeekBar.setProgress(0);
                 //Toast.makeText(getActivity().getApplicationContext(), "Reset fields", Toast.LENGTH_SHORT).show();
             }
         });
