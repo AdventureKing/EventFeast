@@ -44,6 +44,7 @@ public class eventDetailFragment extends Fragment {
     private Button shareButton;
     private Button buyButton;
 
+    private TextView eventSource;
     private TextView eventName;
     private TextView eventDate;
     private TextView eventLocation;
@@ -83,6 +84,8 @@ public class eventDetailFragment extends Fragment {
 
         //set the stuff on the page
         eventImage = (ImageView) view.findViewById(R.id.eventImage);
+        eventSource = (TextView) view.findViewById(R.id.datasource);
+        eventSource.setText(obj.getDatasource());
         eventName = (TextView) view.findViewById(R.id.EventTitle);
         eventName.setText(obj.getTitle());
         eventDate = (TextView) view.findViewById(R.id.EventDate);
