@@ -30,20 +30,7 @@
             android:layout_marginLeft="10dp"
             android:layout_centerHorizontal="true" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabDISLIKE"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|bottom"
-            android:src="@drawable/thumbsdown"
-            android:scaleType="fitXY"
-            app:borderWidth="0dp"
-            fab:rippleColor="@color/ripple"
-            fab:backgroundTint="@color/PrimaryDarkColor"
-            app:elevation="6dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_centerHorizontal="true" />
+
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"

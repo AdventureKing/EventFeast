@@ -162,6 +162,7 @@ public class searchResultsFragment extends Fragment implements Response.Listener
         searchQuery = (searchQuery.length() == 0 && filterState.length() > 0) ? filterState : searchQuery;
 
         mQueue = VolleyRequestQueue.getInstance(this.getActivity().getApplicationContext()).getRequestQueue();
+
         StringBuilder url = new StringBuilder(2048);
         url.append("http://api.dev.turtleboys.com/v1/events/find/");
         url.append(searchQuery);

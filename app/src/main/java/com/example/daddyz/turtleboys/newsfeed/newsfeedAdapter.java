@@ -44,7 +44,7 @@ public class newsfeedAdapter extends ArrayAdapter<newsfeedObject> {
         TextView description = (TextView) rowView.findViewById(R.id.description);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
         ImageView likeButton;
-        ImageView dislikeButton;
+        ImageView reportButton;
 
         likeButton = (ImageView) rowView.findViewById(R.id.likeimage);
         likeButton.setOnClickListener(new View.OnClickListener() {
@@ -53,13 +53,13 @@ public class newsfeedAdapter extends ArrayAdapter<newsfeedObject> {
                 Toast.makeText(getContext(), "User LIKES THIS POST", Toast.LENGTH_SHORT).show();
             }
         });
-        dislikeButton = (ImageView) rowView.findViewById(R.id.dislikeimage);
-        dislikeButton.setOnClickListener(new View.OnClickListener() {
+        reportButton = (ImageView) rowView.findViewById(R.id.report);
+        reportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
-                Toast.makeText(getContext(), "User DISLIKES THIS POST", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "User REPORTS THIS POST", Toast.LENGTH_SHORT).show();
             }
         });
 

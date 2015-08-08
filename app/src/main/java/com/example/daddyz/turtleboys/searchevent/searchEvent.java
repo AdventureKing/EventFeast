@@ -9,7 +9,6 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -30,15 +29,12 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
 import com.example.daddyz.turtleboys.App_Application;
 import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
-import com.example.daddyz.turtleboys.subclasses.LocationFinder;
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
-
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
