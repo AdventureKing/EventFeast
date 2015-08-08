@@ -26,7 +26,8 @@
                 android:orientation="vertical" >
                 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
+                    android:layout_height="fill_parent"
+                    android:id="@+id/frameLayout">
 
                     <ImageView
                         android:id="@+id/eventImage"
@@ -155,6 +156,19 @@
                     android:layout_below="@+id/ShareButton"
                     android:paddingTop="5dp"
                     />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/datasource"
+                    android:textColor="#ffffff"
+                    android:textSize="10dp"
+                    android:background="@color/PrimaryColor"
+                    android:layout_below="@+id/frameLayout"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:padding="5dp"
+                    android:autoText="false" />
             </RelativeLayout>
         </ScrollView>
     </LinearLayout>

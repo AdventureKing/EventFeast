@@ -138,33 +138,37 @@ public class LocationFinder {
     }
 
     public String getAddressFromLocation(Context context, Location location){
-        double lat = location.getLatitude();
-        double lng = location.getLongitude();
+        if(null != location) {
 
-        Geocoder geoCoder = new Geocoder(context, Locale.getDefault());
-        StringBuilder builder = new StringBuilder();
-        try {
-            List<Address> address = geoCoder.getFromLocation(lat, lng, 1);
-            int maxLines = address.get(0).getMaxAddressLineIndex();
-            for (int i = 0; i < maxLines; i++) {
-                String addressStr = address.get(0).getAddressLine(i);
-                builder.append(addressStr);
-                builder.append(" ");
+            double lat = location.getLatitude();
+            double lng = location.getLongitude();
+
+            Geocoder geoCoder = new Geocoder(context, Locale.getDefault());
+            StringBuilder builder = new StringBuilder();
+            try {
+                List<Address> address = geoCoder.getFromLocation(lat, lng, 1);
+                int maxLines = address.get(0).getMaxAddressLineIndex();
+                for (int i = 0; i < maxLines; i++) {
+                    String addressStr = address.get(0).getAddressLine(i);
+                    builder.append(addressStr);
+                    builder.append(" ");
+                }
+
+                String finalAddress = builder.toString(); //This is the complete address.
+
+                //latituteField.setText(String.valueOf(lat));
+                //longitudeField.setText(String.valueOf(lng));
+                return finalAddress;
+                //Toast.makeText(getApplicationContext(), finalAddress, Toast.LENGTH_SHORT).show();
+
+
+            } catch (IOException e) {
+            } catch (NullPointerException e) {
             }
 
-            String finalAddress = builder.toString(); //This is the complete address.
-
-            //latituteField.setText(String.valueOf(lat));
-            //longitudeField.setText(String.valueOf(lng));
-            return finalAddress;
-           // Toast.makeText(getApplicationContext(), finalAddress, Toast.LENGTH_SHORT).show();
-
-
-        } catch (IOException e) {}
-        catch (NullPointerException e) {}
-
+            return null;
+        }
         return null;
-
     }
 
 
