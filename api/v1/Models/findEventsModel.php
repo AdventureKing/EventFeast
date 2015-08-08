@@ -58,9 +58,13 @@
 			if($eventSearchRequestId != null){
 				//$events = $dbNeo->getEventsByEsrId($eventSearchRequestId);
 				$data = $dbNeo->findEventsBySearch($this->eventDesc, $filters);
-				$events = neo4j_findEvents($this->eventDesc, $filters, $data);
+				if($data != null){
+					$events = neo4j_findEvents($this->eventDesc, $filters, $data);
+				}
 				if($events != null){
 					$this->items = $events;
+				} else{
+					$this->items = array();
 				}
 			}
 

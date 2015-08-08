@@ -1,6 +1,7 @@
 <?php
 	$app->get('/events/find/:eventDesc', function ($eventDesc) use ($app){
 
+		$eventDesc = trim($eventDesc);
 		$model = new findEventsModel($eventDesc, $app);
 		$saveString = $eventDesc.
 					$app->request()->params('userLat').
@@ -15,6 +16,7 @@
 		//echo $json_response;
 		$json_response = preg_replace('/\\\"/',"\"", $json_response);
 		echo $json_response;
+		
 		/*
 		$options = array(
 		'lifeTime' => 86400, //24 hours

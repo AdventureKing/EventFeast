@@ -181,26 +181,45 @@
 		echoRespnse(200, $response);
 	});
 
+	$app->get('/user/neo/posts', function() use ($app) {
+		$db = new DbHandlerNeo();
+		$result = $db->getAllPosts();
+
+		echoRespnse(200, $result);
+	});
+
 	$app->post('/user/neo/post', function() use ($app) {
 		// check for required params
-		verifyRequiredParams(array('userId', 'eventId', 'eventSource', 'postMsg'));
+		verifyRequiredParams(array('userId', 'eventId', 'eventSource', 'postMsg', 'userLat', 'userLng'));
 
 		// reading post params
 		$userId = $app->request()->post('userId');
 		$eventId = $app->request()->post('eventId');
 		$eventSource = $app->request()->post('eventSource');
 		$postMsg = $app->request()->post('postMsg');
+		$postLat = $app->request()->post('userLat');
+		$postLng = $app->request()->post('userLng');
 
 		$postInfo = array();
 		$postInfo['message'] = $postMsg;
+		$postInfo['latitude'] = $postLat;
+		$postInfo['longitude'] = $postLng;
 
 		$db = new DbHandlerNeo();
 
 		// TODO: Check if event exists too
 		if($db->isUserExistsByUserId($userId)){
 			$result = $db->createPostNoPhotos($userId, $eventId, $eventSource, $postInfo);
-		} else{
-			$result = false;
+		} else{ //Try and create parse user if exists in parse
+			$dbParse = new DbHandlerParse();
+			$parseUser = $dbParse->getUserById($userId);
+
+			if(null != $parseUser){
+				$db->createUser($parseUser->getObjectId(), $parseUser->get('email'), $parseUser->get('username'));
+				$result = $db->createPostNoPhotos($parseUser->getObjectId(), $eventId, $eventSource, $postInfo);
+			} else{
+				$result = false;
+			}
 		}
 		
 		if($result == 'POST_CREATED'){
@@ -212,6 +231,7 @@
 		} else{
 			$response['result'] = 'error';
 			$response['message'] = 'Unknown Error. Post creation failed.';
+			$response['error_info'] = $result;
 		}
 
 		echoRespnse(200, $response);

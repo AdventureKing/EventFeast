@@ -33,20 +33,41 @@
 			}
 
 			$postMessage = $postInfoArr['message'];
+			$userLat = $postInfoArr['latitude'];
+			$userLng = $postInfoArr['longitude'];
 			$timestamp = date("Y-m-d H:i:s"); 
 
-	        $query = 'MATCH (user:User) WHERE user.userId= {uid}
+			if($eventTagSource == "internal"){
+				$query = 'MATCH (user:User) WHERE user.userId= {uid}
 	        		MATCH (e:Event) WHERE id(e) = {eid} 
 	        		CREATE (p:Post)
-	        		SET p.message = {post_msg}, p.timestamp = {ts}
+	        		SET p.message = {post_msg}, p.latitude = {lat}, p.longitude = {lng}, p.timestamp = {ts}
 	        		CREATE (user)-[:CREATED]->(p), (p)-[:TAGS]->(e)
 	        		RETURN p';
-	        $params = [
-	            'uid' => $userId,
-	            'post_msg' => $postMessage,
-	            'ts' => $timestamp,
-	            'eid' => intval($eventTagId)
-	            ];
+		        $params = [
+		            'uid' => $userId,
+		            'post_msg' => $postMessage,
+		            'lat' => floatval($userLat),
+		            'lng' => floatval($userLng),
+		            'ts' => $timestamp,
+		            'eid' => intval($eventTagId)
+		            ];
+	        } else{
+	        	$query = 'MATCH (user:User) WHERE user.userId= {uid}
+	        		MATCH (e:Event) WHERE e.external_id = {eid} 
+	        		CREATE (p:Post)
+	        		SET p.message = {post_msg}, p.latitude = {lat}, p.longitude = {lng}, p.timestamp = {ts}
+	        		CREATE (user)-[:CREATED]->(p), (p)-[:TAGS]->(e)
+	        		RETURN p';
+		        $params = [
+		            'uid' => $userId,
+		            'post_msg' => $postMessage,
+		            'lat' => floatval($userLat),
+		            'lng' => floatval($userLng),
+		            'ts' => $timestamp,
+		            'eid' => $eventTagId
+		            ];
+	        }
 
 	        $result = $this->neoClient->sendCypherQuery($query, $params)->getResult();
 
@@ -54,7 +75,7 @@
 	            return 'POST_CREATED';
 	        }
 	 
-	        return 'UNKNOWN_ERROR';
+	        return "UNKNOWN_ERROR";
 		}
 
 		public function deletePostNoPhotos($userId, $postId){
@@ -75,6 +96,30 @@
 	        }
 	 
 	        return 'UNKNOWN_ERROR';
+		}
+
+		public function getAllPosts(){
+			$query = "MATCH (posts:Post) MATCH (users:User)-[:CREATED]->(posts) MATCH (posts)-[:TAGS]->(events:Event) RETURN posts,users,events";
+
+	        $result = $this->neoClient->sendCypherQuery($query)->getRows();
+
+	        if (null !== $result) {
+	        	$success = 'success';
+				$message = "This is all the posts!";
+				$numFound = count($results['p']);
+	        	$response = array('result' => $success, 
+	        		'message' => $message, 
+	        		'numFound' => $numFound, 
+	        		array('posts' => $results['posts']), 
+	        		array('users' => $results['users']), 
+	        		array('events' => $result['events'])
+	        		);
+	            return $response;
+	        } else{
+	        	$response['result'] = 'error';
+				$response['message'] = 'Unknown Error. Post creation failed.';
+				return $response;
+	        }
 		}
 
 		public function getPostCreator($postId){
