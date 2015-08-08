@@ -77,7 +77,7 @@ public class newsfeedPostDetail extends Fragment {
         });
 
         eventDesc = (TextView) view.findViewById(R.id.EventDesc);
-        eventDesc.setText(obj.getTitle() + "\r\\\r\\nn " + obj.getDescription());
+        eventDesc.setText(obj.getTitle() + "\r\n " + obj.getDescription());
 
         username = (TextView) view.findViewById(R.id.userNameTag);
         username.setText(obj.getUsername());
