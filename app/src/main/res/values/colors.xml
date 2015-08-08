@@ -2,4 +2,14 @@
 <resources>
     <color name="PrimaryColor">#2196F3</color>
     <color name="PrimaryDarkColor">#1976D2</color>
+    <color name="primaryButtonColor">#2196F3</color>
+    <color name="secondaryButtonColor">#f37e21</color>
+    <color name="primary_dark">#303f9f</color>
+    <color name="ripple">#303f9f</color>
+
+
+    <color name="loadingorange">#FF9900</color>
+    <color name="loadinggreen">#009900</color>
+    <color name="loadingblue">#000099</color>
+
 </resources>

@@ -3,33 +3,21 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/account_settings"
-            android:checked="false"
-            android:icon="@drawable/ic_account_box_black_24dp"
-            android:title="@string/accountSettings" />
-        <item
-            android:id="@+id/newsfeed"
+            android:id="@+id/feedsTab"
             android:checked="false"
             android:icon="@drawable/ic_local_library_black_24dp"
-            android:title="@string/newsfeed" />
-        <item
-            android:id="@+id/eventfeed"
-            android:checked="false"
-            android:icon="@drawable/ic_event_seat_black_24dp"
-            android:title="@string/eventfeed" />
-
-        <item
-            android:id="@+id/messaging"
-            android:checked="false"
-            android:icon="@drawable/ic_inbox_black"
-            android:title="@string/messaging" />
+            android:title="@string/feed" />
 
         <item
             android:id="@+id/my_experiences"
             android:checked="false"
             android:icon="@drawable/ic_star_black"
             android:title="@string/My_experiences" />
-
+        <item
+            android:id="@+id/users"
+            android:checked="false"
+            android:icon="@drawable/ic_tag_faces_black_24dp"
+            android:title="@string/users" />
         <item
             android:id="@+id/search_event"
             android:checked="false"
@@ -39,15 +27,9 @@
         <item
             android:id="@+id/activity_map"
             android:checked="false"
-            android:icon="@drawable/ic_event_black_24dp"
-            android:title="Search Location" />
-
-
-        <item
-            android:id="@+id/connect"
-            android:checked="false"
-            android:icon="@drawable/ic_share_black_24dp"
-            android:title="@string/connect" />
+            android:icon="@drawable/ic_location_black_44x40"
+            android:title="Create New Event"
+            android:visible="false"/>
         <item
             android:id="@+id/logoutDrawer"
             android:checked="false"

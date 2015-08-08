@@ -6,9 +6,15 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     >
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/registrationPage">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/tool_bar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,15 +28,16 @@
             android:ems="10"
 
             android:id="@+id/firstName"
-            android:layout_marginTop="44dp"
+            android:padding="10dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/firstNameImage"
-            android:src="@drawable/ic_recent_actors_black_44x40"
+            android:src="@drawable/ic_recent_actors_black_24dp_1x"
             android:layout_alignBottom="@+id/firstName"
+            android:layout_marginBottom="5dp"
             android:layout_alignRight="@+id/passwordImage"
             android:layout_alignEnd="@+id/passwordImage" />
 
@@ -39,7 +46,7 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:ems="10"
-
+            android:padding="10dp"
             android:id="@+id/lastName"
             android:layout_below="@+id/firstName"
             android:layout_alignLeft="@+id/firstName"
@@ -48,8 +55,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/lastNameImage"
-            android:src="@drawable/ic_recent_actors_black_44x40"
+            android:src="@drawable/ic_recent_actors_black_24dp_1x"
             android:layout_alignBottom="@+id/lastName"
+            android:layout_marginBottom="5dp"
             android:layout_alignRight="@+id/passwordImage"
             android:layout_alignEnd="@+id/passwordImage" />
 
@@ -58,47 +66,49 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:ems="10"
-
+            android:padding="10dp"
             android:id="@+id/userName"
             android:layout_below="@+id/lastName"
             android:layout_alignLeft="@+id/lastName"
             android:layout_alignStart="@+id/lastName" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:ems="10"
-
-            android:id="@+id/email"
-            android:layout_below="@+id/userName"
-            android:layout_alignLeft="@+id/userName"
-            android:layout_alignStart="@+id/userName" />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/emailImage"
-            android:src="@drawable/ic_email_black_44x40"
+            android:src="@drawable/ic_email_black_24dp_1x"
             android:layout_alignBottom="@+id/email"
+            android:layout_marginBottom="5dp"
             android:layout_alignRight="@+id/passwordImage"
             android:layout_alignEnd="@+id/passwordImage" />
-
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:ems="10"
+            android:padding="10dp"
+            android:id="@+id/email"
+            android:layout_below="@+id/userName"
+            android:layout_alignLeft="@+id/userName"
+            android:layout_alignStart="@+id/userName" />
 
-            android:id="@+id/emailVerify"
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:ems="10"
+            android:padding="10dp"
+            android:id="@+id/location"
             android:layout_below="@+id/email"
             android:layout_alignLeft="@+id/email"
             android:layout_alignStart="@+id/email" />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/emailVerifyImage"
-            android:src="@drawable/ic_email_black_44x40"
-            android:layout_alignBottom="@+id/emailVerify"
+            android:id="@+id/locationImage"
+            android:src="@drawable/ic_location_on_black_24dp_1x"
+            android:layout_alignBottom="@+id/location"
+            android:layout_marginBottom="5dp"
             android:layout_alignRight="@+id/passwordImage"
             android:layout_alignEnd="@+id/passwordImage" />
 
@@ -108,16 +118,17 @@
             android:inputType="textPassword"
             android:ems="10"
             android:id="@+id/userPassword"
+            android:padding="10dp"
             android:layout_centerVertical="true"
-            android:layout_alignLeft="@+id/emailVerify"
-            android:layout_alignStart="@+id/emailVerify" />
+            android:layout_alignLeft="@+id/location"
+            android:layout_alignStart="@+id/location" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:ems="10"
-
+            android:padding="10dp"
             android:id="@+id/userPasswordVerify"
             android:layout_below="@+id/userPassword"
             android:layout_alignLeft="@+id/userPassword"
@@ -127,28 +138,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/userNameImage"
-            android:src="@drawable/portrait"
+            android:src="@drawable/ic_portrait_black_24dp_1x"
             android:layout_alignBottom="@+id/userName"
+            android:layout_marginBottom="5dp"
             android:layout_alignRight="@+id/passwordImage"
             android:layout_alignEnd="@+id/passwordImage" />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/passwordImage"
-            android:src="@drawable/ic_lock_open_black_44x40"
-            android:layout_alignTop="@+id/userPassword"
+            android:src="@drawable/ic_lock_open_black_24dp_1x"
+            android:layout_alignBottom="@+id/userPassword"
+            android:layout_marginBottom="5dp"
             android:layout_toLeftOf="@+id/userPassword"
             android:layout_toStartOf="@+id/userPassword" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Register"
-            android:id="@+id/registerButton"
-            android:background="@drawable/btnorange_360"
-            android:textColor="#ff00f5ff"
-            android:layout_above="@+id/cancel"
-            android:layout_centerHorizontal="true" />
+
 
 
 
@@ -156,19 +161,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageView"
-            android:src="@drawable/ic_lock_open_black_44x40"
+            android:src="@drawable/ic_lock_open_black_24dp_1x"
             android:layout_alignBottom="@+id/userPasswordVerify"
+            android:layout_marginBottom="5dp"
             android:layout_toLeftOf="@+id/userPasswordVerify"
             android:layout_toStartOf="@+id/userPasswordVerify" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cancelRegistration"
-            android:id="@+id/cancel"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/btnbluee_360" />
+
 
         <EditText
             android:layout_width="wrap_content"
@@ -176,6 +175,7 @@
             android:id="@+id/birthday"
             android:text="@string/birthdaySelect"
             android:editable="false"
+            android:padding="10dp"
             android:focusableInTouchMode="false"
             android:layout_below="@+id/userPasswordVerify"
             android:layout_alignRight="@+id/userPasswordVerify"
@@ -186,8 +186,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/birthdayImage"
-            android:src="@drawable/ic_redeem_black_44x40"
+            android:src="@drawable/ic_redeem_black_24dp_1x"
             android:layout_alignBottom="@+id/birthday"
+            android:layout_marginBottom="5dp"
             android:layout_toLeftOf="@+id/userPasswordVerify"
             android:layout_toStartOf="@+id/userPasswordVerify" />
 
@@ -195,7 +196,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/userImageIcon"
-            android:src="@drawable/ic_wallpaper_black_44x40"
+            android:src="@drawable/ic_wallpaper_black_24dp_1x"
             android:layout_below="@+id/birthdayImage"
             android:layout_alignLeft="@+id/birthdayImage"
             android:layout_alignStart="@+id/birthdayImage" />
@@ -209,12 +210,60 @@
             android:padding="15dp"
             android:src = "@drawable/profile"
             android:layout_below="@+id/birthday"
-            android:layout_alignLeft="@+id/registerButton"
-            android:layout_alignStart="@+id/registerButton"
-            android:layout_above="@+id/registerButton" />
+            android:layout_alignStart="@+id/birthday"
+            android:layout_alignLeft="@+id/birthday"/>
 
+        <ProgressBar
+            android:id="@+id/loadingPanel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="invisible"
+            android:indeterminate="true" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/register"
+                    android:textColor="#FFFFFF"
+                    android:id="@+id/registerButton"
+                    android:background="@color/PrimaryColor"
+                    android:drawableLeft="@drawable/ic_check_circle_white_24dp_1x"
+                    android:paddingLeft="14dp"
+                    android:layout_alignParentBottom="true" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cancelRegistration"
+                    android:textColor="#ffffff"
+                    android:id="@+id/cancel"
+                    android:background="@color/secondaryButtonColor"
+                    android:drawableLeft="@drawable/ic_remove_circle_outline_white_24dp_1x"
+                    android:paddingLeft="14dp"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+        </LinearLayout>
 
     </RelativeLayout>
+
+
+
 </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

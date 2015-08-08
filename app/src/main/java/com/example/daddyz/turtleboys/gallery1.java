@@ -1,46 +1,43 @@
 package com.example.daddyz.turtleboys;
 
 import android.app.AlertDialog;
-import android.content.ContentResolver;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.Point;
 import android.media.ExifInterface;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.util.LruCache;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
-
+import com.example.daddyz.turtleboys.newsfeed.newsfeedPostForm;
 import com.example.daddyz.turtleboys.subclasses.Camera;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
-import com.parse.LogOutCallback;
-
+import com.example.daddyz.turtleboys.subclasses.ThumbnailGetter;
+import com.parse.ParseUser;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.concurrent.CountDownLatch;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,19 +46,24 @@ import java.util.regex.Pattern;
  */
 public class gallery1 extends AppCompatActivity {
     private Toolbar toolbar;
-    private Button b1;
     private Uri fileUri;
     private GridView gridview;
     private AsyncTaskLoadFiles myAsyncTaskLoadFiles;
     private ImageAdapter myImageAdapter;
-    private Pattern pattern = Pattern.compile("/GigIT/(.*)$");
+    private Pattern pattern;
     private HashMap<Integer, Bitmap> finishedPictures;
     private String title;
-
+    private String userName;
+    private FloatingActionButton fab;
+    private Point point = new Point();
+    private int pictureResolution;
+    private FragmentManager fragManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindowManager().getDefaultDisplay().getSize(point);  //Get Screen Resolution
+        pictureResolution = (point.x / 2) - 24;  //Calculate gallery item sizes
         setContentView(R.layout.gallery);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -78,21 +80,51 @@ public class gallery1 extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        b1 = (Button) findViewById(R.id.camerabutton);
-        b1.setOnClickListener(new View.OnClickListener() {
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                // create Intent to take a picture and return control to the calling application
-                Camera camera = new Camera(gallery1.this);
-                fileUri = camera.startCamera();
+            public void onClick(View view) {
+            // create Intent to take a picture and return control to the calling application
+            Camera camera = new Camera(gallery1.this, userName);
+            fileUri = camera.startCamera();
             }
         });
 
+        //Setup the Fragment Manager
+        fragManager = getFragmentManager();
+
+        //fragManager.addOnBackStackChangedListener(getListener());
+
         //Prepare Gallery View
         gridview = (GridView) findViewById(R.id.gridview);
+        //gridview.setHorizontalSpacing(point.x / 108);  //Set horizontal spacing between columns
         myImageAdapter = new ImageAdapter(this);
         gridview.setAdapter(myImageAdapter);
         finishedPictures = new HashMap<>();
+
+        //Get Username for directory and sharing customization
+        if (GigUser.getCurrentUser() == null){
+            Toast.makeText(getApplicationContext(), "You should be logged in, and thus not able to see this", Toast.LENGTH_LONG).show();
+            finish();
+        }
+        final GigUser currentUser = ParseUser.createWithoutData(GigUser.class, ParseUser.getCurrentUser().getObjectId());
+        userName = currentUser.getUsername().toString();
+        pattern = Pattern.compile("/GigIT/" + userName + "/(.*)$");
+
+        //Check and if non-existent, create a GigIT photo directory
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "GigIT/" + userName);
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                Log.d("MyCameraApp", "failed to create directory");
+            }
+        }
 
   /*
    * Move to asyncTaskLoadFiles String ExternalStorageDirectoryPath =
@@ -185,8 +217,12 @@ public class gallery1 extends AppCompatActivity {
             });
             alertDialog.setNegativeButton("Share", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                    Toast.makeText(getApplicationContext(), "Picture share feature not yet implemented", Toast.LENGTH_LONG).show();
+                    newsfeedPostForm fragment = new newsfeedPostForm();
+                    Bundle args = new Bundle();
+                    args.putString("GalleryPic", title);
+                    fragment.setArguments(args);
+                    fragManager.beginTransaction().replace(R.id.gallery, fragment, "NewsFeedPostForm").addToBackStack("NewsFeedPostForm").commit();
+                    return;
                 }
             });
 
@@ -280,7 +316,7 @@ public class gallery1 extends AppCompatActivity {
                     .getExternalStorageDirectory().getAbsolutePath();
 
             //String targetPath = ExternalStorageDirectoryPath + "/test/";
-            String targetPath = ExternalStorageDirectoryPath + "/Pictures/GigIT";
+            String targetPath = ExternalStorageDirectoryPath + "/Pictures/GigIT/" + userName;
             targetDirector = new File(targetPath);
             myTaskAdapter.clear();
 
@@ -362,7 +398,7 @@ public class gallery1 extends AppCompatActivity {
             if (convertView == null) { // if it's not recycled, initialize some
                 // attributes
                 imageView = new ImageView(mContext);
-                imageView.setLayoutParams(new GridView.LayoutParams(512, 512));
+                imageView.setLayoutParams(new GridView.LayoutParams(pictureResolution, pictureResolution));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setPadding(8, 8, 8, 8);
 
@@ -390,7 +426,21 @@ public class gallery1 extends AppCompatActivity {
                     if(itemList.size() <= position){
                         return null;
                     }
-                    Bitmap bm = decodeSampledBitmapFromUri(itemList.get(position), 512, 512);
+                    //Bitmap bm = decodeSampledBitmapFromUri(itemList.get(position), 512, 512);
+                    //Bitmap bm = MediaStore.Images.Thumbnails.getThumbnail(getContentResolver(), 0, MediaStore.Images.Thumbnails.MINI_KIND, (BitmapFactory.Options) null);
+                    Bitmap bm = null;
+                    try {
+                        bm = ThumbnailGetter.getThumbnail(getContentResolver(), itemList.get(position));
+
+                        //Check if bitmap is empty
+                        Bitmap empty = Bitmap.createBitmap(bm.getWidth(), bm.getHeight(), bm.getConfig());
+                        if (bm.sameAs(empty)){
+                            bm = decodeSampledBitmapFromUri(itemList.get(position), 512, 512);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        bm = decodeSampledBitmapFromUri(itemList.get(position), 512, 512);
+                    }
                     //Rotate images to correct orientation
                     try {
                         ExifInterface exif = new ExifInterface(itemList.get(position));
@@ -496,5 +546,31 @@ public class gallery1 extends AppCompatActivity {
             }
 
             return inSampleSize;
+        }
+
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu){
+            if (menu != null){
+                menu.clear();
+
+                //The following is how to hide individual menu items
+                //menu.findItem(R.id.action_gallery).setVisible(false);
+                //menu.findItem(R.id.action_settings).setVisible(false);
+            }
+            return true;
+        }
+
+        @Override
+        public void onBackPressed() {
+            if(fragManager.getBackStackEntryCount() > 0 ) {
+                fragManager.popBackStack();
+            } else {
+                super.onBackPressed();
+            }
+
+            FrameLayout frame =(FrameLayout) findViewById(R.id.frame);
+            if(frame.getVisibility() == View.INVISIBLE){
+                frame.setVisibility(View.VISIBLE);
+            }
         }
     }

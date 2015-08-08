@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:isScrollContainer="true"
+    >
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:screenOrientation = "reverseLandscape"
+        >
+
+       <include
+            android:id="@+id/toolbar"
+            layout="@layout/tool_bar"
+            />
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+                <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/frameLayout">
+
+                    <ImageView
+                        android:id="@+id/eventImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:contentDescription="event_image"
+                        android:scaleType="fitXY"
+                        android:background="@drawable/background_header_new" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/EventTitle"
+                        android:text="EVENT_TITLE"
+                        android:textSize="20sp"
+                        android:layout_alignBottom="@+id/eventImage"
+                        android:layout_weight="1"
+                        android:ellipsize="none"
+                        android:maxLines="100"
+                        android:scrollHorizontally="false"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:padding="12dip"
+                        android:background="#AA000000"
+                        android:textColor="#ffffffff"
+                        android:layout_gravity="center_horizontal|bottom" />
+
+                </FrameLayout>
+
+
+                <TextView
+                    android:id="@+id/EventDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="EVENT_DESCRIPTION"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_alignTop="@+id/eventdesctopline"
+                    android:layout_marginTop="20dp" />
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Add To Calendar"
+                    android:id="@+id/AddToCalendarButton"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/EventDesc"
+                    android:paddingTop="5dp"
+                    android:layout_marginTop="20dp" />
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Share With Friends"
+                    android:id="@+id/ShareButton"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/AddToCalendarButton"
+                    android:paddingTop="5dp"
+                    />
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Buy Tickets"
+                    android:id="@+id/BuyTicketsButton"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/ShareButton"
+                    android:paddingTop="5dp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/datasource"
+                    android:textColor="#ffffff"
+                    android:textSize="12dp"
+                    android:background="@color/PrimaryColor"
+                    android:layout_below="@+id/frameLayout"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:padding="5dp"
+                    android:autoText="false" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/price_range"
+                    android:textColor="#ffffff"
+                    android:textSize="12dp"
+                    android:background="@color/PrimaryColor"
+                    android:padding="5dp"
+                    android:autoText="false"
+                    android:layout_below="@+id/frameLayout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:visibility="gone"/>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_below="@+id/frameLayout"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="15dp"
+                    android:id="@+id/eventdesctopline"
+                    android:layout_alignParentTop="true" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_above="@+id/AddToCalendarButton"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="-10dp" />
+
+                <TextView
+                    android:id="@+id/datetime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="DATETIME"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_below="@+id/frameLayout"
+                    android:layout_alignLeft="@+id/EventDesc"
+                    android:layout_alignStart="@+id/EventDesc"
+                    android:layout_alignBottom="@+id/eventdesctopline" />
+
+            </RelativeLayout>
+        </ScrollView>
+    </LinearLayout>
+</android.support.v4.widget.DrawerLayout>

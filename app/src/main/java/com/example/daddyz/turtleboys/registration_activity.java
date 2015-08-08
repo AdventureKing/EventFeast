@@ -10,42 +10,49 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.media.ExifInterface;
-import android.net.Uri;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import com.example.daddyz.turtleboys.subclasses.ApiKeyGenerator;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
+import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseImageView;
 import com.parse.SignUpCallback;
-
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 //import java.text.ParseException;
 
 /**
  * Created by Jinbir on 6/15/2015.
  */
-public class registration_activity extends Activity {
+public class registration_activity extends AppCompatActivity {
     private EditText firstName;
     private EditText lastName;
     private EditText userName;
     private EditText email;
-    private EditText emailVerify;
+    private EditText userHome;
     private EditText userPassword;
     private EditText userPasswordVerify;
     private ParseImageView userImageFile;
@@ -54,6 +61,8 @@ public class registration_activity extends Activity {
     private static final int SELECT_PHOTO = 100;
     private DialogFragment birthdaySelector;
     private EditText birthdayText;
+    private Context context;
+    private String address = "San Antonio TX";
 
     //private DialogFragment imageSelector;
     private Fragment imageSelector;
@@ -62,12 +71,34 @@ public class registration_activity extends Activity {
     private Button registerButton;
     private Button cancelButton;
 
+    private Toolbar toolbar;
+    private ActionBar actionBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+
+        context = getApplicationContext();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_activity);
+        View rootView = findViewById(R.id.registrationPage);
+        rootView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.
+                        INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                return true;
+            }
+        });
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setTitle(R.string.registration);
+        //toolbar.setTitle(R.string.registration);
+
 
         userImageFile = (ParseImageView) findViewById(R.id.profile_image);
 
@@ -83,9 +114,6 @@ public class registration_activity extends Activity {
         });
 
 
-
-
-
         userImageFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +126,7 @@ public class registration_activity extends Activity {
         //user image is filled
 
 
+        //searchLocationByName(context, address);
 
 
         firstName = (EditText) findViewById(R.id.firstName);
@@ -112,8 +141,8 @@ public class registration_activity extends Activity {
         email = (EditText) findViewById(R.id.email);
         email.setHint(R.string.email_text);
 
-        emailVerify = (EditText) findViewById(R.id.emailVerify);
-        emailVerify.setHint(R.string.emailVerify_text);
+        userHome = (EditText) findViewById(R.id.location);
+        userHome.setHint("Location");
 
         userPassword = (EditText) findViewById(R.id.userPassword);
         userPassword.setHint(R.string.password_text);
@@ -125,47 +154,54 @@ public class registration_activity extends Activity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startLoading();
                 //Toast.makeText(getApplicationContext(),"BUTTON CLICKED", Toast.LENGTH_SHORT).show();
 
                 //Check to see if email and verify email fields are the same
-                if ( !(email.getText().toString().equals(emailVerify.getText().toString())) ) {
+              /*  if ( !(email.getText().toString().equals(userHome.getText().toString())) ) {
                     Toast.makeText(getApplicationContext(), R.string.emailNoMatch, Toast.LENGTH_SHORT).show();
                     return;
-                }
+                }*/
 
                 //Check to see if passwords match
                 if ( !(userPassword.getText().toString().equals(userPasswordVerify.getText().toString())) ) {
                     Toast.makeText(getApplicationContext(), R.string.passwordNoMatch, Toast.LENGTH_SHORT).show();
+                    stopLoading();
                     return;
                 }
 
                 //Check if firstName is empty
                 if ( firstName.getText().toString().isEmpty() ) {
                     Toast.makeText(getApplicationContext(), R.string.firstNameEmpty, Toast.LENGTH_SHORT).show();
+                    stopLoading();
                     return;
                 }
 
                 //Check if lastName is empty
                 if ( lastName.getText().toString().isEmpty() ) {
                     Toast.makeText(getApplicationContext(), R.string.lastNameEmpty, Toast.LENGTH_SHORT).show();
+                    stopLoading();
                     return;
                 }
 
                 //Check if userName is empty
                 if ( userName.getText().toString().isEmpty() ) {
                     Toast.makeText(getApplicationContext(), R.string.userNameEmpty, Toast.LENGTH_SHORT).show();
+                    stopLoading();
                     return;
                 }
 
                 //Check if email is empty
                 if ( email.getText().toString().isEmpty() ) {
                     Toast.makeText(getApplicationContext(), R.string.emailEmpty, Toast.LENGTH_SHORT).show();
+                    stopLoading();
                     return;
                 }
 
                 //Check if password is empty
                 if ( userPassword.getText().toString().isEmpty() ) {
                     Toast.makeText(getApplicationContext(), R.string.passwordEmpty, Toast.LENGTH_SHORT).show();
+                    stopLoading();
                     return;
                 }
 
@@ -173,6 +209,7 @@ public class registration_activity extends Activity {
                 /*
                 if ( birthdayText.getText().toString().equals(R.string.birthdaySelect) ) {
                     Toast.makeText(getApplicationContext(), "Birthday is empty", Toast.LENGTH_SHORT).show();
+                    stopLoading();
                     return;
                 }
                 */
@@ -187,7 +224,8 @@ public class registration_activity extends Activity {
                 //creating date for database
                 String[] dates = birthdayText.getText().toString().split("/");
                 if ( dates.length < 3 ) {
-                    Toast.makeText(getApplicationContext(), R.string.birthdaySelect , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.birthdaySelect, Toast.LENGTH_SHORT).show();
+                    stopLoading();
                     return;
                 }
 
@@ -201,16 +239,20 @@ public class registration_activity extends Activity {
 
                 birthday = new Date(tempYear,tempMonth,tempDay);
 
-
                 //Verify info
                 //Create new account
                 GigUser newUser = new GigUser();
-                newUser.setUsername(userName.getText().toString());
+                newUser.setUsername(userName.getText().toString().trim());
                 newUser.setPassword(userPassword.getText().toString());
-                newUser.setEmail(email.getText().toString());
+                newUser.setEmail(email.getText().toString().trim());
                 newUser.setBirthday(birthday);
-                newUser.setFirstName(firstName.getText().toString());
-                newUser.setLastName(lastName.getText().toString());
+                newUser.setFirstName(firstName.getText().toString().trim());
+                newUser.setLastName(lastName.getText().toString().trim());
+                newUser.setUserTotalPost(0);
+                newUser.setUserEventsAttended(0);
+                newUser.setUserLevel(0);
+                newUser.setApiKey(new ApiKeyGenerator(newUser.getEmail()).generateApiKey());
+                newUser.setUserHome(searchLocationByName(context, userHome.getText().toString()));
 
                 if(userImageParseFile != null) {
 
@@ -225,13 +267,13 @@ public class registration_activity extends Activity {
 
                 //Toast.makeText(getApplicationContext(),"Gonna make user", Toast.LENGTH_SHORT).show();
 
+
                newUser.signUpInBackground(new SignUpCallback() {
 
                    @Override
                    public void done(com.parse.ParseException e) {
                        if (e == null) {
-
-
+                           stopLoading();
                            Intent intent = new Intent(getApplicationContext(), maindrawer.class);
                            finish();
                            startActivity(intent);
@@ -255,13 +297,12 @@ public class registration_activity extends Activity {
                                case ParseException.PASSWORD_MISSING:
                                    Toast.makeText(getApplicationContext(), "Missing Password", Toast.LENGTH_SHORT).show();
                            }
+                           stopLoading();
                        }
                    }
 
 
                });
-
-
             }
         });
 
@@ -278,6 +319,43 @@ public class registration_activity extends Activity {
             }
         });
     }
+
+    public void startLoading() {
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+    }
+
+    public void stopLoading() {
+        findViewById(R.id.loadingPanel).setVisibility(View.INVISIBLE);
+    }
+
+
+    public static ParseGeoPoint searchLocationByName(Context context, String locationName){
+        Geocoder geoCoder = new Geocoder(context, Locale.getDefault());
+        ParseGeoPoint gp = null;
+        LatLng latlon = null;
+       // Address ad = null;
+        try {
+            List<Address> addresses = geoCoder.getFromLocationName(locationName, 1);
+            for(Address address : addresses){
+                System.out.println(address);
+                System.out.println(address.getLatitude());
+                System.out.println(address.getLongitude());
+
+                //latlon = new LatLng(address.getLatitude(), address.getLongitude());
+                //ParseGeoPoint gp = new ParseGeoPoint(latlon);
+
+                gp = new ParseGeoPoint(address.getLatitude(), address.getLongitude());
+                //address.getAddressLine(1);
+               // ad = address;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return gp;
+    }
+
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(resultCode == RESULT_OK) {

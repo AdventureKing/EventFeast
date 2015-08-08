@@ -2,32 +2,38 @@ package com.example.daddyz.turtleboys.eventfeed;
 
 import android.app.Activity;
 import android.content.Context;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.daddyz.turtleboys.R;
-
+import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 /**
  * Created by snow on 6/17/2015.
  */
-public class eventfeedAdapter extends ArrayAdapter<eventfeedObject> {
+public class eventfeedAdapter extends ArrayAdapter<gEventObject> {
 
     private Context context;
     private int resource;
-    private ArrayList<eventfeedObject> objects;
+    private ArrayList<gEventObject> eventObjects;
+    private Boolean AnimationFlag;
+    private int lastPosition = -1;
 
-    private int[] colors = new int[] { 0x30FF0000, 0x300000FF };
-    public eventfeedAdapter(Context context, int resource, ArrayList<eventfeedObject> objects) {
-        super(context, resource,objects);
-        this.context=context;
-        this.resource=resource;
-        this.objects=objects;
+
+    public eventfeedAdapter(Context context, int resource, ArrayList<gEventObject> eventObjects) {
+        super(context, resource,eventObjects);
+        this.context = context;
+        this.resource = resource;
+        this.eventObjects = eventObjects;
+        this.AnimationFlag = PreferenceManager.getDefaultSharedPreferences(context).getBoolean("animation_preference", false);
     }
     //return even or odd row
     public int getItemViewType(int position) {
@@ -62,6 +68,7 @@ public class eventfeedAdapter extends ArrayAdapter<eventfeedObject> {
         View row=inflater.inflate(layoutResource,parent,false);
 
         //TextView source = (TextView) row.findViewById(R.id.sourceLine);
+        ImageView eventImage = (ImageView) row.findViewById(R.id.icon);
         TextView description = (TextView) row.findViewById(R.id.descLine);
         TextView citystate = (TextView) row.findViewById(R.id.citystateLine);
         TextView date = (TextView)row.findViewById(R.id.dateLine);
@@ -69,13 +76,39 @@ public class eventfeedAdapter extends ArrayAdapter<eventfeedObject> {
         TextView venue = (TextView) row.findViewById(R.id.venueLine);
         //TextView urlpath = (TextView) row.findViewById(R.id.urlpathLine);
 
+        String imageUrl = null;
+
+        //Loop through available image objects to populate image url
+        for(gEventImageObject image : eventObjects.get(position).getImages()){
+            if(null != image.getImage_external_url() && image.getImage_category().equals("attraction")){
+                imageUrl = image.getImage_external_url();
+                break;
+            }
+            if(null != image.getImage_external_url() && image.getImage_category().equals("venue")){
+                imageUrl = image.getImage_external_url();
+                break;
+            }
+        }
+
+        if(null != imageUrl){
+            Picasso.with(context).load(imageUrl).placeholder(R.drawable.events_calendar_icon).resize(200, 150).into(eventImage);
+        } else{
+            Picasso.with(context).load(R.drawable.events_calendar_icon).resize(80, 150).into(eventImage);
+        }
+
         //source.setText(objects.get(position).getEventSource());
-        description.setText(objects.get(position).getEventDesc());
-        citystate.setText(objects.get(position).getEventCity() + "," + objects.get(position).getEventState());
-        date.setText(objects.get(position).getEventDate());
-        time.setText(objects.get(position).getEventTime());
-        venue.setText(objects.get(position).getEventVenue());
+        description.setText(eventObjects.get(position).getTitle());
+        citystate.setText(eventObjects.get(position).getCity_name() + "," + eventObjects.get(position).getState_name());
+        date.setText(eventObjects.get(position).getStart_date_month().get(2) + " " + eventObjects.get(position).getStart_date_day().get(0) + ", " + eventObjects.get(position).getStart_date_year().get(0));
+        time.setText(eventObjects.get(position).getStart_date_time().get(2));
+        venue.setText(eventObjects.get(position).getVenue_name() + " (" + eventObjects.get(position).getDistance() + " mi)");
         //urlpath.setText(objects.get(position).getEventURL());
+
+        if (AnimationFlag) {
+            Animation animation = AnimationUtils.loadAnimation(getContext(), (position > lastPosition) ? R.anim.up_from_bottom : R.anim.bottom_from_up);
+            row.startAnimation(animation);
+            lastPosition = position;
+        }
 
 
         return row;

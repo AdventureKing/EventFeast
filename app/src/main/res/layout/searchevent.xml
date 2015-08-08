@@ -1,0 +1,274 @@
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/searchEvent">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/top">
+        <EditText
+            android:id="@+id/city"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:imeOptions="actionDone"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/ic_location_on_black_24dp_1x"/>
+
+        <EditText
+            android:id="@+id/state"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/city"
+            android:layout_centerHorizontal="true"
+            android:imeOptions="actionDone"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/ic_location_on_black_24dp_1x"/>
+
+        <EditText
+            android:id="@+id/keyword"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:background="@drawable/searcheventborder"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/state"
+            android:layout_marginTop="25dp"
+            android:imeOptions="actionDone"
+            android:padding="5dp"
+            android:drawableLeft="@drawable/ic_search_black_24dp_1x" />
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/second"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/searcheventborder">
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/sortGroup"
+            android:layout_marginLeft="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sort by"
+                android:id="@+id/sort" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                android:id="@+id/sortDate"
+                android:checked="true"
+                android:layout_toRightOf="@+id/sort"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Distance"
+                android:id="@+id/sortDistance"
+                android:checked="false"
+                android:layout_toRightOf="@+id/sortDate"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Relevance"
+                android:id="@+id/sortRelevance"
+                android:checked="false"
+                android:layout_toRightOf="@+id/sortDistance"/>
+        </RadioGroup>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/third"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/searcheventborder">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setSearchRadius"
+            android:id="@+id/searchRadiusText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp" />
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/searchRadius"
+            android:max="100"
+            android:progress="0"
+            android:layout_below="@+id/searchRadiusText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="0dp"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/fourth"
+    android:layout_marginTop="5dp"
+    android:background="@drawable/searcheventborder">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set Date Range"
+        android:id="@+id/setDateText"
+        android:layout_marginLeft="10dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="From"
+        android:id="@+id/fromDateText"
+        android:layout_below="@+id/setDateText"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fromDate"
+        android:text="@string/anyDay"
+        android:editable="false"
+        android:focusableInTouchMode="false"
+        android:layout_below="@+id/fromDateText"
+        android:layout_marginLeft="10dp"
+        android:drawableLeft="@drawable/ic_today_black_24dp_1x"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="To"
+        android:id="@+id/toDateText"
+        android:layout_below="@+id/setDateText"
+        android:layout_alignParentRight="true"
+        android:layout_alignLeft="@+id/toDate"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/toDate"
+        android:text="@string/anyDay"
+        android:layout_below="@+id/toDateText"
+        android:layout_alignParentRight="true"
+        android:editable="false"
+        android:focusableInTouchMode="false"
+        android:layout_marginRight="10dp"
+        android:drawableLeft="@drawable/ic_event_black_24dp_1x"/>
+</RelativeLayout>
+
+    <!--
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fifth"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/searcheventborder">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Set Time Range"
+            android:id="@+id/setTimeText" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="From"
+            android:id="@+id/fromTimeText"
+            android:layout_below="@+id/setTimeText"
+            android:layout_marginTop="10dp"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fromTime"
+            android:text="@string/anyTime"
+            android:editable="false"
+            android:focusableInTouchMode="false"
+            android:layout_below="@+id/fromTimeText"
+            android:drawableLeft="@drawable/ic_access_time_black_24dp_1x"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To"
+            android:id="@+id/toTimeText"
+            android:layout_below="@+id/setTimeText"
+            android:layout_alignParentRight="true"
+            android:layout_alignLeft="@+id/toTime"
+            android:layout_marginTop="10dp"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/toTime"
+            android:text="@string/anyTime"
+            android:layout_below="@+id/toTimeText"
+            android:layout_alignParentRight="true"
+            android:editable="false"
+            android:focusableInTouchMode="false"
+            android:drawableLeft="@drawable/ic_access_time_black_24dp_1x"/>
+    </RelativeLayout>
+    -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Search"
+                android:textColor="#FFFFFF"
+                android:id="@+id/searchButton"
+                android:background="@color/PrimaryColor"
+                android:drawableLeft="@drawable/ic_check_circle_white_24dp_1x"
+                android:paddingLeft="14dp"
+                android:layout_alignParentBottom="true" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Reset"
+                android:textColor="#FFFFFF"
+                android:id="@+id/resetButton"
+                android:background="@color/secondaryButtonColor"
+                android:drawableLeft="@drawable/ic_remove_circle_outline_white_24dp_1x"
+                android:paddingLeft="14dp"
+                android:layout_alignParentBottom="true" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>
+
+</android.support.v4.widget.DrawerLayout>

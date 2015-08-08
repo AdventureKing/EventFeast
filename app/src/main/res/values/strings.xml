@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GigIT</string>
+    <string name="app_name">EventFeast</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -15,7 +15,7 @@
     <string name="My_experiences">My Experiences</string>
     <string name="searchEvent">Search Event</string>
     <string name="accountSettings">Account Settings</string>
-    <string name="newsfeed">Newsfeed</string>
+    <string name="feed">Feast on your Feeds</string>
     <string name="connect">Connect</string>
 
     <!-- pre built options that need to phased out -->
@@ -33,10 +33,15 @@
     <string name="openDrawer">Navigation View Closed</string>
     <string name="eventfeed">Eventfeed</string>
     <string name="messaging">Messaging</string>
-    <string name="myfriends">My Friends</string>
+    <string name="myfriends">Following</string>
+    <string name="users">Users</string>
+    <string name="geofence_transition_notification_title"> Notification Title</string>
+    <string name="geofence_transition_dwell"> Transition Dwell</string>
+    <string name="geofence_transition_unknown"> Transition Unknown</string>
     <string name="myposts">My Post</string>
     <string name="mylistings">My Listings</string>
     <!-- Registration Strings -->
+    <string name="registration">Registration</string>
     <string name="confirmPassword_text">Confirm Password</string>
     <string name="register">Register</string>
     <string name="newUser">Register</string>
@@ -89,6 +94,64 @@
     <string name="unknown_geofence_transition">Unknown Transition</string>
 
     <string name="geofence_transition_notification_text">Click notification to return to app</string>
+
+
+    <!-- Settings strings -->
+    <string name="account_settings">Account Settings</string>
+    <string name="app_settings">Application Settings</string>
+    <string name="notification_setting">Personal Notifications</string>
+    <string name="default_notification_preference">true</string>
+    <string name="notification_summary">Enables notifications updating you on the status of an event you are signed up for</string>
+    <string name="animations_setting">Animations</string>
+    <string name="default_animations_preference">true</string>
+    <string name="auto_calendar_setting">Auto-Add Events to Calendar</string>
+    <string name="default_auto_calendar_preference">false</string>
+    <string name="push_setting">General Push Notifications</string>
+    <string name="default_push_preference">true</string>
+    <string name="push_summary">Enables occasional notifications about on-going events</string>
+
+    <!-- Java Packages -->
+    <string name="turtleboys_package">com.example.daddyz.turtleboys</string>
+
+    <!-- Java Classes -->
+    <string name="changeInfo_activity">com.example.daddyz.turtleboys.change_account_info_activity</string>
+
+    <!-- Account Information Settings Strings -->
+    <string name="account_password">Account Password</string>
+    <string name="account_information_summary">Change details about your account, such as password</string>
+    <string name="account_old_password">Enter Old Password</string>
+    <string name="account_password_option">New Password (optional)</string>
+    <string name="account_password_verify_option">Verify New Password</string>
+    <string name="old_password_incorrect">Old password is incorrect</string>
+    <string name="new_password_mismatch">New passwords do not match, leave blank to maintain current password</string>
+    <string name="new_password_empty">Your new password cannot be blank</string>
+
+    <!-- Search Event Strings -->
+    <string name="searchKeyword">Please enter a Keyword to search</string>
+    <string name="searchLocation">Location\n Tap to change Location</string>
+    <string name="searchCity">City</string>
+    <string name="searchState">State (Ex. TX)</string>
+    <string name="setSearchRadius">Set Search Radius\t f kms / d miles</string>
+    <string name="anyDay">Any Day</string>
+    <string name="anyTime">Any Time</string>
+    <string name="auto_calendar_preferences_summary">Allow EventFEAST to add to default calendar and set a reminder for 30 minutes before the event.</string>
+    <string name="userAvatar">Contains user\'s avatar</string>
+    <string name="greyBackground">Just a plain grey background</string>
+    <string name="posts_text">Posts</string>
+    <string name="meals_text">Meals Enjoyed</string>
+    <string name="user_level_text">Level</string>
+    <string name="user_level_outline_image">User\'s Level</string>
+    <string name="myfollowers">Followers</string>
+    <string name="title_activity_main">FriendsActivity</string>
+    <string name="title_activity_main2">CreateEventActivity</string>
+    <string name="title_activity_create_event">CreateEventActivity</string>
+    <string name="eventname_text">Event Name</string>
+    <string name="eventDescription_text">Description</string>
+    <string name="eventAddress_text">Event Address</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_geofence">Map</string>
 
 
 </resources>

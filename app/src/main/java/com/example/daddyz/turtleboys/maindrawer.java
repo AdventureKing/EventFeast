@@ -5,9 +5,13 @@ package com.example.daddyz.turtleboys;
  */
 
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,14 +21,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.daddyz.turtleboys.eventfeed.EventFeedFragment;
+import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
+import com.example.daddyz.turtleboys.feedTabView.feedtabview;
+import com.example.daddyz.turtleboys.newsfeed.newsfeedPostDetail;
+import com.example.daddyz.turtleboys.newsfeed.newsfeedPostForm;
+import com.example.daddyz.turtleboys.friendFeed.userListFragment;
+import com.example.daddyz.turtleboys.searchevent.searchEvent;
+import com.example.daddyz.turtleboys.settings.SettingsFragment;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
+import com.example.daddyz.turtleboys.subclasses.User_Icon_Animation;
 import com.parse.GetDataCallback;
 import com.parse.LogOutCallback;
 import com.parse.ParseFile;
@@ -39,16 +50,23 @@ public class maindrawer extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private TextView userName;
     private TextView userEmail;
-    private ListView myList;
     private ProgressBar mProgressBar;
+    private SharedPreferences preferences;
+    private boolean AnimationFlag;
+    private ParseImageView imageView;
+    private FragmentManager fragManager;
+    private GigUser currentUser;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private Boolean refreshTabViewFlag;
+    private Boolean refreshTabViewSettingsFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-
-
+        //Initialize all preferences to their default values if device does not have them previously saved
+        PreferenceManager.setDefaultValues(this, R.xml.settings_preference_fragment, true);
 
         if (GigUser.getCurrentUser() == null){
             Intent intent = new Intent(getApplicationContext(), login_activity.class);
@@ -56,20 +74,25 @@ public class maindrawer extends AppCompatActivity {
             finish();
         }else {
 
-            final GigUser currentUser = ParseUser.createWithoutData(GigUser.class,ParseUser.getCurrentUser().getObjectId());
+            currentUser = ParseUser.createWithoutData(GigUser.class,ParseUser.getCurrentUser().getObjectId());
             // Initializing Toolbar and setting it as the actionbar
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
 
-            //generate newsfeed
-            //stuff that goes in a row
-            //create a list fragment and show
-            EventFeedFragment fragment = new EventFeedFragment();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame, fragment);
-            fragmentTransaction.commit();
+            //Setup the Fragment Manager
+            fragManager = getFragmentManager();
 
+            fragManager.addOnBackStackChangedListener(getListener());
 
+           //create eventfeed fragment and launch it to fill the main screen
+            //we get the current fragment manager and start a replacement transaction and we add this transaction to a stack
+            //so if we need to move through the stack we pop one off
+
+            //create tab view
+            feedtabview fragment = new feedtabview();
+            refreshTabViewFlag = true;
+            refreshTabViewSettingsFlag = false;
+            fragManager.beginTransaction().replace(R.id.frame, fragment,"EventFeedFragment").addToBackStack("EventFeedFragment").commit();
 
             //set username and email in the header and user image
             userName = (TextView) findViewById(R.id.username);
@@ -79,7 +102,7 @@ public class maindrawer extends AppCompatActivity {
 
             //get ParseImageView from xml
             ParseFile image = (ParseFile) currentUser.getUserImage();
-            final ParseImageView imageView = (ParseImageView) findViewById(R.id.profile_image);
+            imageView = (ParseImageView) findViewById(R.id.profile_image);
             imageView.setParseFile(image);
 
             //load the image from the parse database
@@ -94,6 +117,17 @@ public class maindrawer extends AppCompatActivity {
 
                 }
             });
+            //pulled from experience drawer thanks greg 1337 ha
+            //Animate the imageview if preferences permit
+            preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            AnimationFlag = preferences.getBoolean("animation_preference", false);
+            final Animation User_Icon = new User_Icon_Animation(com.example.daddyz.turtleboys.subclasses.User_Icon_Animation.Rotate.RIGHT, User_Icon_Animation.Angle.TO_DEGREES_0, 500, false);
+            if(AnimationFlag) {
+                //hide user image until drawer is fully open if animations are enabled
+                imageView.setVisibility(View.INVISIBLE);
+            }
+
+
 
             //this is the drawer
 
@@ -107,7 +141,6 @@ public class maindrawer extends AppCompatActivity {
                 @Override
                 public boolean onNavigationItemSelected(MenuItem menuItem) {
 
-
                     //Checking if the item is in checked state or not, if not make it in checked state
                     if (menuItem.isChecked()) menuItem.setChecked(false);
                     else menuItem.setChecked(true);
@@ -120,34 +153,23 @@ public class maindrawer extends AppCompatActivity {
 
 
                         //Replacing the main content with ContentFragment Which is our Inbox View;
-                        case R.id.eventfeed:
-                            EventFeedFragment fragment = new EventFeedFragment();
-                            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.frame, fragment);
-                            fragmentTransaction.commit();
-                            return true;
-                        case R.id.messaging:
-                            Toast.makeText(getApplicationContext(), "Messaging", Toast.LENGTH_SHORT).show();
-                            return true;
-                        // For rest of the options we just show a toast on click
-
                         case R.id.my_experiences:
                             //Toast.makeText(getApplicationContext(), "Stared Selected", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), experience_activity.class);
                             startActivity(intent);
                             return true;
+                        case R.id.users:
+                            userListFragment fragment4 = new userListFragment();
+                            fragManager.beginTransaction().replace(R.id.frame, fragment4,"userListFragment").addToBackStack("userListFragment").commit();
+                            return true;
                         case R.id.search_event:
-                            Toast.makeText(getApplicationContext(), "Event Searched", Toast.LENGTH_SHORT).show();
+                            searchEvent searchFragment = new searchEvent();
+                            fragManager.beginTransaction().replace(R.id.frame, searchFragment,"SearchEventFragment").addToBackStack("SearchEventFragment").commit();
                             return true;
-                        case R.id.newsfeed:
-                            EventFeedFragment fragment2 = new EventFeedFragment();
-                            android.support.v4.app.FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
-                            fragmentTransaction2.replace(R.id.frame, fragment2);
-                            fragmentTransaction2.commit();
-                            Toast.makeText(getApplicationContext(), "Drafts Selected", Toast.LENGTH_SHORT).show();
-                            return true;
-                        case R.id.connect:
-                            Toast.makeText(getApplicationContext(), "User wants to connect to other Users", Toast.LENGTH_SHORT).show();
+                        case R.id.feedsTab:
+                            //create tab view
+                            feedtabview fragment = new feedtabview();
+                            fragManager.beginTransaction().replace(R.id.frame, fragment, "EventFeedFragment").addToBackStack("EventFeedFragment").commit();
                             return true;
                         case R.id.logoutDrawer:
                             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(maindrawer.this);
@@ -182,13 +204,14 @@ public class maindrawer extends AppCompatActivity {
                             AlertDialog alert = alertDialog.create();
                             alert.show();
                             return true;
-                        case R.id.account_settings:
-                            Toast.makeText(getApplicationContext(), "Account Settings Should be displayed", Toast.LENGTH_SHORT).show();
-                            return true;
 
                         case R.id.activity_map:
                             //Toast.makeText(getApplicationContext(), "Stared Selected", Toast.LENGTH_SHORT).show();
-                            Intent mapIntent = new Intent(getApplicationContext(), MapsActivity.class);
+                            Intent mapIntent = new Intent(getApplicationContext(), CreateEventActivity.class);
+                            //Intent mapIntent = new Intent(getApplicationContext(), MapsActivity.class);
+                            //Intent mapIntent = new Intent(getApplicationContext(), GeofenceActivity.class);
+                            //Intent mapIntent = new Intent(getApplicationContext(), NewGeofenceActivity.class);
+
                             startActivity(mapIntent);
                             return true;
 
@@ -204,18 +227,23 @@ public class maindrawer extends AppCompatActivity {
 
             // Initializing Drawer Layout and ActionBarToggle
             drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-            ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer) {
+            actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer) {
 
                 @Override
                 public void onDrawerClosed(View drawerView) {
                     // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
+                    if(AnimationFlag)
+                        imageView.setVisibility(View.INVISIBLE);
                     super.onDrawerClosed(drawerView);
                 }
 
                 @Override
                 public void onDrawerOpened(View drawerView) {
                     // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
-
+                    if(AnimationFlag) {
+                        imageView.setVisibility(View.VISIBLE);
+                        imageView.startAnimation(User_Icon);
+                    }
                     super.onDrawerOpened(drawerView);
                 }
             };
@@ -252,6 +280,8 @@ public class maindrawer extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Fragment fragment = new SettingsFragment();
+            fragManager.beginTransaction().replace(R.id.drawer, fragment,"SettingsFragment").addToBackStack("SettingsFragment").commit();
             Toast.makeText(getApplicationContext(), "Settings Selected", Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -264,4 +294,120 @@ public class maindrawer extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    //this code allows user to hit backbutton and if you register your fragments correctly it will segway between the fragments they
+    //were at previously
+    @Override
+    public void onBackPressed() {
+
+        //This grabs the current fragment, you can use this to set up actions specific to leaving a certain fragment
+        Fragment currFrag = fragManager.findFragmentById(R.id.drawer);
+        if (currFrag instanceof SettingsFragment || currFrag instanceof eventDetailFragment || currFrag instanceof newsfeedPostDetail){
+            refreshTabViewFlag = false;
+        }
+
+        //changed this line
+        if(fragManager.getBackStackEntryCount() >= 2 ) {
+            fragManager.popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+
+        FrameLayout frame =(FrameLayout) findViewById(R.id.frame);
+        if(frame.getVisibility() == View.INVISIBLE){
+            frame.setVisibility(View.VISIBLE);
+
+        }
+
+    }
+
+    private FragmentManager.OnBackStackChangedListener getListener(){
+        //This is when a fragment is added or popped off the stack, use this section to update anything when a fragment is changed,
+        //such as updating preferences on a fragment view after the settings fragment is finished
+        FragmentManager.OnBackStackChangedListener result = new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+
+                //Save old animation flag
+                Boolean oldAnimationFlag = AnimationFlag;
+
+                //Update Views based on preferences
+                AnimationFlag = preferences.getBoolean("animation_preference", false);
+                if(AnimationFlag){
+                    imageView.setVisibility(View.INVISIBLE);
+                }else{
+                    imageView.setVisibility(View.VISIBLE);
+                }
+
+                //Check if flag changed in case tab view needs to be updated
+                if (AnimationFlag != oldAnimationFlag)
+                    refreshTabViewSettingsFlag= true;
+
+                //if its a subview with a arrow check if thats visible if its visible lock the drawer cause they have
+                //a back button to segway back to the parent view
+                eventDetailFragment myFragment = (eventDetailFragment)fragManager.findFragmentByTag("EventDetailFragment");
+                SettingsFragment myFragment2 = (SettingsFragment) fragManager.findFragmentByTag("SettingsFragment");
+                newsfeedPostDetail myFragment3 = (newsfeedPostDetail)fragManager.findFragmentByTag("NewsFeedPostDetail");
+                newsfeedPostForm myFragment4 = (newsfeedPostForm)fragManager.findFragmentByTag("NewsFeedPostForm");
+                searchEvent myFragment5 = (searchEvent) fragManager.findFragmentByTag("SearchEventFragment");
+                feedtabview tabsFragment = (feedtabview) fragManager.findFragmentByTag("EventFeedFragment");
+
+                //This is where the refresh of the tabsview occurs, it should only occur with fragments that replace the frame
+                if (refreshTabViewSettingsFlag || (tabsFragment != null && tabsFragment.isVisible() && myFragment2 == null && myFragment == null && myFragment3 == null && refreshTabViewFlag)){
+                    tabsFragment = new feedtabview();
+                    fragManager.beginTransaction().replace(R.id.frame, tabsFragment, "EventFeedFragment").commit();
+                    refreshTabViewSettingsFlag = false;
+                }
+                refreshTabViewFlag = true;
+                if (myFragment5 != null && myFragment5.isVisible()){
+                    //actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+                    toolbar.setTitle("Search Event");
+                    /*
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                    getSupportActionBar().setHomeButtonEnabled(true);
+                    getSupportActionBar().setDisplayShowHomeEnabled(true);
+                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+                    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            onBackPressed();
+                            findViewById(R.id.frame).setVisibility(View.VISIBLE);
+                        }
+                    });
+                    */
+                } else {
+                    actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
+                    toolbar.setTitle(R.string.app_name);
+                }
+                if ((myFragment != null && myFragment.isVisible()) || (myFragment2 != null && myFragment2.isVisible()) || (myFragment3 != null && myFragment3.isVisible())|| (myFragment4 != null && myFragment4.isVisible()) ) {
+                    // add your code here
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                }else{
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+
+                    //Update User Information
+                    imageView.setParseFile(currentUser.getUserImage());
+                    //load the image from the parse database
+                    imageView.loadInBackground(new GetDataCallback() {
+                        @Override
+                        public void done(byte[] bytes, com.parse.ParseException e) {
+                            // The image is loaded and displayed!
+                            int oldHeight = imageView.getHeight();
+                            int oldWidth = imageView.getWidth();
+                            Log.v("LOG!!!!!!", "imageView height = " + oldHeight);      // DISPLAYS 90 px
+                            Log.v("LOG!!!!!!", "imageView width = " + oldWidth);        // DISPLAYS 90 px
+
+                        }
+                    });
+                    userName.setText(currentUser.getUsername().toString());
+                    userEmail.setText(currentUser.getEmail().toString());
+                }
+
+            }
+        };
+        return result;
+    }
+
+
 }

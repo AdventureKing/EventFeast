@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/tool_bar"
+        />
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/userImageToUpload"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:src="@mipmap/ic_launcher"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/UploadAImageMessage"
+            android:text="Upload an Image to Newsfeed"
+            android:layout_below="@+id/userImageToUpload"
+            android:layout_centerHorizontal="true"
+            />
+        <EditText
+            android:id="@+id/postBody"
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_below="@id/UploadAImageMessage"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/textview_border"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/postLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_below="@id/postBody"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:visibility="gone"
+
+            />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Post"
+            android:id="@+id/postButton"
+            android:layout_alignTop="@+id/postLocation"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/postLocation"
+            android:layout_marginTop="100dp" />
+
+
+    </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

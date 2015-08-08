@@ -8,12 +8,11 @@
         android:checked="false"
         android:icon="@drawable/ic_account_box_black_24dp"
         android:title="Main Page" />
-
         <item
-            android:id="@+id/messaging"
+            android:id="@+id/userStats"
             android:checked="false"
-            android:icon="@drawable/ic_inbox_black"
-            android:title="@string/messaging" />
+            android:icon="@drawable/ic_check_box_black_24dp"
+            android:title="My Stats" />
 
         <item
             android:id="@+id/myEvents"
@@ -24,17 +23,14 @@
             android:id="@+id/myFriends"
             android:checked="false"
             android:icon="@drawable/ic_tag_faces_black_24dp"
+            android:visible="true"
             android:title="@string/myfriends" />
         <item
-            android:id="@+id/myPosts"
+            android:id="@+id/myFollowers"
             android:checked="false"
-            android:icon="@drawable/ic_assistant_black_24dp"
-            android:title="@string/myposts" />
-        <item
-            android:id="@+id/myListings"
-            android:checked="false"
-            android:icon="@drawable/ic_beenhere_black_24dp"
-            android:title="@string/mylistings" />
+            android:icon="@drawable/ic_tag_faces_black_24dp"
+            android:visible="true"
+            android:title="@string/myfollowers" />
         <item
             android:id="@+id/logoutDrawer"
             android:checked="false"

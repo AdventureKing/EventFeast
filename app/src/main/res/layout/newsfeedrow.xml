@@ -1,0 +1,69 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="250dp"
+    android:padding="6dip" >
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:contentDescription="TODO"
+        android:src="@drawable/ic_launcher"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/example"
+        android:layout_alignEnd="@+id/example"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:id="@+id/example"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="true"
+        android:gravity="center_vertical"
+        android:text="Example application"
+        android:textSize="16sp"
+        android:layout_below="@+id/icon"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="fill_parent"
+        android:layout_height="26dip"
+        android:layout_alignParentRight="false"
+
+        android:ellipsize="marquee"
+        android:text="Description"
+        android:textSize="12sp"
+
+        android:layout_below="@+id/example" />
+
+    <ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/likeimage"
+    android:layout_below="@id/description"
+    android:src="@drawable/thumbsup"
+    android:layout_marginLeft="20dp"
+     />
+    <TextView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:text="1"
+        android:id="@+id/likeCount"
+        android:layout_below="@id/description"
+        android:layout_toRightOf="@+id/likeimage"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/report"
+        android:src="@drawable/ic_report_problem_black_24dp"
+        android:layout_below="@+id/description"
+        android:layout_alignRight="@+id/description"
+        android:layout_alignEnd="@+id/description"
+        android:layout_marginRight="10dp" />
+
+
+</RelativeLayout>
