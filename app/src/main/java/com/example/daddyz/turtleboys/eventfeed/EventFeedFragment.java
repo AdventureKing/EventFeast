@@ -369,7 +369,7 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
             jsonStringArray.add(listToString(eventfeedList.get(i).getTitle(),
                     eventfeedList.get(i).getLatitude(),
                     eventfeedList.get(i).getLongitude(),
-                    eventfeedList.get(i).getVenue_name()));
+                    eventfeedList.get(i).getVenue_name() + " [" + eventfeedList.get(i).getStart_date_month().get(0) + "/" + eventfeedList.get(i).getStart_date_day().get(0) + " - " + eventfeedList.get(i).getStart_date_time().get(2) + "]"));
         }
     }
 
