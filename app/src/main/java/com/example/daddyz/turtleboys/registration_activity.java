@@ -57,7 +57,6 @@ public class registration_activity extends AppCompatActivity {
     private EditText userPasswordVerify;
     private ParseImageView userImageFile;
     private ParseFile userImageParseFile;
-    private ParseGeoPoint point = new ParseGeoPoint(29.424122, -98.493628);
     private Date birthday;
     private static final int SELECT_PHOTO = 100;
     private DialogFragment birthdaySelector;

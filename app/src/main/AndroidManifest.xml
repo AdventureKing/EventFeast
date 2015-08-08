@@ -148,6 +148,14 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main" >
         </activity>
+        <activity
+            android:name=".CreateEventActivity"
+            android:label="@string/title_activity_create_event" >
+        </activity>
+        <activity
+            android:name=".maps.GeofenceActivity"
+            android:label="@string/title_activity_geofence" >
+        </activity>
     </application>
 
 </manifest>

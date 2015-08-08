@@ -3,6 +3,7 @@ package com.example.daddyz.turtleboys.eventfeed;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -10,10 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
@@ -30,12 +31,11 @@ import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
 import com.example.daddyz.turtleboys.VolleyRequestQueue;
 import com.example.daddyz.turtleboys.maindrawer;
+import com.example.daddyz.turtleboys.maps.MapsActivity;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.parse.ParseUser;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -48,6 +48,7 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
 
     public static final String REQUEST_TAG = "MainVolleyActivity";
 
+    private ArrayList<String> jsonStringArray;
     private TextView mTextView;
     private RequestQueue mQueue;
     private View rootView;
@@ -88,10 +89,36 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
                 fragment.setObj(obj);
 
                 //start the fragment
-                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer,fragment,"EventDetailFragment").addToBackStack("EventDetailFragment").commit();
+                ((maindrawer) getActivity()).getFragmentManager().beginTransaction().replace(R.id.drawer, fragment, "EventDetailFragment").addToBackStack("EventDetailFragment").commit();
                 //this is where we are gonna
 
             }
+        });
+
+        Button mapBtn = (Button) rootView.findViewById((R.id.viewInMap));
+        mapBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent mapIntent = new Intent(getActivity().getApplicationContext(), MapsActivity.class);
+                System.out.println("list size before intent is " + getJsonStringArray().size());
+
+                mapIntent.putStringArrayListExtra("eventArrayOfStrings", getJsonStringArray());
+                // Create a Bundle and Put Bundle in to it
+                //for(int i = 0; i < eventfeedList.size(); i++){
+                    //mapIntent.putExtra("event1", eventfeedList.get(0));
+                //}
+               // Bundle bundleObject = new Bundle();
+                System.out.println("im here \n\n\n\n\n\n");
+                System.out.println(eventfeedList.get(0).getCity_name());
+                //bundleObject.putSerializable("eventfeedList", eventfeedList);
+
+
+                // Put Bundle in to Intent and call start Activity
+                //mapIntent.putExtras(bundleObject);
+                startActivity(mapIntent);
+            }
+
         });
 
         return rootView;
@@ -192,6 +219,8 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
 
     public void loadEvents(Object response){
             eventfeedList = creategEventObjectsFromResponse(response);
+            setEventListInfo();
+
 
             adapter = new eventfeedAdapter(getActivity(), R.layout.eventfeedroweven, eventfeedList);
             list.setAdapter(adapter);
@@ -324,5 +353,31 @@ public class EventFeedFragment extends Fragment implements Response.Listener,
             }
         }
         return retValue;
+    }
+
+    /*
+    get marker info
+     */
+
+    public void setEventListInfo(){
+        //System.out.println(" The Length of the event list is " + eventfeedList.size());
+        jsonStringArray = new ArrayList<>();
+        for(int i=0; i<eventfeedList.size();i++){
+
+
+
+            jsonStringArray.add(listToString(eventfeedList.get(i).getTitle(),
+                    eventfeedList.get(i).getLatitude(),
+                    eventfeedList.get(i).getLongitude(),
+                    eventfeedList.get(i).getVenue_name()));
+        }
+    }
+
+    public String listToString(String title, Double lat, Double lng, String venue){
+        return title + " /// " + Double.toString(lat) + " /// " + Double.toString(lng) + " /// " + venue;
+    }
+
+    public ArrayList<String> getJsonStringArray(){
+        return jsonStringArray;
     }
 }

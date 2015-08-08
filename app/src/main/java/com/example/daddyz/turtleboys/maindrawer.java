@@ -31,6 +31,8 @@ import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.feedTabView.feedtabview;
 import com.example.daddyz.turtleboys.friendFeed.followListFragment;
 import com.example.daddyz.turtleboys.friendFeed.followerListFragment;
+import com.example.daddyz.turtleboys.maps.GeofenceActivity;
+import com.example.daddyz.turtleboys.maps.NewGeofenceActivity;
 import com.example.daddyz.turtleboys.newsfeed.newsfeedPostDetail;
 import com.example.daddyz.turtleboys.newsfeed.newsfeedPostForm;
 import com.example.daddyz.turtleboys.friendFeed.userListFragment;
@@ -220,7 +222,11 @@ public class maindrawer extends AppCompatActivity {
 
                         case R.id.activity_map:
                             //Toast.makeText(getApplicationContext(), "Stared Selected", Toast.LENGTH_SHORT).show();
-                            Intent mapIntent = new Intent(getApplicationContext(), MapsActivity.class);
+                            Intent mapIntent = new Intent(getApplicationContext(), CreateEventActivity.class);
+                            //Intent mapIntent = new Intent(getApplicationContext(), MapsActivity.class);
+                            //Intent mapIntent = new Intent(getApplicationContext(), GeofenceActivity.class);
+                            //Intent mapIntent = new Intent(getApplicationContext(), NewGeofenceActivity.class);
+
                             startActivity(mapIntent);
                             return true;
 

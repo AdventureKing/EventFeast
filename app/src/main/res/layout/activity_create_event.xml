@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/login_page">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:ems="10"
+
+                android:id="@+id/eventName"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="83dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:ems="10"
+
+                android:id="@+id/eventDescription"
+                android:layout_below="@+id/eventName"
+                android:layout_alignLeft="@+id/eventName"
+                android:layout_alignStart="@+id/eventName"
+                android:layout_marginTop="30dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:ems="10"
+                android:id="@+id/eventAddress"
+                android:layout_below="@+id/eventDescription"
+                android:layout_alignLeft="@+id/eventDescription"
+                android:layout_alignStart="@+id/eventDescription"
+                android:layout_marginTop="30dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/eventDate"
+                android:text="Choose Event Date"
+                android:editable="false"
+                android:padding="5dp"
+                android:focusableInTouchMode="false"
+                android:layout_below="@+id/eventAddress"
+                android:layout_alignRight="@+id/eventAddress"
+                android:layout_alignLeft="@+id/eventAddress"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="45dp" />
+
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose Event Time"
+                android:id="@+id/timeButton"
+                android:background="@drawable/btnorange_360"
+                android:layout_above="@+id/sButton"
+                android:layout_alignEnd="@+id/eventDescription"
+                android:layout_alignRight="@+id/eventDescription"
+                android:layout_alignLeft="@+id/eventDescription"
+                android:layout_alignStart="@+id/eventDescription" />
+
+
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="doSaveFunction"
+                android:text="Save"
+                android:id="@+id/sButton"
+                android:background="@drawable/btnorange_360"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_alignEnd="@+id/eventDescription"
+                android:layout_alignRight="@+id/eventDescription"
+                android:layout_alignLeft="@+id/eventDescription"
+                android:layout_alignStart="@+id/eventDescription" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Create New Event"
+                android:id="@+id/textView2"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="25dp"
+                android:layout_alignLeft="@+id/eventDate"
+                android:layout_alignStart="@+id/eventDate"
+                android:layout_alignRight="@+id/eventName"
+                android:layout_alignEnd="@+id/eventName" />
+
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v4.widget.DrawerLayout>
