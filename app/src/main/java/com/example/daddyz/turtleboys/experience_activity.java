@@ -25,11 +25,12 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
-import com.example.daddyz.turtleboys.friendFeed.followListFragment;
+import com.example.daddyz.turtleboys.followtabview.followtabview;
 import com.example.daddyz.turtleboys.friendFeed.followerListFragment;
-import com.example.daddyz.turtleboys.my_experiences.statspagefragment;
 import com.example.daddyz.turtleboys.my_experiences.myEvents;
+import com.example.daddyz.turtleboys.my_experiences.statspagefragment;
 import com.example.daddyz.turtleboys.settings.SettingsFragment;
 import com.example.daddyz.turtleboys.subclasses.GigUser;
 import com.example.daddyz.turtleboys.subclasses.User_Icon_Animation;
@@ -161,7 +162,7 @@ public class  experience_activity extends AppCompatActivity {
                         //Toast.makeText(getApplicationContext(), "Events Selected", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.myFriends:
-                        followListFragment fragment2 = new followListFragment();
+                        followtabview fragment2 = new followtabview();
                         fragManager.beginTransaction().replace(R.id.frame, fragment2,"followListFragment").addToBackStack("followListFragment").commit();
                         return true;
                     case R.id.myFollowers:
