@@ -28,7 +28,7 @@ import android.widget.Toast;
 
 import com.example.daddyz.turtleboys.EventDetail.eventDetailFragment;
 import com.example.daddyz.turtleboys.followtabview.followTab.followtabview;
-import com.example.daddyz.turtleboys.followtabview.followTab.followerListFragment;
+import com.example.daddyz.turtleboys.follower.followerListFragment;
 import com.example.daddyz.turtleboys.my_experiences.myEvents;
 import com.example.daddyz.turtleboys.my_experiences.statspagefragment;
 import com.example.daddyz.turtleboys.settings.SettingsFragment;
