@@ -57,6 +57,8 @@ public class genrefollowlistadapter extends BaseExpandableListAdapter {
         TextView item = (TextView) convertView.findViewById(R.id.sub_genres);
 
         Button follow = (Button) convertView.findViewById(R.id.followBtn);
+
+        //need the following logic here
         follow.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {

@@ -27,5 +27,30 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"/>
     <!--android:visibility="gone" -->
+    <Button
+        android:id="@+id/unfollowBtn"
+
+        android:text="&#10003; Following"
+        android:textColor="#fff3f3f3"
+        android:textSize="13sp"
+
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:background="@drawable/unfollowbtnshape"
+        android:visibility="gone"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" />
+
+    <ProgressBar
+        android:id="@+id/followProgress"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
