@@ -1,4 +1,4 @@
-package com.example.daddyz.turtleboys.followtabview;
+package com.example.daddyz.turtleboys.followtabview.followTab;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.daddyz.turtleboys.R;
-import com.example.daddyz.turtleboys.friendFeed.followListFragment;
+import com.example.daddyz.turtleboys.followtabview.genreTab.genrefollowfragment;
 
 /**
  * Created by snow on 7/23/2015.

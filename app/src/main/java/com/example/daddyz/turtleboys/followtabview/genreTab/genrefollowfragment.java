@@ -1,4 +1,4 @@
-package com.example.daddyz.turtleboys.followtabview;
+package com.example.daddyz.turtleboys.followtabview.genreTab;
 
 import android.app.Fragment;
 import android.os.Bundle;

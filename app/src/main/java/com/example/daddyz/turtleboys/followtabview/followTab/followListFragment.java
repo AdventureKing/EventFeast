@@ -1,4 +1,4 @@
-package com.example.daddyz.turtleboys.friendFeed;
+package com.example.daddyz.turtleboys.followtabview.followTab;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -18,7 +18,8 @@ import com.android.volley.VolleyError;
 import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
 import com.example.daddyz.turtleboys.VolleyRequestQueue;
-import com.example.daddyz.turtleboys.friendFeed.dummy.DummyContent;
+import com.example.daddyz.turtleboys.userList.dummy.DummyContent;
+import com.example.daddyz.turtleboys.userList.userListFragment;
 import com.example.daddyz.turtleboys.subclasses.FollowUser;
 
 import org.json.JSONException;
@@ -36,7 +37,9 @@ import java.util.Iterator;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class userListFragment extends Fragment implements Response.Listener,AbsListView.OnItemClickListener, Response.ErrorListener{
+
+
+public class followListFragment extends Fragment implements Response.Listener,AbsListView.OnItemClickListener, Response.ErrorListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -48,7 +51,7 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private userListAdapter adapter;
+    private followListAdapter adapter;
     private RequestQueue mQueue;
     private ArrayList<FollowUser> userArray;
     private ListView list;
@@ -72,7 +75,7 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public userListFragment() {
+    public followListFragment() {
     }
 
     @Override
@@ -90,7 +93,7 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
         }
 
         // TODO: Change Adapter to display your content
-        adapter = new userListAdapter(getActivity(),  R.layout.user_list_follow_row, userArray, this);
+        adapter = new followListAdapter(getActivity(),  R.layout.user_list_follow_row, userArray,this);
     }
 
     @Override
@@ -111,7 +114,7 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
 
         mQueue = VolleyRequestQueue.getInstance(this.getActivity().getApplicationContext())
                 .getRequestQueue();
-        String url = "http://api.dev.turtleboys.com/v1/users/list";
+        String url = "http://api.dev.turtleboys.com/v1/friends/list";
         final VolleyJSONObjectRequest jsonRequest = new VolleyJSONObjectRequest(Request.Method
                 .GET, url,
                 new JSONObject(), this, this);
@@ -138,7 +141,7 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
     public void loadEvents(Object response){
         userArray = createFollowUserObjectsFromResponse(response);
         if(null != this.getActivity()) {
-            adapter = new userListAdapter(this.getActivity(), R.layout.user_list_follow_row, userArray, this);
+            adapter = new followListAdapter(this.getActivity(), R.layout.user_list_follow_row, userArray, this);
             list.setAdapter(adapter);
             ((BaseAdapter) list.getAdapter()).notifyDataSetChanged();
         }
@@ -232,6 +235,5 @@ public class userListFragment extends Fragment implements Response.Listener,AbsL
         String restLetters = data.substring(1).toLowerCase();
         return firstLetter + restLetters;
     }
-
-
 }
+

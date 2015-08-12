@@ -1,4 +1,4 @@
-package com.example.daddyz.turtleboys.friendFeed;
+package com.example.daddyz.turtleboys.followtabview.followTab;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -18,7 +18,8 @@ import com.android.volley.VolleyError;
 import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.VolleyJSONObjectRequest;
 import com.example.daddyz.turtleboys.VolleyRequestQueue;
-import com.example.daddyz.turtleboys.friendFeed.dummy.DummyContent;
+import com.example.daddyz.turtleboys.userList.dummy.DummyContent;
+import com.example.daddyz.turtleboys.userList.userListFragment;
 import com.example.daddyz.turtleboys.subclasses.FollowUser;
 
 import org.json.JSONException;

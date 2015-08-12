@@ -1,4 +1,4 @@
-package com.example.daddyz.turtleboys.friendFeed;
+package com.example.daddyz.turtleboys.userList;
 
 import android.app.Activity;
 import android.content.Context;

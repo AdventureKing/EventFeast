@@ -1,4 +1,4 @@
-package com.example.daddyz.turtleboys.friendFeed.dummy;
+package com.example.daddyz.turtleboys.userList.dummy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
