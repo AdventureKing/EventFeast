@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 
 import com.example.daddyz.turtleboys.R;
 import com.example.daddyz.turtleboys.friendFeed.followListFragment;
-import com.example.daddyz.turtleboys.newsfeed.newsfeedFragment;
 
 /**
  * Created by snow on 7/23/2015.
@@ -35,6 +34,7 @@ public class followtabview extends Fragment {
         inflatedView = inflater.inflate(R.layout.feedtablayout, container, false);
 
         TabLayout tabLayout = (TabLayout) inflatedView.findViewById(R.id.sliding_tabs);
+
         //change tab text to white
         tabLayout.setTabTextColors(ColorStateList.valueOf(Color.WHITE));
         //create tab for event feed
@@ -94,7 +94,7 @@ public class followtabview extends Fragment {
                     return tab1;
                 case 1:
                     //if user is on second tab
-                    newsfeedFragment tab2 = new newsfeedFragment();
+                    genrefollowfragment tab2 = new genrefollowfragment();
                     return tab2;
                 default:
                     return null;
