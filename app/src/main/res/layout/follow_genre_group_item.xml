@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:padding="10dp" >
     <TextView
-        android:id="@+id/laptop"
+        android:id="@+id/sub_genres"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="25dp"/>

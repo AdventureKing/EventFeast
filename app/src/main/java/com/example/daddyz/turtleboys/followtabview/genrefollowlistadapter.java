@@ -43,20 +43,21 @@ public class genrefollowlistadapter extends BaseExpandableListAdapter {
         return childPosition;
     }
 
-
+//what happens when you hit the follow button
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
         final String laptop = (String) getChild(groupPosition, childPosition);
         LayoutInflater inflater = context.getLayoutInflater();
 
         if (convertView == null) {
+            //set view to child item view wiith the follow icon picture
             convertView = inflater.inflate(R.layout.follow_genre_child_item, null);
         }
 
-        TextView item = (TextView) convertView.findViewById(R.id.laptop);
+        TextView item = (TextView) convertView.findViewById(R.id.sub_genres);
 
-        ImageView delete = (ImageView) convertView.findViewById(R.id.delete);
-        delete.setOnClickListener(new View.OnClickListener() {
+        ImageView follow = (ImageView) convertView.findViewById(R.id.follow);
+        follow.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -99,19 +100,20 @@ public class genrefollowlistadapter extends BaseExpandableListAdapter {
     public long getGroupId(int groupPosition) {
         return groupPosition;
     }
-
+//what the genresections look like
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String laptopName = (String) getGroup(groupPosition);
+        String genreName = (String) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            //set view to the group item view which is just a text view
             convertView = infalInflater.inflate(R.layout.follow_genre_group_item,
                     null);
         }
-        TextView item = (TextView) convertView.findViewById(R.id.laptop);
+        TextView item = (TextView) convertView.findViewById(R.id.sub_genres);
         item.setTypeface(null, Typeface.BOLD);
-        item.setText(laptopName);
+        item.setText(genreName);
         return convertView;
     }
 
