@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.daddyz.turtleboys.R;
@@ -56,7 +56,7 @@ public class genrefollowlistadapter extends BaseExpandableListAdapter {
 
         TextView item = (TextView) convertView.findViewById(R.id.sub_genres);
 
-        ImageView follow = (ImageView) convertView.findViewById(R.id.follow);
+        Button follow = (Button) convertView.findViewById(R.id.followBtn);
         follow.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
