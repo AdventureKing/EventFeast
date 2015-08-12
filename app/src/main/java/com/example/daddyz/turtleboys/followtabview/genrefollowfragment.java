@@ -83,6 +83,7 @@ public class genrefollowfragment extends Fragment {
 
 
         //TODO load from database
+        //rename to different catagories names
         String[] hpModels = { "HP Pavilion G6-2014TX", "ProBook HP 4540",
                 "HP Envy 4-1025TX" };
         String[] hclModels = { "HCL S2101", "HCL L2102", "HCL V2002" };

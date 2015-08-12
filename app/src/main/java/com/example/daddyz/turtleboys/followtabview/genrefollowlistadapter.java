@@ -50,7 +50,7 @@ public class genrefollowlistadapter extends BaseExpandableListAdapter {
         LayoutInflater inflater = context.getLayoutInflater();
 
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.child_item, null);
+            convertView = inflater.inflate(R.layout.follow_genre_child_item, null);
         }
 
         TextView item = (TextView) convertView.findViewById(R.id.laptop);
@@ -106,7 +106,7 @@ public class genrefollowlistadapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.group_item,
+            convertView = infalInflater.inflate(R.layout.follow_genre_group_item,
                     null);
         }
         TextView item = (TextView) convertView.findViewById(R.id.laptop);
