@@ -27,7 +27,7 @@ public class genrefollowfragment extends Fragment {
     private ViewPager viewPager;
     List<String> groupList;
     List<String> childList;
-    Map<String, List<String>> laptopCollection;
+    Map<String, List<String>> genreCollection;
     ExpandableListView expListView;
     ExpandableListAdapter expListAdapter;
 
@@ -48,7 +48,7 @@ public class genrefollowfragment extends Fragment {
         expListView = (ExpandableListView) inflatedView.findViewById(R.id.genre_list);
         final genrefollowlistadapter expListAdapter;
         expListAdapter = new genrefollowlistadapter(
-                getActivity(), groupList, laptopCollection);
+                getActivity(), groupList, genreCollection);
         expListView.setAdapter(expListAdapter);
 
         //setGroupIndicatorToRight();
@@ -71,48 +71,37 @@ public class genrefollowfragment extends Fragment {
     private void createGroupList() {
         //TODO add genres from database
         groupList = new ArrayList<String>();
-        groupList.add("HP");
-        groupList.add("Dell");
-        groupList.add("Lenovo");
-        groupList.add("Sony");
-        groupList.add("HCL");
-        groupList.add("Samsung");
+        groupList.add("music");
+        groupList.add("Sports");
+        groupList.add("Local Events");
+
     }
 
     private void createCollection() {
-        // preparing laptops collection(child)
-        String[] hpModels = { "HP Pavilion G6-2014TX", "ProBook HP 4540",
-                "HP Envy 4-1025TX" };
-        String[] hclModels = { "HCL S2101", "HCL L2102", "HCL V2002" };
-        String[] lenovoModels = { "IdeaPad Z Series", "Essential G Series",
-                "ThinkPad X Series", "Ideapad Z Series" };
-        String[] sonyModels = { "VAIO E Series", "VAIO Z Series",
-                "VAIO S Series", "VAIO YB Series" };
-        String[] dellModels = { "Inspiron", "Vostro", "XPS" };
-        String[] samsungModels = { "NP Series", "Series 5", "SF Series" };
+        // preparing genres collection(child)
+        String[] musicModels = { "Classics", "80's & 90's",
+                "Rock" };
 
-        laptopCollection = new LinkedHashMap<String, List<String>>();
+        String[] LocalEventsModels = { "Limited Time", "City",
+                "Parks", "Movies" };
+        String[] SportsModels = { "Football", "BasketBall", "Soccer" };
 
-        for (String laptop : groupList) {
-            if (laptop.equals("HP")) {
-                loadChild(hpModels);
-            } else if (laptop.equals("Dell"))
-                loadChild(dellModels);
-            else if (laptop.equals("Sony"))
-                loadChild(sonyModels);
-            else if (laptop.equals("HCL"))
-                loadChild(hclModels);
-            else if (laptop.equals("Samsung"))
-                loadChild(samsungModels);
+        genreCollection = new LinkedHashMap<String, List<String>>();
+
+        for (String genre : groupList) {
+            if (genre.equals("music")) {
+                loadChild(musicModels);
+            } else if (genre.equals("Sports"))
+                loadChild(SportsModels);
             else
-                loadChild(lenovoModels);
+                loadChild(LocalEventsModels);
 
-            laptopCollection.put(laptop, childList);
+            genreCollection.put(genre, childList);
         }
     }
-    private void loadChild(String[] laptopModels) {
+    private void loadChild(String[] genreModels) {
         childList = new ArrayList<String>();
-        for (String model : laptopModels)
+        for (String model : genreModels)
             childList.add(model);
     }
 }
