@@ -27,7 +27,7 @@ public class genrefollowfragment extends Fragment {
     private ViewPager viewPager;
     List<String> groupList;
     List<String> childList;
-    Map<String, List<String>> genreCollection;
+    Map<String, List<String>> laptopCollection;
     ExpandableListView expListView;
     ExpandableListAdapter expListAdapter;
 
@@ -48,7 +48,7 @@ public class genrefollowfragment extends Fragment {
         expListView = (ExpandableListView) inflatedView.findViewById(R.id.genre_list);
         final genrefollowlistadapter expListAdapter;
         expListAdapter = new genrefollowlistadapter(
-                getActivity(), groupList, genreCollection);
+                getActivity(), groupList, laptopCollection);
         expListView.setAdapter(expListAdapter);
 
         //setGroupIndicatorToRight();
@@ -71,19 +71,16 @@ public class genrefollowfragment extends Fragment {
     private void createGroupList() {
         //TODO add genres from database
         groupList = new ArrayList<String>();
-        groupList.add("Music");
-        groupList.add("Sports");
-        groupList.add("Comedian");
-        groupList.add("Entertainment");
-        groupList.add("Local Events");
-
+        groupList.add("HP");
+        groupList.add("Dell");
+        groupList.add("Lenovo");
+        groupList.add("Sony");
+        groupList.add("HCL");
+        groupList.add("Samsung");
     }
 
     private void createCollection() {
-
-
-        //TODO load from database
-        //rename to different catagories names
+        // preparing laptops collection(child)
         String[] hpModels = { "HP Pavilion G6-2014TX", "ProBook HP 4540",
                 "HP Envy 4-1025TX" };
         String[] hclModels = { "HCL S2101", "HCL L2102", "HCL V2002" };
@@ -94,7 +91,7 @@ public class genrefollowfragment extends Fragment {
         String[] dellModels = { "Inspiron", "Vostro", "XPS" };
         String[] samsungModels = { "NP Series", "Series 5", "SF Series" };
 
-        genreCollection = new LinkedHashMap<String, List<String>>();
+        laptopCollection = new LinkedHashMap<String, List<String>>();
 
         for (String laptop : groupList) {
             if (laptop.equals("HP")) {
@@ -110,12 +107,12 @@ public class genrefollowfragment extends Fragment {
             else
                 loadChild(lenovoModels);
 
-            genreCollection.put(laptop, childList);
+            laptopCollection.put(laptop, childList);
         }
     }
-    private void loadChild(String[] genreModels) {
+    private void loadChild(String[] laptopModels) {
         childList = new ArrayList<String>();
-        for (String model : genreModels)
+        for (String model : laptopModels)
             childList.add(model);
     }
 }
